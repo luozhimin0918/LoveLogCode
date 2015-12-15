@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/main_zt_color"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:fitsSystemWindows="true"
+              android:background="@color/top_bar_bgColor"
+              android:orientation="vertical" >
+
+    <FrameLayout
+            android:id="@+id/frame_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+           >
+    </FrameLayout>
+     <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="1px"
+           android:background="@color/gray" >
+   </LinearLayout>
+   <include layout="@layout/activity_main_foot" />
+
+
+
+</LinearLayout>

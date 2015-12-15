@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <attr name="flash_blow" format="reference|color" />
+    <attr name="flash_blow_bg" format="reference|color" />
+    <attr name="flash_bg" format="reference|color" />
+    <attr name="flash_tv" format="reference|color" />
+    <attr name="flash_top" format="reference|color" />
+
+	
+</resources>

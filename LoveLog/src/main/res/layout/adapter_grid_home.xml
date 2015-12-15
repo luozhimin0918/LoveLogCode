@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  >
+
+    <ImageView 
+        android:id="@+id/iv_adapter_grid_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        />
+    <TextView
+            android:layout_width="match_parent"
+            android:text="真伪查询"
+            android:textColor="@color/grid_Color"
+            android:layout_marginTop="@dimen/space_5"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_size_15"
+            android:layout_height="wrap_content"/>
+
+</LinearLayout>

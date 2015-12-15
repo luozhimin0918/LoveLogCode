@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent" android:layout_height="fill_parent"
+              android:orientation="vertical" android:background="@color/connet_bgColor">
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="147dp" >
+        <com.smarter.LoveLog.ui.AutoScrollViewPager
+                android:id="@+id/viewPager_menu"
+                android:layout_width="match_parent"
+                android:layout_height="147dp"
+        />
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+            <LinearLayout
+                    android:id="@+id/viewgroup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:paddingRight="@dimen/margin_max_large"
+                    android:paddingBottom="@dimen/margin_med"
+                    android:orientation="horizontal" />
+        </RelativeLayout>
+    </FrameLayout>
+
+
+
+
+
+
+    <com.smarter.LoveLog.ui.MyGridView
+            android:id="@+id/my_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:horizontalSpacing="10dp"
+            android:background="@color/white"
+            android:numColumns="4"
+            android:paddingTop="@dimen/space_18"
+            android:paddingBottom="@dimen/space_20"
+            android:verticalSpacing="10dp" >
+    </com.smarter.LoveLog.ui.MyGridView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/space_10"
+            android:layout_height="180dp"
+            android:orientation="horizontal" >
+
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:scaleType="fitXY"
+                android:src="@mipmap/menu_1_0" />
+
+        <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                />
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/menu_1_1" />
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    />
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/menu_1_1" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <View
+            android:layout_width="fill_parent"
+            android:background="@color/white"
+            android:layout_height="@dimen/space_10"
+    />
+</LinearLayout>

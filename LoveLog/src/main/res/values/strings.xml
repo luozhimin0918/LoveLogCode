@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">爱的日志</string>
+    
+    <string name="home_text">首页</string>
+    <string name="shop_car_text">购物车</string>
+    <string name="self_text">我的</string>
+    <string name="community_text">社区</string>
+
+    <string name="share">罗志敏</string>
+</resources>
