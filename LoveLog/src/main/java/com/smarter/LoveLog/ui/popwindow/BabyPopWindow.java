@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 import android.widget.PopupWindow.OnDismissListener;
@@ -35,7 +36,7 @@ import com.smarter.LoveLog.db.Data;
 public class BabyPopWindow implements OnDismissListener, OnClickListener {
     private TextView pop_choice_16g,pop_choice_32g,pop_choice_16m,pop_choice_32m,pop_choice_black,pop_choice_white,pop_add,pop_reduce,pop_num,pop_ok;
     private ImageView pop_del;
-
+    private LinearLayout outside;
     private PopupWindow popupWindow;
     private OnItemClickListener listener;
     private final int ADDORREDUCE=1;
@@ -61,6 +62,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
         pop_ok=(TextView) view.findViewById(R.id.pop_ok);
         pop_del=(ImageView) view.findViewById(R.id.pop_del);
 
+        outside= (LinearLayout) view.findViewById(R.id.outside);
         pop_choice_16g.setOnClickListener(this);
         pop_choice_32g.setOnClickListener(this);
         pop_choice_16m.setOnClickListener(this);
@@ -71,6 +73,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
         pop_reduce.setOnClickListener(this);
         pop_ok.setOnClickListener(this);
         pop_del.setOnClickListener(this);
+        outside.setOnClickListener(this);
 
 
 
@@ -209,7 +212,10 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
                 }
                 break;
-
+            case R.id.outside:
+                listener.onClickOKPop();
+                dissmiss();
+                break;
             default:
                 break;
         }

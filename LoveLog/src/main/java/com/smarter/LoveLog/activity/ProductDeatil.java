@@ -1,11 +1,13 @@
 package com.smarter.LoveLog.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,6 +28,9 @@ import java.util.List;
  */
 public class ProductDeatil extends BaseFragmentActivity implements View.OnClickListener,BabyPopWindow.OnItemClickListener {
 
+
+    @Bind(R.id.alphaBg)
+    LinearLayout alphaBg;
     @Bind(R.id.pager)
     AutoLoopViewPager pager;
     @Bind(R.id.indicator)
@@ -81,17 +86,28 @@ public class ProductDeatil extends BaseFragmentActivity implements View.OnClickL
         Intent intent = getIntent();
         if(intent!=null){
             String  str = intent.getStringExtra("ObjectData");
-            Toast.makeText(this,str+"",Toast.LENGTH_LONG).show();
+         //   Toast.makeText(this,str+"",Toast.LENGTH_LONG).show();
         }
 
 
     }
-
+    /** 控制背景变暗 0变暗 1变亮 */
+    public void setBackgroundBlack(int what) {
+        switch (what) {
+            case 0:
+                alphaBg.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                alphaBg.setVisibility(View.GONE);
+                break;
+        }
+    }
 
     @Override
     public void onClick(View v) {
          switch (v.getId()){
              case R.id.buy_now:
+                 setBackgroundBlack(0);
                  popWindow.showAsDropDown(v);
                  break;
              case R.id.pro_share:
@@ -103,7 +119,7 @@ public class ProductDeatil extends BaseFragmentActivity implements View.OnClickL
 
     @Override
     public void onClickOKPop() {
-
+        setBackgroundBlack(1);
     }
 
     /**
