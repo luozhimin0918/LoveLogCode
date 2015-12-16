@@ -17,6 +17,10 @@
     <color name="footbar_selected">#FC1259</color>
 
 
+    <!-- 购物车背景颜色-->
+    <color name="shop_bg">#F7BA24</color>
+
+
 
 
     <!-- 白色 -->

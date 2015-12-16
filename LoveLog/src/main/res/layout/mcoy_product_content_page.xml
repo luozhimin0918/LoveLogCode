@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent" android:layout_height="@dimen/bottom_height" android:background="@color/white" android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="图片详情"
+            android:textColor="@color/top_bar_bgColor"
+            android:textSize="14sp" />
+       <LinearLayout
+           android:layout_width="1px"
+           android:layout_height="match_parent" android:orientation="vertical" android:layout_marginBottom="5dp" android:layout_marginTop="5dp" android:background="@color/gray"></LinearLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="产品参数"
+            android:textColor="@color/top_bar_bgColor"
+            android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="1px"
+            android:layout_height="match_parent" android:orientation="vertical" android:layout_marginBottom="5dp" android:layout_marginTop="5dp" android:background="@color/gray"></LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="店铺推荐"
+            android:textColor="@color/top_bar_bgColor"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+
+    <com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView
+        android:id="@+id/productDetail_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#f1f1f5"
+        android:fadeScrollbars="true"
+        android:focusable="false"
+        android:fillViewport="true"
+        android:layout_weight="1"
+
+        >
+
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="bbbbb" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="bbbbb" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="bbbbb" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="bbbbb" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="bbbbb" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="bbbbb" />
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/b"/>
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/b"/>
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/b"/>
+
+
+
+
+
+
+
+
+            </LinearLayout>
+
+    </com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView>
+</LinearLayout>

@@ -10,8 +10,8 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.smarter.LoveLog.activity.ProductDeatil;
-import com.smarter.LoveLog.utills.ListUtils;
+
+import com.smarter.LoveLog.activity.ProductDeatilActivity;
 
 
 /**
@@ -64,7 +64,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ProductDeatil.class);
+                Intent intent = new Intent(context, ProductDeatilActivity.class);
                 intent.putExtra("ObjectData",getPosition(position)+">>>");
                 context.startActivity(intent);
             }

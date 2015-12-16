@@ -30,16 +30,7 @@
 
             </activity>
 
-            <activity android:name="com.smarter.LoveLog.activity.ProductDeatil"
-                      android:configChanges="orientation|keyboardHidden|screenSize"
-                      android:screenOrientation="portrait">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-
-            </activity>
-            <activity android:name="com.smarter.LoveLog.activity.LoginActivity"
+        <activity android:name="com.smarter.LoveLog.activity.LoginActivity"
                       android:configChanges="orientation|keyboardHidden|screenSize"
                       android:screenOrientation="portrait">
 
@@ -54,6 +45,14 @@
                       android:screenOrientation="portrait">
 
             </activity>
+        <activity android:name=".activity.ProductDeatilActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
 
@@ -67,7 +66,8 @@
 
 
 
-    <!--shareSdk下的注册的activity-->
+
+        <!--shareSdk下的注册的activity-->
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

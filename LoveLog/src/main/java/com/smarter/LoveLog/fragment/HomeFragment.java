@@ -23,12 +23,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
-import com.smarter.LoveLog.activity.ProductDeatil;
+import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.adapter.Adapter_GridView;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.MyAdapter;
@@ -249,7 +248,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 //挑战到宝贝搜索界面
-                Intent intent = new Intent(getActivity(), ProductDeatil.class);
+                Intent intent = new Intent(getActivity(), ProductDeatilActivity.class);
                 startActivity(intent);
             }
         });
