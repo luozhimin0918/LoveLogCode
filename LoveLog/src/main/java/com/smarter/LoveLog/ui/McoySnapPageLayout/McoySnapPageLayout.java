@@ -254,14 +254,14 @@ public class McoySnapPageLayout extends ViewGroup {
                 boolean yMoved = Math.abs(yDiff) > gapBetweenTopAndBottom;
                 if (yMoved) {
                     if(MCOY_DEBUG) {
-                        Log.e(TAG, "yDiff is " + yDiff);
-                        Log.e(TAG, "mPageTop.isFlipToBottom() is " + mPageTop.isAtBottom());
-                        Log.e(TAG, "mCurrentScreen is " + mCurrentScreen);
-                        Log.e(TAG, "mPageBottom.isFlipToTop() is " + mPageBottom.isAtTop());
+                        Log.d(TAG, "yDiff is " + yDiff);
+                        Log.d(TAG, "mPageTop.isFlipToBottom() is " + mPageTop.isAtBottom());
+                        Log.d(TAG, "mCurrentScreen is " + mCurrentScreen);
+                        Log.d(TAG, "mPageBottom.isFlipToTop() is " + mPageBottom.isAtTop());
                     }
                     if(yDiff < 0 && mPageTop.isAtBottom() && mCurrentScreen == 0
                             || yDiff > 0 && mPageBottom.isAtTop() && mCurrentScreen == 1){
-                        Log.e("mcoy", "121212121212121212121212");
+                        Log.d("mcoy", "121212121212121212121212");
                         mTouchState = TOUCH_STATE_SCROLLING;
                     }
                 }
@@ -269,7 +269,7 @@ public class McoySnapPageLayout extends ViewGroup {
             case MotionEvent.ACTION_DOWN:
                 // Remember location of down touch
                 mLastMotionY = y;
-                Log.e("mcoy", "mScroller.isFinished() is " + mScroller.isFinished());
+                Log.d("mcoy", "mScroller.isFinished() is " + mScroller.isFinished());
                 mTouchState = mScroller.isFinished() ? TOUCH_STATE_REST
                         : TOUCH_STATE_SCROLLING;
                 break;
@@ -280,7 +280,7 @@ public class McoySnapPageLayout extends ViewGroup {
                 break;
         }
         boolean intercept = mTouchState != TOUCH_STATE_REST;
-        Log.e("mcoy", "McoySnapPageLayout---onInterceptTouchEvent return " + intercept);
+        Log.d("mcoy", "McoySnapPageLayout---onInterceptTouchEvent return " + intercept);
         return intercept;
     }
 
@@ -292,7 +292,7 @@ public class McoySnapPageLayout extends ViewGroup {
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        Log.e("mcoy", "onTouchEvent--" + System.currentTimeMillis());
+        Log.d("mcoy", "onTouchEvent--" + System.currentTimeMillis());
         if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain();
         }
@@ -391,8 +391,8 @@ public class McoySnapPageLayout extends ViewGroup {
         }else{
             whichScreen = mDataIndex;
         }
-        Log.e(TAG, "snapToDestination mDataIndex = " + mDataIndex);
-        Log.e(TAG, "snapToDestination whichScreen = " + whichScreen);
+        Log.d(TAG, "snapToDestination mDataIndex = " + mDataIndex);
+        Log.d(TAG, "snapToDestination whichScreen = " + whichScreen);
         snapToScreen(whichScreen);
     }
 
@@ -411,25 +411,25 @@ public class McoySnapPageLayout extends ViewGroup {
         int newY = 0;
         switch (direction) {
             case 1:  //需要滑动到第二页
-                Log.e(TAG, "the direction is 1");
+                Log.d(TAG, "the direction is 1");
                 newY = getCurrentView().getBottom(); // 最终停留的位置
                 break;
             case -1:  //需要滑动到第一页
-                Log.e(TAG, "the direction is -1");
-                Log.e(TAG, "getCurrentView().getTop() is "
+                Log.d(TAG, "the direction is -1");
+                Log.d(TAG, "getCurrentView().getTop() is "
                         + getCurrentView().getTop() + " getHeight() is "
                         + getHeight());
                 newY = getCurrentView().getTop() - getHeight(); // 最终停留的位置
                 break;
             case 0:  //滑动距离不够， 因此不造成换页，回到滑动之前的位置
-                Log.e(TAG, "the direction is 0");
+                Log.d(TAG, "the direction is 0");
                 newY = getCurrentView().getTop(); //第一页的top是0， 第二页的top应该是第一页的高度
                 break;
             default:
                 break;
         }
         final int cy = getScrollY(); // 启动的位置
-        Log.e(TAG, "the newY is " + newY + " cy is " + cy);
+        Log.d(TAG, "the newY is " + newY + " cy is " + cy);
         final int delta = newY - cy; // 滑动的距离，正值是往左滑<—，负值是往右滑—>
         mScroller.startScroll(0, cy, 0, delta, Math.abs(delta));
         invalidate();
