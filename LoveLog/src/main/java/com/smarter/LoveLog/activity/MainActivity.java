@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.fragment.SelfFragment;
 import com.smarter.LoveLog.fragment.YwFragment;
-import com.smarter.LoveLog.fragment.hqFragment;
+import com.smarter.LoveLog.fragment.ShopCarFragment;
 import com.smarter.LoveLog.fragment.HomeFragment;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -43,7 +41,7 @@ public class MainActivity extends BaseFragmentActivity  {
 
         init();
         setListen();
-        setTabSelection(0);
+        setTabSelection(3);
     }
 
     @Override
@@ -116,7 +114,7 @@ public class MainActivity extends BaseFragmentActivity  {
                 // 当点击了动态tab时，改变控件的图片和文字颜色
                 cuntenpage = 2;
                 if (fragment_kxthq == null) {
-                    fragment_kxthq = new hqFragment();
+                    fragment_kxthq = new ShopCarFragment();
                     transaction.add(R.id.frame_content, fragment_kxthq);
                 } else {
                     transaction.show(fragment_kxthq);

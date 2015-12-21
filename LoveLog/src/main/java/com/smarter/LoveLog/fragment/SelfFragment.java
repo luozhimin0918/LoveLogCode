@@ -20,7 +20,7 @@ public class SelfFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mRootView == null || mRootView.get() == null) {
-            view = inflater.inflate(R.layout.home_fragment, null);
+            view = inflater.inflate(R.layout.self_fragment, null);
             mRootView = new WeakReference<View>(view);
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();

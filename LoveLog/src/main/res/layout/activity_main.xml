@@ -2,7 +2,6 @@
               android:id="@+id/main_zt_color"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:fitsSystemWindows="true"
               android:background="@color/top_bar_bgColor"
               android:orientation="vertical" >
 

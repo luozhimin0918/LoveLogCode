@@ -37,7 +37,7 @@
                         android:id="@+id/pro_share"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:padding="8dp"
+                        android:padding="11dp"
                         android:layout_weight="1"
                         android:src="@mipmap/share_pressed" />
 
@@ -55,6 +55,7 @@
            </LinearLayout>
 
 
+            <LinearLayout android:layout_width="fill_parent" android:background="@color/connet_bgColor" android:layout_height="1dp" android:orientation="horizontal"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent" android:layout_height="@dimen/bottom_height" android:background="@color/white" android:orientation="horizontal">
@@ -62,14 +63,39 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
-                    android:orientation="vertical"
-                    android:background="@color/gold" />
+                    android:gravity="center"
+                    android:orientation="vertical">
+                     <ImageView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content" android:background="@mipmap/service" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#656565"
+                        android:layout_marginTop="3dp"
+                        android:textSize="12sp"
+                        android:text="客服"/>
+                    </LinearLayout>
+                <LinearLayout android:layout_width="1dp" android:background="@color/connet_bgColor" android:layout_height="fill_parent" android:orientation="horizontal"></LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
-                    android:orientation="vertical"
-                    android:background="@color/pink" />
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:background="@mipmap/love" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#656565"
+                        android:layout_marginTop="3dp"
+                        android:textSize="12sp"
+                        android:text="喜欢"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="1dp" android:background="@color/connet_bgColor" android:layout_height="fill_parent" android:orientation="horizontal"></LinearLayout>
 
                 <TextView
                     android:layout_width="0dp"
@@ -79,7 +105,8 @@
                     android:gravity="center"
                     android:text="加入购物车"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    android:textSize="15sp" />
+
                 <TextView
                     android:id="@+id/buy_now"
                     android:layout_width="0dp"
@@ -89,7 +116,7 @@
                     android:gravity="center"
                     android:text="立即购买"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    android:textSize="15sp" />
 
 
             </LinearLayout>

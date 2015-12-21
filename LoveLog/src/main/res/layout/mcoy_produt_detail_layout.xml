@@ -32,74 +32,310 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="5dp"
                 android:padding="5dp" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:orientation="vertical"
+                android:layout_alignParentTop="true"
+                android:gravity="right"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:text="125080人喜欢"
+                    android:textSize="12sp"
+                    android:padding="3dp"
+                    android:gravity="right"
+                    android:background="@mipmap/yellow"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:text="6892人购买"
+                    android:textSize="12sp"
+                    android:padding="3dp"
+                    android:gravity="right"
+                    android:background="@mipmap/red"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </RelativeLayout>
-        <TextView
+
+
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@color/white"
+            android:layout_height="wrap_content">
+              <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" >
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_alignParentLeft="true"
+                       android:textColor="@color/bg_Black"
+                       android:textSize="20sp"
+                       android:layout_height="wrap_content" android:text="爱的日志玫瑰水润蚕丝面膜"/>
+                  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_alignParentRight="true"
+                      android:layout_centerVertical="true"
+                      android:layout_height="wrap_content" android:background="@mipmap/more" />
+              </RelativeLayout>
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                  android:textColor="#656565"
+                android:textSize="15sp"
+                  android:paddingTop="5dp"
+                android:layout_height="wrap_content" android:text="植物性温泉水，唤醒肌肤年轻活力"/>
+              <LinearLayout android:layout_width="fill_parent" android:paddingTop="10dp" android:layout_height="wrap_content" android:orientation="horizontal">
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_alignParentLeft="true"
+                      android:textColor="#F5595D"
+                      android:textSize="25sp"
+                      android:layout_height="wrap_content" android:text="$3.90"/>
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_alignParentLeft="true"
+                      android:textColor="#9A9A9A"
+                      android:layout_marginLeft="10dp"
+                      android:textSize="20sp"
+                      android:layout_height="wrap_content" android:text="$10.90"/>
+              </LinearLayout>
+        </LinearLayout>
+
+
+
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
+            android:background="#FCEBE3"
+            android:padding="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+             <ImageView
+                 android:id="@+id/phone_shop"
+                 android:layout_width="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:layout_centerVertical="true"
+                 android:layout_height="wrap_content" android:background="@mipmap/phone_shop" />
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:paddingLeft="10dp"
+                 android:layout_toRightOf="@+id/phone_shop"
+                 android:textSize="13sp"
+                 android:layout_centerVertical="true"
+                 android:layout_height="wrap_content" android:text="掌上秒杀     已省12" android:textColor="#FB1458" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:paddingRight="20dp"
+                android:layout_centerVertical="true"
+                android:textSize="12sp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_height="wrap_content" android:text="剩余时间：1时28分18秒" android:textColor="#FB1458" />
+        </RelativeLayout>
+
+
+       <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+           <RelativeLayout android:layout_width="fill_parent" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_height="wrap_content" >
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentLeft="true"
+                   android:orientation="horizontal">
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:textColor="#656565"
+                       android:textSize="15sp"
+                       android:layout_height="wrap_content" android:text="已选"/>
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:paddingLeft="20dp"
+                       android:textColor="@color/bg_Black"
+                       android:textSize="15sp"
+                       android:layout_height="wrap_content" android:text="黄色   1个"/>
+               </LinearLayout>
+
+               <ImageView
+                   android:layout_width="wrap_content"
+                   android:layout_alignParentRight="true"
+                   android:layout_centerVertical="true"
+                   android:layout_height="wrap_content" android:background="@mipmap/more" />
+           </RelativeLayout>
+           <LinearLayout android:layout_width="fill_parent" android:layout_height="1dp" android:background="@color/connet_bgColor"></LinearLayout>
+           <RelativeLayout android:layout_width="fill_parent" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_height="wrap_content" >
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentLeft="true"
+                   android:orientation="horizontal">
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:textColor="#656565"
+                       android:textSize="15sp"
+                       android:layout_height="wrap_content" android:text="库存"/>
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:paddingLeft="20dp"
+                       android:textColor="@color/bg_Black"
+                       android:textSize="15sp"
+                       android:layout_height="wrap_content" android:text="当前库存充足"/>
+               </LinearLayout>
+
+
+           </RelativeLayout>
+           <LinearLayout android:layout_width="fill_parent" android:layout_height="1dp" android:background="@color/connet_bgColor"></LinearLayout>
+
+           <RelativeLayout android:layout_width="fill_parent" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_height="wrap_content" >
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentLeft="true"
+                   android:orientation="horizontal">
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:textColor="#656565"
+                       android:textSize="15sp"
+                       android:layout_height="wrap_content" android:text="购物须知：客服时间8：00-23：00"/>
+
+               </LinearLayout>
+
+               <ImageView
+                   android:layout_width="wrap_content"
+                   android:layout_alignParentRight="true"
+                   android:layout_centerVertical="true"
+                   android:layout_height="wrap_content" android:background="@mipmap/more" />
+           </RelativeLayout>
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@color/white" android:gravity="center" android:layout_marginTop="10dp" android:layout_marginBottom="10dp" android:padding="15dp" android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:background="@mipmap/certified" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#656565"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content" android:text="正品保障"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginLeft="35dp"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:background="@mipmap/certified" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#656565"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content" android:text="满10包邮"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginLeft="35dp"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:background="@mipmap/certified" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#656565"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content" android:text="365天保价"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <RelativeLayout android:layout_width="fill_parent" android:paddingLeft="10dp" android:layout_marginTop="10dp" android:gravity="center" android:paddingRight="10dp" android:layout_height="wrap_content" >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="#656565"
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content" android:text="买家点评"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content" android:background="@mipmap/more" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent" android:layout_height="wrap_content"  android:orientation="horizontal" android:paddingRight="10dp" android:paddingLeft="10dp" android:layout_marginTop="5dp" android:layout_marginBottom="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:textColor="@color/bg_Black"
+                android:textSize="14sp"
+                android:layout_height="wrap_content" android:text="好评度"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="#656565"
+                android:textSize="14sp"
+                android:layout_height="wrap_content" android:text="99%   50876人评论"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="1dp" android:background="@color/connet_bgColor"></LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="aaaa" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="#EEEEEE"
-            android:gravity="center"
-            android:text="上拉查看图文详情"
-            android:textColor="#aaaaaa" />
+            android:layout_height="wrap_content"
+             android:orientation="horizontal" android:gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:background="@mipmap/top" />
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="上拉查看图文详情"
+                android:textColor="#aaaaaa" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView>

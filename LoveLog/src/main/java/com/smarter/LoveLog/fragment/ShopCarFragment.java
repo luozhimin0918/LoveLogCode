@@ -13,14 +13,14 @@ import java.lang.ref.WeakReference;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class hqFragment extends Fragment {
+public class ShopCarFragment extends Fragment {
     protected WeakReference<View> mRootView;
     private View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mRootView == null || mRootView.get() == null) {
-            view = inflater.inflate(R.layout.home_fragment, null);
+            view = inflater.inflate(R.layout.shop_car_fragment, null);
             mRootView = new WeakReference<View>(view);
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
