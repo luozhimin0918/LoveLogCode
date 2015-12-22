@@ -2,7 +2,9 @@
               android:id="@+id/main_zt_color"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:background="@color/top_bar_bgColor"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false"
+              android:background="@mipmap/self_top_bg"
               android:orientation="vertical" >
 
     <FrameLayout

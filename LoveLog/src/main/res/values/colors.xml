@@ -21,7 +21,8 @@
     <color name="shop_bg">#F7BA24</color>
 
 
-
+    <color name="griditems_bg">#ffe8ecef</color>
+    <color name="line">#ffd3dde6</color>
 
     <!-- 白色 -->
     <color name="bg_White">#FFFFFF</color>

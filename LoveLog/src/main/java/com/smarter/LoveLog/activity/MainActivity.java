@@ -1,6 +1,9 @@
 package com.smarter.LoveLog.activity;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +30,7 @@ public class MainActivity extends BaseFragmentActivity  {
     Fragment  fragment_flash_main,fragment_jw,fragment_kxthq,fragment_self;
 
     private RadioGroup group;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,7 +45,7 @@ public class MainActivity extends BaseFragmentActivity  {
 
         init();
         setListen();
-        setTabSelection(3);
+        setTabSelection(0);
     }
 
     @Override
@@ -60,9 +64,9 @@ public class MainActivity extends BaseFragmentActivity  {
     private void init() {
         fragmentManager = getSupportFragmentManager();
         main_zt_color = (LinearLayout) findViewById(R.id.main_zt_color);
-
         group = (RadioGroup) findViewById(R.id.group);
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
@@ -79,6 +83,7 @@ public class MainActivity extends BaseFragmentActivity  {
 
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setTabSelection(int index) {
         // 重置按钮
         // 开启一个Fragment事务
@@ -89,6 +94,7 @@ public class MainActivity extends BaseFragmentActivity  {
             case 0:
                 // 当点击了消息tab时，改变控件的图片和文字颜色
                 cuntenpage = 0;
+                main_zt_color.setBackgroundColor(Color.parseColor("#fc1359"));
                 if (fragment_flash_main == null) {
                     // 如果MessageFragment为空，则创建一个并添加到界面上
                     fragment_flash_main = new HomeFragment();
@@ -101,6 +107,7 @@ public class MainActivity extends BaseFragmentActivity  {
             case 1:
                 // 当点击了消息tab时，改变控件的图片和文字颜色
                 cuntenpage = 1;
+                main_zt_color.setBackgroundColor(Color.parseColor("#fc1359"));
                 if (fragment_jw == null) {
                     // 如果MessageFragment为空，则创建一个并添加到界面上
                     fragment_jw = new YwFragment();
@@ -113,6 +120,7 @@ public class MainActivity extends BaseFragmentActivity  {
             case 2:
                 // 当点击了动态tab时，改变控件的图片和文字颜色
                 cuntenpage = 2;
+                main_zt_color.setBackgroundColor(Color.parseColor("#fc1359"));
                 if (fragment_kxthq == null) {
                     fragment_kxthq = new ShopCarFragment();
                     transaction.add(R.id.frame_content, fragment_kxthq);
@@ -124,6 +132,7 @@ public class MainActivity extends BaseFragmentActivity  {
 
             case 3:
                 cuntenpage = 3;
+                main_zt_color.setBackground(getResources().getDrawable(R.drawable.repeat_bg));
                 if (fragment_self == null) {
                     // 如果SettingFragment为空，则创建一个并添加到界面上
                     fragment_self = new SelfFragment();

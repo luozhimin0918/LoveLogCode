@@ -1,6 +1,11 @@
 package com.smarter.LoveLog.ui;
 
 /**
+ * @Description:解决在scrollview中只显示第一行数据的问题
+ * @author http://blog.csdn.net/finddreams
+ */
+/**
+ *
  * Created by Administrator on 2015/12/1.
  */
 import android.content.Context;

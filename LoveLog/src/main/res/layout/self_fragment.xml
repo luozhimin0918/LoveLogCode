@@ -2,111 +2,131 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="140dp">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="20dp"
+            android:layout_height="wrap_content" android:background="@mipmap/icon_set"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_height="wrap_content" android:background="@mipmap/login" />
+            <TextView
+                android:text="登录/注册"
+                android:layout_marginTop="10dp"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </RelativeLayout>
+    <!--  <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:scrollbars="none" >-->
+    <com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView
+        android:id="@+id/productDetail_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fadeScrollbars="true"
+        android:scrollbars="none"
+        android:focusable="true"
+        android:fillViewport="true"
+        android:layout_weight="1"
+
+        >
     <LinearLayout android:layout_width="fill_parent"  android:layout_height="fill_parent"  android:orientation="vertical" android:background="@color/connet_bgColor" android:layout_weight="1">
-      <RelativeLayout
-          android:layout_width="fill_parent"
-          android:background="@mipmap/self_top_bg"
-          android:paddingTop="@dimen/zhuangtai_bar_height"
-          android:layout_height="170dp">
-          <ImageView
-              android:layout_width="wrap_content"
-              android:layout_alignParentRight="true"
-              android:layout_marginTop="8dp"
-              android:layout_marginRight="20dp"
-              android:layout_height="wrap_content" android:background="@mipmap/icon_set"/>
 
           <LinearLayout
-              android:layout_width="fill_parent"
-              android:orientation="vertical"
-              android:gravity="center"
-              android:layout_height="wrap_content">
-              <ImageView
-                  android:layout_width="wrap_content"
-                  android:layout_marginTop="18dp"
-                  android:layout_height="wrap_content" android:background="@mipmap/login" />
-              <TextView
-                  android:text="登录/注册"
-                  android:layout_marginTop="10dp"
-                  android:textSize="17sp"
-                  android:textColor="@color/white"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content" />
-          </LinearLayout>
+                android:layout_width="fill_parent"
+              android:background="@color/white"
+                android:layout_height="wrap_content" android:orientation="vertical">
+                <RelativeLayout android:layout_width="fill_parent" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_height="wrap_content" >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:textColor="@color/bg_Black"
+                            android:textSize="15sp"
+                            android:layout_height="wrap_content" android:text="我的订单"/>
+                    </LinearLayout>
 
-      </RelativeLayout>
-      <LinearLayout
-            android:layout_width="fill_parent"
-          android:background="@color/white"
-            android:layout_height="wrap_content" android:orientation="vertical">
-            <RelativeLayout android:layout_width="fill_parent" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_height="wrap_content" >
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
                     <ImageView
-                        android:layout_marginLeft="10dp"
-                        android:background="@mipmap/order"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:textColor="@color/bg_Black"
-                        android:textSize="15sp"
-                        android:layout_height="wrap_content" android:text="我的订单"/>
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content" android:background="@mipmap/more" />
+                </RelativeLayout>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="1dp" android:background="@color/connet_bgColor"></LinearLayout>
+                <LinearLayout
+                      android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingLeft="20dp" android:paddingTop="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:orientation="horizontal">
+                      <TextView
+                          android:layout_width="0dp"
+                          android:layout_height="match_parent"
+                          android:layout_weight="1"
+                          android:gravity="center"
+                          android:text="待付款"
+                          android:drawablePadding="-25dp"
+                          android:drawableLeft="@mipmap/pay"
+                          android:textColor="#929292"
+                          android:textSize="14sp" />
+                      <LinearLayout
+                          android:layout_width="1px"
+                          android:layout_height="match_parent" android:orientation="vertical" android:background="@color/gray"></LinearLayout>
+                      <TextView
+                          android:layout_width="0dp"
+                          android:layout_height="match_parent"
+                          android:layout_marginLeft="20dp"
+                          android:layout_weight="1"
+                          android:gravity="center"
+                          android:drawablePadding="-25dp"
+                          android:text="待发货"
+                          android:drawableLeft="@mipmap/delivery"
+                          android:textColor="#929292"
+                          android:textSize="14sp" />
+                      <LinearLayout
+                          android:layout_width="1px"
+                          android:layout_height="match_parent" android:orientation="vertical"  android:background="@color/gray"></LinearLayout>
+
+                      <TextView
+                          android:layout_width="0dp"
+                          android:layout_marginLeft="20dp"
+                          android:layout_height="match_parent"
+                          android:layout_weight="1"
+                          android:gravity="center"
+                          android:drawablePadding="-10dp"
+                          android:drawableLeft="@mipmap/refond"
+                          android:text="退货/退款"
+                          android:textColor="#929292"
+                          android:textSize="14sp" />
+
+
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_height="wrap_content" android:background="@mipmap/more" />
-            </RelativeLayout>
-            <LinearLayout android:layout_width="fill_parent" android:layout_height="1dp" android:background="@color/connet_bgColor"></LinearLayout>
-            <LinearLayout
-                  android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingLeft="20dp" android:paddingTop="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:orientation="horizontal">
-                  <TextView
-                      android:layout_width="0dp"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:gravity="center"
-                      android:text="待付款"
-                      android:drawablePadding="-25dp"
-                      android:drawableLeft="@mipmap/pay"
-                      android:textColor="@color/top_bar_bgColor"
-                      android:textSize="14sp" />
-                  <LinearLayout
-                      android:layout_width="1dp"
-                      android:layout_height="match_parent" android:orientation="vertical" android:background="@color/red"></LinearLayout>
-                  <TextView
-                      android:layout_width="0dp"
-                      android:layout_height="match_parent"
-                      android:layout_marginLeft="20dp"
-                      android:layout_weight="1"
-                      android:gravity="center"
-                      android:drawablePadding="-25dp"
-                      android:text="待发货"
-                      android:drawableLeft="@mipmap/delivery"
-                      android:textColor="@color/top_bar_bgColor"
-                      android:textSize="14sp" />
-                  <LinearLayout
-                      android:layout_width="1dp"
-                      android:layout_height="match_parent" android:orientation="vertical"  android:background="@color/red"></LinearLayout>
 
-                  <TextView
-                      android:layout_width="0dp"
-                      android:layout_marginLeft="20dp"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:gravity="center"
-                      android:drawablePadding="-10dp"
-                      android:drawableLeft="@mipmap/refond"
-                      android:text="退货/退款"
-                      android:textColor="@color/top_bar_bgColor"
-                      android:textSize="14sp" />
 
 
             </LinearLayout>
@@ -114,10 +134,71 @@
 
 
 
-        </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                      android:layout_marginTop="10dp"
+                      android:orientation="vertical"
+                      android:background="@mipmap/bg02"
+                      android:padding="10dp"
+                      android:layout_width="fill_parent"
+                      android:layout_height="80dp">
+                        <TextView
+                            android:textSize="13sp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="@color/white"
+                            android:text="敬爱的客户：由于系统改造，2015年12月12日旧版爱的日志历史订单不支持线上申请售后服务请致电售后服务中心。2015年12月12日旧版"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" />
+                 </LinearLayout>
+
+
+                <!--gridview-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+
+
+                        <com.smarter.LoveLog.ui.MyGridView
+                            android:id="@+id/gridview"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:horizontalSpacing="0.0dip"
+                            android:listSelector="@null"
+                            android:numColumns="4"
+                            android:scrollbars="none"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="0.0dip" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="fill_parent"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:background="@drawable/login_button"
+                    android:layout_height="50dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="联系客服"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </LinearLayout>
+
 
     </LinearLayout>
 
-
+    </com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView>
 
 </LinearLayout>
