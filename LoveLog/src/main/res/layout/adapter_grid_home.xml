@@ -12,6 +12,7 @@
         android:scaleType="center"
         />
     <TextView
+          android:id="@+id/titleData"
             android:layout_width="match_parent"
             android:text="真伪查询"
             android:textColor="@color/grid_Color"

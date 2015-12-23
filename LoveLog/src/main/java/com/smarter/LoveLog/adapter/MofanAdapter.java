@@ -9,23 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import com.smarter.LoveLog.R;
 
-import java.util.ArrayList;
+import com.smarter.LoveLog.R;
 
 /**
  * Created by jianghejie on 15/11/26.
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> {
     public int[] datas = null;
-    public MyAdapter(int[] datas) {
+    public MofanAdapter(int[] datas) {
         this.datas = datas;
     }
     //创建新View，被LayoutManager所调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.xrecy_item,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.community_xrecy_item,viewGroup,false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }

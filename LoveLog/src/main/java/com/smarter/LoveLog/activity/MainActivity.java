@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.fragment.SelfFragment;
-import com.smarter.LoveLog.fragment.YwFragment;
+import com.smarter.LoveLog.fragment.CommunityFragment;
 import com.smarter.LoveLog.fragment.ShopCarFragment;
 import com.smarter.LoveLog.fragment.HomeFragment;
 
@@ -45,7 +45,7 @@ public class MainActivity extends BaseFragmentActivity  {
 
         init();
         setListen();
-        setTabSelection(0);
+        setTabSelection(1);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class MainActivity extends BaseFragmentActivity  {
                 main_zt_color.setBackgroundColor(Color.parseColor("#fc1359"));
                 if (fragment_jw == null) {
                     // 如果MessageFragment为空，则创建一个并添加到界面上
-                    fragment_jw = new YwFragment();
+                    fragment_jw = new CommunityFragment();
                     transaction.add(R.id.frame_content, fragment_jw);
                 } else {
                     // 如果MessageFragment不为空，则直接将它显示出来
