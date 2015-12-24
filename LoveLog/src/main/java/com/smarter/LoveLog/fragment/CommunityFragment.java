@@ -168,7 +168,7 @@ public class CommunityFragment extends Fragment {
         });
 
 
-        mAdapter = new MofanAdapter(lit_int_resuour);
+        mAdapter = new MofanAdapter(mContext,lit_int_resuour);
 
         mRecyclerView.setAdapter(mAdapter);
         /**
