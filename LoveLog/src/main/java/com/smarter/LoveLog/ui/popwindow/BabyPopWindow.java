@@ -7,6 +7,7 @@ package com.smarter.LoveLog.ui.popwindow;
 import java.util.HashMap;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -49,7 +51,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
     public BabyPopWindow(Context context) {
         this.context=context;
-        View view=LayoutInflater.from(context).inflate(R.layout.adapter_popwindow, null);
+        View view=LayoutInflater.from(context).inflate(R.layout.popwindow_activity_car_popwindow, null);
         pop_choice_16g=(TextView) view.findViewById(R.id.pop_choice_16g);
         pop_choice_32g=(TextView) view.findViewById(R.id.pop_choice_32g);
         pop_choice_16m=(TextView) view.findViewById(R.id.pop_choice_16m);
@@ -101,7 +103,18 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
     // 当popWindow消失时响应
     @Override
     public void onDismiss() {
+        backgroundAlpha(context,1f);
+    }
+    /**
+     * 设置添加屏幕的背景透明度
+     * @param bgAlpha
+     */
+    public static  void backgroundAlpha(Context con,float bgAlpha)
+    {
 
+        WindowManager.LayoutParams lp =   ((Activity)con).getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        ((Activity)con).getWindow().setAttributes(lp);
     }
 
     /**弹窗显示的位置*/

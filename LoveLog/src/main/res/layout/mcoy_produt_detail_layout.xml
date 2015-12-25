@@ -63,7 +63,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:orientation="vertical"
-            android:padding="10dp"
+            android:padding="8dp"
             android:background="@color/white"
             android:layout_height="wrap_content">
               <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" >
@@ -71,7 +71,7 @@
                        android:layout_width="wrap_content"
                        android:layout_alignParentLeft="true"
                        android:textColor="@color/bg_Black"
-                       android:textSize="20sp"
+                       android:textSize="18sp"
                        android:layout_height="wrap_content" android:text="爱的日志玫瑰水润蚕丝面膜"/>
                   <ImageView
                       android:layout_width="wrap_content"
@@ -83,23 +83,32 @@
                 android:layout_width="wrap_content"
                 android:layout_alignParentLeft="true"
                   android:textColor="#656565"
-                android:textSize="15sp"
-                  android:paddingTop="5dp"
+                android:textSize="14sp"
+                  android:paddingTop="2dp"
                 android:layout_height="wrap_content" android:text="植物性温泉水，唤醒肌肤年轻活力"/>
-              <LinearLayout android:layout_width="fill_parent" android:paddingTop="10dp" android:layout_height="wrap_content" android:orientation="horizontal">
+              <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_alignParentLeft="true"
                       android:textColor="#F5595D"
                       android:textSize="25sp"
-                      android:layout_height="wrap_content" android:text="$3.90"/>
+                      android:layout_height="wrap_content" android:text="￥"/>
                   <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_alignParentLeft="true"
+                      android:textColor="#F5595D"
+                      android:textSize="23sp"
+                      android:layout_height="wrap_content" android:text="3.90"/>
+
+                  <TextView
+                      android:id="@+id/price_shanchu"
                       android:layout_width="wrap_content"
                       android:layout_alignParentLeft="true"
                       android:textColor="#9A9A9A"
                       android:layout_marginLeft="10dp"
-                      android:textSize="20sp"
-                      android:layout_height="wrap_content" android:text="$10.90"/>
+                      android:textSize="16sp"
+                      android:layout_height="wrap_content" android:text="￥10.90 "/>
+
               </LinearLayout>
         </LinearLayout>
 

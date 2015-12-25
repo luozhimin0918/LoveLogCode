@@ -1,6 +1,8 @@
 package com.smarter.LoveLog.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
@@ -31,8 +33,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
  */
 public class ProductDeatilActivity extends BaseFragmentActivity implements View.OnClickListener,BabyPopWindow.OnItemClickListener {
 
-    @Bind(R.id.alphaBg)
-    LinearLayout alphaBg;
+
     @Bind(R.id.flipLayout)
     McoySnapPageLayout mcoySnapPageLayout;
     @Bind(R.id.pro_share)
@@ -44,16 +45,25 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     McoyProductContentPage bottomPage;
 
     View  topView,bottomView;
+    Context mContext;
+    /**
+     * topView
+     */
     AutoLoopViewPager pager;
     CirclePageIndicator indicator;
+    TextView price_shanchu;
 
     private int[] imageViewIds;
     private GalleryPagerAdapter galleryAdapter;
     private List<String> imageList = new ArrayList<String>(Arrays.asList(
-            "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg",
-            "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg",
-            "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg"));
+                                    "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg",
+                                    "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg",
+                                    "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg"));
 
+
+    /**
+     * bottomView
+     */
 
 
     /**弹出商品订单信息详情*/
@@ -65,9 +75,14 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
         setContentView(R.layout.activity_product_deatil);
         ButterKnife.bind(this);
+        mContext=this;
         initView();
-        getDataIntent();
+
+
+
         FindView();
+        getDataIntent();
+
         initData();
         setListen();
 
@@ -91,19 +106,31 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
     }
     private void FindView() {
+        /**
+         * topVIew mcoy_produt_detail_layout
+         */
         pager= (AutoLoopViewPager) topView.findViewById(R.id.pager);
         indicator= (CirclePageIndicator) topView.findViewById(R.id.indicator);
+        price_shanchu= (TextView) topView.findViewById(R.id.price_shanchu);
+        /**
+         * bootomVIew mcoy_product_content_page
+         */
     }
 
     private void initData() {
 
-
+/**
+ * topView
+ */
         imageViewIds = new int[] { R.mipmap.house_background, R.mipmap.house_background_1, R.mipmap.house_background_2};
         galleryAdapter = new GalleryPagerAdapter();
         pager.setAdapter(galleryAdapter);
         indicator.setViewPager(pager);
         indicator.setPadding(5, 5, 10, 5);
-
+        price_shanchu.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);//价格删除线
+/**
+ * bottomView
+ */
 
         popWindow = new BabyPopWindow(this);
         popWindow.setOnItemClickListener(this);
@@ -114,7 +141,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.buy_now:
-                setBackgroundBlack(0);
+                BabyPopWindow.backgroundAlpha(mContext,0.2f);
                 popWindow.showAsDropDown(v);
                 break;
             case R.id.pro_share:
@@ -126,7 +153,6 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
     @Override
     public void onClickOKPop() {
-        setBackgroundBlack(1);
 
     }
     private void getDataIntent() {
@@ -139,17 +165,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
     }
 
-    /** 控制背景变暗 0变暗 1变亮 */
-    public void setBackgroundBlack(int what) {
-        switch (what) {
-            case 0:
-                alphaBg.setVisibility(View.VISIBLE);
-                break;
-            case 1:
-                alphaBg.setVisibility(View.GONE);
-                break;
-        }
-    }
+
     //轮播图适配器
     public class GalleryPagerAdapter extends PagerAdapter {
 
