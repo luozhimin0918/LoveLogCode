@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.InvitationActivity;
 import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.adapter.Adapter_GridView;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
@@ -254,7 +255,7 @@ public class CommunityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 //挑战到宝贝搜索界面
-                Intent intent = new Intent(getActivity(), ProductDeatilActivity.class);
+                Intent intent = new Intent(getActivity(), InvitationActivity.class);
                 startActivity(intent);
             }
         });

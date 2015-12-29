@@ -45,7 +45,7 @@ public class MainActivity extends BaseFragmentActivity  {
 
         init();
         setListen();
-        setTabSelection(1);
+        setTabSelection(0);
     }
 
     @Override

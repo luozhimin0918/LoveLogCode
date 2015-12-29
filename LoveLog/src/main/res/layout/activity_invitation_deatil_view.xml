@@ -1,0 +1,320 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:fitsSystemWindows="true"
+     android:background="@color/top_bar_bgColor"
+              android:orientation="vertical" >
+
+
+
+//主体内容
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView
+            android:layout_weight="1"
+            android:id="@+id/invitation_Detail_scrollview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fadeScrollbars="true"
+            android:scrollbars="none"
+            android:focusable="true"
+            android:fillViewport="true"
+            >
+            <LinearLayout
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:id="@+id/imageTopHeader"
+                    android:background="@mipmap/invitation_top_bg"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_marginLeft="@dimen/space_14"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:layout_marginBottom="@dimen/space_10"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                   <LinearLayout
+                       android:orientation="vertical"
+                       android:gravity="center"
+                       android:layout_width="fill_parent"
+                       android:layout_height="wrap_content">
+                       <TextView
+                           android:lineSpacingMultiplier="1.2"
+                           android:text="好喜欢这款爱的日志面膜啊，么么好喜欢这款爱的日志面膜啊，么么好喜欢这款爱的日志面膜啊，么么"
+                           android:textSize="18sp"
+                           android:maxLines="2"
+                           android:textStyle="bold"
+                           android:textColor="#353535"
+                           android:layout_width="fill_parent"
+                           android:layout_height="wrap_content" />
+
+                   </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/space_6"
+                        android:layout_marginBottom="@dimen/space_6"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/imageTitle"
+                                android:background="@mipmap/takeout_ic_avatar_default"
+                                android:layout_width="40dp"
+                                android:layout_marginTop="@dimen/space_5"
+                                android:layout_marginBottom="@dimen/space_5"
+                                android:layout_height="40dp" />
+
+                             <TextView
+                                    android:text="买家家"
+                                    android:textSize="16sp"
+                                    android:layout_marginLeft="@dimen/space_10"
+                                    android:textColor="#989898"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:orientation="horizontal"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:text="2015—12—26"
+                                    android:textSize="12sp"
+                                    android:layout_marginRight="@dimen/space_5"
+                                    android:textColor="#989898"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:text="邦蚕丝面膜采用天然植物纤维通过世界先进的织法工艺，使其具有良好的弹力和韧性，敷在脸上后能根据不同脸型拉伸调整size,使之照顾到肌肤的各个角落，完美贴合肌肤轮廓，不留缝隙，达到暂时封闭肌肤，打开肌肤毛孔，吸饱精华液，完美护肤、柔软丝滑。新一代杜邦蚕丝面膜纤维采用全新的有机溶剂纺丝工艺，具有真丝的光泽、柔软的手感、良好的吸水性、优美的垂坠性、天然透气性、抗静电等优异功能，让肌肤享受丝般柔滑细致的敷膜感受。            由于每个人的皮肤对营养和水份的需求量不同，敷膜的季节和环境也不相同，用硬性的时间来掌控敷膜时间是不科学的。新一代蚕丝面膜材质，能根据季节、皮肤含水量、面膜精华的多少来确定每个人的具体敷膜时间(面膜泛白即可取下)，有助于提高使用面膜的科学性和精确性。"
+                            android:textSize="18sp"
+                            android:textColor="#353535"
+                            android:lineSpacingMultiplier="1.2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:text="   邦蚕丝面膜采用天然植物纤维，通过世界先进的织法工艺，使其具有良好的弹力和韧性，敷在脸上后能根据不同脸型拉伸调整size,使之照顾到肌肤的各个角落，完美贴合肌肤轮廓，不留缝隙，达到暂时封闭肌肤，打开肌肤毛孔，吸饱精华液，完美护肤、柔软丝滑。新一代杜邦蚕丝面膜纤维采用全新的有机溶剂纺丝工艺，具有真丝的光泽、柔软的手感、良好的吸水性、优美的垂坠性、天然透气性、抗静电等优异功能，让肌肤享受丝般柔滑细致的敷膜感受。            由于每个人的皮肤对营养和水份的需求量不同，敷膜的季节和环境也不相同，用硬性的时间来掌控敷膜时间是不科学的。新一代蚕丝面膜材质，能根据季节、皮肤含水量、面膜精华的多少来确定每个人的具体敷膜时间(面膜泛白即可取下)，有助于提高使用面膜的科学性和精确性。"
+                            android:textSize="18sp"
+                            android:textColor="#353535"
+                            android:lineSpacingMultiplier="1.2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/space_15"
+                    android:layout_marginBottom="@dimen/space_15"
+                    android:layout_height="wrap_content">
+                       <TextView
+                           android:text="23"
+                           android:textColor="#989898"
+                           android:textSize="12sp"
+                           android:gravity="center|bottom"
+                           android:paddingBottom="@dimen/space_8"
+                           android:background="@mipmap/love_circle"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content" />
+
+                        <TextView
+
+                            android:layout_marginLeft="@dimen/space_30"
+                            android:text="分享"
+                            android:textColor="#989898"
+                            android:textSize="12sp"
+                            android:gravity="center|bottom"
+                            android:paddingBottom="@dimen/space_8"
+                            android:background="@mipmap/share_circle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <View
+                    android:background="@color/connet_bgColor"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1sp"></View>
+                <RelativeLayout
+                    android:layout_margin="@dimen/space_10"
+                    android:layout_width="fill_parent"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/fabuyu"
+                        android:text="发布于："
+                        android:textColor="#989898"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_toRightOf="@+id/fabuyu"
+                        android:text="综合讨论"
+                        android:textColor="@color/top_bar_bgColor"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+
+                        android:text="举报"
+                        android:layout_alignParentRight="true"
+                        android:textColor="#989898"
+                        android:layout_gravity="right"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <View
+                    android:background="@color/connet_bgColor"
+                    android:layout_width="fill_parent"
+                    android:layout_height="15dp"></View>
+
+
+
+
+
+                //评论
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/pinglun"
+                        android:layout_width="fill_parent"
+                        android:layout_marginLeft="@dimen/space_10"
+                        android:layout_marginTop="@dimen/space_15"
+                        android:text="评论(50876)"
+                        android:textColor="#989898"
+                        android:textSize="15sp"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/space_3"
+                   android:orientation="horizontal"
+                   android:layout_width="fill_parent"
+                   android:gravity="bottom"
+                   android:layout_height="10dp">
+                   <View
+                       android:background="@color/connet_bgColor"
+                       android:layout_width="26dp"
+
+                       android:layout_height="1sp"></View>
+                   <ImageView
+                       android:background="@mipmap/icon_zhexian"
+                       android:layout_width="15dp"
+                       android:layout_height="10dp" />
+                    <View
+                        android:background="@color/connet_bgColor"
+                        android:layout_weight="1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="1sp"></View>
+               </LinearLayout>
+
+                //下拉评论
+
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_refresh_widget"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="1"
+                    android:layout_height="300dp" >
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:overScrollMode="never"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:scrollbars="vertical" />
+                </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+
+
+            </LinearLayout>
+         </com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/alphaBar"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:background="@color/top_bar_bgColor"
+            android:layout_height="@dimen/head_height"></LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"  android:layout_height="@dimen/head_height" android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/backBut"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="-15dp"
+                android:src="@mipmap/back_bg" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/shareBut"
+                android:layout_width="0dp"
+                android:paddingRight="-15dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@mipmap/share" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>

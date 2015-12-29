@@ -57,6 +57,14 @@
         <item name="android:textColor">@drawable/footer_text_color</item>
     </style>
 
+    <style name="popWindow_activity_car" parent="footbar">
+        <item name="android:layout_margin">10dp</item>
+       <item name="android:padding">8dp</item>
+        <item name="android:drawablePadding">1dp</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@drawable/popwindow_car_text_color</item>
+    </style>
+
 
 
 </resources>

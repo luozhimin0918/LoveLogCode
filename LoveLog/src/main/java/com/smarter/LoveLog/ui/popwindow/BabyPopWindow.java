@@ -7,12 +7,14 @@ package com.smarter.LoveLog.ui.popwindow;
 import java.util.HashMap;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
@@ -36,46 +40,56 @@ import com.smarter.LoveLog.db.Data;
  */
 @SuppressLint("CommitPrefEdits")
 public class BabyPopWindow implements OnDismissListener, OnClickListener {
-    private TextView pop_choice_16g,pop_choice_32g,pop_choice_16m,pop_choice_32m,pop_choice_black,pop_choice_white,pop_add,pop_reduce,pop_num,pop_ok;
+    private TextView pop_add,pop_reduce,pop_num,pop_ok;
     private ImageView pop_del;
     private LinearLayout outside;
     private PopupWindow popupWindow;
     private OnItemClickListener listener;
     private final int ADDORREDUCE=1;
     private Context context;
-    /**保存选择的颜色的数据*/
-    private String str_color="";
+    private RadioButton versionCheck1,versionCheck2,versionCheck3;
+    private RadioGroup group;
+
     /**保存选择的类型的数据*/
-    private String str_type="";
+    private String str_type="校园版";
 
 
     public BabyPopWindow(Context context) {
         this.context=context;
         View view=LayoutInflater.from(context).inflate(R.layout.popwindow_activity_car_popwindow, null);
-        pop_choice_16g=(TextView) view.findViewById(R.id.pop_choice_16g);
-        pop_choice_32g=(TextView) view.findViewById(R.id.pop_choice_32g);
-        pop_choice_16m=(TextView) view.findViewById(R.id.pop_choice_16m);
-        pop_choice_32m=(TextView) view.findViewById(R.id.pop_choice_32m);
-        pop_choice_black=(TextView) view.findViewById(R.id.pop_choice_black);
-        pop_choice_white=(TextView) view.findViewById(R.id.pop_choice_white);
+
         pop_add=(TextView) view.findViewById(R.id.pop_add);
         pop_reduce=(TextView) view.findViewById(R.id.pop_reduce);
         pop_num=(TextView) view.findViewById(R.id.pop_num);
         pop_ok=(TextView) view.findViewById(R.id.pop_ok);
         pop_del=(ImageView) view.findViewById(R.id.pop_del);
-
         outside= (LinearLayout) view.findViewById(R.id.outside);
-        pop_choice_16g.setOnClickListener(this);
-        pop_choice_32g.setOnClickListener(this);
-        pop_choice_16m.setOnClickListener(this);
-        pop_choice_32m.setOnClickListener(this);
-        pop_choice_black.setOnClickListener(this);
-        pop_choice_white.setOnClickListener(this);
+
+        versionCheck1=(RadioButton) view.findViewById(R.id.versionCheck1);
+        versionCheck2=(RadioButton) view.findViewById(R.id.versionCheck2);
+        versionCheck3=(RadioButton) view.findViewById(R.id.versionCheck3);
+        group= (RadioGroup) view.findViewById(R.id.group);
+
+
         pop_add.setOnClickListener(this);
         pop_reduce.setOnClickListener(this);
         pop_ok.setOnClickListener(this);
         pop_del.setOnClickListener(this);
         outside.setOnClickListener(this);
+
+        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.versionCheck1:   str_type=versionCheck1.getText().toString(); break;
+                    case R.id.versionCheck2:   str_type=versionCheck2.getText().toString();break;
+                    case R.id.versionCheck3:   str_type=versionCheck3.getText().toString(); break;
+
+                }
+
+            }
+        });
 
 
 
@@ -134,54 +148,6 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.pop_choice_16g:
-
-                pop_choice_16g.setBackgroundResource(R.drawable.yuanjiao_choice);
-                pop_choice_32g.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_16m.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_32m.setBackgroundResource(R.drawable.yuanjiao);
-                str_type=pop_choice_16g.getText().toString();
-                break;
-            case R.id.pop_choice_32g:
-                pop_choice_16g.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_32g.setBackgroundResource(R.drawable.yuanjiao_choice);
-                pop_choice_16m.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_32m.setBackgroundResource(R.drawable.yuanjiao);
-
-                str_type=pop_choice_32g.getText().toString();
-                break;
-            case R.id.pop_choice_16m:
-
-                pop_choice_16g.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_32g.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_16m.setBackgroundResource(R.drawable.yuanjiao_choice);
-                pop_choice_32m.setBackgroundResource(R.drawable.yuanjiao);
-                str_type=pop_choice_16m.getText().toString();
-                break;
-            case R.id.pop_choice_32m:
-
-                pop_choice_16g.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_32g.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_16m.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_32m.setBackgroundResource(R.drawable.yuanjiao_choice);
-
-                str_type=pop_choice_32m.getText().toString();
-
-                break;
-            case R.id.pop_choice_black:
-
-                pop_choice_black.setBackgroundResource(R.drawable.yuanjiao_choice);
-                pop_choice_white.setBackgroundResource(R.drawable.yuanjiao);
-
-                str_color=pop_choice_black.getText().toString();
-                break;
-            case R.id.pop_choice_white:
-
-                pop_choice_black.setBackgroundResource(R.drawable.yuanjiao);
-                pop_choice_white.setBackgroundResource(R.drawable.yuanjiao_choice);
-
-                str_color=pop_choice_white.getText().toString();
-                break;
             case R.id.pop_add:
                 if (!pop_num.getText().toString().equals("750")) {
 
@@ -207,14 +173,9 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
                 break;
             case R.id.pop_ok:
                 listener.onClickOKPop();
-                if (str_color.equals("")) {
-                    Toast.makeText(context, "亲，你还没有选择颜色哟~", Toast.LENGTH_SHORT).show();
-                }else if (str_type.equals("")) {
-                    Toast.makeText(context, "亲，你还没有选择类型哟~",Toast.LENGTH_SHORT).show();
-                }else {
+
                     HashMap<String, Object> allHashMap=new HashMap<String,Object>();
 
-                    allHashMap.put("color",str_color);
                     allHashMap.put("type",str_type);
                     allHashMap.put("num",pop_num.getText().toString());
                     allHashMap.put("id",Data.arrayList_cart_id+=1);
@@ -223,7 +184,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
                     setSaveData();
                     dissmiss();
 
-                }
+
                 break;
             case R.id.outside:
                 listener.onClickOKPop();
@@ -240,10 +201,8 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
         editor.putInt("ArrayCart_size", Data.arrayList_cart.size());
         for (int i = 0; i < Data.arrayList_cart.size(); i++) {
             editor.remove("ArrayCart_type_"+i);
-            editor.remove("ArrayCart_color_"+i);
             editor.remove("ArrayCart_num_"+i);
             editor.putString("ArrayCart_type_"+i, Data.arrayList_cart.get(i).get("type").toString());
-            editor.putString("ArrayCart_color_"+i, Data.arrayList_cart.get(i).get("color").toString());
             editor.putString("ArrayCart_num_"+i, Data.arrayList_cart.get(i).get("num").toString());
 
         }

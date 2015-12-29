@@ -5,6 +5,7 @@ package com.smarter.LoveLog.adapter;
  */
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -24,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.InvitationActivity;
+import com.smarter.LoveLog.activity.InvitationDeatilActivity;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 
 /**
@@ -49,52 +52,59 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder viewHolder, int position) {
         viewHolder.imglist.setImageResource(datas[position]);
         initPopuwindow();
+        viewHolder.CommunityItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //挑战到宝贝搜索界面
+                Intent intent = new Intent(mContext, InvitationDeatilActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
         viewHolder.reword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                int[] location = new int[2];
-                viewHolder.reword.getLocationOnScreen(location);
-                isWifiPopupWindow.showAtLocation(viewHolder.reword, Gravity.NO_GRAVITY, location[0], location[1] - viewHolder.reword.getHeight() * 7);//
+                    int[] location = new int[2];
+                    viewHolder.reword.getLocationOnScreen(location);
+                    isWifiPopupWindow.showAtLocation(viewHolder.reword, Gravity.NO_GRAVITY, location[0], location[1] - viewHolder.reword.getHeight() * 7);//
+                    /**
+                     * 动画
+                     */
+                    AnimationSet animationSet = new AnimationSet(true);
+                    // Animation myAnimation= AnimationUtils.loadAnimation(mContext, R.anim.da_shan);
+                    RotateAnimation rotateAnimation = new RotateAnimation(
+                            270, 0, RotateAnimation.RELATIVE_TO_PARENT, 0.5f, RotateAnimation.RELATIVE_TO_PARENT, 0.4f);
+                    rotateAnimation.setInterpolator(new LinearInterpolator());
+                    rotateAnimation.setDuration(200);
+                    rotateAnimation.setRepeatCount(0);
+                    rotateAnimation.setFillAfter(true);
+                    // rotateAnimation.setStartOffset(50);
 
 
-                /**
-                 * 动画
-                 */
-                AnimationSet animationSet = new AnimationSet(true);
-                // Animation myAnimation= AnimationUtils.loadAnimation(mContext, R.anim.da_shan);
-                RotateAnimation rotateAnimation = new RotateAnimation(
-                        270, 0, RotateAnimation.RELATIVE_TO_PARENT, 0.5f, RotateAnimation.RELATIVE_TO_PARENT, 0.4f);
-                rotateAnimation.setInterpolator(new LinearInterpolator());
-                rotateAnimation.setDuration(200);
-                rotateAnimation.setRepeatCount(0);
-                rotateAnimation.setFillAfter(true);
-                // rotateAnimation.setStartOffset(50);
+                    /** 设置缩放动画 */
+                    final ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f, 1.0f, 0.1f, 1.0f,
+                            Animation.RELATIVE_TO_PARENT, 0.3f, Animation.RELATIVE_TO_PARENT, 0.4f);
+                    scaleAnimation.setInterpolator(new LinearInterpolator());
+                    scaleAnimation.setDuration(200);//设置动画持续时间
+                    /** 常用方法 */
+                    scaleAnimation.setRepeatCount(0);//设置重复次数
+                    scaleAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+                    // scaleAnimation.setStartOffset(1000);//执行前的等待时间
 
 
-                /** 设置缩放动画 */
-                final ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f, 1.0f, 0.1f, 1.0f,
-                        Animation.RELATIVE_TO_PARENT, 0.3f, Animation.RELATIVE_TO_PARENT, 0.4f);
-                scaleAnimation.setInterpolator(new LinearInterpolator());
-                scaleAnimation.setDuration(200);//设置动画持续时间
-                /** 常用方法 */
-                scaleAnimation.setRepeatCount(0);//设置重复次数
-                scaleAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
-                // scaleAnimation.setStartOffset(1000);//执行前的等待时间
+                    animationSet.addAnimation(rotateAnimation);
+                    animationSet.addAnimation(scaleAnimation);
 
 
-                animationSet.addAnimation(rotateAnimation);
-                animationSet.addAnimation(scaleAnimation);
-
-
-                integral01.startAnimation(animationSet);
-                integral02.startAnimation(animationSet);
-                integral03.startAnimation(animationSet);
-                /**
-                 * 动画后的黑色蒙层
-                 */
-                BabyPopWindow.backgroundAlpha(mContext,0.5f);
+                    integral01.startAnimation(animationSet);
+                    integral02.startAnimation(animationSet);
+                    integral03.startAnimation(animationSet);
+                    /**
+                     * 动画后的黑色蒙层
+                     */
+                    BabyPopWindow.backgroundAlpha(mContext,0.2f);
             }
         });
     }
@@ -107,9 +117,11 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imglist,reword,imageTitle;
         TextView sharePic;
+        RelativeLayout CommunityItem;
 
         public ViewHolder(View view){
             super(view);
+            CommunityItem= (RelativeLayout) view.findViewById(R.id.CommunityItem);
             imglist = (ImageView) view.findViewById(R.id.imglist);
 
             imageTitle=(ImageView) view.findViewById(R.id.imageTitle);
@@ -198,16 +210,6 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
 
     }
 
-   /* *//**
-     * 设置添加屏幕的背景透明度
-     * @param bgAlpha
-     *//*
-    public void backgroundAlpha(float bgAlpha)
-    {
 
-        WindowManager.LayoutParams lp =   ((Activity)mContext).getWindow().getAttributes();
-        lp.alpha = bgAlpha; //0.0-1.0
-        ((Activity)mContext).getWindow().setAttributes(lp);
-    }*/
 }
 
