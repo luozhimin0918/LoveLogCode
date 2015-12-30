@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:fitsSystemWindows="true"
+              android:background="@color/top_bar_bgColor"
+              android:orientation="vertical" >
+    <LinearLayout
+            android:layout_width="fill_parent" android:layout_height="@dimen/head_height" android:orientation="horizontal">
+
+        <ImageView
+                android:id="@+id/iv_shao"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingRight="25dp"
+                android:src="@mipmap/back" />
+
+        <TextView
+                android:id="@+id/tv_top_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="地址管理"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        <TextView
+                android:id="@+id/tv_right_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="添加"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:background="@color/connet_bgColor"
+        android:id="@+id/recyclerView"
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none" />
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:layout_width="fill_parent" android:padding="15dp" android:layout_height="fill_parent"  android:background="@color/connet_bgColor" android:layout_weight="1">
+
+        <ImageView
+            android:layout_marginTop="70dp"
+            android:background="@mipmap/icon_map"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout  android:id="@+id/addAddress"  android:clickable="true" android:layout_alignParentBottom="true" android:layout_width="fill_parent" android:gravity="center"  android:layout_height="50dp" android:orientation="horizontal" android:background="@drawable/login_button">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+添加地址"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+        </LinearLayout>-
+
+
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

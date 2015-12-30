@@ -245,7 +245,7 @@
                     android:id="@+id/swipe_refresh_widget"
                     android:layout_width="fill_parent"
                     android:layout_weight="1"
-                    android:layout_height="300dp" >
+                    android:layout_height="200dp" >
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recyclerView"
                             android:overScrollMode="never"
@@ -254,12 +254,88 @@
                             android:scrollbars="vertical" />
                 </android.support.v4.widget.SwipeRefreshLayout>
 
-
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:paddingBottom="@dimen/space_15"
+                    android:paddingTop="@dimen/space_15"
+                    android:background="@color/connet_bgColor"
+                    android:orientation="horizontal" android:gravity="center">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:background="@mipmap/top" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="下拉加载"
+                        android:textColor="#aaaaaa" />
+                </LinearLayout>
 
 
 
             </LinearLayout>
          </com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView>
+
+<!--悬浮栏-->
+        <LinearLayout
+            android:layout_width="fill_parent" android:layout_height="@dimen/bottom_height" android:background="@color/white" android:orientation="horizontal">
+
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9"
+                android:orientation="horizontal"
+                android:background="@color/top_bar_bgColor"
+                android:gravity="center">
+                <ImageView
+                    android:background="@mipmap/momeny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="打赏他"
+                    android:layout_marginLeft="@dimen/space_2"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                </LinearLayout>
+            <LinearLayout android:layout_width="1dp" android:background="@color/connet_bgColor" android:layout_height="fill_parent" android:orientation="horizontal"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:paddingTop="@dimen/space_7"
+                android:paddingBottom="@dimen/space_7"
+                android:paddingRight="@dimen/space_10"
+                android:paddingLeft="@dimen/space_10"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center" >
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/yuanjiao_white_bg"
+                    android:layout_weight="1"
+                    android:hint="发表一下您的评论"
+                    android:paddingLeft="@dimen/space_10"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="#ff111111"
+                    android:textColorHint="#D4D4D4"
+                    android:textSize="13.0sp" >
+                </EditText>
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
