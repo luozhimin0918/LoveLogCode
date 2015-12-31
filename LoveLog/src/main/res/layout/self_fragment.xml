@@ -103,7 +103,7 @@
                           android:layout_weight="1"
                           android:gravity="center"
                           android:drawablePadding="-25dp"
-                          android:text="待发货"
+                          android:text="待收货"
                           android:drawableLeft="@mipmap/delivery"
                           android:textColor="#929292"
                           android:textSize="14sp" />

@@ -22,11 +22,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:text="我的订单"
+                android:text="我的红包"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
         <TextView
+                android:visibility="invisible"
                 android:id="@+id/tv_right_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -53,6 +54,10 @@
             app:tabSelectedTextColor="@color/top_bar_bgColor"
             app:tabTextColor="#636363"
             />
+        <LinearLayout
+            android:background="#636363"
+            android:layout_width="fill_parent"
+            android:layout_height="1sp"></LinearLayout>
         <FrameLayout
           android:layout_weight="1"
           android:layout_width="fill_parent"

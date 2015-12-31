@@ -1,10 +1,10 @@
 package com.smarter.LoveLog.activity;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -14,6 +14,7 @@ import com.smarter.LoveLog.fragment.OrderAllFragment;
 import com.smarter.LoveLog.fragment.OrderCompletedFragment;
 import com.smarter.LoveLog.fragment.OrderObligationFragment;
 import com.smarter.LoveLog.fragment.OrderWaitTakeOverFragment;
+import com.smarter.LoveLog.fragment.RedpacketUnusedFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,8 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class MyOrderFormActivity extends BaseFragmentActivity implements View.OnClickListener{
-    String Tag= "MyOrderFormActivity";
+public class MyRedPacketActivity extends BaseFragmentActivity implements View.OnClickListener{
+    String Tag= "MyRedPacketActivity";
    @Bind(R.id.tabLayout)
    TabLayout tabLayout;
     @Bind(R.id.view_pager)
@@ -33,10 +34,9 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
     private List<Fragment> list_fragment;                                //定义要装fragment的列表
     private List<String> list_title;                                     //tab名称列表
 
-    private OrderAllFragment orderAllFragment;                          //全部fragment
-    private OrderObligationFragment orderObligationFragment;            //待收款fragment
-    private OrderWaitTakeOverFragment orderWaitTakeOverFragment;        //待收货fragment
-    private OrderCompletedFragment orderCompletedFragment;              //已完成fragment
+    private RedpacketUnusedFragment redpacketUnusedFragment;                          //未使用fragment
+    private RedpacketUnusedFragment redpacketUnusedFragment2;
+    private RedpacketUnusedFragment redpacketUnusedFragment3;
     TablayoutViewPagerAdapter adapter;
     Activity mActivity;
 
@@ -45,7 +45,7 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_order_form_view);
+        setContentView(R.layout.activity_my_red_packet_view);
         ButterKnife.bind(this);
         mActivity=this;
 
@@ -62,25 +62,26 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
 
     private void intData() {
         //fragment List
-        orderAllFragment=new OrderAllFragment();
-        orderObligationFragment=new OrderObligationFragment();
-        orderWaitTakeOverFragment=new OrderWaitTakeOverFragment();
-        orderCompletedFragment=new OrderCompletedFragment();
+        redpacketUnusedFragment=new RedpacketUnusedFragment();
+        redpacketUnusedFragment2=new RedpacketUnusedFragment();
+        redpacketUnusedFragment3=new RedpacketUnusedFragment();
+
         list_fragment=new ArrayList<Fragment>();
-        list_fragment.add(orderAllFragment);
-        list_fragment.add(orderObligationFragment);
-        list_fragment.add(orderWaitTakeOverFragment);
-        list_fragment.add(orderCompletedFragment);
+        list_fragment.add(redpacketUnusedFragment);
+
+        list_fragment.add(redpacketUnusedFragment2);
+        list_fragment.add(redpacketUnusedFragment3);
+
         //tab title List
         list_title=new ArrayList<String>();
-        list_title.add("全部");
-        list_title.add("待收款");
-        list_title.add("待收货");
-        list_title.add("已完成");
+        list_title.add("未使用");
+        list_title.add("已过期");
+        list_title.add("已使用(5)");
+
 
         //设置tablayout
         //设置TabLayout的模式
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
         //为TabLayout添加tab名称
         for(int i=0;i<list_title.size();i++){
             tabLayout.addTab(tabLayout.newTab().setText(list_title.get(i)));

@@ -31,7 +31,7 @@ public class RecycleAddressAdapter extends RecyclerView.Adapter<RecycleAddressAd
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         // 创建一个View，简单起见直接使用系统提供的布局，就是一个TextView
-        View view = View.inflate(viewGroup.getContext(), R.layout.adapter_activity_address_manage, null);
+        View view = View.inflate(viewGroup.getContext(), R.layout.adapter_activity_address_manage_item, null);
         // 创建一个ViewHolder
         ViewHolder holder = new ViewHolder(view);
         return holder;
