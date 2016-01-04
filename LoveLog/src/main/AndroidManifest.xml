@@ -19,11 +19,21 @@
 
 
     <application android:allowBackup="true"
+                 android:name=".db.AppContextApplication"
                  android:label="@string/app_name"
                  android:persistent="true"
                  android:icon="@mipmap/ic_launcher"
                  android:theme="@style/AppTheme">
 
+
+        <activity android:name=".activity.SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
             <activity android:name="com.smarter.LoveLog.activity.MainActivity"
                       android:configChanges="orientation|keyboardHidden|screenSize"
                       android:screenOrientation="portrait">
@@ -80,14 +90,26 @@
                 android:screenOrientation="portrait">
 
             </activity>
-        <activity android:name=".activity.MyRedPacketActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            <activity android:name=".activity.MyRedPacketActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait">
+
+            </activity>
+            <activity android:name=".activity.SetActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait">
+
+            </activity>
+            <activity android:name=".activity.FeedbackActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait">
+
+            </activity>
+            <activity android:name=".activity.SomeAdviceActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait">
+
+            </activity>
 
 
 

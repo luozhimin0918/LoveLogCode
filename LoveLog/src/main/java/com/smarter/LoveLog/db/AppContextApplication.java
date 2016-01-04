@@ -1,33 +1,33 @@
-package com.smarter.LoveLog.common;
+package com.smarter.LoveLog.db;
 
-/**
- * Created by Administrator on 2015/11/30.
- */
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
 
 import java.util.LinkedList;
 
 /**
- * 应用程序Activity管理类：用于Activity管理和应用程序退出
+ * Created by Administrator on 2016/1/4.
  */
-public class AppManager {
-
+public class AppContextApplication extends Application {
+    private static AppContextApplication app;
     private static LinkedList<Activity> activityStack;
-    private static AppManager instance;
-
-    private AppManager() {
+    public AppContextApplication() {
+        app = this;
     }
 
-    /**
-     * 单一实例
-     */
-    public static AppManager getAppManager() {
-        if (instance == null) {
-            instance = new AppManager();
+    public static synchronized AppContextApplication getInstance() {
+        if (app == null) {
+            app = new AppContextApplication();
         }
-        return instance;
+        return app;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
     }
 
     /**

@@ -58,6 +58,7 @@ public class RecycleAddressAdapter extends RecyclerView.Adapter<RecycleAddressAd
                                 isdefuals[j]=true;
                             }else {
                                 isdefuals[j]=false;
+
                             }
                         }
 
