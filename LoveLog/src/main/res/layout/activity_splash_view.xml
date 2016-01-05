@@ -1,14 +1,95 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical" >
-    <com.android.volley.toolbox.NetworkImageView
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/fraglay"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-    />
+        android:layout_height="fill_parent">
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/netWorkImageView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="bottom|center_horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <ImageView
+                android:background="@mipmap/logon_welcome"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textData"
+                android:text="缓存大小"
+                android:visibility="gone"
+                android:textColor="@color/red"
+                android:layout_gravity="bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+
+
+
+
+
+    <FrameLayout
+        android:id="@+id/viewFragment"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+        <RelativeLayout
+
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <Button
+                android:visibility="gone"
+                android:id="@+id/btnHome"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:layout_above="@+id/indicator"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/login_button"
+                android:text="立即体验"
+                android:textSize="@dimen/text_size_18"
+                android:textColor="@color/white"
+                />
+            <com.smarter.LoveLog.ui.productViewPager.CirclePageIndicator
+                android:id="@+id/indicator"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:pageColor="#88808080"
+                app:strokeWidth="0dp"
+                android:layout_marginTop="@dimen/space_20"
+                android:layout_marginBottom="30dp"
+                android:padding="5dp"/>
+        </RelativeLayout>
+
+    </FrameLayout>
+
+
+
+
+
+
     <ImageView
         android:visibility="gone"
+        android:id="@+id/welcomeBg"
         android:background="@mipmap/welcome"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-</LinearLayout>
+</FrameLayout>
