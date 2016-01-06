@@ -40,8 +40,8 @@ import com.smarter.LoveLog.db.Data;
  */
 @SuppressLint("CommitPrefEdits")
 public class BabyPopWindow implements OnDismissListener, OnClickListener {
-    private TextView pop_add,pop_reduce,pop_num,pop_ok;
-    private ImageView pop_del;
+    private TextView pop_num,pop_ok;
+    private ImageView pop_del,pop_reduce,pop_add;
     private LinearLayout outside;
     private PopupWindow popupWindow;
     private OnItemClickListener listener;
@@ -58,8 +58,8 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
         this.context=context;
         View view=LayoutInflater.from(context).inflate(R.layout.popwindow_activity_car_popwindow, null);
 
-        pop_add=(TextView) view.findViewById(R.id.pop_add);
-        pop_reduce=(TextView) view.findViewById(R.id.pop_reduce);
+        pop_add=(ImageView) view.findViewById(R.id.pop_add);
+        pop_reduce=(ImageView) view.findViewById(R.id.pop_reduce);
         pop_num=(TextView) view.findViewById(R.id.pop_num);
         pop_ok=(TextView) view.findViewById(R.id.pop_ok);
         pop_del=(ImageView) view.findViewById(R.id.pop_del);

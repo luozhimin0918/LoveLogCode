@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:tl="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     android:background="@color/top_bar_bgColor"
     android:orientation="vertical">
@@ -43,7 +44,7 @@
     <LinearLayout
         android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent"  android:background="@color/connet_bgColor" android:layout_weight="1">
 
-        <android.support.design.widget.TabLayout
+       <!-- <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/head_height"
@@ -52,7 +53,24 @@
             app:tabIndicatorColor="@color/top_bar_bgColor"
             app:tabSelectedTextColor="@color/top_bar_bgColor"
             app:tabTextColor="#636363"
-            />
+            />-->
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/tl_2"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            tl:tl_divider_color="#1A000000"
+            tl:tl_divider_padding="13dp"
+            tl:tl_divider_width="1dp"
+            tl:tl_indicator_color="#000000"
+            tl:tl_indicator_height="1.5dp"
+            tl:tl_indicator_width_equal_title="true"
+            tl:tl_tab_padding="22dp"
+            tl:tl_tab_space_equal="true"
+            tl:tl_textSelectColor="@color/top_bar_bgColor"
+            tl:tl_textUnselectColor="#636363"
+            tl:tl_underline_color="@color/top_bar_bgColor"
+            tl:tl_underline_height="1dp"/>
         <FrameLayout
           android:layout_weight="1"
           android:layout_width="fill_parent"
