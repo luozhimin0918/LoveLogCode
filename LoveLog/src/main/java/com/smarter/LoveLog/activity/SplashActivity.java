@@ -133,10 +133,8 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
 
 
 
-    public Boolean isButshow=false;
     public  Boolean isScrolling=false;
-
-
+    public  Boolean isStartIntent=false;
     private void initGuideGallery() {
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +144,8 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
                 mContext.startActivity(intent);
 //                SharedPreferences.getInstance().putBoolean("first-time-use", false);
                 finish();
+                overridePendingTransition(R.anim.in_from_right,
+                        R.anim.out_to_left);
             }
         });
 
@@ -157,34 +157,22 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                if (isScrolling) {
-
-
-
-                   /* if (lastValue > positionOffsetPixels) {
-                        // 递减，向右侧滑动
-
-                       Log.d("SplashActivity","右、、、、");
-                    } else if (lastValue < positionOffsetPixels) {
-                        // 递减，向左侧滑动
-                        Log.d("SplashActivity","左");
-                        if(isButshow) {
-                            Intent intent = new Intent(mContext, MainActivity.class);
-                            mContext.startActivity(intent);
-                            finish();
-                            overridePendingTransition(R.anim.in_from_right,
-                                    R.anim.out_to_left);
-                        }
-
-
-                    } else if (lastValue == positionOffsetPixels) {
+                if(position==0){
+                    if(positionOffsetPixels==0&&isScrolling){
 
                     }
-*/
+                }else if(position==images.length-1){
 
+                    if(positionOffsetPixels==0&&isScrolling&&isStartIntent==false){
+                        isStartIntent=true;
+
+                       Intent intent = new Intent(mContext, MainActivity.class);
+                        mContext.startActivity(intent);
+                        finish();
+                        overridePendingTransition(R.anim.in_from_right,
+                                R.anim.out_to_left);
+                    }
                 }
-
 
 
 
@@ -201,24 +189,11 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
                     btnHome.setVisibility(View.GONE);
                 }
 
-
-                if(btnHome.getVisibility()==View.VISIBLE){
-                    isButshow=true;
-                }else{
-                    isButshow=false;
-                }
-
-
-
-
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state==2){
 
-
-                }
                 if (state == 1) {
                                    isScrolling = true;
                 } else {
@@ -378,14 +353,14 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
                         direction = "L";
 
 
-                       /* if(btnHome.getVisibility()==View.VISIBLE){
-                            finish();
-                            overridePendingTransition(R.anim.in_from_right,
-                                    R.anim.out_to_left);
+                     /*  if(btnHome.getVisibility()==View.VISIBLE){
                             Intent intent = new Intent(mContext, MainActivity.class);
-                            mContext.startActivity(intent);
-                        }*/
-
+                           mContext.startActivity(intent);
+                           finish();
+                           overridePendingTransition(R.anim.in_from_right,
+                                   R.anim.out_to_left);
+                       }
+                   */
 
 
                     }
@@ -394,11 +369,8 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
                 break;
             case MotionEvent.ACTION_UP:
 
-                        if (direction.contains("L"))
-                            Toast.makeText(SplashActivity.this, "好了",
-                                    Toast.LENGTH_SHORT).show();
-
-                recycleVelocityTracker();
+                 if (direction.contains("L"))
+                 recycleVelocityTracker();
                 break;
             default:
                 break;
