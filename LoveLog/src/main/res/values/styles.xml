@@ -68,7 +68,7 @@
 
 
 
-    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+   <!-- <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabMaxWidth">135dp</item>
         <item name="tabMinWidth">90dp</item>
         <item name="tabIndicatorHeight">1dp</item>
@@ -89,5 +89,5 @@
         <item name="android:textSize">16sp</item>
         <item name="textAllCaps">true</item>
     </style>
-
+-->
 </resources>

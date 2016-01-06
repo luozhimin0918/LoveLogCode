@@ -1,19 +1,18 @@
 package com.smarter.LoveLog.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
-import com.smarter.LoveLog.adapter.TablayoutViewPagerAdapter;
-import com.smarter.LoveLog.fragment.OrderAllFragment;
-import com.smarter.LoveLog.fragment.OrderCompletedFragment;
-import com.smarter.LoveLog.fragment.OrderObligationFragment;
-import com.smarter.LoveLog.fragment.OrderWaitTakeOverFragment;
 import com.smarter.LoveLog.fragment.RedpacketUnusedFragment;
 
 import java.util.ArrayList;
@@ -25,21 +24,20 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class MyRedPacketActivity extends BaseFragmentActivity implements View.OnClickListener{
+public class MyRedPacketActivity extends BaseFragmentActivity implements View.OnClickListener,OnTabSelectListener{
     String Tag= "MyRedPacketActivity";
-   @Bind(R.id.tabLayout)
-   TabLayout tabLayout;
+   @Bind(R.id.tl_2)
+   SlidingTabLayout tabLayout_2;
     @Bind(R.id.view_pager)
-    ViewPager view_pager;
+    ViewPager vp;
     private List<Fragment> list_fragment;                                //定义要装fragment的列表
     private List<String> list_title;                                     //tab名称列表
 
     private RedpacketUnusedFragment redpacketUnusedFragment;                          //未使用fragment
     private RedpacketUnusedFragment redpacketUnusedFragment2;
     private RedpacketUnusedFragment redpacketUnusedFragment3;
-    TablayoutViewPagerAdapter adapter;
     Activity mActivity;
-
+    Context mContext;
 
 
     @Override
@@ -48,7 +46,7 @@ public class MyRedPacketActivity extends BaseFragmentActivity implements View.On
         setContentView(R.layout.activity_my_red_packet_view);
         ButterKnife.bind(this);
         mActivity=this;
-
+        mContext=this;
 
         getDataIntent();
         intData();
@@ -76,32 +74,51 @@ public class MyRedPacketActivity extends BaseFragmentActivity implements View.On
         list_title=new ArrayList<String>();
         list_title.add("未使用");
         list_title.add("已过期");
-        list_title.add("已使用(5)");
+        list_title.add("已使用");
 
 
-        //设置tablayout
-        //设置TabLayout的模式
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        //为TabLayout添加tab名称
-        for(int i=0;i<list_title.size();i++){
-            tabLayout.addTab(tabLayout.newTab().setText(list_title.get(i)));
-        }
-
-
-
-        adapter = new TablayoutViewPagerAdapter(getSupportFragmentManager(),list_fragment,list_title);
-
-        //viewpager加载adapter
-        view_pager.setAdapter(adapter);
-        //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
-        //TabLayout加载viewpager
-        tabLayout.setupWithViewPager(view_pager);
-        view_pager.setCurrentItem(1);
+        vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        tabLayout_2.setViewPager(vp);
+        tabLayout_2.setOnTabSelectListener(this);
+        tabLayout_2.showDot(0);
+        vp.setCurrentItem(0);
+        tabLayout_2.showMsg(1, 5);
+        tabLayout_2.setMsgMargin(1, 10.0f, 10.0f);
 
 
 
     }
 
+    @Override
+    public void onTabSelect(int position) {
+//        Toast.makeText(mContext, "onTabSelect&position--->" + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTabReselect(int position) {
+//        Toast.makeText(mContext, "onTabReselect&position--->" + position, Toast.LENGTH_SHORT).show();
+    }
+
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return list_fragment.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return list_title.get(position);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return list_fragment.get(position);
+        }
+    }
 
 
 

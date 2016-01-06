@@ -5,17 +5,14 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Toast;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
-import com.smarter.LoveLog.adapter.TablayoutViewPagerAdapter;
 import com.smarter.LoveLog.fragment.OrderAllFragment;
 import com.smarter.LoveLog.fragment.OrderCompletedFragment;
 import com.smarter.LoveLog.fragment.OrderObligationFragment;
@@ -85,32 +82,12 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
         list_title.add("待收货");
         list_title.add("已完成");
 
-       /* //设置tablayout
-        //设置TabLayout的模式
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //为TabLayout添加tab名称
-        for(int i=0;i<list_title.size();i++){
-            tabLayout.addTab(tabLayout.newTab().setText(list_title.get(i)));
-        }
 
-
-
-        adapter = new TablayoutViewPagerAdapter(mContext,getSupportFragmentManager(),list_fragment,list_title);
-
-        //viewpager加载adapter
-        view_pager.setAdapter(adapter);
-        //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
-        //TabLayout加载viewpager
-        tabLayout.setupWithViewPager(view_pager);
-
-
-        view_pager.setCurrentItem(1);
-*/
         vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         tabLayout_2.setViewPager(vp);
         tabLayout_2.setOnTabSelectListener(this);
         tabLayout_2.showDot(1);
-
+        vp.setCurrentItem(1);
         tabLayout_2.showMsg(2, 5);
         tabLayout_2.setMsgMargin(2, 0, 10);
 
@@ -118,12 +95,12 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
 
     @Override
     public void onTabSelect(int position) {
-        Toast.makeText(mContext, "onTabSelect&position--->" + position, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "onTabSelect&position--->" + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onTabReselect(int position) {
-        Toast.makeText(mContext, "onTabReselect&position--->" + position, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "onTabReselect&position--->" + position, Toast.LENGTH_SHORT).show();
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
