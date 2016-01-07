@@ -86,10 +86,10 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
         vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         tabLayout_2.setViewPager(vp);
         tabLayout_2.setOnTabSelectListener(this);
-        tabLayout_2.showDot(1);
-        vp.setCurrentItem(1);
-        tabLayout_2.showMsg(2, 5);
-        tabLayout_2.setMsgMargin(2, 0, 10);
+        tabLayout_2.showDot(0);
+        vp.setCurrentItem(0);
+        tabLayout_2.showMsg(1, 5);
+        tabLayout_2.setMsgMargin(1, 0.0f, 10.0f);
 
     }
 

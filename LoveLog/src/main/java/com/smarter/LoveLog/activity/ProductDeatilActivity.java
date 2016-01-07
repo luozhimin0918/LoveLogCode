@@ -2,16 +2,25 @@ package com.smarter.LoveLog.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.adapter.ImagePagerAdapter;
+import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductContentPage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductDetailInfoPage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoySnapPageLayout;
@@ -125,6 +134,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         imageViewIds = new int[] { R.mipmap.house_background, R.mipmap.house_background_1, R.mipmap.house_background_2};
         galleryAdapter = new GalleryPagerAdapter();
         pager.setAdapter(galleryAdapter);
+//        pager.setInterval(2000);
         indicator.setViewPager(pager);
         indicator.setPadding(5, 5, 10, 5);
         price_shanchu.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);//价格删除线
@@ -171,8 +181,8 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
         @Override
         public int getCount() {
-            return imageViewIds.length;
-        }
+            return imageList.size();
+        }//imageViewIds
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
@@ -181,11 +191,57 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            ImageView item = new ImageView(ProductDeatilActivity.this);
-            item.setImageResource(imageViewIds[position]);
+           final NetworkImageView item = new NetworkImageView(ProductDeatilActivity.this);
+
+
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
             item.setLayoutParams(params);
             item.setScaleType(ImageView.ScaleType.FIT_XY);
+
+
+
+
+            item.setDefaultImageResId(R.mipmap.loadding);
+            item.setErrorImageResId(R.mipmap.loadding);
+
+
+            RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+            Log.d("ProductDeatilActivity", mQueue.getCache().get(imageList.get(position)) == null ? "null" : "bu null");
+            if(mQueue.getCache().get(imageList.get(position))==null){
+                item.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+            }
+            item.setImageUrl(imageList.get(position), AppContextApplication.getInstance().getmImageLoader());
+
+
+            /*ImageRequest imageRequest = new ImageRequest(imageList.get(position),
+                    new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap bitmap) {
+                            // TODO Auto-generated method stub
+                            item.setImageBitmap(bitmap);
+
+                        }
+                    }, 0, 0, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError arg0) {
+                    // TODO Auto-generated method stub
+                    item.setImageResource(R.mipmap.loadding);
+                }
+            });
+            RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+            mQueue.add(imageRequest);*/
+
+
+
+
+
+
+
+
+
+
+
+
             container.addView(item);
 
             final int pos = position;

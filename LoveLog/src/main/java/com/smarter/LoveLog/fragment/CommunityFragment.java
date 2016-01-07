@@ -66,7 +66,7 @@ public class CommunityFragment extends Fragment {
     //首页轮播
     private AutoScrollViewPager viewPager;
     /**首页轮播的界面的资源*/
-    private List<Integer> imageIdList;
+    private List<String> imageIdList;
     ViewGroup viewgroup;
     /**存储首页轮播的界面*/
     private ImageView[] imageViews;
@@ -133,6 +133,7 @@ public class CommunityFragment extends Fragment {
                                         WeatherInfo weatherInfo = weather.getWeatherinfo();
                                         Log.d("HomeFragment", "" + weatherInfo.getCity() + ">>>" + weatherInfo.toString());
                                         mRecyclerView.refreshComplete();
+                                        viewPager.startAutoScroll();
                                     }
                                 }, new Response.ErrorListener() {
 
@@ -263,12 +264,11 @@ public class CommunityFragment extends Fragment {
 
     private void  initViewPager(){
 
-        imageIdList = new ArrayList<Integer>();
-        imageIdList.add( R.mipmap.menu_viewpager_2);
-        imageIdList.add( R.mipmap.menu_viewpager_3);
-        imageIdList.add(R.mipmap.menu_viewpager_1);
-        imageIdList.add(R.mipmap.menu_viewpager_4);
-        imageIdList.add(R.mipmap.menu_viewpager_5 );
+        imageIdList = new ArrayList<String>();
+        imageIdList.add("http://ys.rili.com.cn/images/image/201401/0111174780.jpg");
+        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01111959pp.jpg");
+        imageIdList.add("http://ys.rili.com.cn/images/image/201401/011121360w.jpg");
+        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01112258p9.jpg");
         viewPager.setAdapter(new ImagePagerAdapter(mContext, imageIdList).setInfiniteLoop(true));
 
         viewPager.setInterval(2000);

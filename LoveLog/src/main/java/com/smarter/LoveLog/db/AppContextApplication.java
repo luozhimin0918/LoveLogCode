@@ -5,6 +5,10 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
+
 import java.util.LinkedList;
 
 /**
@@ -13,6 +17,10 @@ import java.util.LinkedList;
 public class AppContextApplication extends Application {
     private static AppContextApplication app;
     private static LinkedList<Activity> activityStack;
+
+    private ImageLoader mImageLoader;
+    private RequestQueue mRequestQueue;
+
     public AppContextApplication() {
         app = this;
     }
@@ -28,6 +36,11 @@ public class AppContextApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+
+        //创建RequestQueue，可发送异步请求
+        mRequestQueue= Volley.newRequestQueue(this);
+        //创建ImageLoader,用于将图片存入缓存和从缓存中取出图片
+        mImageLoader=new ImageLoader(mRequestQueue,new BitmapCache());
     }
 
     /**
@@ -108,5 +121,21 @@ public class AppContextApplication extends Application {
 
     public int ActivityStackSize() {
         return activityStack == null ? 0 : activityStack.size();
+    }
+
+    public ImageLoader getmImageLoader() {
+        return mImageLoader;
+    }
+
+    public void setmImageLoader(ImageLoader mImageLoader) {
+        this.mImageLoader = mImageLoader;
+    }
+
+    public RequestQueue getmRequestQueue() {
+        return mRequestQueue;
+    }
+
+    public void setmRequestQueue(RequestQueue mRequestQueue) {
+        this.mRequestQueue = mRequestQueue;
     }
 }

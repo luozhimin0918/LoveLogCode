@@ -83,7 +83,7 @@ public class MyRedPacketActivity extends BaseFragmentActivity implements View.On
         tabLayout_2.showDot(0);
         vp.setCurrentItem(0);
         tabLayout_2.showMsg(1, 5);
-        tabLayout_2.setMsgMargin(1, 10.0f, 10.0f);
+        tabLayout_2.setMsgMargin(1, 12.0f, 10.0f);
 
 
 

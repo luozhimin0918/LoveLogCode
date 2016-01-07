@@ -25,6 +25,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import  com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.BitmapCache;
 import com.smarter.LoveLog.db.Data;
 import com.smarter.LoveLog.db.DataCleanManager;
@@ -233,15 +234,14 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
         welcomeBg.setVisibility(View.VISIBLE);
 
 
-        RequestQueue mQueue = Volley.newRequestQueue(mContext);
         netWorkImageView.setDefaultImageResId(R.mipmap.welcome);
         netWorkImageView.setErrorImageResId(R.mipmap.welcome);
-        netWorkImageView.setImageUrl("http://ys.rili.com.cn/images/image/201401/0111174780.jpg",  new ImageLoader(mQueue, new BitmapCache()));
+        netWorkImageView.setImageUrl("http://ys.rili.com.cn/images/image/201401/0111174780.jpg", AppContextApplication.getInstance().getmImageLoader());
            /*if(mQueue.getCache().get("http://ys.rili.com.cn/images/image/201401/0111174780.jpg")!=null){
                textData.setText(new String(mQueue.getCache().get("http://ys.rili.com.cn/images/image/201401/0111174780.jpg").data).toString());
            }*/
         try {
-            textData.setText(DataCleanManager.getTotalCacheSize(mContext));
+            textData.setText(DataCleanManager.getTotalCacheSize(mContext));//缓存get大小
         } catch (Exception e) {
             e.printStackTrace();
         }

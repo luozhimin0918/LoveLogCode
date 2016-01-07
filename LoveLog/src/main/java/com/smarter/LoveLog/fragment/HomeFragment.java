@@ -31,6 +31,7 @@ import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.adapter.Adapter_GridView;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.HomeAdapter;
+import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.Weather;
 import com.smarter.LoveLog.model.WeatherInfo;
@@ -60,7 +61,7 @@ public class HomeFragment extends Fragment {
     //首页轮播
     private AutoScrollViewPager viewPager;
      /**首页轮播的界面的资源*/
-    private List<Integer> imageIdList;
+    private List<String> imageIdList;
    ViewGroup viewgroup;
     /**存储首页轮播的界面*/
     private ImageView[] imageViews;
@@ -72,6 +73,7 @@ public class HomeFragment extends Fragment {
     private int[] pic_path_classify = { R.mipmap.icon01, R.mipmap.icon02, R.mipmap.icon03, R.mipmap.icon04, R.mipmap.icon05, R.mipmap.icon06, R.mipmap.icon07, R.mipmap.icon08 };
     private String[]  pic_title={"首单立减","会员礼包","三人团","真伪查询","红包返现","减免运费","安全保障","支付通道"};
     private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2};
+    private List<String> imageRecycleList;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,8 +104,8 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.SysProgress);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SysProgress);
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
        View header =   LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_header,null);
@@ -114,19 +116,20 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
-                         String url="http://www.weather.com.cn/data/sk/101010100.html";
-                        RequestQueue mQueue = Volley.newRequestQueue(getContext());
-                        FastJsonRequest<Weather> fastJson=new FastJsonRequest<Weather>(url, Weather.class,
+                        String url = "http://www.weather.com.cn/data/sk/101010100.html";
+                        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
+                        FastJsonRequest<Weather> fastJson = new FastJsonRequest<Weather>(url, Weather.class,
                                 new Response.Listener<Weather>() {
 
                                     @Override
                                     public void onResponse(Weather weather) {
                                         // TODO Auto-generated method stub
                                         WeatherInfo weatherInfo = weather.getWeatherinfo();
-                                        Log.d("HomeFragment",""+weatherInfo.getCity()+">>>"+weatherInfo.toString());
+                                        Log.d("HomeFragment", "" + weatherInfo.getCity() + ">>>" + weatherInfo.toString());
                                         mRecyclerView.refreshComplete();
+                                        viewPager.startAutoScroll();
                                     }
                                 }, new Response.ErrorListener() {
 
@@ -134,13 +137,10 @@ public class HomeFragment extends Fragment {
                             public void onErrorResponse(VolleyError arg0) {
                                 // TODO Auto-generated method stub
                                 mRecyclerView.refreshComplete();
+
                             }
                         });
                         mQueue.add(fastJson);
-
-
-
-
 
 
                     }
@@ -151,19 +151,24 @@ public class HomeFragment extends Fragment {
             @Override
             public void onLoadMore() {
 
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
 
 
-                          //  mRecyclerView.loadMoreComplete();
-                        }
-                    }, 2000);
+                        //  mRecyclerView.loadMoreComplete();
+                    }
+                }, 2000);
 
             }
         });
 
+        imageRecycleList = new ArrayList<String>();
+        imageRecycleList.add("http://ys.rili.com.cn/images/image/201401/0111174780.jpg");
+        imageRecycleList.add("http://ys.rili.com.cn/images/image/201401/01111959pp.jpg");
+        imageRecycleList.add("http://ys.rili.com.cn/images/image/201401/011121360w.jpg");
+        imageRecycleList.add("http://ys.rili.com.cn/images/image/201401/01112258p9.jpg");
 
-        mAdapter = new HomeAdapter(lit_int_resuour);
+        mAdapter = new HomeAdapter(lit_int_resuour,imageRecycleList);
 
         mRecyclerView.setAdapter(mAdapter);
         /**
@@ -257,12 +262,12 @@ public class HomeFragment extends Fragment {
 
     private void  initViewPager(){
 
-        imageIdList = new ArrayList<Integer>();
-        imageIdList.add( R.mipmap.menu_viewpager_2);
-        imageIdList.add( R.mipmap.menu_viewpager_3);
-        imageIdList.add(R.mipmap.menu_viewpager_1);
-        imageIdList.add(R.mipmap.menu_viewpager_4);
-        imageIdList.add(R.mipmap.menu_viewpager_5 );
+        imageIdList = new ArrayList<String>();
+
+        imageIdList.add("http://ys.rili.com.cn/images/image/201401/011121360w.jpg");
+        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01112258p9.jpg");
+        imageIdList.add("http://ys.rili.com.cn/images/image/201401/0111174780.jpg");
+        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01111959pp.jpg");
         viewPager.setAdapter(new ImagePagerAdapter(mContext, imageIdList).setInfiniteLoop(true));
 
         viewPager.setInterval(2000);
