@@ -3,6 +3,7 @@ package com.smarter.LoveLog.adapter;
 /**
  * Created by Administrator on 2015/12/7.
  */
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.model.home.AdIndexUrlData;
 
 import java.util.List;
 
@@ -27,11 +29,11 @@ import java.util.List;
  * Created by jianghejie on 15/11/26.
  */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
-    public int[] datas = null;
-    private List<String> imageIdList;
-    public HomeAdapter(int[] datas,List<String> imageIdList ) {
-        this.datas = datas;
-        this.imageIdList=imageIdList;
+    private List<AdIndexUrlData> adIndexUrlDataList;
+    Context mContext;
+    public HomeAdapter(Context mContext,List<AdIndexUrlData> adIndexUrlDataList ) {
+        this.adIndexUrlDataList=adIndexUrlDataList;
+        this.mContext=mContext;
     }
     //创建新View，被LayoutManager所调用
     @Override
@@ -46,11 +48,27 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
 
 
+       /* viewHolder.imglist.setScaleType(ImageView.ScaleType.FIT_XY);
 
 
-      final RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
-        viewHolder.imglist.setImageResource(R.mipmap.loadding);
-        ImageRequest imageRequest = new ImageRequest(imageIdList.get(position),
+
+
+        viewHolder.imglist.setDefaultImageResId(R.mipmap.loadding);
+        viewHolder.imglist.setErrorImageResId(R.mipmap.loadding);
+
+
+        RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+        String imageUrl=adIndexUrlDataList.get(position).getIndex_com().getImage_url();
+        Log.d("HomeAdapter", mQueue.getCache().get(imageUrl) == null ? "null" : "bu null");
+        if(mQueue.getCache().get(imageUrl)==null){
+            viewHolder.imglist.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+        }
+        viewHolder.imglist.setImageUrl(imageUrl, AppContextApplication.getInstance().getmImageLoader());*/
+
+     final RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+//        viewHolder.imglist.setImageResource(R.mipmap.loadding);
+        String imageUrl=adIndexUrlDataList.get(position).getIndex_com().getImage_url();
+        ImageRequest imageRequest = new ImageRequest(imageUrl,
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
@@ -71,7 +89,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
 
 
-        if(mQueue.getCache().get(imageIdList.get(position))==null){
+        if(mQueue.getCache().get(imageUrl)==null){
             viewHolder.imglist.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
         }
 
@@ -82,7 +100,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     //获取数据的数量
     @Override
     public int getItemCount() {
-        return imageIdList.size();
+        return adIndexUrlDataList.size();
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {

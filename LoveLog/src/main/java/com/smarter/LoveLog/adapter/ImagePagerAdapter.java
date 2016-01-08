@@ -19,9 +19,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.model.home.SliderUrlData;
 
 
 /**
@@ -31,18 +33,26 @@ import com.smarter.LoveLog.db.AppContextApplication;
  */
 public class ImagePagerAdapter extends RecyclingPagerAdapter {
 
-    private Context       context;
-    private List<String> imageIdList;
-
+    //    private List<String> imageIdList;
     private int           size;
+    private Context       context;
     private boolean       isInfiniteLoop;
+    private List<SliderUrlData> sliderUrlDataList;
 
-    public ImagePagerAdapter(Context context, List<String> imageIdList) {
+    /* public ImagePagerAdapter(Context context, List<String> imageIdList) {
         this.context = context;
         this.imageIdList = imageIdList;
         this.size =imageIdList.size();
         isInfiniteLoop = false;
+    }*/
+    public ImagePagerAdapter(Context context,List<SliderUrlData> sliderUrlDataList) {
+
+        this.context = context;
+        this.sliderUrlDataList = sliderUrlDataList;
+        this.size =sliderUrlDataList.size();
+        isInfiniteLoop = false;
     }
+
 
     @Override
     public int getCount() {
@@ -65,31 +75,31 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
        final ViewHolder holder;
         if (view == null) {
             holder = new ViewHolder();
-            view = holder.imageView = new ImageView(context);
+            view = holder.imageView = new NetworkImageView(context);
             view.setTag(holder);
         } else {
             holder = (ViewHolder)view.getTag();
         }
-        holder.imageView.setImageResource(R.mipmap.loadding);
-        ImageRequest imageRequest = new ImageRequest(imageIdList.get(getPosition(position-1)),
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap bitmap) {
-                        // TODO Auto-generated method stub
-                        holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                        holder.imageView.setImageBitmap(bitmap);
 
-                    }
-                }, 0, 0, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError arg0) {
-                // TODO Auto-generated method stub
-                holder.imageView.setImageResource(R.mipmap.loadding);
-            }
-        });
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
+        holder.imageView.setLayoutParams(params);
+        holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+
+
+
+        holder.imageView.setDefaultImageResId(R.mipmap.loadding);
+        holder.imageView.setErrorImageResId(R.mipmap.loadding);
+
+
         RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
-        mQueue.add(imageRequest);
-//        holder.imageView.startAnimation(getInAlphaAnimation(2000));
+        String imageUrl=sliderUrlDataList.get(getPosition(position-1)).getImage_url();
+        Log.d("ImagePagerAdapter", mQueue.getCache().get(imageUrl) == null ? "null" : "bu null");
+        if(mQueue.getCache().get(imageUrl)==null){
+            holder.imageView.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+        }
+        holder.imageView.setImageUrl(imageUrl, AppContextApplication.getInstance().getmImageLoader());
+
 
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +115,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
 
     private static class ViewHolder {
 
-        ImageView imageView;
+        NetworkImageView imageView;
     }
 
     /**

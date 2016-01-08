@@ -4,6 +4,7 @@ package com.smarter.LoveLog.adapter;
  * Created by Administrator on 2015/12/1.
  */
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +12,30 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.model.home.NavIndexUrlData;
+
+import java.util.List;
 
 public class Adapter_GridView extends BaseAdapter {
     private Context context;
     private int[] data;
     private String[] titleData;
-    public Adapter_GridView(Context context,int[] data,String[] titleData){
+    List<NavIndexUrlData> navIndexUrlDataList;
+    public Adapter_GridView(Context context,List<NavIndexUrlData> navIndexUrlDataList){
 
         this.context=context;
         this.data=data;
         this.titleData=titleData;
+        this.navIndexUrlDataList=navIndexUrlDataList;
     }
 
     @Override
     public int getCount() {
-        return data.length;
+        return navIndexUrlDataList.size();
     }
 
     @Override
@@ -40,12 +49,12 @@ public class Adapter_GridView extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View currentView, ViewGroup arg2) {
-        HolderView holderView=null;
+    public View getView(final int position, View currentView, ViewGroup arg2) {
+      HolderView holderView;
         if (currentView==null) {
             holderView=new HolderView();
             currentView=LayoutInflater.from(context).inflate(R.layout.adapter_grid_home, null);
-            holderView.iv_pic=(ImageView) currentView.findViewById(R.id.iv_adapter_grid_pic);
+            holderView.iv_pic=(NetworkImageView) currentView.findViewById(R.id.iv_adapter_grid_pic);
             holderView.titleData= (TextView) currentView.findViewById(R.id.titleData);
             currentView.setTag(holderView);
         }else {
@@ -53,18 +62,34 @@ public class Adapter_GridView extends BaseAdapter {
         }
 
 
-        holderView.iv_pic.setImageResource(data[position]);
-        holderView.titleData.setText(titleData[position]);
+
+        holderView.iv_pic.setScaleType(ImageView.ScaleType.FIT_XY);
+
+
+
+
+        holderView.iv_pic.setDefaultImageResId(R.mipmap.loadding);
+        holderView.iv_pic.setErrorImageResId(R.mipmap.loadding);
+
+
+        RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+        String imageUrl=navIndexUrlDataList.get(position).getIcon();
+        Log.d("ImagePagerAdapter", mQueue.getCache().get(imageUrl) == null ? "null" : "bu null");
+        if(mQueue.getCache().get(imageUrl)==null){
+            holderView.iv_pic.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+        }
+        holderView.iv_pic.setImageUrl(imageUrl, AppContextApplication.getInstance().getmImageLoader());
+        holderView.titleData.setText(navIndexUrlDataList.get(position).getName());
 
 
         return currentView;
     }
 
 
-    public class HolderView {
+    private  static class HolderView {
 
-        private ImageView iv_pic;
-        private TextView titleData;
+        NetworkImageView iv_pic;
+        TextView titleData;
 
     }
 

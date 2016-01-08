@@ -23,6 +23,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -35,6 +36,12 @@ import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.Weather;
 import com.smarter.LoveLog.model.WeatherInfo;
+import com.smarter.LoveLog.model.home.AdIndexUrlData;
+import com.smarter.LoveLog.model.home.DataStatus;
+import com.smarter.LoveLog.model.home.HomeDataFrag;
+import com.smarter.LoveLog.model.home.HomeDataInfo;
+import com.smarter.LoveLog.model.home.NavIndexUrlData;
+import com.smarter.LoveLog.model.home.SliderUrlData;
 import com.smarter.LoveLog.ui.AutoScrollViewPager;
 import com.smarter.LoveLog.ui.MyGridView;
 import com.smarter.LoveLog.utills.ListUtils;
@@ -60,8 +67,6 @@ public class HomeFragment extends Fragment {
 
     //首页轮播
     private AutoScrollViewPager viewPager;
-     /**首页轮播的界面的资源*/
-    private List<String> imageIdList;
    ViewGroup viewgroup;
     /**存储首页轮播的界面*/
     private ImageView[] imageViews;
@@ -71,9 +76,16 @@ public class HomeFragment extends Fragment {
     private Adapter_GridView adapter_GridView_classify;
         /* 分类九宫格的资源文件*/
     private int[] pic_path_classify = { R.mipmap.icon01, R.mipmap.icon02, R.mipmap.icon03, R.mipmap.icon04, R.mipmap.icon05, R.mipmap.icon06, R.mipmap.icon07, R.mipmap.icon08 };
-    private String[]  pic_title={"首单立减","会员礼包","三人团","真伪查询","红包返现","减免运费","安全保障","支付通道"};
-    private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2};
-    private List<String> imageRecycleList;
+//    private String[]  pic_title={"首单立减","会员礼包","三人团","真伪查询","红包返现","减免运费","安全保障","支付通道"};
+//    private List<String> imageRecycleList;
+    NetworkImageView  topAd1,topAd2,topAd3;
+
+    List<SliderUrlData>  sliderUrlDataList;//轮播
+    List<NavIndexUrlData> navIndexUrlDataList=new ArrayList<NavIndexUrlData>();//GridView
+    List<AdIndexUrlData> ad;//广告
+
+
+    HomeDataInfo  homeDataInfo=null;//homeFragment所有数据
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,7 +95,8 @@ public class HomeFragment extends Fragment {
             mContext=this.getContext();
 
             ButterKnife.bind(this, view);
-            initFind();
+            initData();
+
            // getJSONByVolley();
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
@@ -95,7 +108,49 @@ public class HomeFragment extends Fragment {
 
     }
 
+    private void initData() {
+           String url = "http://mapp.aiderizhi.com/?url=/home/data";
+                        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
+                        FastJsonRequest<HomeDataFrag> fastJsonHome = new FastJsonRequest<HomeDataFrag>(url, HomeDataFrag.class,
+                                new Response.Listener<HomeDataFrag>() {
+
+                                    @Override
+                                    public void onResponse(HomeDataFrag homeDataFrag) {
+                                        // TODO Auto-generated method stub
+
+                                        DataStatus  status=homeDataFrag.getStatus();
+                                        if(status.getSucceed()==1){
+                                            homeDataInfo=homeDataFrag.getData();
+
+                                                initFind();//初始界面
+
+                                            Log.d("HomeFragmentURL", "" + status.getSucceed() + "++++succeed》》》》" + homeDataInfo.getSlider().get(0).getImage_url());
+                                        }else{
+                                            if(homeDataInfo!=null){
+                                                initFind();//初始界面
+                                            }else{
+                                                // 没网络
+                                            }
+                                        }
+
+
+                                    }
+                                }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError arg0) {
+                                // TODO Auto-generated method stub
+                                Log.d("HomeFragmentURL", "Error  HomeDataFrag>>>" );
+                            }
+                        });
+
+                        mQueue.add(fastJsonHome);
+    }
+
     private void initFind() {
+
+
+
         /**
          *
          */
@@ -109,43 +164,20 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
        View header =   LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_header,null);
-        View footer= LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_foot,null);
+
         mRecyclerView.addHeaderView(header);
-        mRecyclerView.addFootView(footer);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
 
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-                        String url = "http://www.weather.com.cn/data/sk/101010100.html";
-                        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
-                        FastJsonRequest<Weather> fastJson = new FastJsonRequest<Weather>(url, Weather.class,
-                                new Response.Listener<Weather>() {
-
-                                    @Override
-                                    public void onResponse(Weather weather) {
-                                        // TODO Auto-generated method stub
-                                        WeatherInfo weatherInfo = weather.getWeatherinfo();
-                                        Log.d("HomeFragment", "" + weatherInfo.getCity() + ">>>" + weatherInfo.toString());
-                                        mRecyclerView.refreshComplete();
-                                        viewPager.startAutoScroll();
-                                    }
-                                }, new Response.ErrorListener() {
-
-                            @Override
-                            public void onErrorResponse(VolleyError arg0) {
-                                // TODO Auto-generated method stub
-                                mRecyclerView.refreshComplete();
-
-                            }
-                        });
-                        mQueue.add(fastJson);
-
-
+                        mRecyclerView.refreshComplete();
+                        viewPager.startAutoScroll();
                     }
+                }, 1000);
 
-                }, 1000);            //refresh data here
+
             }
 
             @Override
@@ -155,20 +187,25 @@ public class HomeFragment extends Fragment {
                     public void run() {
 
 
-                        //  mRecyclerView.loadMoreComplete();
+                          mRecyclerView.loadMoreComplete();
                     }
                 }, 2000);
 
             }
         });
 
-        imageRecycleList = new ArrayList<String>();
-        imageRecycleList.add("http://ys.rili.com.cn/images/image/201401/0111174780.jpg");
-        imageRecycleList.add("http://ys.rili.com.cn/images/image/201401/01111959pp.jpg");
-        imageRecycleList.add("http://ys.rili.com.cn/images/image/201401/011121360w.jpg");
-        imageRecycleList.add("http://ys.rili.com.cn/images/image/201401/01112258p9.jpg");
 
-        mAdapter = new HomeAdapter(lit_int_resuour,imageRecycleList);
+        /**
+         * 主list
+         */
+        ad= homeDataInfo.getAd();
+        List<AdIndexUrlData> adIndexTopAd=new ArrayList<AdIndexUrlData>();
+        for(int i=0;i<ad.size();i++){
+            if(ad.get(i).getIndex_com()!=null){
+                adIndexTopAd.add(ad.get(i));
+            }
+        }
+        mAdapter = new HomeAdapter(mContext,adIndexTopAd);
 
         mRecyclerView.setAdapter(mAdapter);
         /**
@@ -184,7 +221,45 @@ public class HomeFragment extends Fragment {
         gridView_classify = (MyGridView) header.findViewById(R.id.my_gridview);
         initGridView();
 
+        /**
+         * top 广告
+         */
+        topAd1= (NetworkImageView) header.findViewById(R.id.topAd1);
+        topAd2= (NetworkImageView) header.findViewById(R.id.topAd2);
+        topAd3= (NetworkImageView) header.findViewById(R.id.topAd3);
+
+        initTopAd();
+
     }
+
+    private void initTopAd() {
+        List<AdIndexUrlData> adIndexTopAdHot=new ArrayList<AdIndexUrlData>();
+        for(int i=0;i<ad.size();i++){
+            if(ad.get(i).getIndex_com()==null){
+                adIndexTopAdHot.add(ad.get(i));
+            }
+        }
+
+
+        List<NetworkImageView> networkImageViewList=new ArrayList<NetworkImageView>();
+        networkImageViewList.add(topAd1);
+        networkImageViewList.add(topAd2);
+        networkImageViewList.add(topAd3);
+
+        for(int j=0;j<adIndexTopAdHot.size();j++){
+            networkImageViewList.get(j).setDefaultImageResId(R.mipmap.loadding);
+            networkImageViewList.get(j).setErrorImageResId(R.mipmap.loadding);
+            RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+            String imageUrl=adIndexTopAdHot.get(j).getIndex_hot().getImage_url();
+            Log.d("ImagePagerAdapter", mQueue.getCache().get(imageUrl) == null ? "null" : "bu null");
+            if(mQueue.getCache().get(imageUrl)==null){
+                networkImageViewList.get(j).startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+            }
+            networkImageViewList.get(j).setImageUrl(imageUrl, AppContextApplication.getInstance().getmImageLoader());
+        }
+
+    }
+
     /**
      * 暂无用
      * 利用Volley获取JSON数据
@@ -242,13 +317,47 @@ public class HomeFragment extends Fragment {
                 mQueue.add(stringRequest);*/
 
         //   mQueue.start();
+
+
+
+         /*new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        String url = "http://www.weather.com.cn/data/sk/101010100.html";
+                        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
+                        FastJsonRequest<Weather> fastJson = new FastJsonRequest<Weather>(url, Weather.class,
+                                new Response.Listener<Weather>() {
+
+                                    @Override
+                                    public void onResponse(Weather weather) {
+                                        // TODO Auto-generated method stub
+                                        WeatherInfo weatherInfo = weather.getWeatherinfo();
+                                        Log.d("HomeFragment", "" + weatherInfo.getCity() + ">>>" + weatherInfo.toString());
+                                        mRecyclerView.refreshComplete();
+                                        viewPager.startAutoScroll();
+                                    }
+                                }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError arg0) {
+                                // TODO Auto-generated method stub
+                                mRecyclerView.refreshComplete();
+
+                            }
+                        });
+                        mQueue.add(fastJson);
+
+
+                    }
+
+                }, 1000);            //refresh data here*/
     }
 
 
 
     private void initGridView() {
+        navIndexUrlDataList=homeDataInfo.getNav();
         gridView_classify.setSelector(new ColorDrawable(Color.TRANSPARENT));
-        adapter_GridView_classify = new Adapter_GridView(getActivity(), pic_path_classify,pic_title);
+        adapter_GridView_classify = new Adapter_GridView(getActivity(), navIndexUrlDataList);
         gridView_classify.setAdapter(adapter_GridView_classify);
         gridView_classify.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -262,20 +371,18 @@ public class HomeFragment extends Fragment {
 
     private void  initViewPager(){
 
-        imageIdList = new ArrayList<String>();
 
-        imageIdList.add("http://ys.rili.com.cn/images/image/201401/011121360w.jpg");
-        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01112258p9.jpg");
-        imageIdList.add("http://ys.rili.com.cn/images/image/201401/0111174780.jpg");
-        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01111959pp.jpg");
-        viewPager.setAdapter(new ImagePagerAdapter(mContext, imageIdList).setInfiniteLoop(true));
+
+
+        sliderUrlDataList=homeDataInfo.getSlider();
+        viewPager.setAdapter(new ImagePagerAdapter(mContext,sliderUrlDataList).setInfiniteLoop(true));
 
         viewPager.setInterval(2000);
         viewPager.startAutoScroll();
-        viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % ListUtils.getSize(imageIdList));
+        viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % ListUtils.getSize(sliderUrlDataList));
 
         //创建小图像集合
-        imageViews=new ImageView[imageIdList.size()];
+        imageViews=new ImageView[sliderUrlDataList.size()];
         RelativeLayout.LayoutParams params;
         for(int i=0;i<imageViews.length;i++){
 
@@ -305,7 +412,7 @@ public class HomeFragment extends Fragment {
         @Override
         public void onPageSelected(int position) {
 
-            int positions=position % ListUtils.getSize(imageIdList);
+            int positions=position % ListUtils.getSize(sliderUrlDataList);
             Log.d("HomeFragment",positions+">>");
            for(int i=0;i<imageViews.length;i++){
 
@@ -328,12 +435,18 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        viewPager.startAutoScroll();
+        if(viewPager!=null){
+            viewPager.startAutoScroll();
+        }
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        viewPager.stopAutoScroll();
+        if(viewPager!=null){
+            viewPager.stopAutoScroll();
+        }
+
     }
 }

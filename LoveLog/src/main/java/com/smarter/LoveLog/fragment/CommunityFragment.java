@@ -37,6 +37,8 @@ import com.smarter.LoveLog.adapter.MofanAdapter;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.Weather;
 import com.smarter.LoveLog.model.WeatherInfo;
+import com.smarter.LoveLog.model.home.NavIndexUrlData;
+import com.smarter.LoveLog.model.home.SliderUrlData;
 import com.smarter.LoveLog.ui.AutoScrollViewPager;
 import com.smarter.LoveLog.ui.MyGridView;
 import com.smarter.LoveLog.utills.ListUtils;
@@ -66,7 +68,7 @@ public class CommunityFragment extends Fragment {
     //首页轮播
     private AutoScrollViewPager viewPager;
     /**首页轮播的界面的资源*/
-    private List<String> imageIdList;
+//    private List<String> imageIdList;
     ViewGroup viewgroup;
     /**存储首页轮播的界面*/
     private ImageView[] imageViews;
@@ -75,8 +77,8 @@ public class CommunityFragment extends Fragment {
     private MyGridView my_community_gridview;
     private Adapter_GridView adapter_GridView_classify;
     /* 分类九宫格的资源文件*/
-    private int[] pic_path_classify = { R.mipmap.notice, R.mipmap.sup, R.mipmap.beautiful, R.mipmap.all};
-   private String[]  pic_title={"公告","体验说","美课堂","大杂烩"};
+//    private int[] pic_path_classify = { R.mipmap.notice, R.mipmap.sup, R.mipmap.beautiful, R.mipmap.all};
+//   private String[]  pic_title={"公告","体验说","美课堂","大杂烩"};
     private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
     @Nullable
     @Override
@@ -249,8 +251,12 @@ public class CommunityFragment extends Fragment {
 
 
     private void initGridView() {
+
+        List<NavIndexUrlData> navIndexUrlDataList=new ArrayList<NavIndexUrlData>();//GridView
+
+
         my_community_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
-        adapter_GridView_classify = new Adapter_GridView(getActivity(), pic_path_classify,pic_title);
+        adapter_GridView_classify = new Adapter_GridView(getActivity(),navIndexUrlDataList);
         my_community_gridview.setAdapter(adapter_GridView_classify);
         my_community_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -262,21 +268,30 @@ public class CommunityFragment extends Fragment {
         });
     }
 
+
+
+    List<SliderUrlData> sliderUrlDataList;
     private void  initViewPager(){
 
-        imageIdList = new ArrayList<String>();
+       /* imageIdList = new ArrayList<String>();
         imageIdList.add("http://ys.rili.com.cn/images/image/201401/0111174780.jpg");
         imageIdList.add("http://ys.rili.com.cn/images/image/201401/01111959pp.jpg");
         imageIdList.add("http://ys.rili.com.cn/images/image/201401/011121360w.jpg");
-        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01112258p9.jpg");
-        viewPager.setAdapter(new ImagePagerAdapter(mContext, imageIdList).setInfiniteLoop(true));
+        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01112258p9.jpg");*/
+       sliderUrlDataList =new ArrayList<SliderUrlData>();
+        for(int i=0;i<4;i++){
+            SliderUrlData sliderUrlData =new SliderUrlData();
+            sliderUrlData.setImage_url("http://ys.rili.com.cn/images/image/201401/011121360w.jpg");
+            sliderUrlDataList.add(sliderUrlData);
+        }
+        viewPager.setAdapter(new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true));
 
         viewPager.setInterval(2000);
         viewPager.startAutoScroll();
-        viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % ListUtils.getSize(imageIdList));
+        viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % ListUtils.getSize(sliderUrlDataList));
 
         //创建小图像集合
-        imageViews=new ImageView[imageIdList.size()];
+        imageViews=new ImageView[sliderUrlDataList.size()];
         RelativeLayout.LayoutParams params;
         for(int i=0;i<imageViews.length;i++){
 
@@ -306,7 +321,7 @@ public class CommunityFragment extends Fragment {
         @Override
         public void onPageSelected(int position) {
 
-            int positions=position % ListUtils.getSize(imageIdList);
+            int positions=position % ListUtils.getSize(sliderUrlDataList);
             Log.d("HomeFragment",positions+">>");
             for(int i=0;i<imageViews.length;i++){
 
