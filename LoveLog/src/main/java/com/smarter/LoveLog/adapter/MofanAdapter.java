@@ -7,7 +7,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +27,18 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.InvitationActivity;
 import com.smarter.LoveLog.activity.InvitationDeatilActivity;
+import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by jianghejie on 15/11/26.
@@ -35,8 +46,13 @@ import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> {
     public int[] datas = null;
     public  Context mContext;
+    List<PromotePostsData> promotePostsDataList;
     public MofanAdapter(Context mContext,int[] datas) {
         this.datas = datas;
+        this.mContext=mContext;
+    }
+    public MofanAdapter(Context mContext, List<PromotePostsData> promotePostsDataList) {
+        this.promotePostsDataList = promotePostsDataList;
         this.mContext=mContext;
     }
 
@@ -49,18 +65,83 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     }
     //将数据与界面进行绑定的操作
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, int position) {
-        viewHolder.imglist.setImageResource(datas[position]);
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
+
+
+
+        viewHolder.title.setText(promotePostsDataList.get(position).getTitle());
+        viewHolder.brief.setText(promotePostsDataList.get(position).getBrief());
         initPopuwindow();
         viewHolder.CommunityItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //挑战到宝贝搜索界面
                 Intent intent = new Intent(mContext, InvitationDeatilActivity.class);
+               Bundle bundle = new Bundle();
+                PromotePostsData pp=promotePostsDataList.get(position);
+                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                intent.putExtras(bundle);
+
                 mContext.startActivity(intent);
             }
         });
 
+
+
+        //头像
+       /* viewHolder.imageTitle.setDefaultImageResId(R.mipmap.loadding);
+        viewHolder.imageTitle.setErrorImageResId(R.mipmap.loadding);*/
+        RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+        String UserimageUrl=promotePostsDataList.get(position).getUser().getAvatar();
+        if(mQueue.getCache().get(UserimageUrl)==null){
+            viewHolder.imageTitle.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+        }
+        viewHolder.imageTitle.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
+
+
+        //imgList  多个图片list
+        viewHolder.imglist.removeAllViews();
+        String[] imglistString=new String [2];
+        PromotePostsData promotePostsDataItem=promotePostsDataList.get(position);
+        if(promotePostsDataItem.getImg().getCover()!=null&&!promotePostsDataItem.getImg().getCover().equals("")){
+            imglistString[0]=promotePostsDataItem.getImg().getCover();
+        }
+        if(promotePostsDataItem.getImg().getThumb()!=null&&!promotePostsDataItem.getImg().getThumb().equals("")){
+            imglistString[1]=promotePostsDataItem.getImg().getThumb();
+        }
+        for(int i=0;i<imglistString.length;i++){
+            NetworkImageView networkImageViewListOne  = new NetworkImageView(mContext);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 260);
+
+            if(i==1){
+                params.setMargins(0,20,0,0);
+            }
+            networkImageViewListOne.setLayoutParams(params);
+            networkImageViewListOne.setScaleType(ImageView.ScaleType.FIT_XY);
+            networkImageViewListOne.setDefaultImageResId(R.mipmap.loadding);
+            networkImageViewListOne.setErrorImageResId(R.mipmap.loadding);
+
+            if(mQueue.getCache().get(imglistString[i])==null){
+                networkImageViewListOne.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+            }
+            networkImageViewListOne.setImageUrl(imglistString[i], AppContextApplication.getInstance().getmImageLoader());
+            viewHolder.imglist.addView(networkImageViewListOne);
+
+        }
+
+
+        //精华，热门
+        if(Integer.parseInt(promotePostsDataItem.getClick_count())>20000){
+//            viewHolder.isHot.setVisibility(View.VISIBLE);
+        }
+        if(Integer.parseInt(promotePostsDataItem.getClick_count())>20000){
+           // viewHolder.isJinghua.setVisibility(View.VISIBLE);
+        }
+
+       viewHolder.userName.setText(promotePostsDataItem.getUser().getName());
+        viewHolder.userTime.setText(promotePostsDataItem.getAdd_time());
+
+        //打赏
         viewHolder.reword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,21 +192,29 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     //获取数据的数量
     @Override
     public int getItemCount() {
-        return datas.length;
+        return promotePostsDataList.size();
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imglist,reword,imageTitle;
-        TextView sharePic;
+        public ImageView reword;
+        TextView sharePic,title,brief,userName,userTime;
+        CircleNetworkImage imageTitle;//头像
+        LinearLayout  imglist,isJinghua,isHot;
         RelativeLayout CommunityItem;
 
         public ViewHolder(View view){
             super(view);
             CommunityItem= (RelativeLayout) view.findViewById(R.id.CommunityItem);
-            imglist = (ImageView) view.findViewById(R.id.imglist);
+            imglist = (LinearLayout) view.findViewById(R.id.imglist);
+            isJinghua = (LinearLayout) view.findViewById(R.id.isJinghua);
+            isHot = (LinearLayout) view.findViewById(R.id.isHot);
 
-            imageTitle=(ImageView) view.findViewById(R.id.imageTitle);
+            imageTitle=(CircleNetworkImage) view.findViewById(R.id.imageTitle);
             sharePic=(TextView) view.findViewById(R.id.sharePic);
+            title=(TextView) view.findViewById(R.id.title);
+            brief=(TextView) view.findViewById(R.id.brief);
+            userName=(TextView) view.findViewById(R.id.userName);
+            userTime=(TextView) view.findViewById(R.id.userTime);
 
             reword= (ImageView) view.findViewById(R.id.reword);
         }

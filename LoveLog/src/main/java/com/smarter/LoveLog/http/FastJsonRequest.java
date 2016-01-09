@@ -14,6 +14,7 @@ public class FastJsonRequest<T> extends Request<T> {
     private final Class<T> mClazz;
     private final Response.Listener<T> mListener;
     private final Map<String, String> mHeaders;
+    Map<String, String> mParams = null;
 
     public FastJsonRequest(String url, Class<T> clazz, Response.Listener<T> listener, Response.ErrorListener errorListener) {
         this(Method.GET, url, clazz, null, listener, errorListener);
@@ -46,5 +47,14 @@ public class FastJsonRequest<T> extends Request<T> {
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         }
+    }
+
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+          return mParams;
+    }
+
+    public void setParams(Map<String, String> params){
+        this.mParams = params;
     }
 }

@@ -34,8 +34,6 @@ import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.HomeAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.http.FastJsonRequest;
-import com.smarter.LoveLog.model.Weather;
-import com.smarter.LoveLog.model.WeatherInfo;
 import com.smarter.LoveLog.model.home.AdIndexUrlData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.HomeDataFrag;
@@ -129,7 +127,7 @@ public class HomeFragment extends Fragment {
                                             if(homeDataInfo!=null){
                                                 initFind();//初始界面
                                             }else{
-                                                // 没网络
+                                                // 请求失败
                                             }
                                         }
 
@@ -160,7 +158,7 @@ public class HomeFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.SysProgress);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SysProgress);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
        View header =   LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_header,null);
@@ -320,36 +318,7 @@ public class HomeFragment extends Fragment {
 
 
 
-         /*new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        String url = "http://www.weather.com.cn/data/sk/101010100.html";
-                        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
-                        FastJsonRequest<Weather> fastJson = new FastJsonRequest<Weather>(url, Weather.class,
-                                new Response.Listener<Weather>() {
 
-                                    @Override
-                                    public void onResponse(Weather weather) {
-                                        // TODO Auto-generated method stub
-                                        WeatherInfo weatherInfo = weather.getWeatherinfo();
-                                        Log.d("HomeFragment", "" + weatherInfo.getCity() + ">>>" + weatherInfo.toString());
-                                        mRecyclerView.refreshComplete();
-                                        viewPager.startAutoScroll();
-                                    }
-                                }, new Response.ErrorListener() {
-
-                            @Override
-                            public void onErrorResponse(VolleyError arg0) {
-                                // TODO Auto-generated method stub
-                                mRecyclerView.refreshComplete();
-
-                            }
-                        });
-                        mQueue.add(fastJson);
-
-
-                    }
-
-                }, 1000);            //refresh data here*/
     }
 
 

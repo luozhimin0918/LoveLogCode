@@ -29,14 +29,15 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.InvitationActivity;
-import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.adapter.Adapter_GridView;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
-import com.smarter.LoveLog.adapter.HomeAdapter;
 import com.smarter.LoveLog.adapter.MofanAdapter;
+import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.http.FastJsonRequest;
-import com.smarter.LoveLog.model.Weather;
-import com.smarter.LoveLog.model.WeatherInfo;
+import com.smarter.LoveLog.model.community.CommunityDataFrag;
+import com.smarter.LoveLog.model.community.CommunityDataInfo;
+import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.NavIndexUrlData;
 import com.smarter.LoveLog.model.home.SliderUrlData;
 import com.smarter.LoveLog.ui.AutoScrollViewPager;
@@ -47,7 +48,9 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,27 +62,29 @@ public class CommunityFragment extends Fragment {
     protected WeakReference<View> mRootView;
     private View view;
     Context mContext;
-
     @Bind(R.id.recyclerview)
     XRecyclerView mRecyclerView;
-
     private MofanAdapter mAdapter;
-
     //首页轮播
     private AutoScrollViewPager viewPager;
-    /**首页轮播的界面的资源*/
-//    private List<String> imageIdList;
     ViewGroup viewgroup;
-    /**存储首页轮播的界面*/
-    private ImageView[] imageViews;
-
     //分类的九宫格
     private MyGridView my_community_gridview;
     private Adapter_GridView adapter_GridView_classify;
+
+
+
+
     /* 分类九宫格的资源文件*/
 //    private int[] pic_path_classify = { R.mipmap.notice, R.mipmap.sup, R.mipmap.beautiful, R.mipmap.all};
 //   private String[]  pic_title={"公告","体验说","美课堂","大杂烩"};
     private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
+    /**存储首页轮播的界面*/
+    private ImageView[] imageViews;
+    /**首页轮播的界面的资源*/
+    List<SliderUrlData> sliderUrlDataList;
+    private CommunityDataInfo communityDataInfo=null;//本页所有数据
+    public static List<PromotePostsData>  promotePostsData;//推荐list最新话题
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,7 +94,7 @@ public class CommunityFragment extends Fragment {
             mContext=this.getContext();
 
             ButterKnife.bind(this, view);
-            initFind();
+            initData();
             // getJSONByVolley();
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
@@ -100,7 +105,43 @@ public class CommunityFragment extends Fragment {
         return mRootView.get();
 
     }
+    private void initData() {
+        String url = "http://mapp.aiderizhi.com/?url=/post/index";
+        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
+        FastJsonRequest<CommunityDataFrag> fastJsonCommunity=new FastJsonRequest<CommunityDataFrag>(Request.Method.POST,url,CommunityDataFrag.class,null,new Response.Listener<CommunityDataFrag>()
+        {
+            @Override
+            public void onResponse(CommunityDataFrag communityDataFrag) {
 
+                DataStatus status=communityDataFrag.getStatus();
+                if(status.getSucceed()==1){
+                    communityDataInfo=communityDataFrag.getData();
+                    initFind();//初始界面
+
+                    Log.d("CommunityFragmentURL", "" + status.getSucceed() + "++++succeed》》》》"+communityDataInfo.getPromote_posts().get(1).getImg().getCover());
+                }else{
+                     if(communityDataInfo!=null) {
+                        initFind();//初始界面
+                     }else{
+                        // 请求失败
+                     }
+                }
+
+
+            }
+        } ,new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("params1", "value1");
+        map.put("params2", "value2");
+        fastJsonCommunity.setParams(map);
+
+        mQueue.add(fastJsonCommunity);
+    }
     private void initFind() {
         /**
          *
@@ -110,46 +151,21 @@ public class CommunityFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallPulse);//BallSpinFadeLoader
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SemiCircleSpin);
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
         View header =   LayoutInflater.from(getContext()).inflate(R.layout.community_fragment_header,null);
         mRecyclerView.addHeaderView(header);
-//        View footer= LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_foot,null);
-//        mRecyclerView.addFootView(footer);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
 
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
-                        String url="http://www.weather.com.cn/data/sk/101010100.html";
-                        RequestQueue mQueue = Volley.newRequestQueue(getContext());
-                        FastJsonRequest<Weather> fastJson=new FastJsonRequest<Weather>(url, Weather.class,
-                                new Response.Listener<Weather>() {
 
-                                    @Override
-                                    public void onResponse(Weather weather) {
-                                        // TODO Auto-generated method stub
-                                        WeatherInfo weatherInfo = weather.getWeatherinfo();
-                                        Log.d("HomeFragment", "" + weatherInfo.getCity() + ">>>" + weatherInfo.toString());
-                                        mRecyclerView.refreshComplete();
-                                        viewPager.startAutoScroll();
-                                    }
-                                }, new Response.ErrorListener() {
-
-                            @Override
-                            public void onErrorResponse(VolleyError arg0) {
-                                // TODO Auto-generated method stub
-                                mRecyclerView.refreshComplete();
-                            }
-                        });
-                        mQueue.add(fastJson);
-
-
-
-
+                        mRecyclerView.refreshComplete();
+                        viewPager.startAutoScroll();
 
 
                     }
@@ -164,15 +180,15 @@ public class CommunityFragment extends Fragment {
                     public void run() {
 
 
-                          mRecyclerView.loadMoreComplete();
+                        mRecyclerView.loadMoreComplete();
                     }
                 }, 2000);
 
             }
         });
 
-
-        mAdapter = new MofanAdapter(mContext,lit_int_resuour);
+        promotePostsData=communityDataInfo.getPromote_posts();
+        mAdapter = new MofanAdapter(mContext,promotePostsData);
 
         mRecyclerView.setAdapter(mAdapter);
         /**
@@ -253,7 +269,7 @@ public class CommunityFragment extends Fragment {
     private void initGridView() {
 
         List<NavIndexUrlData> navIndexUrlDataList=new ArrayList<NavIndexUrlData>();//GridView
-
+        navIndexUrlDataList=communityDataInfo.getNav();
 
         my_community_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter_GridView_classify = new Adapter_GridView(getActivity(),navIndexUrlDataList);
@@ -270,20 +286,12 @@ public class CommunityFragment extends Fragment {
 
 
 
-    List<SliderUrlData> sliderUrlDataList;
+
     private void  initViewPager(){
 
-       /* imageIdList = new ArrayList<String>();
-        imageIdList.add("http://ys.rili.com.cn/images/image/201401/0111174780.jpg");
-        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01111959pp.jpg");
-        imageIdList.add("http://ys.rili.com.cn/images/image/201401/011121360w.jpg");
-        imageIdList.add("http://ys.rili.com.cn/images/image/201401/01112258p9.jpg");*/
-       sliderUrlDataList =new ArrayList<SliderUrlData>();
-        for(int i=0;i<4;i++){
-            SliderUrlData sliderUrlData =new SliderUrlData();
-            sliderUrlData.setImage_url("http://ys.rili.com.cn/images/image/201401/011121360w.jpg");
-            sliderUrlDataList.add(sliderUrlData);
-        }
+
+        sliderUrlDataList=communityDataInfo.getSlider();
+
         viewPager.setAdapter(new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true));
 
         viewPager.setInterval(2000);
@@ -344,12 +352,16 @@ public class CommunityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        viewPager.startAutoScroll();
+        if(viewPager!=null){
+            viewPager.startAutoScroll();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        viewPager.stopAutoScroll();
+        if(viewPager!=null){
+            viewPager.stopAutoScroll();
+        }
     }
 }

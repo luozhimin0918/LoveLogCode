@@ -108,7 +108,7 @@ public class AppContextApplication extends Application {
     /**
      * 退出应用程序
      */
-    public void AppExit(Context context) {
+  /*  public void AppExit(Context context) {
         try {
             finishAllActivity();
             ActivityManager activityMgr = (ActivityManager) context
@@ -117,7 +117,7 @@ public class AppContextApplication extends Application {
             System.exit(0);
         } catch (Exception e) {
         }
-    }
+    }*/
 
     public int ActivityStackSize() {
         return activityStack == null ? 0 : activityStack.size();
