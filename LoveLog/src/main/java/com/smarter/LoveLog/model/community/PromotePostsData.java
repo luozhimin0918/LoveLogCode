@@ -11,8 +11,10 @@ public class PromotePostsData implements Serializable {
     private String id;
     private String title;
     private String brief;
-
+    private String cat_name;
+    private String cat_url;
     private String like_count;
+    private String reward_count;
     private String click_count;
     private String cmt_count;
 
@@ -100,5 +102,29 @@ public class PromotePostsData implements Serializable {
 
     public void setImg(Img img) {
         this.img = img;
+    }
+
+    public String getCat_name() {
+        return cat_name;
+    }
+
+    public void setCat_name(String cat_name) {
+        this.cat_name = cat_name;
+    }
+
+    public String getCat_url() {
+        return cat_url;
+    }
+
+    public void setCat_url(String cat_url) {
+        this.cat_url = cat_url;
+    }
+
+    public String getReward_count() {
+        return reward_count;
+    }
+
+    public void setReward_count(String reward_count) {
+        this.reward_count = reward_count;
     }
 }

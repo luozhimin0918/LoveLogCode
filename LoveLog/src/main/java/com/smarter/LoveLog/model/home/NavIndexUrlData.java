@@ -1,9 +1,11 @@
 package com.smarter.LoveLog.model.home;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/1/8.
  */
-public class NavIndexUrlData {
+public class NavIndexUrlData implements Serializable {
   private String  icon ;
     private String  name ;
     private String  url ;

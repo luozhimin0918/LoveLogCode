@@ -46,6 +46,7 @@ import com.smarter.LoveLog.utills.ListUtils;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -268,8 +269,8 @@ public class CommunityFragment extends Fragment {
 
     private void initGridView() {
 
-        List<NavIndexUrlData> navIndexUrlDataList=new ArrayList<NavIndexUrlData>();//GridView
-        navIndexUrlDataList=communityDataInfo.getNav();
+        final  List<NavIndexUrlData> navIndexUrlDataList=communityDataInfo.getNav();;//GridView
+
 
         my_community_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter_GridView_classify = new Adapter_GridView(getActivity(),navIndexUrlDataList);
@@ -279,6 +280,10 @@ public class CommunityFragment extends Fragment {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 //挑战到宝贝搜索界面
                 Intent intent = new Intent(getActivity(), InvitationActivity.class);
+                Bundle bundle = new Bundle();
+                NavIndexUrlData nn=navIndexUrlDataList.get(arg2);
+                bundle.putSerializable("NavIndexUrlData", (Serializable) nn);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
