@@ -15,11 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
@@ -27,12 +30,15 @@ import com.smarter.LoveLog.adapter.MofanAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.fragment.CommunityFragment;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.CategoryJson;
+import com.smarter.LoveLog.model.PaginationJson;
 import com.smarter.LoveLog.model.category.InvitationDataActi;
 import com.smarter.LoveLog.model.community.CommunityDataFrag;
 import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.NavIndexUrlData;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -155,10 +161,10 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
     List<PromotePostsData> promotePostDateList;//本类帖子 分类里所有数据
     List<PromotePostsData> FinalpromotePostDateList;//本类帖子 分类里所有数据
     int page=0;
-    private void initData(String id) {
+    private void initData(final String id) {
          String url ="http://mapp.aiderizhi.com/?url=/post/category";//
         RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
-        FastJsonRequest<InvitationDataActi> fastJsonCommunity=new FastJsonRequest<InvitationDataActi>(Request.Method.POST,url,InvitationDataActi.class,null,new Response.Listener<InvitationDataActi>()
+       FastJsonRequest<InvitationDataActi> fastJsonCommunity=new FastJsonRequest<InvitationDataActi>(Request.Method.POST,url,InvitationDataActi.class,null,new Response.Listener<InvitationDataActi>()
         {
             @Override
             public void onResponse(InvitationDataActi invitationDataActi) {
@@ -184,17 +190,130 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
         } ,new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-
+                Log.d("InvitationActivityURL", "errror" + volleyError.toString() + "++++succeed》》》》" );
             }
         });
         Map<String, String> map = new HashMap<String, String>();
-        map.put("id", id);
-//        map.put("pagination","{\"page\":\"5\",\"count\":10}");
-//        map.put("page","2");
-//        map.put("count","1");
+        PaginationJson paginationJson=new PaginationJson();
+        paginationJson.setCount("1");
+        paginationJson.setPage("2");
+        String string = JSON.toJSONString(paginationJson);
+        Log.d("InvitationActivityURL", "" + string + "++++succeed》》》》");
+        String  d="{\"id\":\""+id+"\",\"pagination\":"+string+"}";
+        map.put("json", d);
+        Log.d("InvitationActivityURL", d+ "》》》》");
+
         fastJsonCommunity.setParams(map);
 
         mQueue.add(fastJsonCommunity);
+
+
+
+
+
+//客户端以json串的post请求方式进行提交,服务端返回json串
+       /* CategoryJson categoryJson=new CategoryJson();
+        PaginationJson paginationJson2=new PaginationJson();
+        paginationJson2.setCount("5");
+        paginationJson2.setPage("2");
+        categoryJson.setId("4");
+        categoryJson.setPagination(paginationJson2);
+
+
+//        String string2 = JSON.toJSONString(paginationJson2);
+
+
+
+        Map<String, String> mapTT = new HashMap<String, String>();
+        mapTT.put("id", id);
+        mapTT.put("pagination","{\"page\":\"3\",\"count\":\"3\"} ");
+        JSONObject jsonObject = new JSONObject(mapTT);
+//        Log.d("InvitationActivityURL", "->>>>> " + string2);
+
+
+        JsonRequest<JSONObject> jsonRequest = new JsonObjectRequest(Request.Method.POST,url, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("InvitationActivityURL", "response -> " + response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("InvitationActivityURL", error.getMessage(), error);
+            }
+        })
+        {
+            //注意此处override的getParams()方法,在此处设置post需要提交的参数根本不起作用
+            //必须象上面那样,构成JSONObject当做实参传入JsonObjectRequest对象里
+            //所以这个方法在此处是不需要的
+//    @Override
+//    protected Map<String, String> getParams() {
+//          Map<String, String> map = new HashMap<String, String>();
+//            map.put("name1", "value1");
+//            map.put("name2", "value2");
+
+//        return params;
+//    }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=UTF-8");
+
+                return headers;
+            }
+        };
+        mQueue.add(jsonRequest);
+
+
+*/
+
+
+
+
+
+    /*   StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                "http://mapp.aiderizhi.com/?url=/post/category",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("onResponse", "response -> " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("onResponse", error.getMessage(), error);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // 在这里设置需要post的参数
+                Map<String, String> map = new HashMap<String, String>();
+
+                PaginationJson paginationJson=new PaginationJson();
+                paginationJson.setCount("2");
+                paginationJson.setPage("2");
+
+
+                String string = JSON.toJSONString(paginationJson);
+                String  d="{"+"\"pagination\":"+string+"}";
+                Log.d("onResponse", "response >>>>>>>>>>>>>-> " + d);
+                map.put("json", d);
+                map.put("id", id);
+//                map.put("id","22758");
+//                map.put("type","2");
+                return map;
+            }
+        };
+        mQueue.add(stringRequest);*/
+
+
+
+
+
+
     }
 
     @Override

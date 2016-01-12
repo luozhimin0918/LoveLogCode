@@ -18,7 +18,7 @@
             android:textColor="@color/grid_Color"
             android:layout_marginTop="@dimen/space_5"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/text_size_15"
+            android:textSize="@dimen/text_size_12"
             android:layout_height="wrap_content"/>
 
 </LinearLayout>

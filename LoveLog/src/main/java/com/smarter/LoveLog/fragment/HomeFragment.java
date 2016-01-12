@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.SysProgress);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
+//        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
        View header =   LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_header,null);
@@ -181,7 +181,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onLoadMore() {
 
-                new Handler().postDelayed(new Runnable() {
+               new Handler().postDelayed(new Runnable() {
                     public void run() {
 
 
@@ -190,6 +190,7 @@ public class HomeFragment extends Fragment {
                 }, 2000);
 
             }
+
         });
 
 

@@ -1,9 +1,11 @@
 package com.smarter.LoveLog.model.category;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/1/8.
  */
-public class Paginated {
+public class Paginated implements Serializable{
     private String  total ;
     private  int count;
     private  int more;

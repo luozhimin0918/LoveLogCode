@@ -137,9 +137,9 @@ public class CommunityFragment extends Fragment {
             }
         });
         Map<String, String> map = new HashMap<String, String>();
-        map.put("params1", "value1");
-        map.put("params2", "value2");
-        fastJsonCommunity.setParams(map);
+//        map.put("params1", "value1");
+//        map.put("params2", "value2");
+//        fastJsonCommunity.setParams(map);
 
         mQueue.add(fastJsonCommunity);
     }
