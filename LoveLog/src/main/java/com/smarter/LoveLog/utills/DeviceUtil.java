@@ -5,6 +5,8 @@ package com.smarter.LoveLog.utills;
  */
 import android.app.Activity;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 
@@ -116,5 +118,18 @@ public class DeviceUtil {
         return "";
     }
 
+
+
+
+    // 检测网络连接
+    public static boolean checkConnection(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null) {
+            return networkInfo.isAvailable();
+        }
+        return false;
+    }
 }
 

@@ -8,21 +8,40 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.NetworkImageView;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
-import com.smarter.LoveLog.adapter.HomeAdapter;
+import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.RecyclePinglunAdapter;
+import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.category.InvitationDataActi;
 import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.model.home.DataStatus;
+import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
+import com.smarter.LoveLog.ui.ProgressWebView;
 
-import java.io.Serializable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,12 +60,18 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     LinearLayout alphaBar;
     ImageView imageTopHeader;
     McoyScrollView invitation_Detail_scrollview;
+    LinearLayout imglist;
 
+
+    TextView titleText,userName,AddTime;
+    CircleNetworkImage imageTitle;
+
+    ProgressWebView webview;
 
 
     PromotePostsData postsData;//item帖子数据
 
-
+    RequestQueue mQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +80,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         setContentView(R.layout.activity_invitation_deatil_view);
         ButterKnife.bind(this);
         mContext=this;
-
+        mQueue =  AppContextApplication.getInstance().getmRequestQueue();
         getDataIntent();
         intData();
         setListen();
@@ -87,16 +112,19 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                 totalDy += dy;
                 // setTranslation/Alpha here according to totalDy.
 
-                if (imageTopHeader != null && imageTopHeader.getHeight() > 0) {
-                    int height = imageTopHeader.getHeight();
-                    if (totalDy < height) {
+                if (imglist != null && imglist.getHeight() > 0) {
+                    int height = imglist.getHeight();
+                    if (totalDy < 10) {
+                        alphaBar.getBackground().setAlpha(0);
+                    } else if (totalDy < height) {
                         int alpha = (int) (new Float(totalDy) / new Float(height)
                                 * 250);
-                        Log.d("YJL", ""+height +">>>>>>>>>"+ totalDy);
+
                         alphaBar.getBackground().setAlpha(alpha);
                     } else {
                         alphaBar.getBackground().setAlpha(255);
                     }
+                    Log.d("YJL", "" + height + ">>>>>>>>>" + totalDy);
                 }
             }
         });
@@ -119,6 +147,28 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
         View header =   LayoutInflater.from(mContext).inflate(R.layout.activity_invitation_deatil_top_view,null);
          imageTopHeader= (ImageView) header.findViewById(R.id.imageTopHeader);
+
+        imglist= (LinearLayout) header.findViewById(R.id.imglist);
+        createImgListTop();//加载top图片
+
+
+        imageTitle=(CircleNetworkImage) header.findViewById(R.id.imageTitle);
+       createUseImag();
+
+
+        userName=(TextView) header.findViewById(R.id.userName);
+        userName.setText(postsData.getUser().getName());
+
+        AddTime=(TextView) header.findViewById(R.id.AddTime);
+        AddTime.setText(postsData.getAdd_time());
+        titleText=(TextView) header.findViewById(R.id.titleText);
+        titleText.setText(postsData.getTitle());
+
+
+        //webVIew
+        webview=(ProgressWebView) header.findViewById(R.id.webview);
+        createWebview();
+
 //        invitation_Detail_scrollview= (McoyScrollView) header.findViewById(R.id.invitation_Detail_scrollview);
 
         mRecyclerView.addHeaderView(header);
@@ -159,16 +209,148 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
     }
 
+    private void createUseImag() {
+        String UserimageUrl=postsData.getUser().getAvatar();
+        if(mQueue.getCache().get(UserimageUrl)==null){
+           imageTitle.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+        }
+        imageTitle.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
+    }
+
+    private void createWebview() {
+        webview.getSettings().setJavaScriptEnabled(true);
+        webview.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // TODO Auto-generated method stub
+                super.onPageFinished(view, url);
+                view.loadUrl("javascript:alert( $('#app_data').html() )");
+            }
+
+        });
+
+
+        webview.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                if (message != null && !message.equals("")) {
+
+                    try {
+                        JSONObject object = new JSONObject(message);
+                      /*  Log.i("infro", "" + message);
+                        title = object.getString("title");
+                        share = object.getString("weburl");
+                        image = object.getString("thumb");
+                        description = object.getString("description");
+                        if (null != image && !image.equals("")) {
+                            urlImage = new UMImage(
+                                    AdWebActivity.this,
+                                    new ImageDownLoader(getApplicationContext())
+                                            .downloadImage(image));
+                        }
+
+                        accredit.setShareContent(title, url, description, mController, image);*/
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                result.confirm();
+                return true;
+//                return super.onJsAlert(view, url, message, result);
+            }
+        });
+
+
+        webview.loadUrl("http://mapp.aiderizhi.com/?url=/post/content&id="+postsData.getId());
+    }
+
+    //头图片，多个两个图片
+    private void createImgListTop() {
+        imglist.removeAllViews();
+        String[] imglistString=new String [1];
+        PromotePostsData promotePostsDataItem=postsData;
+        if(promotePostsDataItem.getImg().getCover()!=null &&!promotePostsDataItem.getImg().getCover().equals("")){
+            imglistString[0]=promotePostsDataItem.getImg().getCover();
+        }
+       /* if(promotePostsDataItem.getImg().getThumb()!=null&&!promotePostsDataItem.getImg().getThumb().equals("")){
+            imglistString[1]=promotePostsDataItem.getImg().getThumb();
+        }*/
+
+        for(int i=0;i<imglistString.length;i++){
+            NetworkImageView networkImageViewListOne  = new NetworkImageView(mContext);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 650);
+
+            if(i==1){
+                params.setMargins(0,5,0,0);
+            }
+            networkImageViewListOne.setLayoutParams(params);
+            networkImageViewListOne.setScaleType(ImageView.ScaleType.FIT_XY);
+            networkImageViewListOne.setDefaultImageResId(R.mipmap.loadding);
+            networkImageViewListOne.setErrorImageResId(R.mipmap.loadding);
+
+            if(mQueue.getCache().get(imglistString[i])==null){
+                networkImageViewListOne.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+            }
+            networkImageViewListOne.setImageUrl(imglistString[i], AppContextApplication.getInstance().getmImageLoader());
+            imglist.addView(networkImageViewListOne);
+
+        }
+
+    }
+
     private void getDataIntent() {
         Intent intent = getIntent();
         if(intent!=null){
             postsData = (PromotePostsData) intent.getSerializableExtra("PromotePostsData");
-            Toast.makeText(this, postsData.getId() + "", Toast.LENGTH_LONG).show();
+            initData(postsData.getId());
         }
+   }
 
 
+
+
+    private void initData(final String id) {
+        String url = "http://mapp.aiderizhi.com/?url=/post/detail";//
+
+        Map<String, String> map = new HashMap<String, String>();
+
+            map.put("id", id);
+
+
+
+
+        FastJsonRequest<InvitationDataActi> fastJsonCommunity = new FastJsonRequest<InvitationDataActi>(Request.Method.POST, url, InvitationDataActi.class, null, new Response.Listener<InvitationDataActi>() {
+            @Override
+            public void onResponse(InvitationDataActi invitationDataActi) {
+
+                DataStatus status = invitationDataActi.getStatus();
+                if (status.getSucceed() == 1) {
+
+
+
+                    Log.d("invitationDeatil", "" + status.getSucceed() + "++++succeed" );
+                } else {
+
+                    // 请求失败
+                    Log.d("invitationDeatil", "succeded=0>>>" + status.getSucceed() + "");
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("invitationDeatil", "errror" + volleyError.toString() + "");
+            }
+        });
+
+        fastJsonCommunity.setParams(map);
+
+        mQueue.add(fastJsonCommunity);
     }
-
     @Override
     public void onClick(View v) {
          switch (v.getId()){

@@ -41,5 +41,33 @@
                 android:layout_height="fill_parent" >
 
         </com.jcodecraeer.xrecyclerview.XRecyclerView>
+        <LinearLayout
+            android:id="@+id/networkInfo"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:gravity="top|center_horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+             <ImageView
+                 android:id="@+id/errorInfo"
+                 android:src="@mipmap/error_default"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content" />
+              <LinearLayout
+                  android:id="@+id/newLoading"
+                  android:layout_marginTop="20dp"
+                  android:gravity="center"
+                  android:clickable="true"
+                  android:background="@drawable/login_button"
+                  android:layout_width="100dp"
+                  android:layout_height="40dp">
+                  <TextView
+                      android:text="重新加载"
+                      android:textSize="18sp"
+                      android:textColor="@color/white"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content" />
+              </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

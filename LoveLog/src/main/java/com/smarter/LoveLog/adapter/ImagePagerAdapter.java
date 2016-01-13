@@ -93,7 +93,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
 
 
         RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
-        String imageUrl=sliderUrlDataList.get(getPosition(position-1)).getImage_url();
+        String imageUrl=sliderUrlDataList.get(getPosition(position)).getImage_url();
         Log.d("ImagePagerAdapter", mQueue.getCache().get(imageUrl) == null ? "null" : "bu null");
         if(mQueue.getCache().get(imageUrl)==null){
             holder.imageView.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));

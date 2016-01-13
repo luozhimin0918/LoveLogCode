@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
@@ -42,6 +43,7 @@ import com.smarter.LoveLog.model.home.NavIndexUrlData;
 import com.smarter.LoveLog.model.home.SliderUrlData;
 import com.smarter.LoveLog.ui.AutoScrollViewPager;
 import com.smarter.LoveLog.ui.MyGridView;
+import com.smarter.LoveLog.utills.DeviceUtil;
 import com.smarter.LoveLog.utills.ListUtils;
 
 import org.json.JSONObject;
@@ -65,6 +67,16 @@ public class CommunityFragment extends Fragment {
     Context mContext;
     @Bind(R.id.recyclerview)
     XRecyclerView mRecyclerView;
+
+    @Bind(R.id.networkInfo)
+    LinearLayout networkInfo;
+    @Bind(R.id.errorInfo)
+    ImageView errorInfo;
+    @Bind(R.id.newLoading)
+    LinearLayout newLoading;
+
+
+
     private MofanAdapter mAdapter;
     //首页轮播
     private AutoScrollViewPager viewPager;
@@ -73,19 +85,17 @@ public class CommunityFragment extends Fragment {
     private MyGridView my_community_gridview;
     private Adapter_GridView adapter_GridView_classify;
 
-
-
-
-    /* 分类九宫格的资源文件*/
 //    private int[] pic_path_classify = { R.mipmap.notice, R.mipmap.sup, R.mipmap.beautiful, R.mipmap.all};
-//   private String[]  pic_title={"公告","体验说","美课堂","大杂烩"};
-    private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
-    /**存储首页轮播的界面*/
-    private ImageView[] imageViews;
-    /**首页轮播的界面的资源*/
-    List<SliderUrlData> sliderUrlDataList;
+//    private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
+    private ImageView[] imageViews;//轮播圆点
+    ImagePagerAdapter imagePagerAdapter;//首页轮播的界面的adapter
+    List<SliderUrlData> sliderUrlDataList;  //首页轮播的界面的资源
+
+    List<NavIndexUrlData> navIndexUrlDataList;//gridVIew数据
     private CommunityDataInfo communityDataInfo=null;//本页所有数据
     public static List<PromotePostsData>  promotePostsData;//推荐list最新话题
+
+    Boolean  isLoadReresh=false;//是否是刷新
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,6 +117,27 @@ public class CommunityFragment extends Fragment {
 
     }
     private void initData() {
+        if(DeviceUtil.checkConnection(mContext)){
+            mRecyclerView.setVisibility(View.VISIBLE);
+            networkInfo.setVisibility(View.GONE);
+            initNew();
+
+
+        }else{
+            errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
+            mRecyclerView.setVisibility(View.GONE);
+            networkInfo.setVisibility(View.VISIBLE);
+            newLoading.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initData();
+                }
+            });
+        }
+
+    }
+
+    private void initNew() {
         String url = "http://mapp.aiderizhi.com/?url=/post/index";
         RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
         FastJsonRequest<CommunityDataFrag> fastJsonCommunity=new FastJsonRequest<CommunityDataFrag>(Request.Method.POST,url,CommunityDataFrag.class,null,new Response.Listener<CommunityDataFrag>()
@@ -117,15 +148,28 @@ public class CommunityFragment extends Fragment {
                 DataStatus status=communityDataFrag.getStatus();
                 if(status.getSucceed()==1){
                     communityDataInfo=communityDataFrag.getData();
-                    initFind();//初始界面
+                    if( isLoadReresh==true){
+//                        if(communityDataFrag.getData().equals(communityDataInfo)){
+//                            refresh();
+//                            Log.d("ddd", "trur" );
+//                        }
+                    }
+
+
+                    if( isLoadReresh==false&&communityDataInfo!=null){
+                        Log.d("ddd", "false" );
+                            initFind();//初始界面
+                    }
+
+
 
                     Log.d("CommunityFragmentURL", "" + status.getSucceed() + "++++succeed》》》》"+communityDataInfo.getPromote_posts().get(1).getImg().getCover());
                 }else{
-                     if(communityDataInfo!=null) {
-                        initFind();//初始界面
-                     }else{
+
                         // 请求失败
-                     }
+                        mRecyclerView.setVisibility(View.GONE);
+                        errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
+                        networkInfo.setVisibility(View.VISIBLE);
                 }
 
 
@@ -133,6 +177,10 @@ public class CommunityFragment extends Fragment {
         } ,new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                //未知错误
+                mRecyclerView.setVisibility(View.GONE);
+                errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
+                networkInfo.setVisibility(View.VISIBLE);
 
             }
         });
@@ -143,6 +191,24 @@ public class CommunityFragment extends Fragment {
 
         mQueue.add(fastJsonCommunity);
     }
+
+    private void refresh() {
+        initViewPagerRefresh();
+        //gridvie
+        navIndexUrlDataList=communityDataInfo.getNav();//GridView
+        adapter_GridView_classify = new Adapter_GridView(getActivity(),navIndexUrlDataList);
+        my_community_gridview.setAdapter(adapter_GridView_classify);
+        adapter_GridView_classify.notifyDataSetChanged();//gridview刷新
+        //listMofan
+        promotePostsData=communityDataInfo.getPromote_posts();
+        mAdapter = new MofanAdapter(mContext,promotePostsData);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+       //刷新完成
+        mRecyclerView.refreshComplete();
+        viewPager.startAutoScroll();
+    }
+
     private void initFind() {
         /**
          *
@@ -153,7 +219,7 @@ public class CommunityFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallPulse);//BallSpinFadeLoader
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SemiCircleSpin);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallPulse);
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
         View header =   LayoutInflater.from(getContext()).inflate(R.layout.community_fragment_header,null);
@@ -164,7 +230,7 @@ public class CommunityFragment extends Fragment {
 
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
-
+//                    initNew();
                         mRecyclerView.refreshComplete();
                         viewPager.startAutoScroll();
 
@@ -205,6 +271,9 @@ public class CommunityFragment extends Fragment {
         my_community_gridview = (MyGridView) header.findViewById(R.id.my_community_gridview);
         initGridView();
 
+
+
+        isLoadReresh=true;//之后就是刷新了
     }
     /**
      * 暂无用
@@ -269,7 +338,7 @@ public class CommunityFragment extends Fragment {
 
     private void initGridView() {
 
-        final  List<NavIndexUrlData> navIndexUrlDataList=communityDataInfo.getNav();;//GridView
+      navIndexUrlDataList=communityDataInfo.getNav();;//GridView
 
 
         my_community_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -291,13 +360,51 @@ public class CommunityFragment extends Fragment {
 
 
 
+    private void  initViewPagerRefresh(){
+        sliderUrlDataList=communityDataInfo.getSlider();
+
+        imagePagerAdapter=new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true);
+        viewPager.setAdapter(imagePagerAdapter);
+        imagePagerAdapter.notifyDataSetChanged();
+
+
+        viewgroup.removeAllViews();//remove圆点
+        //创建小图像集合
+        imageViews=new ImageView[sliderUrlDataList.size()];
+        RelativeLayout.LayoutParams params;
+        for(int i=0;i<imageViews.length;i++){
+
+            //圆点之间的空白
+            ImageView  kong = new ImageView(mContext);
+            params = new RelativeLayout.LayoutParams(25,0);
+
+            kong.setLayoutParams(params);
+            kong.setBackgroundColor(Color.parseColor("#000000" + ""));
+            viewgroup.addView(kong);
+
+            imageViews[i]=new ImageView(mContext);
+            if(i==0){
+                imageViews[i].setBackgroundResource(R.mipmap.play_display);
+            }else{
+                imageViews[i].setBackgroundResource(R.mipmap.play_hide);
+            }
+
+
+            viewgroup.addView(imageViews[i]);
+        }
+        viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
+
+    }
+
 
     private void  initViewPager(){
 
-
         sliderUrlDataList=communityDataInfo.getSlider();
 
-        viewPager.setAdapter(new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true));
+        viewgroup.removeAllViews();
+        viewPager.setAdapter(null);
+        imagePagerAdapter=new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true);
+        viewPager.setAdapter(imagePagerAdapter);
 
         viewPager.setInterval(2000);
         viewPager.startAutoScroll();

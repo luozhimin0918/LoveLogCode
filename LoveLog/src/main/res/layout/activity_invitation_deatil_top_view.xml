@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
 
 
@@ -23,8 +24,13 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/imglist"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"/>
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/imageTopHeader"
                     android:background="@mipmap/invitation_top_bg"
                     android:layout_width="fill_parent"
@@ -44,8 +50,9 @@
                        android:layout_width="fill_parent"
                        android:layout_height="wrap_content">
                        <TextView
+                           android:id="@+id/titleText"
                            android:lineSpacingMultiplier="1.2"
-                           android:text="好喜欢这款爱的日志面膜啊，么么好喜欢这款爱的日志面膜啊，么么好喜欢这款爱的日志面膜啊，么么"
+                           android:text="好喜欢这款爱的日志面膜啊，么么好喜欢"
                            android:textSize="18sp"
                            android:maxLines="2"
                            android:textStyle="bold"
@@ -64,15 +71,18 @@
                         android:layout_marginBottom="@dimen/space_6"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content">
-                            <ImageView
-                                android:id="@+id/imageTitle"
-                                android:background="@mipmap/takeout_ic_avatar_default"
-                                android:layout_width="40dp"
-                                android:layout_marginTop="@dimen/space_5"
-                                android:layout_marginBottom="@dimen/space_5"
-                                android:layout_height="40dp" />
 
+                        <com.smarter.LoveLog.ui.CircleNetworkImage
+                            android:id="@+id/imageTitle"
+                            android:background="@mipmap/takeout_ic_avatar_default"
+                            android:layout_width="40dp"
+                            android:layout_marginTop="@dimen/space_5"
+                            android:layout_marginBottom="@dimen/space_5"
+                            app:civ_border_width="0dp"
+                            app:civ_border_color="@color/red"
+                            android:layout_height="40dp" />
                              <TextView
+                                    android:id="@+id/userName"
                                     android:text="买家家"
                                     android:textSize="16sp"
                                     android:layout_marginLeft="@dimen/space_10"
@@ -88,6 +98,7 @@
                                 android:gravity="right"
                                 android:layout_height="wrap_content">
                                 <TextView
+                                    android:id="@+id/AddTime"
                                     android:text="2015—12—26"
                                     android:textSize="12sp"
                                     android:layout_marginRight="@dimen/space_5"
@@ -103,20 +114,27 @@
                         android:gravity="center"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content">
-                        <TextView
-                            android:text="邦蚕丝面膜采用天然植物纤维通过世界先进的织法工艺，使其具有良好的弹力和韧性，敷在脸上后能根据不同脸型拉伸调整size,使之照顾到肌肤的各个角落，完美贴合肌肤轮廓，不留缝隙，达到暂时封闭肌肤，打开肌肤毛孔，吸饱精华液，完美护肤、柔软丝滑。新一代杜邦蚕丝面膜纤维采用全新的有机溶剂纺丝工艺，具有真丝的光泽、柔软的手感、良好的吸水性、优美的垂坠性、天然透气性、抗静电等优异功能，让肌肤享受丝般柔滑细致的敷膜感受。            由于每个人的皮肤对营养和水份的需求量不同，敷膜的季节和环境也不相同，用硬性的时间来掌控敷膜时间是不科学的。新一代蚕丝面膜材质，能根据季节、皮肤含水量、面膜精华的多少来确定每个人的具体敷膜时间(面膜泛白即可取下)，有助于提高使用面膜的科学性和精确性。"
-                            android:textSize="18sp"
-                            android:textColor="#353535"
-                            android:lineSpacingMultiplier="1.2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:text="   邦蚕丝面膜采用天然植物纤维，通过世界先进的织法工艺，使其具有良好的弹力和韧性，敷在脸上后能根据不同脸型拉伸调整size,使之照顾到肌肤的各个角落，完美贴合肌肤轮廓，不留缝隙，达到暂时封闭肌肤，打开肌肤毛孔，吸饱精华液，完美护肤、柔软丝滑。新一代杜邦蚕丝面膜纤维采用全新的有机溶剂纺丝工艺，具有真丝的光泽、柔软的手感、良好的吸水性、优美的垂坠性、天然透气性、抗静电等优异功能，让肌肤享受丝般柔滑细致的敷膜感受。            由于每个人的皮肤对营养和水份的需求量不同，敷膜的季节和环境也不相同，用硬性的时间来掌控敷膜时间是不科学的。新一代蚕丝面膜材质，能根据季节、皮肤含水量、面膜精华的多少来确定每个人的具体敷膜时间(面膜泛白即可取下)，有助于提高使用面膜的科学性和精确性。"
-                            android:textSize="18sp"
-                            android:textColor="#353535"
-                            android:lineSpacingMultiplier="1.2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+
+                        <com.smarter.LoveLog.ui.ProgressWebView
+                            android:id="@+id/webview"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+                        <!-- <TextView
+                             android:text="邦蚕丝面膜采用天然植物纤维通过世界先进的织法工艺，使其具有良好的弹力和韧性，敷在脸上后能根据不同脸型拉伸调整size,使之照顾到肌肤的各个角落，完美贴合肌肤轮廓，不留缝隙，达到暂时封闭肌肤，打开肌肤毛孔，吸饱精华液，完美护肤、柔软丝滑。新一代杜邦蚕丝面膜纤维采用全新的有机溶剂纺丝工艺，具有真丝的光泽、柔软的手感、良好的吸水性、优美的垂坠性、天然透气性、抗静电等优异功能，让肌肤享受丝般柔滑细致的敷膜感受。            由于每个人的皮肤对营养和水份的需求量不同，敷膜的季节和环境也不相同，用硬性的时间来掌控敷膜时间是不科学的。新一代蚕丝面膜材质，能根据季节、皮肤含水量、面膜精华的多少来确定每个人的具体敷膜时间(面膜泛白即可取下)，有助于提高使用面膜的科学性和精确性。"
+                             android:textSize="18sp"
+                             android:textColor="#353535"
+                             android:lineSpacingMultiplier="1.2"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content" />
+                         <TextView
+                             android:text="   邦蚕丝面膜采用天然植物纤维，通过世界先进的织法工艺，使其具有良好的弹力和韧性，敷在脸上后能根据不同脸型拉伸调整size,使之照顾到肌肤的各个角落，完美贴合肌肤轮廓，不留缝隙，达到暂时封闭肌肤，打开肌肤毛孔，吸饱精华液，完美护肤、柔软丝滑。新一代杜邦蚕丝面膜纤维采用全新的有机溶剂纺丝工艺，具有真丝的光泽、柔软的手感、良好的吸水性、优美的垂坠性、天然透气性、抗静电等优异功能，让肌肤享受丝般柔滑细致的敷膜感受。            由于每个人的皮肤对营养和水份的需求量不同，敷膜的季节和环境也不相同，用硬性的时间来掌控敷膜时间是不科学的。新一代蚕丝面膜材质，能根据季节、皮肤含水量、面膜精华的多少来确定每个人的具体敷膜时间(面膜泛白即可取下)，有助于提高使用面膜的科学性和精确性。"
+                             android:textSize="18sp"
+                             android:textColor="#353535"
+                             android:lineSpacingMultiplier="1.2"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content" />-->
                     </LinearLayout>
 
 

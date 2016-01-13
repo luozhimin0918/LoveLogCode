@@ -74,7 +74,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
     private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
 
 
-
+    int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +83,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
         setContentView(R.layout.activity_invitation_view);
         ButterKnife.bind(this);
         mContext=this;
-
         getDataIntent();
-//        intData();
         setListen();
 
     }
@@ -123,13 +121,14 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
             @Override
             public void onLoadMore() {
 
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-
-
-                        mRecyclerView.loadMoreComplete();
-                    }
-                }, 2000);
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+                loadingTag=-1;
+                Log.d("InvitationActivityURL", "initial    more");
+                initData(navIndexUrlData.getId());
+//                        mRecyclerView.loadMoreComplete();
+//                    }
+//                }, 2000);
 
             }
         });
@@ -150,6 +149,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
         if(intent!=null){
              navIndexUrlData= (NavIndexUrlData) intent.getSerializableExtra("NavIndexUrlData");
             tv_top_title.setText(navIndexUrlData.getName());//设置titlebar 标题
+
             initData(navIndexUrlData.getId());
 //            Toast.makeText(this, navIndexUrlData.getName() + "", Toast.LENGTH_LONG).show();
         }
@@ -160,9 +160,33 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
 
     List<PromotePostsData> promotePostDateList;//本类帖子 分类里所有数据
     List<PromotePostsData> FinalpromotePostDateList;//本类帖子 分类里所有数据
-    int page=0;
+    public  int page=1;
     private void initData(final String id) {
-         String url ="http://mapp.aiderizhi.com/?url=/post/category";//
+        String url ="http://mapp.aiderizhi.com/?url=/post/category";//
+
+        Map<String, String> map = new HashMap<String, String>();
+
+
+
+
+        if(loadingTag==-1){
+            map = new HashMap<String, String>();
+            PaginationJson paginationJson=new PaginationJson();
+            paginationJson.setCount("10");
+            paginationJson.setPage((++page)+"");
+            String string = JSON.toJSONString(paginationJson);
+            String  d="{\"id\":\""+id+"\",\"pagination\":"+string+"}";
+            map.put("json", d);
+            Log.d("InvitationActivityURL", d + "》》》》");
+        }
+        if(loadingTag==2){//第一次加载数据
+            map = new HashMap<String, String>();
+
+            map.put("id",id);
+        }
+
+
+
         RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
        FastJsonRequest<InvitationDataActi> fastJsonCommunity=new FastJsonRequest<InvitationDataActi>(Request.Method.POST,url,InvitationDataActi.class,null,new Response.Listener<InvitationDataActi>()
         {
@@ -171,18 +195,39 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
 
                 DataStatus status=invitationDataActi.getStatus();
                 if(status.getSucceed()==1){
-                    promotePostDateList=invitationDataActi.getData();
-                    FinalpromotePostDateList=invitationDataActi.getData();
-                    intData();//初始界面
 
-                    Log.d("InvitationActivityURL", "" + status.getSucceed() + "++++succeed》》》》" + promotePostDateList.get(0).getCat_name());
-                } else {
-                    if(promotePostDateList!=null) {
-                        intData();//初始界面
-                    }else{
-                        // 请求失败
-                        Log.d("InvitationActivityURL", "" + status.getSucceed() + "++++succeed》》》》" );
+
+
+
+                    if(loadingTag==-1){
+                        List<PromotePostsData> p=invitationDataActi.getData();
+                        Log.d("InvitationActivityURL", "" + promotePostDateList.size() + "1111++++promotePostDateList" );
+                        for(int i=0;i<p.size();i++){
+                            promotePostDateList.add(p.get(i));
+                        }
+                        Log.d("InvitationActivityURL", "" + promotePostDateList.size() + "2222++++promotePostDateList" );
+
+
+
+
+
+
+                        mRecyclerView.loadMoreComplete();
                     }
+                    if(loadingTag==2){
+                        promotePostDateList=invitationDataActi.getData();
+                        FinalpromotePostDateList=invitationDataActi.getData();
+                        intData();//初始界面
+                    }
+
+
+
+//                    Log.d("InvitationActivityURL", "" + status.getSucceed() + "++++succeed》》》》" + promotePostDateList.get(0).getCat_name());
+                } else {
+
+                        // 请求失败
+                        Log.d("InvitationActivityURL", "" + status.getSucceed() + "++++success=0》》》》" );
+
                 }
 
 
@@ -190,18 +235,9 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
         } ,new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Log.d("InvitationActivityURL", "errror" + volleyError.toString() + "++++succeed》》》》" );
+                Log.d("InvitationActivityURL", "errror" + volleyError.toString() + "++++》》》》" );
             }
         });
-        Map<String, String> map = new HashMap<String, String>();
-        PaginationJson paginationJson=new PaginationJson();
-        paginationJson.setCount("1");
-        paginationJson.setPage("2");
-        String string = JSON.toJSONString(paginationJson);
-        Log.d("InvitationActivityURL", "" + string + "++++succeed》》》》");
-        String  d="{\"id\":\""+id+"\",\"pagination\":"+string+"}";
-        map.put("json", d);
-        Log.d("InvitationActivityURL", d+ "》》》》");
 
         fastJsonCommunity.setParams(map);
 

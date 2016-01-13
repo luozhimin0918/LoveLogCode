@@ -32,6 +32,7 @@ import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.adapter.Adapter_GridView;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.HomeAdapter;
+import com.smarter.LoveLog.adapter.MofanAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.home.AdIndexUrlData;
@@ -42,6 +43,7 @@ import com.smarter.LoveLog.model.home.NavIndexUrlData;
 import com.smarter.LoveLog.model.home.SliderUrlData;
 import com.smarter.LoveLog.ui.AutoScrollViewPager;
 import com.smarter.LoveLog.ui.MyGridView;
+import com.smarter.LoveLog.utills.DeviceUtil;
 import com.smarter.LoveLog.utills.ListUtils;
 import org.json.JSONObject;
 
@@ -60,6 +62,15 @@ public class HomeFragment extends Fragment {
 
     @Bind(R.id.recyclerview)
     XRecyclerView mRecyclerView;
+    @Bind(R.id.networkInfo)
+    LinearLayout networkInfo;
+    @Bind(R.id.errorInfo)
+    ImageView errorInfo;
+    @Bind(R.id.newLoading)
+    LinearLayout newLoading;
+
+
+
 
     private HomeAdapter mAdapter;
 
@@ -81,9 +92,10 @@ public class HomeFragment extends Fragment {
     List<SliderUrlData>  sliderUrlDataList;//轮播
     List<NavIndexUrlData> navIndexUrlDataList=new ArrayList<NavIndexUrlData>();//GridView
     List<AdIndexUrlData> ad;//广告
-
+    Boolean  isLoadReresh=false;//是否是刷新
 
     HomeDataInfo  homeDataInfo=null;//homeFragment所有数据
+    ImagePagerAdapter imagePagerAdapter;//首页轮播的界面的adapter
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,7 +105,10 @@ public class HomeFragment extends Fragment {
             mContext=this.getContext();
 
             ButterKnife.bind(this, view);
-            initData();
+                initData();
+
+
+
 
            // getJSONByVolley();
         } else {
@@ -107,43 +122,136 @@ public class HomeFragment extends Fragment {
     }
 
     private void initData() {
-           String url = "http://mapp.aiderizhi.com/?url=/home/data";
-                        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
-                        FastJsonRequest<HomeDataFrag> fastJsonHome = new FastJsonRequest<HomeDataFrag>(url, HomeDataFrag.class,
-                                new Response.Listener<HomeDataFrag>() {
 
-                                    @Override
-                                    public void onResponse(HomeDataFrag homeDataFrag) {
-                                        // TODO Auto-generated method stub
+        if(DeviceUtil.checkConnection(mContext)){
+            mRecyclerView.setVisibility(View.VISIBLE);
+            networkInfo.setVisibility(View.GONE);
+            initNew();
 
-                                        DataStatus  status=homeDataFrag.getStatus();
-                                        if(status.getSucceed()==1){
-                                            homeDataInfo=homeDataFrag.getData();
-
-                                                initFind();//初始界面
-
-                                            Log.d("HomeFragmentURL", "" + status.getSucceed() + "++++succeed》》》》" + homeDataInfo.getSlider().get(0).getImage_url());
-                                        }else{
-                                            if(homeDataInfo!=null){
-                                                initFind();//初始界面
-                                            }else{
-                                                // 请求失败
-                                            }
-                                        }
+        }else{
+            errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
+            mRecyclerView.setVisibility(View.GONE);
+            networkInfo.setVisibility(View.VISIBLE);
+            newLoading.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initData();
+                }
+            });
+        }
 
 
-                                    }
-                                }, new Response.ErrorListener() {
-
-                            @Override
-                            public void onErrorResponse(VolleyError arg0) {
-                                // TODO Auto-generated method stub
-                                Log.d("HomeFragmentURL", "Error  HomeDataFrag>>>" );
-                            }
-                        });
-
-                        mQueue.add(fastJsonHome);
     }
+
+    private void initNew() {
+
+        String url = "http://mapp.aiderizhi.com/?url=/home/data";
+        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
+        FastJsonRequest<HomeDataFrag> fastJsonHome = new FastJsonRequest<HomeDataFrag>(url, HomeDataFrag.class,
+                new Response.Listener<HomeDataFrag>() {
+
+                    @Override
+                    public void onResponse(HomeDataFrag homeDataFrag) {
+                        // TODO Auto-generated method stub
+
+                        DataStatus  status=homeDataFrag.getStatus();
+                        if(status.getSucceed()==1){
+                            homeDataInfo=homeDataFrag.getData();
+                            if( isLoadReresh==true){
+    //                        if(communityDataFrag.getData().equals(communityDataInfo)){
+//                                refresh();
+    //                            Log.d("ddd", "trur" );
+    //                        }
+                            }
+
+
+                            if( isLoadReresh==false&&homeDataInfo!=null){
+                                Log.d("ddd", "false" );
+                                initFind();//初始界面
+                            }
+
+                            Log.d("HomeFragmentURL", "" + status.getSucceed() + "++++succeed》》》》" + homeDataInfo.getSlider().get(0).getImage_url());
+                        }else{
+                            // 请求失败 无数据
+                            mRecyclerView.setVisibility(View.GONE);
+                            errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
+                            networkInfo.setVisibility(View.VISIBLE);
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError arg0) {
+                // TODO Auto-generated method stub
+                //未知错误
+                mRecyclerView.setVisibility(View.GONE);
+                errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
+                networkInfo.setVisibility(View.VISIBLE);
+                Log.d("HomeFragmentURL", "Error  HomeDataFrag>>>" );
+            }
+        });
+
+        mQueue.add(fastJsonHome);
+    }
+    private void refresh() {
+        initViewPagerRefresh();
+        //gridvie
+        navIndexUrlDataList=homeDataInfo.getNav();//GridView
+        adapter_GridView_classify = new Adapter_GridView(getActivity(),navIndexUrlDataList);
+        gridView_classify.setAdapter(adapter_GridView_classify);
+        adapter_GridView_classify.notifyDataSetChanged();//gridview刷新
+        //listHome
+        ad= homeDataInfo.getAd();
+        List<AdIndexUrlData> adIndexTopAd=new ArrayList<AdIndexUrlData>();
+        for(int i=0;i<ad.size();i++){
+            if(ad.get(i).getIndex_com()!=null){
+                adIndexTopAd.add(ad.get(i));
+            }
+        }
+        mAdapter = new HomeAdapter(mContext,adIndexTopAd);
+        mAdapter.notifyDataSetChanged();
+        //刷新完成
+        mRecyclerView.refreshComplete();
+        viewPager.startAutoScroll();
+    }
+    private void  initViewPagerRefresh(){
+        sliderUrlDataList=homeDataInfo.getSlider();
+        imagePagerAdapter=new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true);
+        viewPager.setAdapter(imagePagerAdapter);
+        imagePagerAdapter.notifyDataSetChanged();
+
+
+        viewgroup.removeAllViews();//remove圆点
+        //创建小图像集合
+        imageViews=new ImageView[sliderUrlDataList.size()];
+        RelativeLayout.LayoutParams params;
+        for(int i=0;i<imageViews.length;i++){
+
+            //圆点之间的空白
+            ImageView  kong = new ImageView(mContext);
+            params = new RelativeLayout.LayoutParams(25,0);
+
+            kong.setLayoutParams(params);
+            kong.setBackgroundColor(Color.parseColor("#000000" + ""));
+            viewgroup.addView(kong);
+
+            imageViews[i]=new ImageView(mContext);
+            if(i==0){
+                imageViews[i].setBackgroundResource(R.mipmap.play_display);
+            }else{
+                imageViews[i].setBackgroundResource(R.mipmap.play_hide);
+            }
+
+
+            viewgroup.addView(imageViews[i]);
+        }
+        viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
+
+    }
+
+
 
     private void initFind() {
 
@@ -157,8 +265,8 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.SysProgress);
-//        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallPulse);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallPulse);
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
        View header =   LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_header,null);
@@ -170,6 +278,7 @@ public class HomeFragment extends Fragment {
 
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
+//                         initNew();
                         mRecyclerView.refreshComplete();
                         viewPager.startAutoScroll();
                     }
@@ -228,6 +337,7 @@ public class HomeFragment extends Fragment {
         topAd3= (NetworkImageView) header.findViewById(R.id.topAd3);
 
         initTopAd();
+        isLoadReresh=true;//之后就是刷新了
 
     }
 
@@ -341,11 +451,9 @@ public class HomeFragment extends Fragment {
 
     private void  initViewPager(){
 
-
-
-
         sliderUrlDataList=homeDataInfo.getSlider();
-        viewPager.setAdapter(new ImagePagerAdapter(mContext,sliderUrlDataList).setInfiniteLoop(true));
+      imagePagerAdapter =new ImagePagerAdapter(mContext, sliderUrlDataList).setInfiniteLoop(true);
+        viewPager.setAdapter(imagePagerAdapter);
 
         viewPager.setInterval(2000);
         viewPager.startAutoScroll();
