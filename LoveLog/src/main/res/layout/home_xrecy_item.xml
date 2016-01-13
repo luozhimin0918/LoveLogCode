@@ -1,21 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-              android:paddingBottom="@dimen/space_10"
-              android:paddingLeft="@dimen/space_10"
-              android:paddingRight="@dimen/space_10"
-    android:orientation="vertical">
-   <ImageView
-           android:id="@+id/imglist"
-           android:scaleType="fitXY"
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content"/>
-   <LinearLayout
-           android:id="@+id/view"
-           android:orientation="horizontal"
-           android:visibility="gone"
-           android:layout_width="fill_parent" android:layout_height="1dp"
-   android:background="@color/red"></LinearLayout>
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:background="@color/white">
+<LinearLayout
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/space_10"
+    android:paddingLeft="@dimen/space_10"
+    android:paddingRight="@dimen/space_10"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imglist"
+            android:scaleType="fitXY"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+
+    </LinearLayout>
+
+
 </LinearLayout>
+
+<View
+    android:background="@color/connet_bgColor"
+    android:layout_width="fill_parent"
+    android:layout_height="1sp"></View>
+
+</LinearLayout>
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+                  android:paddingBottom="@dimen/space_10"
+                  android:paddingLeft="@dimen/space_10"
+                  android:paddingRight="@dimen/space_10"
+        android:orientation="vertical">
+       <ImageView
+               android:id="@+id/imglist"
+               android:scaleType="fitXY"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"/>
+       <LinearLayout
+               android:id="@+id/view"
+               android:orientation="horizontal"
+               android:visibility="gone"
+               android:layout_width="fill_parent" android:layout_height="1dp"
+       android:background="@color/red"></LinearLayout>
+    </LinearLayout>-->

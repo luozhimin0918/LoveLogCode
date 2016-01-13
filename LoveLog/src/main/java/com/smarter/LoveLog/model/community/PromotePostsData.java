@@ -3,6 +3,7 @@ package com.smarter.LoveLog.model.community;
 import com.smarter.LoveLog.model.home.Ad;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/1/8.
@@ -10,6 +11,13 @@ import java.io.Serializable;
 public class PromotePostsData implements Serializable {
     private String id;
     private String title;
+    private String url;
+    private String share_url;
+    private String cat_id;
+    private String content;
+    private String is_best;
+    private String is_hot;
+    private String audit;
     private String brief;
     private String cat_name;
     private String cat_url;
@@ -21,8 +29,12 @@ public class PromotePostsData implements Serializable {
     private String is_like;
     private String add_time;
 
+    private List<Pinglun> cmt;
     private User    user;
     private Img    img;
+
+
+
 
     public String getId() {
         return id;
@@ -126,5 +138,69 @@ public class PromotePostsData implements Serializable {
 
     public void setReward_count(String reward_count) {
         this.reward_count = reward_count;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getShare_url() {
+        return share_url;
+    }
+
+    public void setShare_url(String share_url) {
+        this.share_url = share_url;
+    }
+
+    public String getCat_id() {
+        return cat_id;
+    }
+
+    public void setCat_id(String cat_id) {
+        this.cat_id = cat_id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getIs_best() {
+        return is_best;
+    }
+
+    public void setIs_best(String is_best) {
+        this.is_best = is_best;
+    }
+
+    public String getIs_hot() {
+        return is_hot;
+    }
+
+    public void setIs_hot(String is_hot) {
+        this.is_hot = is_hot;
+    }
+
+    public String getAudit() {
+        return audit;
+    }
+
+    public void setAudit(String audit) {
+        this.audit = audit;
+    }
+
+    public List<Pinglun> getCmt() {
+        return cmt;
+    }
+
+    public void setCmt(List<Pinglun> cmt) {
+        this.cmt = cmt;
     }
 }

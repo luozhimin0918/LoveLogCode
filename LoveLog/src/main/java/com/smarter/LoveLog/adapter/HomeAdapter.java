@@ -38,7 +38,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     //创建新View，被LayoutManager所调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.home_xrecy_item,viewGroup,false);
+//        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.home_xrecy_item,viewGroup);
+        View view = View.inflate(viewGroup.getContext(), R.layout.home_xrecy_item, null);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }

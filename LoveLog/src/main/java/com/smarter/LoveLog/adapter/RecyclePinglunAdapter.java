@@ -3,9 +3,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.model.community.Pinglun;
+import com.smarter.LoveLog.model.community.User;
+import com.smarter.LoveLog.ui.CircleNetworkImage;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/12/22.
@@ -17,12 +25,13 @@ public class RecyclePinglunAdapter extends RecyclerView.Adapter<RecyclePinglunAd
 
 
     // 数据集
-    private String[] mTitleset;
-    private String[] mValueGetText;
-    public RecyclePinglunAdapter(String[] dataset, String[] valueGet) {
+
+    private List<Pinglun> pinglunList;
+    RequestQueue mQueue;
+    public RecyclePinglunAdapter(List<Pinglun> pinglunList) {
         super();
-        mTitleset = dataset;
-        mValueGetText=valueGet;
+        mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+        this.pinglunList=pinglunList;
     }
 
     @Override
@@ -37,20 +46,35 @@ public class RecyclePinglunAdapter extends RecyclerView.Adapter<RecyclePinglunAd
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         // 绑定数据到ViewHolder上
+        User user=pinglunList.get(i).getUser();
+        String UserimageUrl=user.getAvatar();
+        if(mQueue.getCache().get(UserimageUrl)==null){
+            viewHolder.imageTitle.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+        }
+        viewHolder.imageTitle.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
 
+
+
+        viewHolder.userName.setText(user.getName());
+        viewHolder.AddTime.setText(pinglunList.get(i).getAdd_time());
+        viewHolder.pingContent.setText(pinglunList.get(i).getContent());
     }
 
     @Override
     public int getItemCount() {
-        return mTitleset.length;
+        return pinglunList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-
+        public CircleNetworkImage imageTitle;
+        public TextView userName,AddTime,pingContent;
         public ViewHolder(View itemView) {
             super(itemView);
-
+            imageTitle= (CircleNetworkImage) itemView.findViewById(R.id.imageTitle);
+            userName= (TextView) itemView.findViewById(R.id.userName);
+            AddTime= (TextView) itemView.findViewById(R.id.AddTime);
+            pingContent= (TextView) itemView.findViewById(R.id.pingContent);
         }
     }
 }

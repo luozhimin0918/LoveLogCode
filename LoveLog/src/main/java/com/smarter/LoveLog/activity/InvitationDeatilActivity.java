@@ -33,6 +33,8 @@ import com.smarter.LoveLog.adapter.RecyclePinglunAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.category.InvitationDataActi;
+import com.smarter.LoveLog.model.category.InvitationDataDeatil;
+import com.smarter.LoveLog.model.community.Pinglun;
 import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
@@ -41,6 +43,7 @@ import com.smarter.LoveLog.ui.ProgressWebView;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -69,7 +72,8 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     ProgressWebView webview;
 
 
-    PromotePostsData postsData;//item帖子数据
+    PromotePostsData postsData;//上个页面传的item帖子数据
+    PromotePostsData   promotePostsData;//传id网络获取的数据
 
     RequestQueue mQueue;
 
@@ -134,7 +138,9 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         alphaBar.getBackground().setAlpha(0);
 
 //        initRecycleViewVertical();//评论刷新
-        initRecycle();
+
+
+
     }
 
     private void initRecycle() {
@@ -157,12 +163,12 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
 
         userName=(TextView) header.findViewById(R.id.userName);
-        userName.setText(postsData.getUser().getName());
+        userName.setText(promotePostsData.getUser().getName());
 
         AddTime=(TextView) header.findViewById(R.id.AddTime);
-        AddTime.setText(postsData.getAdd_time());
+        AddTime.setText(promotePostsData.getAdd_time());
         titleText=(TextView) header.findViewById(R.id.titleText);
-        titleText.setText(postsData.getTitle());
+        titleText.setText(promotePostsData.getTitle());
 
 
         //webVIew
@@ -200,17 +206,18 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         });
 
         // 创建数据集
-        String[] dataset = new String[]{"用户名/昵称","绑定手机号","性别","会员等级","修改密码","收货地址"};
-        String[] dataValue=new String[]{"美羊羊","15083806689","男","V0初级会员","",""};
+//        String[] dataset = new String[]{"用户名/昵称","绑定手机号","性别","会员等级","修改密码","收货地址"};
+//        String[] dataValue=new String[]{"美羊羊","15083806689","男","V0初级会员","",""};
+        List<Pinglun> pinglun=promotePostsData.getCmt();
         // 创建Adapter，并指定数据集
-        RecyclePinglunAdapter adapter = new RecyclePinglunAdapter(dataset,dataValue);
+        RecyclePinglunAdapter adapter = new RecyclePinglunAdapter(pinglun);
         // 设置Adapter
         mRecyclerView.setAdapter(adapter);
 
     }
 
     private void createUseImag() {
-        String UserimageUrl=postsData.getUser().getAvatar();
+        String UserimageUrl=promotePostsData.getUser().getAvatar();
         if(mQueue.getCache().get(UserimageUrl)==null){
            imageTitle.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
         }
@@ -263,14 +270,14 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         });
 
 
-        webview.loadUrl("http://mapp.aiderizhi.com/?url=/post/content&id="+postsData.getId());
+        webview.loadUrl("http://mapp.aiderizhi.com/?url=/post/content&id="+promotePostsData.getId());
     }
 
     //头图片，多个两个图片
     private void createImgListTop() {
         imglist.removeAllViews();
         String[] imglistString=new String [1];
-        PromotePostsData promotePostsDataItem=postsData;
+        PromotePostsData promotePostsDataItem=promotePostsData;
         if(promotePostsDataItem.getImg().getCover()!=null &&!promotePostsDataItem.getImg().getCover().equals("")){
             imglistString[0]=promotePostsDataItem.getImg().getCover();
         }
@@ -321,14 +328,16 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
 
 
-        FastJsonRequest<InvitationDataActi> fastJsonCommunity = new FastJsonRequest<InvitationDataActi>(Request.Method.POST, url, InvitationDataActi.class, null, new Response.Listener<InvitationDataActi>() {
+        FastJsonRequest<InvitationDataDeatil> fastJsonCommunity = new FastJsonRequest<InvitationDataDeatil>(Request.Method.POST, url, InvitationDataDeatil.class, null, new Response.Listener<InvitationDataDeatil>() {
             @Override
-            public void onResponse(InvitationDataActi invitationDataActi) {
+            public void onResponse(InvitationDataDeatil invitationDataDeatil) {
 
-                DataStatus status = invitationDataActi.getStatus();
+                DataStatus status = invitationDataDeatil.getStatus();
                 if (status.getSucceed() == 1) {
-
-
+                    promotePostsData = invitationDataDeatil.getData();
+                    if(promotePostsData!=null){
+                        initRecycle();
+                    }
 
                     Log.d("invitationDeatil", "" + status.getSucceed() + "++++succeed" );
                 } else {
