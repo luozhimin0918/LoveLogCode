@@ -32,8 +32,10 @@
 
 
         </activity>
+      <!--  android:windowSoftInputMode="stateVisible|adjustResize"-->
             <activity android:name="com.smarter.LoveLog.activity.MainActivity"
                       android:configChanges="orientation|keyboardHidden|screenSize"
+
                       android:screenOrientation="portrait">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
@@ -72,6 +74,7 @@
             </activity>
             <activity android:name=".activity.InvitationDeatilActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
+                android:windowSoftInputMode="adjustPan"
                 android:screenOrientation="portrait">
 
             </activity>

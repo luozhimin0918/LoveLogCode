@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:text="打赏他"
+                    android:text="打赏TA"
                     android:layout_marginLeft="@dimen/space_2"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"

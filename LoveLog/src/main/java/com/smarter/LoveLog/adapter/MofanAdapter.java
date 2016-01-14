@@ -47,6 +47,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     public int[] datas = null;
     public  Context mContext;
     List<PromotePostsData> promotePostsDataList;
+    ViewGroup viewGroup;
     public MofanAdapter(Context mContext,int[] datas) {
         this.datas = datas;
         this.mContext=mContext;
@@ -61,6 +62,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.community_xrecy_item,viewGroup,false);
         ViewHolder vh = new ViewHolder(view);
+        this.viewGroup=viewGroup;
         return vh;
     }
     //将数据与界面进行绑定的操作
@@ -89,8 +91,8 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
 
 
         //头像
-       /* viewHolder.imageTitle.setDefaultImageResId(R.mipmap.loadding);
-        viewHolder.imageTitle.setErrorImageResId(R.mipmap.loadding);*/
+        viewHolder.imageTitle.setDefaultImageResId(R.mipmap.loadding);
+        viewHolder.imageTitle.setErrorImageResId(R.mipmap.loadding);
         RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
         String UserimageUrl=promotePostsDataList.get(position).getUser().getAvatar();
         if(mQueue.getCache().get(UserimageUrl)==null){
@@ -110,8 +112,24 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
             imglistString[1]=promotePostsDataItem.getImg().getThumb();
         }
         for(int i=0;i<imglistString.length;i++){
-            NetworkImageView networkImageViewListOne  = new NetworkImageView(mContext);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 260);
+            View view = View.inflate(viewGroup.getContext(), R.layout.item_image_invitation, null);
+              NetworkImageView img = (NetworkImageView) view.findViewById(R.id.iv_item);
+              LinearLayout layout = (LinearLayout) view.findViewById(R.id.layout);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+            if(i==1){
+                params.setMargins(0,20,0,0);
+                layout.setLayoutParams(params);
+
+            }
+            img.setDefaultImageResId(R.mipmap.loadding);
+            img.setErrorImageResId(R.mipmap.loadding);
+            if(mQueue.getCache().get(imglistString[i])==null){
+                img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+            }
+            img.setImageUrl(imglistString[i], AppContextApplication.getInstance().getmImageLoader());
+            viewHolder.imglist.addView(view);
+           /* NetworkImageView networkImageViewListOne  = new NetworkImageView(mContext);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 650);
 
             if(i==1){
                 params.setMargins(0,20,0,0);
@@ -125,7 +143,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
                 networkImageViewListOne.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
             }
             networkImageViewListOne.setImageUrl(imglistString[i], AppContextApplication.getInstance().getmImageLoader());
-            viewHolder.imglist.addView(networkImageViewListOne);
+            viewHolder.imglist.addView(networkImageViewListOne);*/
 
         }
 

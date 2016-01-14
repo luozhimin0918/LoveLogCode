@@ -341,7 +341,7 @@
 
         <!--保存-->
         <LinearLayout
-            android:id="@+id/savaAddress"
+            android:id="@+id/loginOut"
             android:clickable="true"
             android:layout_width="fill_parent"
             android:gravity="center"

@@ -8,6 +8,7 @@ import android.content.Context;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.smarter.LoveLog.model.loginData.LoginDataActi;
 
 import java.util.LinkedList;
 
@@ -21,8 +22,13 @@ public class AppContextApplication extends Application {
     private ImageLoader mImageLoader;
     private RequestQueue mRequestQueue;
 
+
+
+    public static  LoginDataActi  LoginInfoAll =new LoginDataActi();//登录后的数据session user
+
     public AppContextApplication() {
         app = this;
+
     }
 
     public static synchronized AppContextApplication getInstance() {
@@ -137,5 +143,14 @@ public class AppContextApplication extends Application {
 
     public void setmRequestQueue(RequestQueue mRequestQueue) {
         this.mRequestQueue = mRequestQueue;
+    }
+
+
+    public LoginDataActi getLoginInfoAll() {
+        return LoginInfoAll;
+    }
+
+    public void setLoginInfoAll(LoginDataActi loginInfoAll) {
+        LoginInfoAll = loginInfoAll;
     }
 }

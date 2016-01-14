@@ -68,7 +68,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
     TextView titleText,userName,AddTime;
     CircleNetworkImage imageTitle;
-
+    NetworkImageView imgTop;//头图片
     ProgressWebView webview;
 
 
@@ -116,8 +116,8 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                 totalDy += dy;
                 // setTranslation/Alpha here according to totalDy.
 
-                if (imglist != null && imglist.getHeight() > 0) {
-                    int height = imglist.getHeight();
+                if (imgTop != null && imgTop.getHeight() > 0) {
+                    int height = imgTop.getHeight();
                     if (totalDy < 10) {
                         alphaBar.getBackground().setAlpha(0);
                     } else if (totalDy < height) {
@@ -153,7 +153,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
         View header =   LayoutInflater.from(mContext).inflate(R.layout.activity_invitation_deatil_top_view,null);
          imageTopHeader= (ImageView) header.findViewById(R.id.imageTopHeader);
-
+        imgTop= (NetworkImageView) header.findViewById(R.id.imgTop);
         imglist= (LinearLayout) header.findViewById(R.id.imglist);
         createImgListTop();//加载top图片
 
@@ -286,22 +286,22 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         }*/
 
         for(int i=0;i<imglistString.length;i++){
-            NetworkImageView networkImageViewListOne  = new NetworkImageView(mContext);
+//            NetworkImageView networkImageViewListOne  = new NetworkImageView(mContext);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 650);
 
             if(i==1){
                 params.setMargins(0,5,0,0);
             }
-            networkImageViewListOne.setLayoutParams(params);
-            networkImageViewListOne.setScaleType(ImageView.ScaleType.FIT_XY);
-            networkImageViewListOne.setDefaultImageResId(R.mipmap.loadding);
-            networkImageViewListOne.setErrorImageResId(R.mipmap.loadding);
+            imgTop.setLayoutParams(params);
+            imgTop.setScaleType(ImageView.ScaleType.FIT_XY);
+            imgTop.setDefaultImageResId(R.mipmap.loadding);
+            imgTop.setErrorImageResId(R.mipmap.loadding);
 
             if(mQueue.getCache().get(imglistString[i])==null){
-                networkImageViewListOne.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+                imgTop.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
             }
-            networkImageViewListOne.setImageUrl(imglistString[i], AppContextApplication.getInstance().getmImageLoader());
-            imglist.addView(networkImageViewListOne);
+            imgTop.setImageUrl(imglistString[i], AppContextApplication.getInstance().getmImageLoader());
+//            imglist.addView(networkImageViewListOne);
 
         }
 

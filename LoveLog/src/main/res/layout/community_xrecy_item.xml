@@ -25,7 +25,7 @@
                        android:layout_height="wrap_content">
                        <com.smarter.LoveLog.ui.CircleNetworkImage
                            android:id="@+id/imageTitle"
-                           android:background="@mipmap/takeout_ic_avatar_default"
+                           android:src="@mipmap/loadding"
                            android:layout_width="40dp"
                            android:layout_marginTop="@dimen/space_5"
                            android:layout_marginBottom="@dimen/space_5"

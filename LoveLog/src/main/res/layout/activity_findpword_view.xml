@@ -57,7 +57,8 @@
                         android:layout_height="fill_parent"
                         android:background="@null"
                         android:hint="请输入您的手机号"
-                        android:maxLength="11"
+                        android:maxLength="18"
+                        android:inputType="phone"
                         android:paddingLeft="10.0dip"
                         android:singleLine="true"
                         android:textColor="#ff111111"
@@ -145,7 +146,7 @@
 
 
 
-        <LinearLayout  android:id="@+id/resetPass" android:clickable="false" android:layout_below="@+id/inputKun"  android:layout_width="fill_parent" android:gravity="center" android:layout_marginTop="30dp" android:layout_marginBottom="10dp" android:layout_height="50dp" android:orientation="horizontal" android:background="@drawable/login_button">
+        <LinearLayout  android:id="@+id/resetPass" android:clickable="true" android:layout_below="@+id/inputKun"  android:layout_width="fill_parent" android:gravity="center" android:layout_marginTop="30dp" android:layout_marginBottom="10dp" android:layout_height="50dp" android:orientation="horizontal" android:background="@drawable/login_button">
             <TextView
                     android:id="@+id/resetPassText"
                     android:layout_width="wrap_content"
