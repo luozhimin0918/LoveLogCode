@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.android.volley.RequestQueue;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
 
@@ -12,6 +13,7 @@ import com.smarter.LoveLog.db.AppContextApplication;
  * Created by Administrator on 2015/11/30.
  */
 public class BaseFragmentActivity extends AppCompatActivity {
+    RequestQueue  mQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.top_bar_bgColor);//通知栏所需颜色*/
         this.setTheme(R.style.BrowserThemeDefault);
-
+        mQueue =  AppContextApplication.getInstance().getmRequestQueue();
     }
 
     @Override

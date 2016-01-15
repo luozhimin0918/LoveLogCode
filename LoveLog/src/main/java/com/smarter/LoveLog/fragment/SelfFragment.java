@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.android.volley.RequestQueue;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.InvitationDeatilActivity;
@@ -25,6 +26,8 @@ import com.smarter.LoveLog.adapter.MyGridAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.model.community.User;
+import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.MyGridView;
 
@@ -132,34 +135,36 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
 
         Boolean islogin=   SharedPreferences.getInstance().getBoolean("islogin", false);
-//        Boolean islogin=   false;
+        RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+        String UserimageUrl= null;
+        String  userTitle= null;
         if(islogin){
-            RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
 
-            String UserimageUrl= null;
-            String  userTitle= null;
             try {
-                UserimageUrl = AppContextApplication.LoginInfoAll.getUser().getAvatar();
-                userTitle = AppContextApplication.LoginInfoAll.getUser().getName();
+
+                String  userString=SharedPreferences.getInstance().getString("user","");
+                User user = JSON.parseObject(userString, User.class);
+                UserimageUrl = user.getAvatar();
+                userTitle = user.getName();
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-
-
-            if(mQueue.getCache().get(UserimageUrl)==null){
-                loginImg.startAnimation(ImagePagerAdapter.getInAlphaAnimation(1000));
-            }
-            loginImg.setDefaultImageResId(R.mipmap.login);
-            loginImg.setErrorImageResId(R.mipmap.login);
-            loginImg.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
-
             loginText.setText(userTitle);
+        }else{
+            UserimageUrl= "";
+             userTitle= "";
+            loginText.setText("登录/注册");
         }
 
-
+        if(mQueue.getCache().get(UserimageUrl)==null){
+            loginImg.startAnimation(ImagePagerAdapter.getInAlphaAnimation(1000));
+        }
+        loginImg.setDefaultImageResId(R.mipmap.login);
+        loginImg.setErrorImageResId(R.mipmap.login);
+        loginImg.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
 
         Log.d("SelfFragment", "onResume");
-                super.onResume();
+         super.onResume();
 
     }
 }

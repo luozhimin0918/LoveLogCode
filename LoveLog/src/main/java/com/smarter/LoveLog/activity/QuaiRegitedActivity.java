@@ -235,7 +235,6 @@ public class QuaiRegitedActivity extends BaseFragmentActivity implements View.On
 
                 if (status.getSucceed() == 1) {
                     regiterData=registerInfo.getData();
-                    AppContextApplication.getInstance().setLoginInfoAll(regiterData);//放到全局
                     Log.d("quaiReqitedActivity", "注册返回信息  " + regiterData.getUser().getMobile() + "++++succeed" + JSON.toJSONString(regiterData));
 
                     Toast.makeText(getApplicationContext(),"注册成功",Toast.LENGTH_SHORT).show();

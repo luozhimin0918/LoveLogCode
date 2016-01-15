@@ -2,11 +2,16 @@ package com.smarter.LoveLog.db;
 
 import android.content.Context;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * Created by Administrator on 2016/1/4.
  */
 public class SharedPreferences {
-
+//    SharedPreferences.getInstance().putBoolean("islogin", true);
+//    SharedPreferences.getInstance().putString("session", JSON.toJSONString(loginDataActi.getSession()));
+//    SharedPreferences.getInstance().putString("user",JSON.toJSONString(loginDataActi.getUser()));
+//    SharedPreferences.getInstance().getBoolean("first-time-use", true);
     private static final String SP_NAME = "lovgLog";
 
 

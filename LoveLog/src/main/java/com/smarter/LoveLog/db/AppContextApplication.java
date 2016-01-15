@@ -24,8 +24,7 @@ public class AppContextApplication extends Application {
 
 
 
-    public static  LoginDataActi  LoginInfoAll =new LoginDataActi();//登录后的数据session user
-
+     //
     public AppContextApplication() {
         app = this;
 
@@ -146,11 +145,5 @@ public class AppContextApplication extends Application {
     }
 
 
-    public LoginDataActi getLoginInfoAll() {
-        return LoginInfoAll;
-    }
 
-    public void setLoginInfoAll(LoginDataActi loginInfoAll) {
-        LoginInfoAll = loginInfoAll;
-    }
 }

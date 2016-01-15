@@ -23,7 +23,9 @@ android {
         versionCode 1
         versionName "1.0"
     }
-
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_6
@@ -40,11 +42,13 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    compile 'com.jakewharton:butterknife:7.0.1'
+//    compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:+'
     compile 'com.android.support:design:23.1.1'
+    compile 'io.realm:realm-android:0.84.1'
     compile project(':xrecyclerview')
     compile project(':onekeyshare')
     compile project(':FlycoTabLayout_Lib')
+
 }

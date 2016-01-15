@@ -170,7 +170,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         String  value="{\"account\":\""+user+"\",\"password\":\""+pass+"\"}";
         map.put("json", value);
 
-        Log.d("loginActivity", sessinStr + "      " + value);
+        Log.d("loginActivity", sessinStr + "      "+value );
 
 
         FastJsonRequest<LoginDataInfo> fastJsonCommunity = new FastJsonRequest<LoginDataInfo>(Request.Method.POST, url, LoginDataInfo.class, mapTou, new Response.Listener<LoginDataInfo>() {
@@ -181,9 +181,9 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                 if (status.getSucceed() == 1) {
                     loginDataActi = loginDataInfo.getData();
                     if(loginDataActi!=null){
-                        AppContextApplication.getInstance().setLoginInfoAll(loginDataActi);//放到全局
-                        SharedPreferences.getInstance().putBoolean("islogin",true);
-//                        SharedPreferences.getInstance().getBoolean("first-time-use", true);
+                        SharedPreferences.getInstance().putBoolean("islogin", true);
+                        SharedPreferences.getInstance().putString("session", JSON.toJSONString(loginDataActi.getSession()));
+                        SharedPreferences.getInstance().putString("user",JSON.toJSONString(loginDataActi.getUser()));
                        finish();
                         Log.d("loginActivity", "登录信息：   " + JSON.toJSONString(loginDataActi.getUser())+ "++++succeed");
                     }
@@ -203,6 +203,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Log.d("loginActivity", "errror" + volleyError.toString() + "");
+                Toast.makeText(mContext,"服务器出错啦。。。",Toast.LENGTH_SHORT).show();
             }
         });
 

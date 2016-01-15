@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.LoginDataActi;
@@ -230,7 +231,7 @@ public class FindPasswordActivity extends BaseFragmentActivity implements View.O
 
                 if (status.getSucceed() == 1) {
                     regiterData=registerInfo.getData();
-                    AppContextApplication.getInstance().setLoginInfoAll(regiterData);//放到全局
+
                     Log.d("findPasswordActivity", "找回密码返回信息  " + regiterData.getUser().getMobile() + "++++succeed" + JSON.toJSONString(regiterData));
                     Toast.makeText(getApplicationContext(),"重置密码成功",Toast.LENGTH_SHORT).show();
                     new Handler().postDelayed(new Runnable() {
