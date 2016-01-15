@@ -152,7 +152,7 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
         Log.d("SetActivity", sessinStr + "      ");
 
 
-        FastJsonRequest<LogingOutInfo> fastJsonCommunity = new FastJsonRequest<LogingOutInfo>(Request.Method.POST, url, LogingOutInfo.class, mapTou, new Response.Listener<LogingOutInfo>() {
+        FastJsonRequest<LogingOutInfo> fastJsonCommunity = new FastJsonRequest<LogingOutInfo>(Request.Method.POST, url, LogingOutInfo.class, null, new Response.Listener<LogingOutInfo>() {
             @Override
             public void onResponse(LogingOutInfo loginDataInfo) {
 
@@ -186,6 +186,7 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
         fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         //fastJsonCommunity.setTag(TAG);
+        fastJsonCommunity.setParams(mapTou);
         fastJsonCommunity.setShouldCache(true);
         mQueue.add(fastJsonCommunity);
     }
