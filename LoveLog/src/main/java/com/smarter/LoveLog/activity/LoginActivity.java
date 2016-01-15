@@ -185,7 +185,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                         SharedPreferences.getInstance().putString("session", JSON.toJSONString(loginDataActi.getSession()));
                         SharedPreferences.getInstance().putString("user",JSON.toJSONString(loginDataActi.getUser()));
                        finish();
-                        Log.d("loginActivity", "登录信息：   " + JSON.toJSONString(loginDataActi.getUser())+ "++++succeed");
+                        Log.d("loginActivity", "登录信息：   "+JSON.toJSONString(loginDataActi.getSession())+"" + JSON.toJSONString(loginDataActi.getUser())+ "++++succeed");
                     }
 
 

@@ -78,8 +78,8 @@ public class PersonalDataActivity extends BaseFragmentActivity implements View.O
             String  sessionString=SharedPreferences.getInstance().getString("session","");
             SessionData sessionData = JSON.parseObject(sessionString,SessionData.class);
             if(sessionData!=null){
-                String  userString=SharedPreferences.getInstance().getString("user","");
-                User user1 = JSON.parseObject(userString,User.class);
+//                String  userString=SharedPreferences.getInstance().getString("user","");
+//                User user1 = JSON.parseObject(userString,User.class);
 //                if(user1!=null&&user1.getName()!=null){
 //                    initRecycleViewVertical();
 //                }else {
