@@ -12,6 +12,8 @@ public class SharedPreferences {
 //    SharedPreferences.getInstance().putString("session", JSON.toJSONString(loginDataActi.getSession()));
 //    SharedPreferences.getInstance().putString("user",JSON.toJSONString(loginDataActi.getUser()));
 //    SharedPreferences.getInstance().getBoolean("first-time-use", true);
+//    SharedPreferences.getInstance().putString("address-list", JSON.toJSONString(addressDataList));
+//    SharedPreferences.getInstance().putString("quanguo-list", JSON.toJSONString(shengList));
     private static final String SP_NAME = "lovgLog";
 
 

@@ -38,7 +38,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class PersonalDataActivity extends BaseFragmentActivity implements View.OnClickListener{
+public class PersonalDataActivity extends BaseFragmentActivity implements View.OnClickListener,RecyclePersonAdapter.OnItemClickListener{
     String Tag= "PersonalDataActivity";
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -162,6 +162,7 @@ public class PersonalDataActivity extends BaseFragmentActivity implements View.O
         RecyclePersonAdapter adapter = new RecyclePersonAdapter(dataset,dataValue);
         // 设置Adapter
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -230,4 +231,15 @@ public class PersonalDataActivity extends BaseFragmentActivity implements View.O
     }
 
 
+    @Override
+    public void onItemClickAdapter(int ischeckArray) {
+        if(ischeckArray==5){
+            //挑战到地址管理界面
+            Intent intent2 = new Intent(this, AddressManageActivity.class);
+              /*  Bundle bundle = new Bundle();
+                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                intent.putExtras(bundle);*/
+            this.startActivity(intent2);
+        }
+    }
 }

@@ -1,10 +1,10 @@
 package com.smarter.LoveLog.adapter;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.smarter.LoveLog.R;
 
 /**
@@ -56,6 +56,26 @@ public class RecyclePersonAdapter extends RecyclerView.Adapter<RecyclePersonAdap
             titleText = (TextView) itemView.findViewById(R.id.titleText);
             valueGetText=(TextView)itemView.findViewById(R.id.valueGetText);
             imageURl= (ImageView) itemView.findViewById(R.id.imageURl);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setOnItemClickListener.onItemClickAdapter(getPosition());
+                    Log.d("RecyclePersonAdapter", "当前点击的位置：" + getPosition());
+                }
+            });
         }
     }
+
+
+
+    //回调开始
+    public interface OnItemClickListener {
+        void onItemClickAdapter(int ischeckArray);
+    }
+    public static OnItemClickListener setOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onCheckDefault) {
+        this.setOnItemClickListener=onCheckDefault;
+    }
+    //结束
 }

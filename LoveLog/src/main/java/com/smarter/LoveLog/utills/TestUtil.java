@@ -31,14 +31,13 @@ public class TestUtil {
 
 
 
-    public static void VolleyGetRospone(final Map<String,String> maptop,Map<String,String> map,int Methed,String url){
+    public static void VolleyGetRospone(final Map<String,String> maptop, final Map<String,String> map,int Methed,String url){
         RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
-        JSONObject jsonObject=new JSONObject(map);
-        Log.d("TestUtil",""+"Response is: jsonObject        "+jsonObject.toString());
+        Log.d("TestUtil",""+"Response is: json        "+map.toString());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Methed,
                 url,
-                jsonObject,
+                null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -57,8 +56,13 @@ public class TestUtil {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 return maptop;
             }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return map;
+            }
         };
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(8000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 //        fastJsonCommunity.setTag(TAG);
         jsonObjectRequest.setShouldCache(true);

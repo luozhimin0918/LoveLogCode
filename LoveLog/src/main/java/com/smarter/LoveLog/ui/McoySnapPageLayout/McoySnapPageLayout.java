@@ -160,7 +160,7 @@ public class McoySnapPageLayout extends ViewGroup {
     private void addPagesAndRefresh() {
         // 设置页面id
         mPageTop.getRootView().setId(0);
-        mPageBottom.getRootView().setId(1);
+        mPageBottom.getRootView().setId(new Integer(1));
         addView(mPageTop.getRootView());
         addView(mPageBottom.getRootView());
         postInvalidate();

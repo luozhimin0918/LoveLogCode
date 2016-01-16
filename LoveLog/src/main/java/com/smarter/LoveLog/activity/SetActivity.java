@@ -18,6 +18,7 @@ import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.home.DataStatusOne;
 import com.smarter.LoveLog.model.loginData.LogingOutInfo;
 import com.smarter.LoveLog.model.loginData.LogingOutMess;
 import com.smarter.LoveLog.model.home.DataStatus;
@@ -86,7 +87,15 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
                            SessionData sessionData = JSON.parseObject(sessionString,SessionData.class);
 
                             if(sessionData!=null){
-                                networkLoginOut(sessionData.getUid(),sessionData.getSid());
+
+
+                              /*  //因退出登录接口有问题。所有执行一下操作
+                                Toast.makeText(getApplicationContext(), "成功退出" , Toast.LENGTH_SHORT).show();
+                                SharedPreferences.getInstance().putBoolean("islogin",false);
+                                finish();*/
+
+
+                                networkLoginOut(sessionData.getUid(),sessionData.getSid());//
     //                            uploadImg(sessionData.getUid(),sessionData.getSid());
                                 Log.d("SetActivity","  Session  "+ sessionData.getUid() + "      "+sessionData.getSid());
                             }
@@ -139,7 +148,7 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
     }
 
 
-    public LogingOutMess loginMess;
+    public DataStatus loginMess;
     private void networkLoginOut(String uid,String sid) {
         String url = "http://mapp.aiderizhi.com/?url=/user/logout";//
         Map<String, String> mapTou = new HashMap<String, String>();
@@ -152,13 +161,13 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
         Log.d("SetActivity", sessinStr + "      ");
 
 
-        FastJsonRequest<LogingOutInfo> fastJsonCommunity = new FastJsonRequest<LogingOutInfo>(Request.Method.POST, url, LogingOutInfo.class, null, new Response.Listener<LogingOutInfo>() {
+        FastJsonRequest<DataStatusOne> fastJsonCommunity = new FastJsonRequest<DataStatusOne>(Request.Method.POST, url, DataStatusOne.class, null, new Response.Listener<DataStatusOne>() {
             @Override
-            public void onResponse(LogingOutInfo loginDataInfo) {
+            public void onResponse(DataStatusOne loginDataInfo) {
 
                 DataStatus status = loginDataInfo.getStatus();
                 if (status.getSucceed() == 1) {
-                    loginMess = loginDataInfo.getData();
+                    loginMess = status;
                     if(loginMess!=null){
                         Toast.makeText(getApplicationContext(), "成功退出" , Toast.LENGTH_SHORT).show();
                         SharedPreferences.getInstance().putBoolean("islogin",false);

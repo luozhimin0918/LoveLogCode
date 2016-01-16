@@ -29,11 +29,11 @@
             android:textSize="18sp"
             android:layout_height="wrap_content" android:text="1312554544646"/>
         <TextView
-            android:visibility="gone"
+            android:id="@+id/default_address"
             android:layout_marginLeft="@dimen/space_10"
             android:layout_width="wrap_content"
             android:textColor="#C6606D"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_height="wrap_content" android:text="默认地址"/>
     </LinearLayout>
     <LinearLayout
@@ -43,16 +43,18 @@
         android:layout_height="wrap_content">
         <!---->
         <TextView
+            android:id="@+id/addressShouhuo"
             android:layout_width="fill_parent"
             android:textColor="#696969"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_height="wrap_content"
             android:text="上海市浦东新区金科路2889弄长泰广场C栋804室"/>
         </LinearLayout>
-    <View
-        android:background="@color/connet_bgColor"
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@mipmap/line_xuan"
         android:layout_width="fill_parent"
-        android:layout_height="1sp"></View>
+        android:layout_height="wrap_content"></LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -72,6 +74,7 @@
 
 
         <TextView
+            android:id="@+id/default_text"
             android:layout_width="wrap_content"
             android:textColor="#696969"
             android:textSize="14sp"
@@ -83,6 +86,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/bianjAddress"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_width="wrap_content"
                 android:textColor="#696969"
@@ -93,6 +97,7 @@
                 android:textSize="14sp"
                 android:layout_height="wrap_content" android:text="编辑"/>
             <TextView
+                android:id="@+id/deleteAddress"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
                 android:layout_width="wrap_content"

@@ -1,5 +1,7 @@
 package com.smarter.LoveLog.http;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.android.volley.*;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -42,6 +44,7 @@ public class FastJsonRequest<T> extends Request<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+            Log.d("FastJsonRequest",json);
             return Response.success(JSON.parseObject(json, mClazz),
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
