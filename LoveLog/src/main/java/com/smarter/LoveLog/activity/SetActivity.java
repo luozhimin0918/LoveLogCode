@@ -96,7 +96,6 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
 
 
                                 networkLoginOut(sessionData.getUid(),sessionData.getSid());//
-    //                            uploadImg(sessionData.getUid(),sessionData.getSid());
                                 Log.d("SetActivity","  Session  "+ sessionData.getUid() + "      "+sessionData.getSid());
                             }
                        }else{
@@ -108,44 +107,7 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
          }
     }
 
-    private void uploadImg(String uid,String sid) {
-        Bitmap bitmap=TestUtil. drawableToBitamp(getResources().getDrawable(R.mipmap.error_default)) ;
 
-        byte[]  bytes =TestUtil.getBitmapByte(bitmap);
-        String srt2="";
-        try {
-            srt2=new String(bytes,"UTF-8");
-//            srt2= TestUtil.encodeBase64(bytes);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        String url = "http://mapp.aiderizhi.com/?url=/user/modify";//
-                String url = "http://mapp.aiderizhi.com/?url=/user/info";//
-//                String url = "http://mapp.aiderizhi.com/?url=/user/logout";//
-//        String url = "http://mapp.aiderizhi.com/?url=/post/category";//
-
-
-        Map<String, String> mapTou = new HashMap<String, String>();
-        String  sessinStr ="{\"action\":\"avatar\",\"avatar\":\""+srt2+"\"}";
-//        mapTou.put("json", sessinStr);
-
-
-        Map<String, String> mapTou2 = new HashMap<String, String>();
-        String  sessinStr2 ="{\"session\":{\"uid\":\""+uid+"\",\"sid\":\""+sid+"\"}}";
-//        String  sessinStr2 ="{\"uid\":\""+uid+"\",\"sid\":\""+sid+"\"}";
-//        String  sessinStr2="{\"id\":\"2\",\"pagination\":{\"count\":\"6\",\"page\":\"2\"}}";
-        mapTou2.put("json", sessinStr2);
-//        mapTou2.put("session",sessinStr2);
-//          mapTou2.put("uid",uid);
-//          mapTou2.put("sid",sid);
-
-
-
-        Log.d("TestUtil", "" + "              " +sessinStr2);
-        TestUtil.VolleyGetRospone(mapTou,mapTou2, Request.Method.POST,url);
-    }
 
 
     public DataStatus loginMess;

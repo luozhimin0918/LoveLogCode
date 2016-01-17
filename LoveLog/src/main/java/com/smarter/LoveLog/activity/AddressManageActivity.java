@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,10 @@ public class AddressManageActivity extends BaseFragmentActivity implements View.
     RecyclerView recyclerView;
     @Bind(R.id.addAddressTop)
     TextView addAddressTop;
+    @Bind(R.id.backButon)
+    ImageView backButon;
+
+
 
 
 
@@ -61,13 +66,20 @@ public class AddressManageActivity extends BaseFragmentActivity implements View.
 
 
         getDataIntent();
-        intData();
         setListen();
 
     }
 
+    @Override
+    protected void onResume() {
+        intData();
+
+        super.onResume();
+    }
+
     private void setListen() {
         addAddressTop.setOnClickListener(this);
+        backButon.setOnClickListener(this);
     }
 
     private void intData() {
@@ -141,7 +153,9 @@ public class AddressManageActivity extends BaseFragmentActivity implements View.
                 intent.putExtras(bundle);*/
                  this.startActivity(intent2);
                  break;
-
+             case R.id.backButon:
+                 finish();
+                 break;
          }
     }
 

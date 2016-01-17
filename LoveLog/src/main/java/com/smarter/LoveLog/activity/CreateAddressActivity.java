@@ -28,6 +28,7 @@ import com.smarter.LoveLog.model.address.QuanShiAddressData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.DataStatusOne;
 import com.smarter.LoveLog.model.jsonModel.AddAdreParam;
+import com.smarter.LoveLog.model.jsonModel.AddAdreParamInfo;
 import com.smarter.LoveLog.model.loginData.SessionData;
 
 import java.util.ArrayList;
@@ -113,17 +114,32 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
 
     }
 
-    AddressData addressData;
+    AddressData addressData;//回填数据所有
     private void getDataIntent() {
         Intent intent = getIntent();
         if(intent!=null){
             isCreatOrUpdate = intent.getStringExtra("xiugaiAddress");
             addressData= (AddressData) intent.getSerializableExtra("AddressData");
-            if(isCreatOrUpdate!=null&&!isCreatOrUpdate.equals("")){
+            if(isCreatOrUpdate!=null&&!isCreatOrUpdate.equals("")&&addressData!=null){
                 tv_top_title.setText(isCreatOrUpdate);
+
+                //地区字符转换
+                String addText;
+                if(addressData.getProvince_name().equals(addressData.getCity_name())){
+                    addText=addressData.getProvince_name()+"市"+addressData.getDistrict_name();
+                    addAddressText.setText(addText);
+                }else{
+                    addText=addressData.getProvince_name()+"省"+addressData.getCity_name()+"市"+addressData.getDistrict_name();
+                    addAddressText.setText(addText);
+                }
+                addresText.setText(addressData.getAddress().replace(addText,"").trim());
+
+                name.setText(addressData.getConsignee());
+                phone.setText(addressData.getMobile());
+
             }
 
-            Toast.makeText(this,isCreatOrUpdate+""+addressData.getCountry_name(),Toast.LENGTH_LONG).show();
+
         }
 
 
@@ -161,36 +177,51 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
             SessionData sessionData = JSON.parseObject(sessionString,SessionData.class);
             if(sessionData!=null){
 
-
+                AddAdreParamInfo adInfo=new AddAdreParamInfo();
                 AddAdreParam  param = new AddAdreParam();
                 //session
                     SessionData  sessionData1=new SessionData();
                       sessionData1.setSid(sessionData.getSid());
                       sessionData1.setUid(sessionData.getUid());
+                adInfo.setSession(sessionData1);
                 //putong
 //                 province,city,district,adressAll;
-                  param.setName(name.getText().toString());
-                  param.setMobile(phone.getText().toString());
-                  param.setCountry(1 + "");
-                  param.setProvince(province);
-                  param.setCountry(city);
-                  param.setDistrict(district);
-                 param.setAddress(adressAll + addresText.getText().toString());
-                 param.setZipcode(youNum.getText().toString());
-                 param.setSession(sessionData1);
+                param.setConsignee(name.getText().toString());
+                param.setMobile(phone.getText().toString());
+                param.setCountry(1 + "");
+                param.setProvince(province);
+                param.setCity(city);
+                param.setDistrict(district);
+                param.setAddress(adressAll + addresText.getText().toString());
+                param.setZipcode(youNum.getText().toString());
+                param.setBest_time("");
+                param.setEmail("");
+                param.setId("");
+                param.setIs_default("");
+                param.setSign_building("");
+                param.setTel(phone.getText().toString());
+
+
+                String url = "http://mapp.aiderizhi.com/?url=/address/add";//
+                if(addressData!=null&&isCreatOrUpdate.equals("修改收货地址")){
+                    adInfo.setId(addressData.getId());
+                    param.setId(addressData.getId());
+                    url = "http://mapp.aiderizhi.com/?url=/address/update";//
+                }
+                adInfo.setAddress(param);
 
 
 
 
                 if(!name.getText().toString().equals("")&&!phone.getText().toString().equals("")&&
                         !addAddressText.getText().equals("")&&!addresText.getText().toString().equals("")&&!youNum.getText().toString().equals("")){
-                    networkAddAddressInfo(JSON.toJSONString(param));
+                    networkAddAddressInfo(url,JSON.toJSONString(adInfo));
                 }else{
                     Toast.makeText(this,"请完善地址信息",Toast.LENGTH_SHORT).show();
                 }
 
 
-                Log.d("CreateAddressActivity","  Session  "+ sessionData.getUid() + "      "+sessionData.getSid());
+//                Log.d("CreateAddressActivity","  Session  "+ sessionData.getUid() + "      "+sessionData.getSid());
             }
 
         }
@@ -218,10 +249,9 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
                 if (status.getSucceed() == 1) {
                     shengList = addressDataInfo.getData().getProvince();
                     if(shengList!=null&&shengList.size()>0){
-
                         initpickerView();
 
-                        SharedPreferences.getInstance().putString("quanguo-list", JSON.toJSONString(shengList));
+                        SharedPreferences.getInstance().putString("quanguo-list", JSON.toJSONString(addressDataInfo.getData()));
                         Log.d("CreateAddressActivity", "全国省市区信息：   " + JSON.toJSONString(shengList)+ "++++succeed");
                     }
 
@@ -309,7 +339,13 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
                 String sheng=options1Items.get(options1).getPickerViewText();
                 String shi=options2Items.get(options1).get(option2);
                 String qu=options3Items.get(options1).get(option2).get(options3);
-                String tx = sheng+"省"+ shi+"市"+ qu+"(县/区)";
+                String tx="";
+                if(sheng.equals(shi)){
+                    tx =  shi+"市"+ qu;
+                }else{
+                    tx = sheng+"省"+ shi+"市"+ qu;
+                }
+
 
                 for(int i=0;i<shengList.size();i++){
                        if(shengList.get(i).getName().equals(sheng)){
@@ -334,7 +370,7 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
 
                 adressAll=tx;
 
-                addAddressText.setText(tx);
+                addAddressText.setText(adressAll);
                 vMasker.setVisibility(View.GONE);
             }
         });
@@ -349,11 +385,12 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
 
 
 
-    private void networkAddAddressInfo(String  param) {
-        String url = "http://mapp.aiderizhi.com/?url=/address/add";//
+    private void networkAddAddressInfo(String url,String  param) {
+
         Map<String, String> map = new HashMap<String, String>();
         map.put("json", param);
-        Log.d("CreateAddressActivity", param + "      ");
+        Log.d("CreateAddressActivity", url + "      ");
+        Log.d("CreateAddressActivity", param + "      " );
 
 
         FastJsonRequest<DataStatusOne> fastJsonCommunity = new FastJsonRequest<DataStatusOne>(Request.Method.POST, url, DataStatusOne.class, null, new Response.Listener<DataStatusOne>() {

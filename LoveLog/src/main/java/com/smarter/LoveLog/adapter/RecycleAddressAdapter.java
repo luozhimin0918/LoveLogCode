@@ -24,6 +24,7 @@ import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.address.AddressData;
+import com.smarter.LoveLog.model.address.QuanProvinceData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.DataStatusOne;
 import com.smarter.LoveLog.model.loginData.SessionData;
@@ -99,8 +100,9 @@ public class RecycleAddressAdapter extends RecyclerView.Adapter<RecycleAddressAd
            @Override
            public void onClick(View v) {
                if (sessionData != null) {
+                   String url = "http://mapp.aiderizhi.com/?url=/address/delete";//
                    String param =" {\"session\":{\"uid\":\""+sessionData.getUid()+"\",\"sid\":\""+sessionData.getSid()+"\"},\"id\":\""+addrelit.get(i).getId()+"\"}";
-                   networkAddAddressInfo(param,i);
+                   networkAddAddressInfo(url,param,i);
                }
 
            }
@@ -113,7 +115,10 @@ public class RecycleAddressAdapter extends RecyclerView.Adapter<RecycleAddressAd
                 // 界面
                 Intent intent2 = new Intent(mContext, CreateAddressActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("AddressData",addrelit.get(i));
+
+                //编辑的时候给回填地区的参数
+
+                bundle.putSerializable("AddressData", addrelit.get(i));
                 bundle.putString("xiugaiAddress", "修改收货地址");
                 intent2.putExtras(bundle);
                 mContext.startActivity(intent2);
@@ -127,8 +132,13 @@ public class RecycleAddressAdapter extends RecyclerView.Adapter<RecycleAddressAd
                            addrelit.get(j).setIs_default(0);
                         }
                         addrelit.get(i).setIs_default(1);
+                if (sessionData != null) {
+                    String url = "http://mapp.aiderizhi.com/?url=/address/set_default";//
+                    String param =" {\"session\":{\"uid\":\""+sessionData.getUid()+"\",\"sid\":\""+sessionData.getSid()+"\"},\"id\":\""+addrelit.get(i).getId()+"\"}";
+                    networkAddAddressInfo(url,param,i);
+                }
 
-                OnCheckDefaultListener.oncheckOK(addrelit);
+
             }
         });
 
@@ -185,9 +195,9 @@ public class RecycleAddressAdapter extends RecyclerView.Adapter<RecycleAddressAd
 
 
 
-    private void networkAddAddressInfo(String  param,final  int i) {
+    private void networkAddAddressInfo(final  String url,String  param,final  int i) {
 
-        String url = "http://mapp.aiderizhi.com/?url=/address/delete";//
+
         Map<String, String> map = new HashMap<String, String>();
         map.put("json", param);
         Log.d("RecycleAddressAdapter", param + "      ");
@@ -199,11 +209,27 @@ public class RecycleAddressAdapter extends RecyclerView.Adapter<RecycleAddressAd
                 DataStatus dataStatus=dataStatusOne.getStatus();
                 if (dataStatus.getSucceed() == 1) {
 
-                     addrelit.remove(i);
-                    OnCheckDefaultListener.oncheckOK(addrelit);
-                    Toast.makeText(mContext,"删除成功",Toast.LENGTH_SHORT).show();
 
-                    Log.d("RecycleAddressAdapter", "删除返回的信息：   " + JSON.toJSONString(dataStatus)+ "++++succeed");
+                     if(url.endsWith("delete")){
+                         addrelit.remove(i);
+                         OnCheckDefaultListener.oncheckOK(addrelit);
+                         Toast.makeText(mContext,"删除成功",Toast.LENGTH_SHORT).show();
+                     }else{
+
+                         for(int jj=0;jj<addrelit.size();jj++){
+                             if(i==jj){
+                                 addrelit.get(jj).setIs_default(1);
+                             }else{
+                                 addrelit.get(jj).setIs_default(0);
+                             }
+
+                         }
+                         OnCheckDefaultListener.oncheckOK(addrelit);
+                         Toast.makeText(mContext,"设置默认成功",Toast.LENGTH_SHORT).show();
+                     }
+
+
+                    Log.d("RecycleAddressAdapter", "删除/设置默认 返回的信息：   " + JSON.toJSONString(dataStatus)+ "++++succeed");
 
 
 

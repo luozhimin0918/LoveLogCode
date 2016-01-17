@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -113,5 +114,21 @@ public class TestUtil {
         return (String) retObj;
     }
 
+
+    /* 将bitmap转换成base64字符串
+    *
+    * @param bitmap
+    * @return base64 字符串
+    */
+    public  static String bitmaptoBase64String(Bitmap bitmap, int bitmapQuality) {
+
+// 将Bitmap转换成字符串
+        String string = null;
+        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, bitmapQuality, bStream);
+        byte[] bytes = bStream.toByteArray();
+        string = Base64.encodeToString(bytes, Base64.DEFAULT);
+        return string;
+    }
 
 }
