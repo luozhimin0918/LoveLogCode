@@ -132,6 +132,7 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
                     addText=addressData.getProvince_name()+"省"+addressData.getCity_name()+"市"+addressData.getDistrict_name();
                     addAddressText.setText(addText);
                 }
+                adressAll=addText;
                 addresText.setText(addressData.getAddress().replace(addText,"").trim());
 
                 name.setText(addressData.getConsignee());
@@ -303,6 +304,7 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
 
                     options2Items_01.add(shiList.get(j).getName());
 
+
                     List<QuanQuOrXianAddressData> qulist=shiList.get(j).getDistrict();
 
                     ArrayList<String> options3Items_01_01=new ArrayList<String>();
@@ -315,8 +317,10 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
 
 
                 }
-                options3Items.add(options3Items_01);
                 options2Items.add(options2Items_01);
+                options3Items.add(options3Items_01);
+
+
             }
         }
 
@@ -325,12 +329,12 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
         //三级联动效果
         pvOptions.setPicker(options1Items, options2Items, options3Items, true);
         //设置选择的三级单位
-//        pwOptions.setLabels("省", "市", "区");
+        pvOptions.setLabels("省", "市", "区");
         pvOptions.setTitle("");
         pvOptions.setCyclic(false, true, true);
         //设置默认选中的三级项目
         //监听确定选择按钮
-        pvOptions.setSelectOptions(1, 1, 1);
+        pvOptions.setSelectOptions(1, 0, 0);
         pvOptions.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
 
             @Override
