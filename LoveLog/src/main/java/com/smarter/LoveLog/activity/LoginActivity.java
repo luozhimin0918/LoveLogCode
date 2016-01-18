@@ -159,7 +159,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     }
 
     public LoginDataActi  loginDataActi;
-    private void LoginBut( String user,String pass,String uid,String sid) {
+    private void LoginBut( final String user, final String pass,String uid,String sid) {
         String url = "http://mapp.aiderizhi.com/?url=/user/signin";//
         Map<String, String>   mapTou = new HashMap<String, String>();
         String  sessinStr ="{\"session\":{\"uid\":\""+uid+"\",\"sid\":\""+sid+"\"}}";
@@ -183,6 +183,8 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                     if(loginDataActi!=null){
                         SharedPreferences.getInstance().putBoolean("islogin", true);
                         SharedPreferences.getInstance().putString("session", JSON.toJSONString(loginDataActi.getSession()));
+                        SharedPreferences.getInstance().putString("usename",user);
+                        SharedPreferences.getInstance().putString("password",pass);
                         SharedPreferences.getInstance().putString("user",JSON.toJSONString(loginDataActi.getUser()));
                        finish();
                         Log.d("loginActivity", "登录信息：   "+JSON.toJSONString(loginDataActi.getSession())+"" + JSON.toJSONString(loginDataActi.getUser())+ "++++succeed");

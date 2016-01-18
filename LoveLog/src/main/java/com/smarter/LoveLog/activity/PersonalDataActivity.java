@@ -81,9 +81,15 @@ public class PersonalDataActivity extends BaseFragmentActivity implements View.O
 
 
         getDataIntent();
-        intData();
+
         setListen();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        intData();
     }
 
     private void setListen() {
@@ -155,23 +161,10 @@ public class PersonalDataActivity extends BaseFragmentActivity implements View.O
         if(user!=null){
             dataValue[0]=user.getName();
             dataValue[1]=user.getMobile();
-                        String  sex="";
-                        if(user.getSex().equals("1")){
-                            sex="男";
-                        }
-                        if(user.getSex().equals("2")){
-                            sex="女";
-                        }else{
-                            sex="未知";
-                        }
-            dataValue[2]=sex;
-                        String strLevel="";
-                        if(user.getRank_level()<3){
-                            strLevel="V0初级会员";
-                        }else {
-                            strLevel="V4高级会员";
-                        }
-            dataValue[3]=strLevel;
+
+            dataValue[2]=user.getSex();
+
+            dataValue[3]=user.getRank_level()+"";
         }
 
         // 创建Adapter，并指定数据集
@@ -460,9 +453,44 @@ public class PersonalDataActivity extends BaseFragmentActivity implements View.O
     }
 
 
+
+
+
+    //个人资料修改Item点击处理
     @Override
     public void onItemClickAdapter(int ischeckArray) {
-        if(ischeckArray==5){
+        if(ischeckArray==0){
+            //挑战到修改用户名/昵称界面//
+            //给CreateAddress传参数 表示修改用户名昵称
+            Intent intent2 = new Intent(this, CreateAddressActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("xiugaiName",true);
+            intent2.putExtras(bundle);
+            this.startActivity(intent2);
+        }
+
+        if(ischeckArray==2){
+            //挑战到修改性别界面//
+            //
+            Intent intent2 = new Intent(this, CreateAddressActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("xiugaiSex",true);
+            bundle.putString("sexValue", user.getSex());
+            intent2.putExtras(bundle);
+            this.startActivity(intent2);
+        }
+        if(ischeckArray==4){
+            //挑战到修改密码界面//
+            //
+            Intent intent2 = new Intent(this, CreateAddressActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("xiugaiPassword",true);
+            intent2.putExtras(bundle);
+            this.startActivity(intent2);
+        }
+
+
+        if(ischeckArray==5){//收货地址
             //挑战到地址管理界面
             Intent intent2 = new Intent(this, AddressManageActivity.class);
               /*  Bundle bundle = new Bundle();

@@ -148,9 +148,9 @@ public class AddressManageActivity extends BaseFragmentActivity implements View.
                  //挑战到创建收货地址
                  // 界面
                  Intent intent2 = new Intent(this, CreateAddressActivity.class);
-              /*  Bundle bundle = new Bundle();
-                bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                intent.putExtras(bundle);*/
+               Bundle bundle = new Bundle();
+                bundle.putBoolean("isCreateAddress",true);
+                intent2.putExtras(bundle);
                  this.startActivity(intent2);
                  break;
              case R.id.backButon:

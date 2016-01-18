@@ -52,7 +52,16 @@
 
             <LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent"  android:background="@color/connet_bgColor" android:layout_weight="1">
 
+
+
+
+
+
+
+                //新建收货地址
                 <LinearLayout
+
+                    android:id="@+id/ShouHuoAddressLinear"
                     android:layout_marginTop="@dimen/space_10"
                     android:background="@color/white"
                     android:orientation="vertical"
@@ -219,7 +228,208 @@
 
                 </LinearLayout>
 
-             <!--保存-->
+
+
+
+
+                //修改用户名/昵称
+
+                <LinearLayout
+                    android:id="@+id/UserLinear"
+                    android:visibility="gone"
+                    android:paddingTop="@dimen/space_10"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <!--新的用户名/昵称-->
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dp">
+
+                        <EditText
+                            android:id="@+id/newName"
+                            android:layout_weight="1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/yuanjiao_white_bg"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="10.0dip"
+                            android:singleLine="true"
+                            android:hint="新用户名/昵称"
+                            android:textColor="#ff111111"
+                            android:textColorHint="#D4D4D4"
+                            android:textSize="16.0sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout android:background="@color/connet_bgColor" android:layout_width="fill_parent" android:layout_height="1sp"></LinearLayout>
+
+                </LinearLayout>
+
+
+
+                //修改性别
+                <RadioGroup
+                    android:id="@+id/group"
+                    android:visibility="gone"
+                    android:paddingTop="@dimen/space_10"
+                    android:paddingLeft="@dimen/space_10"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/baomi"
+                        android:background="@null"
+                        android:layout_marginTop="@dimen/space_10"
+                        android:button="@null"
+                        android:text="保密"
+                        android:textSize="16sp"
+                        android:textColor="#646464"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/space_10"
+                        android:drawableLeft="@drawable/sex_select_button"
+                        android:checked="true"/>
+                    <RadioButton
+                        android:id="@+id/nan"
+                        android:background="@null"
+                        android:text="男"
+                        android:textSize="16sp"
+                        android:textColor="#646464"
+                        android:drawablePadding="@dimen/space_10"
+                        android:layout_marginTop="@dimen/space_10"
+                        android:button="@null"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/sex_select_button"/>
+                    <RadioButton
+                        android:id="@+id/nv"
+                        android:background="@null"
+                        android:text="女"
+                        android:textSize="16sp"
+                        android:textColor="#646464"
+                        android:drawablePadding="@dimen/space_10"
+                        android:layout_marginTop="@dimen/space_10"
+                        android:button="@null"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/sex_select_button"/>
+
+
+                </RadioGroup>
+
+
+
+
+
+                //修改密码
+
+                <LinearLayout
+                    android:id="@+id/PassLinear"
+                    android:visibility="gone"
+                    android:paddingTop="@dimen/space_10"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <!--旧密码-->
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dp">
+
+                        <EditText
+                            android:id="@+id/oldPassword"
+                            android:layout_weight="1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/yuanjiao_white_bg"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="10.0dip"
+                            android:singleLine="true"
+                            android:hint="旧密码"
+                            android:textColor="#ff111111"
+                            android:textColorHint="#D4D4D4"
+                            android:textSize="16.0sp" />
+
+                    </LinearLayout>
+                    <!--新密码-->
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/space_10"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dp">
+
+                        <EditText
+                            android:id="@+id/newPassword"
+                            android:layout_weight="1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/yuanjiao_white_bg"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="10.0dip"
+                            android:singleLine="true"
+                            android:hint="新密码"
+                            android:textColor="#ff111111"
+                            android:textColorHint="#D4D4D4"
+                            android:textSize="16.0sp" />
+
+                    </LinearLayout>
+                    <!--再次输入新密码-->
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_marginTop="@dimen/space_10"
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dp">
+
+                        <EditText
+                            android:id="@+id/anotherNewPassword"
+                            android:layout_weight="1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/yuanjiao_white_bg"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="10.0dip"
+                            android:singleLine="true"
+                            android:hint="再次输入新密码"
+                            android:textColor="#ff111111"
+                            android:textColorHint="#D4D4D4"
+                            android:textSize="16.0sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout android:background="@color/connet_bgColor" android:layout_width="fill_parent" android:layout_height="1sp"></LinearLayout>
+
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!--保存-->
                 <LinearLayout
                     android:id="@+id/savaAddress"
                     android:clickable="true"

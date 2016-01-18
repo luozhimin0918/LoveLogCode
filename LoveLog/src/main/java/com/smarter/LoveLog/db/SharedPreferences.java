@@ -10,10 +10,14 @@ import com.alibaba.fastjson.JSON;
 public class SharedPreferences {
 //    SharedPreferences.getInstance().putBoolean("islogin", true);
 //    SharedPreferences.getInstance().putString("session", JSON.toJSONString(loginDataActi.getSession()));
-//    SharedPreferences.getInstance().putString("user",JSON.toJSONString(loginDataActi.getUser()));
+//    SharedPreferences.getInstance().putString("user",JSON.toJSONString(loginDataActi.getUser()));//用户信息
 //    SharedPreferences.getInstance().getBoolean("first-time-use", true);
-//    SharedPreferences.getInstance().putString("address-list", JSON.toJSONString(addressDataList));
+//    SharedPreferences.getInstance().putString("address-list", JSON.toJSONString(addressDataList));//地址管理
 //    SharedPreferences.getInstance().putString("quanguo-list", JSON.toJSONString(shengList));
+
+
+//    SharedPreferences.getInstance().putString("usename",user);
+//    SharedPreferences.getInstance().putString("password",pass);
     private static final String SP_NAME = "lovgLog";
 
 

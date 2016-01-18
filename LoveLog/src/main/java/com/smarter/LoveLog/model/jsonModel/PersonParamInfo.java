@@ -14,10 +14,27 @@ public class PersonParamInfo implements Serializable {
   private  String  birthday;
   private  String  sex;
   private  String  user_name;
+  private String sid;
+  private String  uid;
   private String action;
   private String avatar;
   private SessionData session;
 
+  public String getSid() {
+    return sid;
+  }
+
+  public void setSid(String sid) {
+    this.sid = sid;
+  }
+
+  public String getUid() {
+    return uid;
+  }
+
+  public void setUid(String uid) {
+    this.uid = uid;
+  }
 
   public String getAvatar() {
     return avatar;
