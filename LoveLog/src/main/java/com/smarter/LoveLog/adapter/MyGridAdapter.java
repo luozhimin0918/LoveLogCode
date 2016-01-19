@@ -20,13 +20,13 @@ import com.smarter.LoveLog.R;
 public class MyGridAdapter extends BaseAdapter {
     private Context mContext;
 
-    public String[] img_text = { "收货地址", "我的积分", "我的红包", "我的帖子", "转账", "彩票",
-            "服务窗", "手机充值", "芝麻信用","我的帖子","我的红包","我的积分" };
+    public String[] img_text = { "帖子", "评论", "收藏", "关注", "钱包", "红包",
+            "积分", "地址", "消息","通知","咨询","反馈" };
     public int[] imgs = { R.mipmap.grid_icon01, R.mipmap.grid_icon02,
             R.mipmap.grid_icon03,R.mipmap.grid_icon04,
             R.mipmap.grid_icon05,R.mipmap.grid_icon06,
-            R.mipmap.grid_icon07, R.mipmap.grid_icon08, R.mipmap.grid_icon09,R.mipmap.grid_icon04,
-            R.mipmap.grid_icon05,R.mipmap.grid_icon06 };
+            R.mipmap.grid_icon07, R.mipmap.grid_icon08, R.mipmap.grid_icon09,R.mipmap.grid_icon10,
+            R.mipmap.grid_icon11,R.mipmap.grid_icon12 };
 
     public MyGridAdapter(Context mContext) {
         super();
