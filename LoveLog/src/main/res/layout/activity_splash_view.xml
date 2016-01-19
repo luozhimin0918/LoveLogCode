@@ -68,6 +68,7 @@
                 />
             <com.smarter.LoveLog.ui.productViewPager.CirclePageIndicator
                 android:id="@+id/indicator"
+                android:visibility="gone"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_width="match_parent"
@@ -87,7 +88,6 @@
 
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/welcomeBg"
         android:background="@mipmap/welcome"
         android:layout_width="fill_parent"
