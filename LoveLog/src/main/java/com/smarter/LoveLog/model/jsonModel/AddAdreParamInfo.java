@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class AddAdreParamInfo implements Serializable {
 
   private  String  id;
-  private AddAdreParam address;
+  private AddAddressParam address;
   private SessionData session;
 
   public String getId() {
@@ -21,11 +21,11 @@ public class AddAdreParamInfo implements Serializable {
     this.id = id;
   }
 
-  public AddAdreParam getAddress() {
+  public AddAddressParam getAddress() {
     return address;
   }
 
-  public void setAddress(AddAdreParam address) {
+  public void setAddress(AddAddressParam address) {
     this.address = address;
   }
 

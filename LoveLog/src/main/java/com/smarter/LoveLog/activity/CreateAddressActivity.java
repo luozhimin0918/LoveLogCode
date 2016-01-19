@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -25,7 +24,6 @@ import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.address.AddressData;
-import com.smarter.LoveLog.model.address.AddressDataInfo;
 import com.smarter.LoveLog.model.address.QuanGuoAddressDataInfo;
 import com.smarter.LoveLog.model.address.QuanProvinceData;
 import com.smarter.LoveLog.model.address.QuanQuOrXianAddressData;
@@ -34,7 +32,7 @@ import com.smarter.LoveLog.model.address.QuanShiAddressData;
 import com.smarter.LoveLog.model.community.User;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.DataStatusOne;
-import com.smarter.LoveLog.model.jsonModel.AddAdreParam;
+import com.smarter.LoveLog.model.jsonModel.AddAddressParam;
 import com.smarter.LoveLog.model.jsonModel.AddAdreParamInfo;
 import com.smarter.LoveLog.model.jsonModel.PersonParamInfo;
 import com.smarter.LoveLog.model.jsonModel.StatusJsonInfo;
@@ -428,7 +426,7 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
                 if(isCreateAddressTag){
                     AddAdreParamInfo adInfo=new AddAdreParamInfo();
                     adInfo.setSession(sessionData1);
-                    AddAdreParam  param = new AddAdreParam();
+                    AddAddressParam param = new AddAddressParam();
                     //putong
 //                 province,city,district,adressAll;
                     param.setConsignee(name.getText().toString());
@@ -463,7 +461,7 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
                 if(addressData!=null&&isCreatOrUpdate.equals("修改收货地址")){
                     AddAdreParamInfo adInfo=new AddAdreParamInfo();
                     adInfo.setSession(sessionData1);
-                    AddAdreParam  param = new AddAdreParam();
+                    AddAddressParam param = new AddAddressParam();
                     //putong
 //                 province,city,district,adressAll;
                     param.setConsignee(name.getText().toString());
