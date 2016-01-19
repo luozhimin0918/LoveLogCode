@@ -48,6 +48,8 @@ public class RecyclePinglunAdapter extends RecyclerView.Adapter<RecyclePinglunAd
         // 绑定数据到ViewHolder上
         User user=pinglunList.get(i).getUser();
         String UserimageUrl=user.getAvatar();
+        viewHolder.imageTitle.setDefaultImageResId(R.mipmap.loadding);
+        viewHolder.imageTitle.setErrorImageResId(R.mipmap.loadding);
         if(mQueue.getCache().get(UserimageUrl)==null){
             viewHolder.imageTitle.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
         }

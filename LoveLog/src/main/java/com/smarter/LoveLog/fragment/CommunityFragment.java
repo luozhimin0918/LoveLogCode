@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -77,6 +78,15 @@ public class CommunityFragment extends Fragment {
 
 
 
+    @Bind(R.id.progressLinear)
+    LinearLayout progressLinear;
+
+    @Bind(R.id.progreView)
+    ImageView progreView;
+
+
+
+
     private MofanAdapter mAdapter;
     //首页轮播
     private AutoScrollViewPager viewPager;
@@ -118,6 +128,13 @@ public class CommunityFragment extends Fragment {
     }
     private void initData() {
         if(DeviceUtil.checkConnection(mContext)){
+
+            //加载动画
+            progressLinear.setVisibility(View.VISIBLE);
+            AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
+            animationDrawable.start();
+
+
             mRecyclerView.setVisibility(View.VISIBLE);
             networkInfo.setVisibility(View.GONE);
             initNew();
@@ -147,6 +164,9 @@ public class CommunityFragment extends Fragment {
 
                 DataStatus status=communityDataFrag.getStatus();
                 if(status.getSucceed()==1){
+
+                    progressLinear.setVisibility(View.GONE);//消失加载进度
+
                     communityDataInfo=communityDataFrag.getData();
                     if( isLoadReresh==true){
 //                        if(communityDataFrag.getData().equals(communityDataInfo)){
@@ -167,6 +187,7 @@ public class CommunityFragment extends Fragment {
                 }else{
 
                         // 请求失败
+                        progressLinear.setVisibility(View.GONE);
                         mRecyclerView.setVisibility(View.GONE);
                         errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
                         networkInfo.setVisibility(View.VISIBLE);
@@ -178,6 +199,7 @@ public class CommunityFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 //未知错误
+                progressLinear.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.GONE);
                 errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
                 networkInfo.setVisibility(View.VISIBLE);

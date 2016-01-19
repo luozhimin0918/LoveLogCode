@@ -373,17 +373,17 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
                     paramInfo.setAction("change_pwd");
                     String  param= JSON.toJSONString(paramInfo);
 
-                   if(oldPass.length()>=6&&newPass.length()>=6&&anothPass.length()>=6){
-                       if(anothPass.equals(newPass)){
+//                   if(oldPass.length()>=6&&newPass.length()>=6&&anothPass.length()>=6){
+//                       if(anothPass.equals(newPass)){
 
                            networkEditPassWordInfo(param);
 
-                       }else{
-                           Toast.makeText(this,"两次密码不一致",Toast.LENGTH_SHORT).show();
-                       }
-                   }else{
-                       Toast.makeText(this,"密码长度不能小于6个字符",Toast.LENGTH_SHORT).show();
-                   }
+//                       }else{
+//                           Toast.makeText(this,"两次密码不一致",Toast.LENGTH_SHORT).show();
+//                       }
+//                   }else{
+//                       Toast.makeText(this,"密码长度不能小于6个字符",Toast.LENGTH_SHORT).show();
+//                   }
 
                 }
                 /**
@@ -817,7 +817,7 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
                         SharedPreferences.getInstance().putBoolean("islogin", true);
                         SharedPreferences.getInstance().putString("session", JSON.toJSONString(loginDataActi.getSession()));
                         SharedPreferences.getInstance().putString("user", JSON.toJSONString(loginDataActi.getUser()));
-                        Toast.makeText(getApplicationContext(), "重新登录成功", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "重新登录成功", Toast.LENGTH_SHORT).show();
 
 
 

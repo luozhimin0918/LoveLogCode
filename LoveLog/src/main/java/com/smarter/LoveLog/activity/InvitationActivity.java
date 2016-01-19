@@ -3,6 +3,7 @@ package com.smarter.LoveLog.activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +40,7 @@ import com.smarter.LoveLog.model.community.CommunityDataFrag;
 import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.NavIndexUrlData;
+import com.smarter.LoveLog.utills.DeviceUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -66,6 +70,21 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
     TextView tv_top_title;
     @Bind(R.id.search_editText)
     EditText search_editText;
+
+
+    @Bind(R.id.networkInfo)
+    LinearLayout networkInfo;
+    @Bind(R.id.errorInfo)
+    ImageView errorInfo;
+    @Bind(R.id.newLoading)
+    LinearLayout newLoading;
+
+
+    @Bind(R.id.progressLinear)
+    LinearLayout progressLinear;
+
+    @Bind(R.id.progreView)
+    ImageView progreView;
 
 
 
@@ -150,11 +169,41 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
              navIndexUrlData= (NavIndexUrlData) intent.getSerializableExtra("NavIndexUrlData");
             tv_top_title.setText(navIndexUrlData.getName());//设置titlebar 标题
 
-            initData(navIndexUrlData.getId());
-//            Toast.makeText(this, navIndexUrlData.getName() + "", Toast.LENGTH_LONG).show();
+
+            newWait();
+
+
+
+
         }
 
 
+    }
+
+    private void newWait() {
+        if(DeviceUtil.checkConnection(mContext)){
+            //加载动画
+            progressLinear.setVisibility(View.VISIBLE);
+            AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
+            animationDrawable.start();
+
+            mRecyclerView.setVisibility(View.VISIBLE);
+            networkInfo.setVisibility(View.GONE);
+
+
+            initData(navIndexUrlData.getId());
+
+        }else{
+            errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
+            mRecyclerView.setVisibility(View.GONE);
+            networkInfo.setVisibility(View.VISIBLE);
+            newLoading.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  newWait();
+                }
+            });
+        }
     }
 
 
@@ -196,10 +245,12 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
                 DataStatus status=invitationDataActi.getStatus();
                 if(status.getSucceed()==1){
 
-
+                   progressLinear.setVisibility(View.GONE);
 
 
                     if(loadingTag==-1){
+
+
                         List<PromotePostsData> p=invitationDataActi.getData();
                         Log.d("InvitationActivityURL", "" + promotePostDateList.size() + "1111++++promotePostDateList" );
                         for(int i=0;i<p.size();i++){
@@ -224,7 +275,11 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
 
 //                    Log.d("InvitationActivityURL", "" + status.getSucceed() + "++++succeed》》》》" + promotePostDateList.get(0).getCat_name());
                 } else {
-
+                    // 请求失败
+                    progressLinear.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.GONE);
+                    errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
+                    networkInfo.setVisibility(View.VISIBLE);
                         // 请求失败
                         Log.d("InvitationActivityURL", "" + status.getSucceed() + "++++success=0》》》》" );
 
@@ -235,6 +290,11 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
         } ,new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                //未知错误
+                progressLinear.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.GONE);
+                errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
+                networkInfo.setVisibility(View.VISIBLE);
                 Log.d("InvitationActivityURL", "errror" + volleyError.toString() + "++++》》》》" );
             }
         });

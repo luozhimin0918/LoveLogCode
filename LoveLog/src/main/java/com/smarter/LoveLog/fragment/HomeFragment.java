@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,6 +71,14 @@ public class HomeFragment extends Fragment {
     LinearLayout newLoading;
 
 
+    @Bind(R.id.progressLinear)
+    LinearLayout progressLinear;
+
+    @Bind(R.id.progreView)
+    ImageView progreView;
+
+
+
 
 
     private HomeAdapter mAdapter;
@@ -96,6 +105,7 @@ public class HomeFragment extends Fragment {
 
     HomeDataInfo  homeDataInfo=null;//homeFragment所有数据
     ImagePagerAdapter imagePagerAdapter;//首页轮播的界面的adapter
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -124,6 +134,11 @@ public class HomeFragment extends Fragment {
     private void initData() {
 
         if(DeviceUtil.checkConnection(mContext)){
+            //加载动画
+            progressLinear.setVisibility(View.VISIBLE);
+            AnimationDrawable     animationDrawable = (AnimationDrawable) progreView.getDrawable();
+            animationDrawable.start();
+
             mRecyclerView.setVisibility(View.VISIBLE);
             networkInfo.setVisibility(View.GONE);
             initNew();
@@ -156,6 +171,10 @@ public class HomeFragment extends Fragment {
 
                         DataStatus  status=homeDataFrag.getStatus();
                         if(status.getSucceed()==1){
+
+
+                            progressLinear.setVisibility(View.GONE);//网络加载成功
+
                             homeDataInfo=homeDataFrag.getData();
                             if( isLoadReresh==true){
     //                        if(communityDataFrag.getData().equals(communityDataInfo)){
@@ -173,6 +192,7 @@ public class HomeFragment extends Fragment {
                             Log.d("HomeFragmentURL", "" + status.getSucceed() + "++++succeed》》》》" + homeDataInfo.getSlider().get(0).getImage_url());
                         }else{
                             // 请求失败 无数据
+                            progressLinear.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.GONE);
                             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
                             networkInfo.setVisibility(View.VISIBLE);
@@ -186,6 +206,7 @@ public class HomeFragment extends Fragment {
             public void onErrorResponse(VolleyError arg0) {
                 // TODO Auto-generated method stub
                 //未知错误
+                progressLinear.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.GONE);
                 errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
                 networkInfo.setVisibility(View.VISIBLE);

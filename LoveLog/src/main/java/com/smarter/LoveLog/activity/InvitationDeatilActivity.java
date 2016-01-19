@@ -2,6 +2,7 @@ package com.smarter.LoveLog.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
 import com.smarter.LoveLog.ui.ProgressWebView;
+import com.smarter.LoveLog.utills.DeviceUtil;
 
 
 import java.util.HashMap;
@@ -61,6 +63,22 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     XRecyclerView mRecyclerView;
     @Bind(R.id.alphaBar)
     LinearLayout alphaBar;
+
+    @Bind(R.id.networkInfo)
+    LinearLayout networkInfo;
+    @Bind(R.id.errorInfo)
+    ImageView errorInfo;
+    @Bind(R.id.newLoading)
+    LinearLayout newLoading;
+
+
+    @Bind(R.id.progressLinear)
+    LinearLayout progressLinear;
+
+    @Bind(R.id.progreView)
+    ImageView progreView;
+
+
     ImageView imageTopHeader;
     McoyScrollView invitation_Detail_scrollview;
     LinearLayout imglist;
@@ -137,7 +155,6 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     private void intData() {
         alphaBar.getBackground().setAlpha(0);
 
-//        initRecycleViewVertical();//评论刷新
 
 
 
@@ -158,6 +175,10 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         createImgListTop();//加载top图片
 
 
+        //webVIew
+        webview=(ProgressWebView) header.findViewById(R.id.webview);
+        createWebview();
+
         imageTitle=(CircleNetworkImage) header.findViewById(R.id.imageTitle);
        createUseImag();
 
@@ -170,12 +191,6 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         titleText=(TextView) header.findViewById(R.id.titleText);
         titleText.setText(promotePostsData.getTitle());
 
-
-        //webVIew
-        webview=(ProgressWebView) header.findViewById(R.id.webview);
-        createWebview();
-
-//        invitation_Detail_scrollview= (McoyScrollView) header.findViewById(R.id.invitation_Detail_scrollview);
 
         mRecyclerView.addHeaderView(header);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -205,14 +220,22 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
             }
         });
 
-        // 创建数据集
-//        String[] dataset = new String[]{"用户名/昵称","绑定手机号","性别","会员等级","修改密码","收货地址"};
-//        String[] dataValue=new String[]{"美羊羊","15083806689","男","V0初级会员","",""};
+
+
+
+        /**
+         * 加载完网页再加载评论
+         */
         List<Pinglun> pinglun=promotePostsData.getCmt();
         // 创建Adapter，并指定数据集
         RecyclePinglunAdapter adapter = new RecyclePinglunAdapter(pinglun);
         // 设置Adapter
         mRecyclerView.setAdapter(adapter);
+
+
+
+
+
 
     }
 
@@ -231,8 +254,15 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
             @Override
             public void onPageFinished(WebView view, String url) {
                 // TODO Auto-generated method stub
-                super.onPageFinished(view, url);
+
+
+
                 view.loadUrl("javascript:alert( $('#app_data').html() )");
+                super.onPageFinished(view, url);
+
+
+
+
             }
 
         });
@@ -270,40 +300,30 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         });
 
 
-        webview.loadUrl("http://mapp.aiderizhi.com/?url=/post/content&id="+promotePostsData.getId());
+        webview.loadUrl("http://mapp.aiderizhi.com/?url=/post/content&id=" + promotePostsData.getId());
     }
 
     //头图片，多个两个图片
     private void createImgListTop() {
+
         imglist.removeAllViews();
-        String[] imglistString=new String [1];
+        String imglistString="";
         PromotePostsData promotePostsDataItem=promotePostsData;
         if(promotePostsDataItem.getImg().getCover()!=null &&!promotePostsDataItem.getImg().getCover().equals("")){
-            imglistString[0]=promotePostsDataItem.getImg().getCover();
+            imglistString=promotePostsDataItem.getImg().getCover();
         }
-       /* if(promotePostsDataItem.getImg().getThumb()!=null&&!promotePostsDataItem.getImg().getThumb().equals("")){
-            imglistString[1]=promotePostsDataItem.getImg().getThumb();
-        }*/
 
-        for(int i=0;i<imglistString.length;i++){
-//            NetworkImageView networkImageViewListOne  = new NetworkImageView(mContext);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 650);
 
-            if(i==1){
-                params.setMargins(0,5,0,0);
+            View view = View.inflate(this, R.layout.item_image_invitation, null);
+            NetworkImageView img = (NetworkImageView) view.findViewById(R.id.iv_item);
+            img.setDefaultImageResId(R.mipmap.loadding);
+            img.setErrorImageResId(R.mipmap.loadding);
+            if(mQueue.getCache().get(imglistString)==null){
+                img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(1000));
             }
-            imgTop.setLayoutParams(params);
-            imgTop.setScaleType(ImageView.ScaleType.FIT_XY);
-            imgTop.setDefaultImageResId(R.mipmap.loadding);
-            imgTop.setErrorImageResId(R.mipmap.loadding);
+            img.setImageUrl(imglistString, AppContextApplication.getInstance().getmImageLoader());
+            imglist.addView(view);
 
-            if(mQueue.getCache().get(imglistString[i])==null){
-                imgTop.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
-            }
-            imgTop.setImageUrl(imglistString[i], AppContextApplication.getInstance().getmImageLoader());
-//            imglist.addView(networkImageViewListOne);
-
-        }
 
     }
 
@@ -311,11 +331,35 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         Intent intent = getIntent();
         if(intent!=null){
             postsData = (PromotePostsData) intent.getSerializableExtra("PromotePostsData");
-            initData(postsData.getId());
+
+
+            newLoad();
         }
    }
 
+    private void newLoad() {
 
+        if(DeviceUtil.checkConnection(mContext)){
+            //加载动画
+            progressLinear.setVisibility(View.VISIBLE);
+            AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
+            animationDrawable.start();
+
+            mRecyclerView.setVisibility(View.VISIBLE);
+            networkInfo.setVisibility(View.GONE);
+            initData(postsData.getId());
+        }else{
+            errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
+            mRecyclerView.setVisibility(View.GONE);
+            networkInfo.setVisibility(View.VISIBLE);
+            newLoading.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    newLoad();
+                }
+            });
+        }
+    }
 
 
     private void initData(final String id) {
@@ -334,6 +378,9 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
                 DataStatus status = invitationDataDeatil.getStatus();
                 if (status.getSucceed() == 1) {
+
+                    progressLinear.setVisibility(View.GONE);
+
                     promotePostsData = invitationDataDeatil.getData();
                     if(promotePostsData!=null){
                         initRecycle();
@@ -341,7 +388,11 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
                     Log.d("invitationDeatil", "" + status.getSucceed() + "++++succeed" );
                 } else {
-
+                    // 请求失败
+                    progressLinear.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.GONE);
+                    errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
+                    networkInfo.setVisibility(View.VISIBLE);
                     // 请求失败
                     Log.d("invitationDeatil", "succeded=0>>>" + status.getSucceed() + "");
 
@@ -352,6 +403,11 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                //未知错误
+                progressLinear.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.GONE);
+                errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
+                networkInfo.setVisibility(View.VISIBLE);
                 Log.d("invitationDeatil", "errror" + volleyError.toString() + "");
             }
         });

@@ -103,49 +103,26 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
 
         //imgList  多个图片list
         viewHolder.imglist.removeAllViews();
-        String[] imglistString=new String [1];
+        String imglistString="";
         PromotePostsData promotePostsDataItem=promotePostsDataList.get(position);
         if(promotePostsDataItem.getImg().getCover()!=null&&!promotePostsDataItem.getImg().getCover().equals("")){
-            imglistString[0]=promotePostsDataItem.getImg().getCover();
+            imglistString=promotePostsDataItem.getImg().getCover();
         }
-        /*if(promotePostsDataItem.getImg().getThumb()!=null&&!promotePostsDataItem.getImg().getThumb().equals("")){
-            imglistString[1]=promotePostsDataItem.getImg().getThumb();
-        }*/
-        for(int i=0;i<imglistString.length;i++){
+
+
             View view = View.inflate(viewGroup.getContext(), R.layout.item_image_invitation, null);
               NetworkImageView img = (NetworkImageView) view.findViewById(R.id.iv_item);
-              LinearLayout layout = (LinearLayout) view.findViewById(R.id.layout);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
-           /* if(i==1){
-                params.setMargins(0,20,0,0);
-                layout.setLayoutParams(params);
 
-            }*/
             img.setDefaultImageResId(R.mipmap.loadding);
             img.setErrorImageResId(R.mipmap.loadding);
-            if(mQueue.getCache().get(imglistString[i])==null){
-                img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(1000));
+            if(mQueue.getCache().get(imglistString)==null){
+                img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
             }
-            img.setImageUrl(imglistString[i], AppContextApplication.getInstance().getmImageLoader());
+            img.setImageUrl(imglistString, AppContextApplication.getInstance().getmImageLoader());
             viewHolder.imglist.addView(view);
-           /* NetworkImageView networkImageViewListOne  = new NetworkImageView(mContext);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 650);
 
-            if(i==1){
-                params.setMargins(0,20,0,0);
-            }
-            networkImageViewListOne.setLayoutParams(params);
-            networkImageViewListOne.setScaleType(ImageView.ScaleType.FIT_XY);
-            networkImageViewListOne.setDefaultImageResId(R.mipmap.loadding);
-            networkImageViewListOne.setErrorImageResId(R.mipmap.loadding);
 
-            if(mQueue.getCache().get(imglistString[i])==null){
-                networkImageViewListOne.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
-            }
-            networkImageViewListOne.setImageUrl(imglistString[i], AppContextApplication.getInstance().getmImageLoader());
-            viewHolder.imglist.addView(networkImageViewListOne);*/
 
-        }
 
 
         //精华，热门

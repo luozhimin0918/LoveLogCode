@@ -356,7 +356,7 @@
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="10.0dip"
                             android:singleLine="true"
-                            android:hint="旧密码"
+                            android:hint="原密码"
                             android:textColor="#ff111111"
                             android:textColorHint="#D4D4D4"
                             android:textSize="16.0sp" />
@@ -389,6 +389,7 @@
                     </LinearLayout>
                     <!--再次输入新密码-->
                     <LinearLayout
+                        android:visibility="gone"
                         android:gravity="center_vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
