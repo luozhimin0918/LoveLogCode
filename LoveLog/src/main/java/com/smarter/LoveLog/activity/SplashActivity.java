@@ -257,19 +257,19 @@ private  void  loadingImage(){
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                  if(mQueue.getCache().get(startImgData.getImg())!=null){
+//                  if(mQueue.getCache().get(startImgData.getImg())!=null){
 
                       welcomeBg.setVisibility(View.GONE);
                       fraglay.setVisibility(View.VISIBLE);
 
                       startAnima();
-                     textData.setText(new String(mQueue.getCache().get(startImgData.getImg()).data).toString());
-                 }else{
-                      Intent intent = new Intent(mContext, MainActivity.class);
-                      mContext.startActivity(intent);
-                      finish();
-                      Log.d("SplashActivity"," null cache");
-                  }
+//                     textData.setText(new String(mQueue.getCache().get(startImgData.getImg()).data).toString());
+//                 }else{
+//                      Intent intent = new Intent(mContext, MainActivity.class);
+//                      mContext.startActivity(intent);
+//                      finish();
+//                      Log.d("SplashActivity"," null cache");
+//                  }
             }
         }, 3000);
 
