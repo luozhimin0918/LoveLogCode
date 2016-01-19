@@ -756,11 +756,11 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
                         }
                         Toast.makeText(getApplicationContext(), toastStr, Toast.LENGTH_LONG).show();
 
-                       /* String username =SharedPreferences.getInstance().getString("usename","");
+                        String username =SharedPreferences.getInstance().getString("usename","");
                         String password=SharedPreferences.getInstance().getString("password", "");
                         if(username!=null&&!username.equals("")&&password!=null&&!password.equals("")){
                             RepeatLoginBut(username,password,"","");
-                        }*/
+                        }
                         Log.d("CreateAddressActivity", "modift 成功返回信息：   " + JSON.toJSONString(userTou)+ "++++succeed");
                     }
 
@@ -822,11 +822,9 @@ public class CreateAddressActivity extends BaseFragmentActivity implements View.
                         Toast.makeText(getApplicationContext(), "重新登录成功", Toast.LENGTH_SHORT).show();
 
 
-                        if(isEditPassword){
 
-                        }else {
                             finish();
-                        }
+
 
                         Log.d("CreateAddressActivity", "登录信息：   "+JSON.toJSONString(loginDataActi.getSession())+"" + JSON.toJSONString(loginDataActi.getUser())+ "++++succeed");
                     }
