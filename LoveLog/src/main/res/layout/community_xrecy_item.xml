@@ -143,6 +143,7 @@
                            android:text="好喜欢这款爱的日志面膜啊，一定要要推荐给我的闺蜜。补水杠杆的好喜欢这款爱的日志面膜啊，一定要要推荐给我的闺蜜。补水杠杆的。水补杠杆的。"
                            android:textSize="13sp"
                            android:textColor="#989898"
+                           android:lineSpacingMultiplier="1.5"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:id="@+id/brief" />
