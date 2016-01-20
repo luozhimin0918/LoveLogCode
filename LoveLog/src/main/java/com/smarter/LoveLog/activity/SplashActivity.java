@@ -11,9 +11,11 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -30,6 +32,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import  com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.BitmapCache;
 import com.smarter.LoveLog.db.Data;
@@ -246,7 +249,7 @@ private  void  loadingImage(){
         netWorkImageView.setDefaultImageResId(R.mipmap.welcome);
         netWorkImageView.setErrorImageResId(R.mipmap.welcome);
         netWorkImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        netWorkImageView.setImageUrl( startImgData.getImg(), AppContextApplication.getInstance().getmImageLoader());
+        netWorkImageView.setImageUrl(startImgData.getImg(), AppContextApplication.getInstance().getmImageLoader());
 
         try {
             textData.setText(DataCleanManager.getTotalCacheSize(mContext));//缓存get大小
@@ -254,13 +257,15 @@ private  void  loadingImage(){
             e.printStackTrace();
         }
 
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                  if(mQueue.getCache().get(startImgData.getImg())!=null){
 
+//                  if(mQueue.getCache().get(startImgData.getImg())!=null){
                       welcomeBg.setVisibility(View.GONE);
                       fraglay.setVisibility(View.VISIBLE);
+
 
                       startAnima();
 //                     textData.setText(new String(mQueue.getCache().get(startImgData.getImg()).data).toString());
@@ -268,10 +273,10 @@ private  void  loadingImage(){
 //                      Intent intent = new Intent(mContext, MainActivity.class);
 //                      mContext.startActivity(intent);
 //                      finish();
-//                      Log.d("SplashActivity"," null cache");
+//                      Log.d("SplashActivity", " null cache");
 //                  }
             }
-        }, 3000);
+        }, 1000);
 
     }
 
@@ -279,15 +284,40 @@ private  void  loadingImage(){
 
     private void startAnima() {
         // 设置缩放动画
-        final ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f,
-                Animation.RELATIVE_TO_SELF, 0.3f, Animation.RELATIVE_TO_SELF, 0.4f);
-        scaleAnimation.setInterpolator(new LinearInterpolator());
-        scaleAnimation.setDuration(2000);//设置动画持续时间
-        //** 常用方法
-        scaleAnimation.setRepeatCount(0);//设置重复次数
-        scaleAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
-        scaleAnimation.setStartOffset(1000);//执行前的等待时间
-        scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+//        final ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f,
+//                Animation.RELATIVE_TO_SELF, 0.3f, Animation.RELATIVE_TO_SELF, 0.4f);
+//        scaleAnimation.setInterpolator(new LinearInterpolator());
+//        scaleAnimation.setDuration(2000);//设置动画持续时间
+//        //** 常用方法
+//        scaleAnimation.setRepeatCount(0);//设置重复次数
+//        scaleAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+//        scaleAnimation.setStartOffset(1000);//执行前的等待时间
+//        scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//
+//                Intent intent = new Intent(mContext, MainActivity.class);
+//                mContext.startActivity(intent);
+//                finish();
+//
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//
+//            }
+//        });
+
+        AlphaAnimation inAlphaAnimation = new AlphaAnimation(0, 1);
+        inAlphaAnimation.setRepeatCount(0);//设置重复次数
+        inAlphaAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+        inAlphaAnimation.setDuration(3000);
+        inAlphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -295,11 +325,9 @@ private  void  loadingImage(){
 
             @Override
             public void onAnimationEnd(Animation animation) {
-
                 Intent intent = new Intent(mContext, MainActivity.class);
                 mContext.startActivity(intent);
                 finish();
-
             }
 
             @Override
@@ -307,7 +335,9 @@ private  void  loadingImage(){
 
             }
         });
-        netWorkImageView.startAnimation(scaleAnimation);
+//        netWorkImageView.startAnimation(scaleAnimation);
+
+            netWorkImageView.startAnimation(inAlphaAnimation);
     }
 
 
@@ -344,7 +374,28 @@ private  void  loadingImage(){
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    welcomeBg.setVisibility(View.GONE);
+                    TranslateAnimation Animation=new TranslateAnimation(0, -1500, 0, 0);
+
+                    Animation.setDuration(1000);//设置动画持续时间为3秒
+                    Animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            welcomeBg.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    welcomeBg.startAnimation(Animation);
+
+
                 }
             }, 2000);
 
@@ -373,6 +424,20 @@ private  void  loadingImage(){
 //            netImageView.setErrorImageResId(R.mipmap.welcome);
             netImageView.setScaleType(ImageView.ScaleType.FIT_XY);
             netImageView.setImageUrl(guideList.get(position).getImg(), AppContextApplication.getInstance().getmImageLoader());
+
+            if(position==guideList.size()-1){
+                netImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, MainActivity.class);
+                        mContext.startActivity(intent);
+                        finish();
+                        overridePendingTransition(R.anim.in_from_right,
+                                R.anim.out_to_left);
+                        SharedPreferences.getInstance().putBoolean("first-time-use", false);
+                    }
+                });
+            }
           /*  ImageView item = new ImageView(SplashActivity.this);
             item.setScaleType(ImageView.ScaleType.CENTER_CROP);
             item.setImageResource(images[position]);*/

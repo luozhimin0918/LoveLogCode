@@ -3,6 +3,7 @@ package com.smarter.LoveLog.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -208,8 +209,12 @@ public class HomeFragment extends Fragment {
                 //未知错误
                 progressLinear.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.GONE);
-                errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
                 networkInfo.setVisibility(View.VISIBLE);
+                try {
+                    errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
+                }
                 Log.d("HomeFragmentURL", "Error  HomeDataFrag>>>" );
             }
         });
