@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,12 +14,17 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,15 +36,23 @@ import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.RecyclePinglunAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
-import com.smarter.LoveLog.model.category.InvitationDataActi;
 import com.smarter.LoveLog.model.category.InvitationDataDeatil;
+import com.smarter.LoveLog.model.community.CollectData;
+import com.smarter.LoveLog.model.community.CollectDataInfo;
 import com.smarter.LoveLog.model.community.Pinglun;
 import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.model.community.User;
+import com.smarter.LoveLog.model.community.ZanOrFaroDataInfo;
+import com.smarter.LoveLog.model.community.ZanOrfaroData;
 import com.smarter.LoveLog.model.home.DataStatus;
+import com.smarter.LoveLog.model.jsonModel.ZanOrFaroviteParame;
+import com.smarter.LoveLog.model.loginData.PersonalDataInfo;
+import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
-import com.smarter.LoveLog.ui.ProgressWebView;
+import com.smarter.LoveLog.ui.QCheckBox;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 
@@ -78,6 +90,21 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     @Bind(R.id.progreView)
     ImageView progreView;
 
+    @Bind(R.id.backBut)
+    ImageView backBut;
+    @Bind(R.id.zanBut)
+    QCheckBox zanBut;
+    @Bind(R.id.collectBut)
+    QCheckBox collectBut;
+
+    @Bind(R.id.pinglunBut)
+    TextView pinglunBut;
+
+
+
+
+
+
 
     ImageView imageTopHeader;
     McoyScrollView invitation_Detail_scrollview;
@@ -87,7 +114,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     TextView titleText,userName,AddTime;
     CircleNetworkImage imageTitle;
     NetworkImageView imgTop;//头图片
-    ProgressWebView webview;
+    WebView webview;
 
 
     PromotePostsData postsData;//上个页面传的item帖子数据
@@ -110,6 +137,9 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     }
 
     private void setListen() {
+        backBut.setOnClickListener(this);
+        zanBut.setOnClickListener(this);
+        collectBut.setOnClickListener(this);
         /*invitation_Detail_scrollview.setOnJDScrollListener(new McoyScrollView.OnJDScrollListener() {
             @Override
             public void onScroll(int x, int y, int oldx, int oldy) {
@@ -176,12 +206,23 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
 
         //webVIew
-        webview=(ProgressWebView) header.findViewById(R.id.webview);
+        webview=(WebView) header.findViewById(R.id.webview);
         createWebview();
 
         imageTitle=(CircleNetworkImage) header.findViewById(R.id.imageTitle);
        createUseImag();
 
+        if(promotePostsData.getIs_like().equals("1")){
+            zanBut.setChecked(true);
+        }
+        zanBut.setText(promotePostsData.getLike_count());//点赞
+
+
+        if(promotePostsData.getIs_collect().equals("1")){
+            collectBut.setChecked(true);
+        }
+        pinglunBut.setText(promotePostsData.getCmt_count()+"");//评论数
+        collectBut.setText(promotePostsData.getCollect_count());//收藏
 
         userName=(TextView) header.findViewById(R.id.userName);
         userName.setText(promotePostsData.getUser().getName());
@@ -193,7 +234,9 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
 
         mRecyclerView.addHeaderView(header);
-        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mRecyclerView.setPullRefreshEnabled(false);
+//        mRecyclerView.setOverScrollMode(View.OVER_SCROLL_ALWAY);
+       /* mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
 
@@ -220,7 +263,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
             }
         });
 
-
+*/
 
 
         /**
@@ -366,8 +409,23 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         String url = "http://mapp.aiderizhi.com/?url=/post/detail";//
 
         Map<String, String> map = new HashMap<String, String>();
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if(isLogin){
+            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+            sessionData = JSON.parseObject(sessionString,SessionData.class);
+            if(sessionData!=null){
 
-            map.put("id", id);
+                ZanOrFaroviteParame zanOrFaroviteInfo=new ZanOrFaroviteParame();
+                zanOrFaroviteInfo.setSession(sessionData);
+                zanOrFaroviteInfo.setId(id);
+                map.put("json", JSON.toJSONString(zanOrFaroviteInfo));
+
+            }
+
+        }else{
+            map.put("json", id);
+        }
+
 
 
 
@@ -416,11 +474,61 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
         mQueue.add(fastJsonCommunity);
     }
+
+
+
+
+
     @Override
     public void onClick(View v) {
+        String url = "";//
          switch (v.getId()){
-
+             case R.id.backBut:
+                 finish();
+                  break;
+             case R.id.zanBut:
+                 url = "http://mapp.aiderizhi.com/?url=/digg";//点赞
+                    initIsLogonParame(url);
+                 break;
+             case R.id.collectBut:
+                 url = "http://mapp.aiderizhi.com/?url=/collect";//收藏
+                 initIsLogonParame(url);
+                 break;
          }
+    }
+
+
+
+    SessionData   sessionData;
+    private void initIsLogonParame(String url) {
+
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if(isLogin){
+            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+            sessionData = JSON.parseObject(sessionString,SessionData.class);
+            if(sessionData!=null){
+
+                ZanOrFaroviteParame zanOrFaroviteInfo=new ZanOrFaroviteParame();
+                  zanOrFaroviteInfo.setSession(sessionData);
+                  zanOrFaroviteInfo.setId(promotePostsData.getId());
+                  zanOrFaroviteInfo.setType("2");
+
+
+
+                         if(url.endsWith("digg")){
+                             networkTieZan(JSON.toJSONString(zanOrFaroviteInfo),url);
+                         }
+                         if(url.endsWith("collect")){
+                             networkTieCollect(JSON.toJSONString(zanOrFaroviteInfo),url);
+                         }
+
+
+
+            }
+
+        }else{
+            Toast.makeText(getApplicationContext(), "未登录，请先登录" , Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -450,6 +558,125 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         });
 
     }*/
+
+
+    /**
+     * 帖子点赞
+     */
+    ZanOrfaroData zanOrfaroData;
+    private void networkTieZan(String paramNet,String url) {
+
+        Map<String, String> mapTou = new HashMap<String, String>();
+        mapTou.put("json", paramNet);
+
+
+
+
+        Log.d("invitationDeatil", paramNet + "      ");
+
+
+        FastJsonRequest<ZanOrFaroDataInfo> fastJsonCommunity = new FastJsonRequest<ZanOrFaroDataInfo>(Request.Method.POST, url, ZanOrFaroDataInfo.class, null, new Response.Listener<ZanOrFaroDataInfo>() {
+            @Override
+            public void onResponse(ZanOrFaroDataInfo zanOrFaroDataInfo) {
+
+                DataStatus status = zanOrFaroDataInfo.getStatus();
+                if (status.getSucceed() == 1) {
+                    zanOrfaroData = zanOrFaroDataInfo.getData();
+                    if(zanOrfaroData!=null){
+                        zanBut.setText(zanOrfaroData.getLike_count());
+                        zanBut.setChecked(true);
+                        Log.d("invitationDeatil", "invitationDeatil 成功返回信息：   " + JSON.toJSONString(zanOrfaroData)+ "++++succeed");
+                    }
+
+
+                } else {
+
+                    // 请求失败
+                    Log.d("invitationDeatil", "succeded=0  invitationDeatil 返回信息 " + JSON.toJSONString(status) + "");
+                    Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("invitationDeatil", "errror" + volleyError.toString() + "");
+            }
+        });
+        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        fastJsonCommunity.setParams(mapTou);
+        fastJsonCommunity.setShouldCache(true);
+        mQueue.add(fastJsonCommunity);
+    }
+
+
+
+
+
+
+    /**
+     * 帖子收藏
+     */
+    CollectData collectData;
+    private void networkTieCollect(String paramNet,String url) {
+
+        Map<String, String> mapTou = new HashMap<String, String>();
+        mapTou.put("json", paramNet);
+
+
+
+
+        Log.d("invitationDeatil", paramNet + "      ");
+
+
+        FastJsonRequest<CollectDataInfo> fastJsonCommunity = new FastJsonRequest<CollectDataInfo>(Request.Method.POST, url, CollectDataInfo.class, null, new Response.Listener<CollectDataInfo>() {
+            @Override
+            public void onResponse(CollectDataInfo collectDataInfo) {
+
+                DataStatus status = collectDataInfo.getStatus();
+                if (status.getSucceed() == 1) {
+                    collectData = collectDataInfo.getData();
+                    if(collectData!=null){
+                        collectBut.setText(collectData.getCollect_count());
+                        if(collectData.getIs_collect().equals("1")){
+                            collectBut.setChecked(true);
+                        }else {
+                            collectBut.setChecked(false);
+                        }
+                        Toast.makeText(getApplicationContext(), "" + collectData.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("invitationDeatil", "invitationDeatil 成功返回信息：   " + JSON.toJSONString(zanOrfaroData)+ "++++succeed");
+                    }
+
+
+                } else {
+
+                    // 请求失败
+                    Log.d("invitationDeatil", "succeded=0  invitationDeatil 返回信息 " + JSON.toJSONString(status) + "");
+                    Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("invitationDeatil", "errror" + volleyError.toString() + "");
+            }
+        });
+        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        fastJsonCommunity.setParams(mapTou);
+        fastJsonCommunity.setShouldCache(true);
+        mQueue.add(fastJsonCommunity);
+    }
+
+
+
+
 
 
 }

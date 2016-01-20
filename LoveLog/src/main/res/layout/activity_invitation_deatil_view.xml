@@ -85,35 +85,114 @@
 
 
 
-
+        <View
+            android:background="@color/connet_bgColor"
+            android:layout_width="fill_parent"
+            android:layout_height="1sp"></View>
         <!--悬浮栏-->
         <LinearLayout
-            android:layout_width="fill_parent" android:layout_height="@dimen/bottom_height" android:background="@color/white" android:orientation="horizontal">
+            android:layout_width="fill_parent" android:layout_height="@dimen/bottom_height" android:gravity="center_vertical" android:background="@color/white" android:orientation="horizontal">
 
 
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.9"
                 android:orientation="horizontal"
-                android:background="@color/top_bar_bgColor"
-                android:gravity="center">
-                <ImageView
-                    android:background="@mipmap/momeny"
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="@dimen/space_10"
+                android:gravity="center_vertical"
+                android:layout_height="fill_parent">
+                <com.smarter.LoveLog.ui.QCheckBox
+                    android:button="@null"
+                    android:id="@+id/zanBut"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="0"
+                    android:padding="@dimen/space_5"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/zan_checkbox_button"
+                    android:textColor="#929292"
+                    android:textSize="14sp" />
+                <com.smarter.LoveLog.ui.QCheckBox
+                    android:id="@+id/collectBut"
+                    android:button="@null"
+                    android:layout_marginLeft="@dimen/space_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="0"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/collect_checkbox_button"
+                    android:textColor="#929292"
+                    android:textSize="14sp" />
                 <TextView
-                    android:text="打赏TA"
-                    android:layout_marginLeft="@dimen/space_2"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
+                    android:id="@+id/sharePic"
+                    android:layout_marginLeft="@dimen/space_10"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                </LinearLayout>
-            <LinearLayout android:layout_width="1dp" android:background="@color/connet_bgColor" android:layout_height="fill_parent" android:orientation="horizontal"></LinearLayout>
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:drawablePadding="5dp"
+                    android:text="分享"
+                    android:drawableLeft="@mipmap/share_tiezi"
+                    android:textColor="#929292"
+                    android:textSize="13sp" />
 
-            <LinearLayout
+                <TextView
+                    android:id="@+id/pinglunBut"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:drawablePadding="10dp"
+                    android:text="0"
+                    android:drawableLeft="@mipmap/message_tiezi"
+                    android:textColor="#929292"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                    <ImageView
+                        android:id="@+id/reword"
+                        android:gravity="center"
+                        android:background="@mipmap/reword"
+                       android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+           <!-- <LinearLayout
+                android:layout_width="fill_parent"
+
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <CheckBox
+                    android:button="@null"
+                    android:layout_gravity="right"
+                    android:padding="@dimen/space_10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="2"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@mipmap/reword"
+                    android:textColor="#929292"
+                    android:textSize="18sp" />
+
+            </LinearLayout>-->
+
+           <!-- <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
@@ -139,7 +218,7 @@
                     android:textColorHint="#D4D4D4"
                     android:textSize="13.0sp" >
                 </EditText>
-            </LinearLayout>
+            </LinearLayout>-->
 
 
         </LinearLayout>

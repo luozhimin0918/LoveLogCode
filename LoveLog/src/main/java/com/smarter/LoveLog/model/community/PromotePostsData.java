@@ -17,12 +17,14 @@ public class PromotePostsData implements Serializable {
     private String content;
     private String is_best;
     private String is_hot;
+    private String is_collect;
     private String audit;
     private String brief;
     private String cat_name;
     private String cat_url;
     private String like_count;
     private String reward_count;
+    private String collect_count;
     private String click_count;
     private String cmt_count;
 
@@ -33,8 +35,21 @@ public class PromotePostsData implements Serializable {
     private User    user;
     private Img    img;
 
+    public String getCollect_count() {
+        return collect_count;
+    }
 
+    public void setCollect_count(String collect_count) {
+        this.collect_count = collect_count;
+    }
 
+    public String getIs_collect() {
+        return is_collect;
+    }
+
+    public void setIs_collect(String is_collect) {
+        this.is_collect = is_collect;
+    }
 
     public String getId() {
         return id;

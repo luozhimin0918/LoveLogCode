@@ -74,7 +74,7 @@
                     <LinearLayout
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-
+                        android:layout_marginTop="@dimen/space_5"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content">
 
@@ -113,42 +113,29 @@
                     </LinearLayout>
 
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
 
-                        <!-- <TextView
-                             android:text="邦蚕丝面膜采用天然植物纤维通过世界先进的织法工艺，使其具有良好的弹力和韧性，敷在脸上后能根据不同脸型拉伸调整size,使之照顾到肌肤的各个角落，完美贴合肌肤轮廓，不留缝隙，达到暂时封闭肌肤，打开肌肤毛孔，吸饱精华液，完美护肤、柔软丝滑。新一代杜邦蚕丝面膜纤维采用全新的有机溶剂纺丝工艺，具有真丝的光泽、柔软的手感、良好的吸水性、优美的垂坠性、天然透气性、抗静电等优异功能，让肌肤享受丝般柔滑细致的敷膜感受。            由于每个人的皮肤对营养和水份的需求量不同，敷膜的季节和环境也不相同，用硬性的时间来掌控敷膜时间是不科学的。新一代蚕丝面膜材质，能根据季节、皮肤含水量、面膜精华的多少来确定每个人的具体敷膜时间(面膜泛白即可取下)，有助于提高使用面膜的科学性和精确性。"
-                             android:textSize="18sp"
-                             android:textColor="#353535"
-                             android:lineSpacingMultiplier="1.2"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content" />
-                         <TextView
-                             android:text="   邦蚕丝面膜采用天然植物纤维，通过世界先进的织法工艺，使其具有良好的弹力和韧性，敷在脸上后能根据不同脸型拉伸调整size,使之照顾到肌肤的各个角落，完美贴合肌肤轮廓，不留缝隙，达到暂时封闭肌肤，打开肌肤毛孔，吸饱精华液，完美护肤、柔软丝滑。新一代杜邦蚕丝面膜纤维采用全新的有机溶剂纺丝工艺，具有真丝的光泽、柔软的手感、良好的吸水性、优美的垂坠性、天然透气性、抗静电等优异功能，让肌肤享受丝般柔滑细致的敷膜感受。            由于每个人的皮肤对营养和水份的需求量不同，敷膜的季节和环境也不相同，用硬性的时间来掌控敷膜时间是不科学的。新一代蚕丝面膜材质，能根据季节、皮肤含水量、面膜精华的多少来确定每个人的具体敷膜时间(面膜泛白即可取下)，有助于提高使用面膜的科学性和精确性。"
-                             android:textSize="18sp"
-                             android:textColor="#353535"
-                             android:lineSpacingMultiplier="1.2"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content" />-->
-                    </LinearLayout>
 
 
 
                 </LinearLayout>
 
-                <com.smarter.LoveLog.ui.ProgressWebView
+              <!--  <com.smarter.LoveLog.ui.ProgressWebView
                     android:id="@+id/webview"
-                    android:layout_marginLeft="@dimen/space_5"
-                    android:layout_marginRight="@dimen/space_5"
+                    android:layout_marginLeft="@dimen/space_2"
+                    android:layout_marginRight="@dimen/space_2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    />-->
+                <WebView
+                    android:id="@+id/webview"
+                    android:layout_marginLeft="@dimen/space_2"
+                    android:layout_marginRight="@dimen/space_2"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     />
 
 
-                <LinearLayout
+             <!--   <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:gravity="center"
@@ -176,52 +163,46 @@
                             android:background="@mipmap/share_circle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-                </LinearLayout>
+                </LinearLayout>-->
 
-                <View
-                    android:background="@color/connet_bgColor"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1sp"></View>
+
                 <RelativeLayout
-                    android:layout_margin="@dimen/space_10"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
                     android:layout_width="fill_parent"
                     android:gravity="center_vertical"
-                    android:layout_height="wrap_content">
+                    android:layout_height="45dp">
                     <TextView
                         android:id="@+id/fabuyu"
-                        android:text="发布于："
-                        android:textColor="#989898"
-                        android:textSize="12sp"
+                        android:text="热门评论"
+                        android:gravity="center_vertical"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:layout_toRightOf="@+id/fabuyu"
-                        android:text="综合讨论"
-                        android:textColor="@color/top_bar_bgColor"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="fill_parent" />
+
                     <TextView
 
-                        android:text="举报"
+                        android:text="查看全部评论"
                         android:layout_alignParentRight="true"
                         android:textColor="#989898"
                         android:layout_gravity="right"
-                        android:textSize="12sp"
+                        android:gravity="center_vertical"
+                        android:textSize="14sp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="fill_parent" />
                 </RelativeLayout>
                 <View
                     android:background="@color/connet_bgColor"
                     android:layout_width="fill_parent"
-                    android:layout_height="15dp"></View>
+                    android:layout_height="1sp"></View>
 
 
 
 
 
                 //评论
-                <LinearLayout
+             <!--   <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -235,9 +216,9 @@
                         android:textSize="15sp"
                         android:layout_height="wrap_content" />
 
-                </LinearLayout>
+                </LinearLayout>-->
 
-                <LinearLayout
+               <!-- <LinearLayout
                     android:layout_marginTop="@dimen/space_3"
                    android:orientation="horizontal"
                    android:layout_width="fill_parent"
@@ -257,7 +238,7 @@
                         android:layout_weight="1"
                         android:layout_width="fill_parent"
                         android:layout_height="1sp"></View>
-               </LinearLayout>
+               </LinearLayout>-->
 
                 //下拉评论
 <!--
@@ -274,7 +255,7 @@
                             android:scrollbars="vertical" />
                 </android.support.v4.widget.SwipeRefreshLayout>-->
 
-                <LinearLayout
+              <!--  <LinearLayout
                     android:visibility="gone"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -293,7 +274,7 @@
                         android:gravity="center"
                         android:text="下拉加载"
                         android:textColor="#aaaaaa" />
-                </LinearLayout>
+                </LinearLayout>-->
 
 
 
