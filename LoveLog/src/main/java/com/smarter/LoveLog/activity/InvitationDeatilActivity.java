@@ -585,6 +585,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                     if(zanOrfaroData!=null){
                         zanBut.setText(zanOrfaroData.getLike_count());
                         zanBut.setChecked(true);
+                        Toast.makeText(getApplicationContext(), "点赞成功", Toast.LENGTH_SHORT).show();
                         Log.d("invitationDeatil", "invitationDeatil 成功返回信息：   " + JSON.toJSONString(zanOrfaroData)+ "++++succeed");
                     }
 
