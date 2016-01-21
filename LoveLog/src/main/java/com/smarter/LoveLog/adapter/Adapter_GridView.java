@@ -18,6 +18,7 @@ import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.model.home.NavIndexUrlData;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Adapter_GridView extends BaseAdapter {
@@ -25,12 +26,13 @@ public class Adapter_GridView extends BaseAdapter {
     private int[] data;
     private String[] titleData;
     List<NavIndexUrlData> navIndexUrlDataList;
-    public Adapter_GridView(Context context,List<NavIndexUrlData> navIndexUrlDataList){
+    public Adapter_GridView(Context context,List<NavIndexUrlData> navUrlList){
 
         this.context=context;
         this.data=data;
         this.titleData=titleData;
-        this.navIndexUrlDataList=navIndexUrlDataList;
+        this.navIndexUrlDataList=navUrlList;
+        Collections.reverse(navIndexUrlDataList);
     }
 
     @Override

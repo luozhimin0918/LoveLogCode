@@ -15,6 +15,7 @@
             android:layout_height="fill_parent"
             />
         <LinearLayout
+            android:visibility="gone"
             android:orientation="vertical"
             android:gravity="bottom|center_horizontal"
             android:layout_width="fill_parent"

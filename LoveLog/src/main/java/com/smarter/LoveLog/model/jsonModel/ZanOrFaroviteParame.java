@@ -12,7 +12,25 @@ import java.io.Serializable;
 public class ZanOrFaroviteParame implements Serializable{
     private String id;
     private String type;
+    private String post_id;
+    private String reward;
     private SessionData session;
+
+    public String getPost_id() {
+        return post_id;
+    }
+
+    public void setPost_id(String post_id) {
+        this.post_id = post_id;
+    }
+
+    public String getReward() {
+        return reward;
+    }
+
+    public void setReward(String reward) {
+        this.reward = reward;
+    }
 
     public String getId() {
         return id;

@@ -3,13 +3,24 @@ package com.smarter.LoveLog.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -20,6 +31,8 @@ import android.widget.ImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +56,8 @@ import com.smarter.LoveLog.model.community.CollectData;
 import com.smarter.LoveLog.model.community.CollectDataInfo;
 import com.smarter.LoveLog.model.community.Pinglun;
 import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.model.community.RewardData;
+import com.smarter.LoveLog.model.community.RewardDataInfo;
 import com.smarter.LoveLog.model.community.User;
 import com.smarter.LoveLog.model.community.ZanOrFaroDataInfo;
 import com.smarter.LoveLog.model.community.ZanOrfaroData;
@@ -53,6 +68,7 @@ import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
 import com.smarter.LoveLog.ui.QCheckBox;
+import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 
@@ -103,6 +119,14 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
 
 
+    @Bind(R.id.reword)
+    ImageView reword;
+
+
+
+
+
+
 
 
 
@@ -110,7 +134,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     McoyScrollView invitation_Detail_scrollview;
     LinearLayout imglist;
 
-
+    TextView allPinglun;
     TextView titleText,userName,AddTime;
     CircleNetworkImage imageTitle;
     NetworkImageView imgTop;//头图片
@@ -140,6 +164,8 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         backBut.setOnClickListener(this);
         zanBut.setOnClickListener(this);
         collectBut.setOnClickListener(this);
+        reword.setOnClickListener(this);
+        pinglunBut.setOnClickListener(this);
         /*invitation_Detail_scrollview.setOnJDScrollListener(new McoyScrollView.OnJDScrollListener() {
             @Override
             public void onScroll(int x, int y, int oldx, int oldy) {
@@ -202,6 +228,11 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
          imageTopHeader= (ImageView) header.findViewById(R.id.imageTopHeader);
         imgTop= (NetworkImageView) header.findViewById(R.id.imgTop);
         imglist= (LinearLayout) header.findViewById(R.id.imglist);
+
+        allPinglun= (TextView) header.findViewById(R.id.allPinglun);
+        allPinglun.setOnClickListener(this);
+
+
         createImgListTop();//加载top图片
 
 
@@ -423,7 +454,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
             }
 
         }else{
-            map.put("json", id);
+            map.put("id", id);
         }
 
 
@@ -494,8 +525,73 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                  url = "http://mapp.aiderizhi.com/?url=/collect";//收藏
                  initIsLogonParame(url);
                  break;
+             case R.id.reword:
+                 initPopuwindow();
+                 showPopuwindow();
+                 break;
+             case R.id.allPinglun:
+             case R.id.pinglunBut:
+
+                 //挑战到所有评论界面//
+                 //
+                 Intent intent2 = new Intent(this, InvitationAllPinglunActivity.class);
+                 Bundle bundle = new Bundle();
+//                 bundle.putBoolean("allPinglun",true);dd
+                 bundle.putSerializable("allpinglun",postsData);
+                 intent2.putExtras(bundle);
+                 this.startActivity(intent2);
+                 break;
          }
     }
+
+    private  void showPopuwindow(){
+        integral01.setVisibility(View.VISIBLE);
+        integral02.setVisibility(View.VISIBLE);
+        integral03.setVisibility(View.VISIBLE);
+
+        int[] location = new int[2];
+        reword.getLocationOnScreen(location);
+        isWifiPopupWindow.showAtLocation(reword, Gravity.NO_GRAVITY, location[0], location[1] - reword.getHeight() * 7);//
+        /**
+         * 动画
+         */
+        AnimationSet animationSet = new AnimationSet(true);
+        // Animation myAnimation= AnimationUtils.loadAnimation(mContext, R.anim.da_shan);
+        RotateAnimation rotateAnimation = new RotateAnimation(
+                270, 0, RotateAnimation.RELATIVE_TO_PARENT, 0.5f, RotateAnimation.RELATIVE_TO_PARENT, 0.4f);
+        rotateAnimation.setInterpolator(new LinearInterpolator());
+        rotateAnimation.setDuration(200);
+        rotateAnimation.setRepeatCount(0);
+        rotateAnimation.setFillAfter(true);
+        // rotateAnimation.setStartOffset(50);
+
+
+        /** 设置缩放动画 */
+        final ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f, 1.0f, 0.1f, 1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.3f, Animation.RELATIVE_TO_PARENT, 0.4f);
+        scaleAnimation.setInterpolator(new LinearInterpolator());
+        scaleAnimation.setDuration(200);//设置动画持续时间
+        /** 常用方法 */
+        scaleAnimation.setRepeatCount(0);//设置重复次数
+        scaleAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+        // scaleAnimation.setStartOffset(1000);//执行前的等待时间
+
+
+//                    animationSet.addAnimation(rotateAnimation);
+        animationSet.addAnimation(scaleAnimation);
+
+
+        integral01.startAnimation(animationSet);
+        integral02.startAnimation(animationSet);
+        integral03.startAnimation(animationSet);
+        /**
+         * 动画后的黑色蒙层
+         */
+        BabyPopWindow.backgroundAlpha(mContext,0.2f);
+
+    }
+
+
 
 
 
@@ -675,6 +771,402 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         mQueue.add(fastJsonCommunity);
     }
 
+
+
+
+
+
+
+
+
+
+    PopupWindow isWifiPopupWindow;
+    ImageView integral01,integral02,integral03;
+    LinearLayout popuLinear;
+    int  populinerWidth=0;
+    private void initPopuwindow() {
+        // TODO Auto-generated method stub
+        View popuView = LayoutInflater.from(mContext).inflate(R.layout.popuwindow_dashan_open,
+                null);
+        isWifiPopupWindow = new PopupWindow(popuView, RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+
+        //在PopupWindow里面就加上下面代码，让键盘弹出时，不会挡住pop窗口。
+        isWifiPopupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        isWifiPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        //点击空白处时，隐藏掉pop窗口
+        isWifiPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        // 设置点击窗口外边窗口消失
+        isWifiPopupWindow.setOutsideTouchable(false);
+        // 设置此参数获得焦点，否则无法点击
+        isWifiPopupWindow.setFocusable(true);
+        isWifiPopupWindow.update();
+
+        //添加pop窗口关闭事件
+        isWifiPopupWindow.setOnDismissListener(new poponDismissListener());
+
+
+        integral01= (ImageView) popuView.findViewById(R.id.integral01);
+        integral02= (ImageView) popuView.findViewById(R.id.integral02);
+        integral03= (ImageView) popuView.findViewById(R.id.integral03);
+        popuLinear= (LinearLayout) popuView.findViewById(R.id.popuLinear);
+        populinerWidth=popuLinear.getWidth();
+        popuLinear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isWifiPopupWindow.dismiss();
+            }
+        });
+        integral01.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startAnimatSet(1);
+                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
+                initIsLogonParame(url,"5");
+            }
+        });
+        integral02.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAnimatSet(2);
+                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
+                initIsLogonParame(url,"10");
+            }
+        });
+        integral03.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAnimatSet(3);
+                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
+                initIsLogonParame(url,"15");
+            }
+        });
+    }
+
+
+
+    /**
+     * 添加新笔记时弹出的popWin关闭的事件，主要是为了将背景透明度改回来
+     * @author cg
+     *
+     */
+    class poponDismissListener implements PopupWindow.OnDismissListener{
+
+        @Override
+        public void onDismiss() {
+            // TODO Auto-generated method stub
+            //Log.v("List_noteTypeActivity:", "我是关闭事件");
+            BabyPopWindow.backgroundAlpha(mContext, 1.0f);
+        }
+
+    }
+
+
+    private void startAnimatSet(int option) {
+
+
+
+
+        // 设置缩放动画
+        final ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 2.6f, 1.0f, 2.6f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,0.5f);
+        scaleAnimation.setInterpolator(new LinearInterpolator());
+        scaleAnimation.setDuration(1000);//设置动画持续时间
+        //** 常用方法
+        scaleAnimation.setRepeatCount(0);//设置重复次数
+        scaleAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+//        scaleAnimation.setStartOffset(1000);//执行前的等待时间
+        scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        AlphaAnimation inAlphaAnimation = new AlphaAnimation(1, 0);
+        inAlphaAnimation.setRepeatCount(0);//设置重复次数
+        inAlphaAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+        inAlphaAnimation.setDuration(1000);
+        inAlphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isWifiPopupWindow.dismiss();
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        AnimationSet animationSet =new AnimationSet(false);
+        animationSet.addAnimation(inAlphaAnimation);
+        animationSet.addAnimation(scaleAnimation);
+
+        BabyPopWindow.backgroundAlpha(mContext, 1.0f);
+
+
+        if(option==1){
+            integral02.setVisibility(View.INVISIBLE);
+            integral03.setVisibility(View.INVISIBLE);
+            integral01.startAnimation(animationSet);
+
+        }
+        if(option==2){
+            integral01.setVisibility(View.INVISIBLE);
+            integral03.setVisibility(View.INVISIBLE);
+            integral02.startAnimation(animationSet);
+        }
+        if(option==3){
+            integral01.setVisibility(View.INVISIBLE);
+            integral02.setVisibility(View.INVISIBLE);
+            integral03.startAnimation(animationSet);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+    private void initIsLogonParame(String url,String reward) {
+
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if(isLogin){
+            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+            SessionData  sessionData = JSON.parseObject(sessionString, SessionData.class);
+            if(sessionData!=null){
+
+                ZanOrFaroviteParame zanOrFaroviteInfo=new ZanOrFaroviteParame();
+                zanOrFaroviteInfo.setSession(sessionData);
+                if(postsData!=null){
+                    zanOrFaroviteInfo.setPost_id(postsData.getId());
+                    zanOrFaroviteInfo.setReward(reward);
+
+                    networkReward(JSON.toJSONString(zanOrFaroviteInfo), url);
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+        }else{
+            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+
+    /**
+     * 打赏
+     */
+    RewardData rewardData;
+    private void networkReward(String paramNet,String url) {
+
+        Map<String, String> mapTou = new HashMap<String, String>();
+        mapTou.put("json", paramNet);
+
+
+
+
+        Log.d("MonfanAdapter", paramNet + "      ");
+
+
+        FastJsonRequest<RewardDataInfo> fastJsonCommunity = new FastJsonRequest<RewardDataInfo>(Request.Method.POST, url, RewardDataInfo.class, null, new Response.Listener<RewardDataInfo>() {
+            @Override
+            public void onResponse(RewardDataInfo rewardDataInfo) {
+
+                DataStatus status = rewardDataInfo.getStatus();
+                if (status.getSucceed() == 1) {
+                    rewardData = rewardDataInfo.getData();
+                    if(rewardData!=null){
+
+                        Toast.makeText(mContext, "打赏成功" , Toast.LENGTH_SHORT).show();
+                        Log.d("MonfanAdapter", "MonfanAdapter 成功返回信息：   " + JSON.toJSONString(rewardData)+ "++++succeed");
+                    }
+
+
+                } else {
+                    // 请求失败
+                    Log.d("MonfanAdapter", "succeded=0  MonfanAdapter 返回信息 " + JSON.toJSONString(status) + "");
+                    Toast.makeText(mContext, "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("MonfanAdapter", "errror" + volleyError.toString() + "");
+            }
+        });
+        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        fastJsonCommunity.setParams(mapTou);
+        fastJsonCommunity.setShouldCache(true);
+        mQueue.add(fastJsonCommunity);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // 手指上下滑动时的最小速度
+    private static final int YSPEED_MIN = 1000;
+
+    // 手指向右滑动时的最小距离
+    private static final int XDISTANCE_MIN = 150;
+
+    // 手指向上滑或下滑时的最小距离
+    private static final int YDISTANCE_MIN = 100;
+
+    // 记录手指按下时的横坐标。
+    private float xDown;
+
+    // 记录手指按下时的纵坐标。
+    private float yDown;
+
+    // 记录手指移动时的横坐标。
+    private float xMove;
+
+    // 记录手指移动时的纵坐标。
+    private float yMove;
+
+    // 用于计算手指滑动的速度。
+    private VelocityTracker mVelocityTracker;
+
+
+
+    /**
+     * 创建VelocityTracker对象，并将触摸界面的滑动事件加入到VelocityTracker当中。
+     *
+     * @param event
+     *
+     */
+    private void createVelocityTracker(MotionEvent event) {
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(event);
+    }
+
+    /**
+     * 回收VelocityTracker对象。
+     */
+    private void recycleVelocityTracker() {
+        mVelocityTracker.recycle();
+        mVelocityTracker = null;
+    }
+
+    /**
+     *
+     * @return 滑动速度，以每秒钟移动了多少像素值为单位。
+     */
+    private int getScrollVelocity() {
+        mVelocityTracker.computeCurrentVelocity(1000);
+        int velocity = (int) mVelocityTracker.getYVelocity();
+        return Math.abs(velocity);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        createVelocityTracker(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                xDown = event.getRawX();
+                yDown = event.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                xMove = event.getRawX();
+                yMove = event.getRawY();
+                // 滑动的距离
+                int distanceX = (int) (xMove - xDown);
+                int distanceY = (int) (yMove - yDown);
+                // 获取顺时速度
+                int ySpeed = getScrollVelocity();
+                // 关闭Activity需满足以下条件：
+                // 1.x轴滑动的距离>XDISTANCE_MIN
+                // 2.y轴滑动的距离在YDISTANCE_MIN范围内
+                // 3.y轴上（即上下滑动的速度）<XSPEED_MIN，如果大于，则认为用户意图是在上下滑动而非左滑结束Activity
+                if (ySpeed > 100) {
+                } else if (ySpeed < 100) {
+                    if (distanceX > XDISTANCE_MIN
+                            && (distanceY < YDISTANCE_MIN && distanceY > -YDISTANCE_MIN)
+                            && ySpeed < YSPEED_MIN) {
+                        finish();
+                        overridePendingTransition(R.anim.in_from_left,
+                                R.anim.out_to_right);
+                    } else if (distanceX < -XDISTANCE_MIN
+                            && (distanceY < YDISTANCE_MIN && distanceY > -YDISTANCE_MIN)
+                            && ySpeed < YSPEED_MIN) {
+
+                        //挑战到所有评论界面//
+                        //
+                        Intent intent2 = new Intent(this, InvitationAllPinglunActivity.class);
+                        Bundle bundle = new Bundle();
+//                 bundle.putBoolean("allPinglun",true);dd
+                        bundle.putSerializable("allpinglun",postsData);
+                        intent2.putExtras(bundle);
+                        this.startActivity(intent2);
+                        overridePendingTransition(R.anim.in_from_right,
+                                R.anim.out_to_left);
+                    }
+                }
+
+                break;
+            case MotionEvent.ACTION_UP:
+                recycleVelocityTracker();
+                break;
+            default:
+                break;
+        }
+        return super.dispatchTouchEvent(event);
+    }
 
 
 

@@ -21,7 +21,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:text="帖子列表"
+                android:text="所有评论"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="发布"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 
@@ -40,38 +40,8 @@
 
 <!--connte-->
     <LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent"  android:background="@color/connet_bgColor" android:layout_weight="1">
-         <!--   <LinearLayout
-                        android:background="@drawable/yuanjiao_border_red_white_bg"
-                        android:layout_width="fill_parent"
-                        android:layout_marginLeft="35dp"
-                        android:layout_marginRight="35dp"
-                        android:layout_marginBottom="@dimen/space_10"
-                        android:layout_marginTop="@dimen/space_10"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/space_5"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content">
-                         <ImageView
-                             android:layout_marginLeft="@dimen/space_6"
-                             android:background="@mipmap/search"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content" />
-                        <EditText
-                            android:id="@+id/search_editText"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:layout_weight="1"
-                            android:hint="搜索帖子/用户"
-                            android:paddingLeft="10.0dip"
-                            android:singleLine="true"
-                            android:textColor="#ff111111"
-                            android:textColorHint="#D4D4D4"
-                            android:textSize="15.0sp" />
-                    </LinearLayout>-->
-            <com.jcodecraeer.xrecyclerview.XRecyclerView
+
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
                 android:id="@+id/recyclerview"
                 android:layout_weight="1"
                 android:scrollbars="horizontal"
@@ -140,6 +110,64 @@
 
 
     </LinearLayout>
+
+
+
+
+
+
+    <!--悬浮栏-->
+    <LinearLayout
+        android:layout_width="fill_parent" android:layout_height="@dimen/bottom_height"
+        android:gravity="center_vertical" android:background="@color/white" android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:paddingTop="@dimen/space_7"
+            android:paddingBottom="@dimen/space_7"
+            android:paddingRight="@dimen/space_10"
+            android:paddingLeft="@dimen/space_10"
+            android:background="@color/white"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center" >
+            <EditText
+                android:id="@+id/pinglunEdit"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/yuanjiao_white_bg"
+                android:layout_weight="1"
+                android:hint="发表一下您的评论"
+                android:paddingLeft="@dimen/space_10"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textColor="#ff111111"
+                android:textColorHint="#D4D4D4"
+                android:textSize="13.0sp" >
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/fasongText"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/space_10"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="发送"
+                android:textColor="@color/top_bar_bgColor"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 
 

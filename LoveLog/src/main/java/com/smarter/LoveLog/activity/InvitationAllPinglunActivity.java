@@ -12,6 +12,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,31 +22,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.MofanAdapter;
+import com.smarter.LoveLog.adapter.RecyclePinglunAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
-import com.smarter.LoveLog.fragment.CommunityFragment;
+import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
-import com.smarter.LoveLog.model.CategoryJson;
 import com.smarter.LoveLog.model.PaginationJson;
 import com.smarter.LoveLog.model.category.InvitationDataActi;
-import com.smarter.LoveLog.model.community.CommunityDataFrag;
+import com.smarter.LoveLog.model.community.CollectData;
+import com.smarter.LoveLog.model.community.CollectDataInfo;
+import com.smarter.LoveLog.model.community.InvitationDataPinglunActi;
+import com.smarter.LoveLog.model.community.Pinglun;
+import com.smarter.LoveLog.model.community.PinglunData;
+import com.smarter.LoveLog.model.community.PinglunDataInfo;
 import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.model.community.RewardData;
+import com.smarter.LoveLog.model.community.RewardDataInfo;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.NavIndexUrlData;
+import com.smarter.LoveLog.model.jsonModel.ZanOrFaroviteParame;
+import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.utills.DeviceUtil;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +63,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class InvitationActivity extends BaseFragmentActivity implements View.OnClickListener{
+public class InvitationAllPinglunActivity extends BaseFragmentActivity implements View.OnClickListener{
     String Tag= "InvitationActivity";
     Context  mContext;
 
@@ -90,12 +96,21 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
     @Bind(R.id.backBUt)
     ImageView backBUt;
 
+    @Bind(R.id.fasongText)
+    TextView fasongText;
+
+    @Bind(R.id.pinglunEdit)
+    EditText pinglunEdit;
 
 
 
 
 
-    private MofanAdapter mAdapter;
+
+
+
+
+    private RecyclePinglunAdapter mAdapter;
     private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
 
 
@@ -105,7 +120,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_invitation_view);
+        setContentView(R.layout.activity_invitation_pinglun_all_view);
         ButterKnife.bind(this);
         mContext=this;
         getDataIntent();
@@ -115,6 +130,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
 
     private void setListen() {
         backBUt.setOnClickListener(this);
+        fasongText.setOnClickListener(this);
 
     }
 
@@ -131,25 +147,22 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
 
-        //头部搜索
-        View header =   LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_invitation_view_top,null);
-        mRecyclerView.addHeaderView(header);
-        search_editText= (EditText) header.findViewById(R.id.search_editText);
-        search_editText.addTextChangedListener(new EditChangedListener());
+
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-
-                        mRecyclerView.refreshComplete();
-
-
-                    }
-
-                }, 1000);            //refresh data here
+                loadingTag = 2;//重新加载
+                initData(promotePostsData.getId());
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//
+//                        mRecyclerView.refreshComplete();
+//
+//
+//                    }
+//
+//                }, 1000);            //refresh data here
             }
 
             @Override
@@ -159,7 +172,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
 //                    public void run() {
                 loadingTag = -1;
                 Log.d("InvitationActivityURL", "initial    more");
-                initData(navIndexUrlData.getId());
+                initData(promotePostsData.getId());
 //                        mRecyclerView.loadMoreComplete();
 //                    }
 //                }, 2000);
@@ -171,7 +184,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
 
 
        if(promotePostDateList!=null&&promotePostDateList.size()>0){
-           mAdapter = new MofanAdapter(mContext,promotePostDateList);
+           mAdapter = new RecyclePinglunAdapter(promotePostDateList);
 
            mRecyclerView.setAdapter(mAdapter);
        }
@@ -180,12 +193,12 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
 
 
 
-    NavIndexUrlData navIndexUrlData;//上个activity传来的数据
+    PromotePostsData promotePostsData;//上个activity传来的数据
     private void getDataIntent() {
         Intent intent = getIntent();
         if(intent!=null){
-             navIndexUrlData= (NavIndexUrlData) intent.getSerializableExtra("NavIndexUrlData");
-            tv_top_title.setText(navIndexUrlData.getName());//设置titlebar 标题
+            promotePostsData= (PromotePostsData) intent.getSerializableExtra("allpinglun");
+
 
 
             newWait();
@@ -209,7 +222,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
             networkInfo.setVisibility(View.GONE);
 
 
-            initData(navIndexUrlData.getId());
+            initData(promotePostsData.getId());
 
         }else{
             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
@@ -218,18 +231,17 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
             newLoading.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  newWait();
+                    newWait();
                 }
             });
         }
     }
 
 
-    List<PromotePostsData> promotePostDateList;//本类帖子 分类里所有数据
-    List<PromotePostsData> FinalpromotePostDateList;//本类帖子 分类里所有数据
+    List<Pinglun> promotePostDateList;//本类帖子 分类里所有数据
     public  int page=1;
     private void initData(final String id) {
-        String url ="http://mapp.aiderizhi.com/?url=/post/category";//
+        String url ="http://mapp.aiderizhi.com/?url=/comment/list";//
 
         Map<String, String> map = new HashMap<String, String>();
 
@@ -242,25 +254,26 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
             paginationJson.setCount("10");
             paginationJson.setPage((++page)+"");
             String string = JSON.toJSONString(paginationJson);
-            String  d="{\"id\":\""+id+"\",\"pagination\":"+string+"}";
+            String  d="{\"id\":\""+id+"\",\"pagination\":"+string+" ,\"type\":\"2\"}";
             map.put("json", d);
-            Log.d("InvitationActivityURL", d + "》》》》");
+            Log.d("pingluActivity", d + "》》》》");
         }
         if(loadingTag==2){//第一次加载数据
             map = new HashMap<String, String>();
-
-            map.put("id",id);
+            String oneString ="{\"type\":\"2\",\"id\":\""+id+"\"}";
+            map.put("json",oneString);
+            Log.d("pingluActivity", oneString + "》》》》");
         }
 
 
 
         RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
-       FastJsonRequest<InvitationDataActi> fastJsonCommunity=new FastJsonRequest<InvitationDataActi>(Request.Method.POST,url,InvitationDataActi.class,null,new Response.Listener<InvitationDataActi>()
+       FastJsonRequest<InvitationDataPinglunActi> fastJsonCommunity=new FastJsonRequest<InvitationDataPinglunActi>(Request.Method.POST,url,InvitationDataPinglunActi.class,null,new Response.Listener<InvitationDataPinglunActi>()
         {
             @Override
-            public void onResponse(InvitationDataActi invitationDataActi) {
+            public void onResponse(InvitationDataPinglunActi pinglunActi) {
 
-                DataStatus status=invitationDataActi.getStatus();
+                DataStatus status=pinglunActi.getStatus();
                 if(status.getSucceed()==1){
 
                    progressLinear.setVisibility(View.GONE);
@@ -269,12 +282,12 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
                     if(loadingTag==-1){
 
 
-                        List<PromotePostsData> p=invitationDataActi.getData();
-                        Log.d("InvitationActivityURL", "" + promotePostDateList.size() + "1111++++promotePostDateList" );
+                        List<Pinglun> p=pinglunActi.getData();
+                        Log.d("pingluActivity", "" + promotePostDateList.size() + "1111++++promotePostDateList" );
                         for(int i=0;i<p.size();i++){
                             promotePostDateList.add(p.get(i));
                         }
-                        Log.d("InvitationActivityURL", "" + promotePostDateList.size() + "2222++++promotePostDateList" );
+                        Log.d("pingluActivity", "" + promotePostDateList.size() + "2222++++promotePostDateList" );
 
 
 
@@ -284,14 +297,14 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
                         mRecyclerView.loadMoreComplete();
                     }
                     if(loadingTag==2){
-                        promotePostDateList=invitationDataActi.getData();
-                        FinalpromotePostDateList=invitationDataActi.getData();
+                        promotePostDateList=pinglunActi.getData();
                         intData();//初始界面
+                        mRecyclerView.refreshComplete();
                     }
 
 
 
-//                    Log.d("InvitationActivityURL", "" + status.getSucceed() + "++++succeed》》》》" + promotePostDateList.get(0).getCat_name());
+//                    Log.d("pingluActivity", "" + status.getSucceed() + "++++succeed》》》》" + promotePostDateList.get(0).getCat_name());
                 } else {
                     // 请求失败
                     progressLinear.setVisibility(View.GONE);
@@ -299,7 +312,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
                     errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
                     networkInfo.setVisibility(View.VISIBLE);
                         // 请求失败
-                        Log.d("InvitationActivityURL", "" + status.getSucceed() + "++++success=0》》》》" );
+                        Log.d("pingluActivity", "" + status.getSucceed() + "++++success=0》》》》" );
 
                 }
 
@@ -313,7 +326,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
                 mRecyclerView.setVisibility(View.GONE);
                 errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
                 networkInfo.setVisibility(View.VISIBLE);
-                Log.d("InvitationActivityURL", "errror" + volleyError.toString() + "++++》》》》" );
+                Log.d("pingluActivity", "errror" + volleyError.toString() + "++++》》》》" );
             }
         });
 
@@ -342,19 +355,19 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
         mapTT.put("id", id);
         mapTT.put("pagination","{\"page\":\"3\",\"count\":\"3\"} ");
         JSONObject jsonObject = new JSONObject(mapTT);
-//        Log.d("InvitationActivityURL", "->>>>> " + string2);
+//        Log.d("pingluActivity", "->>>>> " + string2);
 
 
         JsonRequest<JSONObject> jsonRequest = new JsonObjectRequest(Request.Method.POST,url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("InvitationActivityURL", "response -> " + response.toString());
+                        Log.d("pingluActivity", "response -> " + response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("InvitationActivityURL", error.getMessage(), error);
+                Log.e("pingluActivity", error.getMessage(), error);
             }
         })
         {
@@ -436,50 +449,223 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
              case  R.id.backBUt:
                  finish();
                  break;
+             case  R.id.fasongText:
+
+                 if(pinglunEdit.getText().toString()!=null&&!pinglunEdit.getText().toString().equals("")){
+                     initIsLogonParame();
+                 }else{
+                     Toast.makeText(mContext, "评论不能为空" , Toast.LENGTH_SHORT).show();
+                 }
+
+                 break;
          }
     }
 
 
-
-    class EditChangedListener implements TextWatcher {
-        private CharSequence temp;//监听前的文本
-        private int editStart;//光标开始位置
-        private int editEnd;//光标结束位置
-        private final int charMaxNum = 10;
-
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            promotePostDateList=FinalpromotePostDateList;//回到原来的全部数据
-            Log.i(Tag, "输入文本之前的状态   ");
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-             List<PromotePostsData> postsDatas=new ArrayList<PromotePostsData>();
-                    for(int p=0;p<promotePostDateList.size();p++){
-                           if(promotePostDateList.get(p).getTitle().equals(s.toString())||promotePostDateList.get(p).getUser().getName().equals(s.toString())){
-                               postsDatas.add(promotePostDateList.get(p));
-                           }else {
-
-                               Log.i(Tag, "———————————————"+s);
-                           }
-                    }
-            mAdapter = new MofanAdapter(mContext,postsDatas);
-            mRecyclerView.setAdapter(mAdapter);
-//            mAdapter.notifyDataSetChanged();
-            Log.i(Tag, "输入文字中的状态，count是一次性输入字符数——————————————————————"+s);
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            Log.i(Tag, "输入文字后的状态");
-            /** 得到光标开始和结束位置 ,超过最大数后记录刚超出的数字索引进行控制 */
+    private void initIsLogonParame() {
+    String   url = "http://mapp.aiderizhi.com/?url=/comment/add ";//评论
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if(isLogin){
+            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+            SessionData sessionData = JSON.parseObject(sessionString, SessionData.class);
+            if(sessionData!=null){
 
 
+                if(promotePostsData!=null){
+
+                  String param="{\"type\":\"2\",\"id\":\""+promotePostsData.getId()+"\",\"reply_id\":\"\",\"content\":\""+pinglunEdit.getText().toString()+"\",\"session\":{\"uid\":\""+sessionData.getUid()+"\",\"sid\":\""+sessionData.getSid()+"\"}}";
+                    networkReward(param, url);
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+        }else{
+            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+
+
+    /**
+     * 帖子评论
+     */
+    PinglunData pinglunData;
+    private void networkReward(String paramNet,String url) {
+
+        Map<String, String> mapTou = new HashMap<String, String>();
+        mapTou.put("json", paramNet);
+
+
+
+
+        Log.d("pingluActivity", paramNet + "      ");
+
+
+        FastJsonRequest<PinglunDataInfo> fastJsonCommunity = new FastJsonRequest<PinglunDataInfo>(Request.Method.POST, url, PinglunDataInfo.class, null, new Response.Listener<PinglunDataInfo>() {
+            @Override
+            public void onResponse(PinglunDataInfo pinglunDataInfo) {
+
+                DataStatus status = pinglunDataInfo.getStatus();
+                if (status.getSucceed() == 1) {
+                    pinglunData = pinglunDataInfo.getData();
+                    if(pinglunData!=null){
+
+
+                         pinglunEdit.setText("");
+                        loadingTag=2;//重新加载
+                        initData(promotePostsData.getId());
+
+
+                        Toast.makeText(mContext, ""+pinglunData.getMessage() , Toast.LENGTH_SHORT).show();
+                        Log.d("pingluActivity", "pingluActivity 成功返回信息：   " + JSON.toJSONString(pinglunData)+ "++++succeed");
+                    }
+
+
+                } else {
+                    // 请求失败
+                    Log.d("pingluActivity", "succeded=0  pingluActivity 返回信息 " + JSON.toJSONString(status) + "");
+                    Toast.makeText(mContext, "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("pingluActivity", "errror" + volleyError.toString() + "");
+            }
+        });
+        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        fastJsonCommunity.setParams(mapTou);
+        fastJsonCommunity.setShouldCache(true);
+        mQueue.add(fastJsonCommunity);
+    }
+
+
+
+
+    // 手指上下滑动时的最小速度
+    private static final int YSPEED_MIN = 1000;
+
+    // 手指向右滑动时的最小距离
+    private static final int XDISTANCE_MIN = 150;
+
+    // 手指向上滑或下滑时的最小距离
+    private static final int YDISTANCE_MIN = 100;
+
+    // 记录手指按下时的横坐标。
+    private float xDown;
+
+    // 记录手指按下时的纵坐标。
+    private float yDown;
+
+    // 记录手指移动时的横坐标。
+    private float xMove;
+
+    // 记录手指移动时的纵坐标。
+    private float yMove;
+
+    // 用于计算手指滑动的速度。
+    private VelocityTracker mVelocityTracker;
+
+
+
+    /**
+     * 创建VelocityTracker对象，并将触摸界面的滑动事件加入到VelocityTracker当中。
+     *
+     * @param event
+     *
+     */
+    private void createVelocityTracker(MotionEvent event) {
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(event);
+    }
+
+    /**
+     * 回收VelocityTracker对象。
+     */
+    private void recycleVelocityTracker() {
+        mVelocityTracker.recycle();
+        mVelocityTracker = null;
+    }
+
+    /**
+     *
+     * @return 滑动速度，以每秒钟移动了多少像素值为单位。
+     */
+    private int getScrollVelocity() {
+        mVelocityTracker.computeCurrentVelocity(1000);
+        int velocity = (int) mVelocityTracker.getYVelocity();
+        return Math.abs(velocity);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        createVelocityTracker(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                xDown = event.getRawX();
+                yDown = event.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                xMove = event.getRawX();
+                yMove = event.getRawY();
+                // 滑动的距离
+                int distanceX = (int) (xMove - xDown);
+                int distanceY = (int) (yMove - yDown);
+                // 获取顺时速度
+                int ySpeed = getScrollVelocity();
+                // 关闭Activity需满足以下条件：
+                // 1.x轴滑动的距离>XDISTANCE_MIN
+                // 2.y轴滑动的距离在YDISTANCE_MIN范围内
+                // 3.y轴上（即上下滑动的速度）<XSPEED_MIN，如果大于，则认为用户意图是在上下滑动而非左滑结束Activity
+                if (ySpeed > 100) {
+                } else if (ySpeed < 100) {
+                    if (distanceX > XDISTANCE_MIN
+                            && (distanceY < YDISTANCE_MIN && distanceY > -YDISTANCE_MIN)
+                            && ySpeed < YSPEED_MIN) {
+                        finish();
+                        overridePendingTransition(R.anim.in_from_left,
+                                R.anim.out_to_right);
+                    } else if (distanceX < -XDISTANCE_MIN
+                            && (distanceY < YDISTANCE_MIN && distanceY > -YDISTANCE_MIN)
+                            && ySpeed < YSPEED_MIN) {
+
+
+//                        overridePendingTransition(R.anim.in_from_right,
+//                                R.anim.out_to_left);
+                    }
+                }
+
+                break;
+            case MotionEvent.ACTION_UP:
+                recycleVelocityTracker();
+                break;
+            default:
+                break;
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+
+
 
 
 }

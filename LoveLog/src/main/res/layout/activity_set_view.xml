@@ -240,7 +240,7 @@
                     android:layout_width="wrap_content"
                     android:textColor="#9D9D9D"
                     android:textSize="16sp"
-                    android:layout_height="wrap_content" android:text="400-125-546"/>
+                    android:layout_height="wrap_content" android:text="400 086 0780"/>
 
             </LinearLayout>
             <LinearLayout android:background="@color/connet_bgColor" android:layout_width="fill_parent" android:layout_height="1sp"></LinearLayout>

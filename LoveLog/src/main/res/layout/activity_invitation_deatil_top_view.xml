@@ -182,7 +182,7 @@
                         android:layout_height="fill_parent" />
 
                     <TextView
-
+                        android:id="@+id/allPinglun"
                         android:text="查看全部评论"
                         android:layout_alignParentRight="true"
                         android:textColor="#989898"

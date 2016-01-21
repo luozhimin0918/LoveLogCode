@@ -3,6 +3,7 @@ package com.smarter.LoveLog.adapter;
 /**
  * Created by Administrator on 2015/12/7.
  */
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +15,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
@@ -26,19 +30,37 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.InvitationActivity;
 import com.smarter.LoveLog.activity.InvitationDeatilActivity;
+import com.smarter.LoveLog.activity.MainActivity;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.SharedPreferences;
+import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.community.CollectData;
+import com.smarter.LoveLog.model.community.CollectDataInfo;
 import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.model.community.RewardData;
+import com.smarter.LoveLog.model.community.RewardDataInfo;
+import com.smarter.LoveLog.model.home.DataStatus;
+import com.smarter.LoveLog.model.jsonModel.ZanOrFaroviteParame;
+import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jianghejie on 15/11/26.
@@ -48,6 +70,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     public  Context mContext;
     List<PromotePostsData> promotePostsDataList;
     ViewGroup viewGroup;
+    RequestQueue mQueue;
     public MofanAdapter(Context mContext,int[] datas) {
         this.datas = datas;
         this.mContext=mContext;
@@ -55,6 +78,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     public MofanAdapter(Context mContext, List<PromotePostsData> promotePostsDataList) {
         this.promotePostsDataList = promotePostsDataList;
         this.mContext=mContext;
+        mQueue =  AppContextApplication.getInstance().getmRequestQueue();
     }
 
     //创建新View，被LayoutManager所调用
@@ -66,6 +90,8 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
         return vh;
     }
     //将数据与界面进行绑定的操作
+
+    PromotePostsData rewardItemData;
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
 
@@ -140,8 +166,11 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
         viewHolder.reword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                integral01.setVisibility(View.VISIBLE);
+                integral02.setVisibility(View.VISIBLE);
+                integral03.setVisibility(View.VISIBLE);
 
-
+                 rewardItemData=promotePostsDataList.get(position);
                     int[] location = new int[2];
                     viewHolder.reword.getLocationOnScreen(location);
                     isWifiPopupWindow.showAtLocation(viewHolder.reword, Gravity.NO_GRAVITY, location[0], location[1] - viewHolder.reword.getHeight() * 7);//
@@ -170,7 +199,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
                     // scaleAnimation.setStartOffset(1000);//执行前的等待时间
 
 
-                    animationSet.addAnimation(rotateAnimation);
+//                    animationSet.addAnimation(rotateAnimation);
                     animationSet.addAnimation(scaleAnimation);
 
 
@@ -261,20 +290,107 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
 
+                startAnimatSet(1);
+                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
+                initIsLogonParame(url,"5");
             }
         });
         integral02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startAnimatSet(2);
+                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
+                initIsLogonParame(url,"10");
             }
         });
         integral03.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startAnimatSet(3);
+                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
+                initIsLogonParame(url,"15");
+            }
+        });
+    }
+
+    private void startAnimatSet(int option) {
+
+
+
+
+        // 设置缩放动画
+        final ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 2.6f, 1.0f, 2.6f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,0.5f);
+        scaleAnimation.setInterpolator(new LinearInterpolator());
+        scaleAnimation.setDuration(1000);//设置动画持续时间
+        //** 常用方法
+        scaleAnimation.setRepeatCount(0);//设置重复次数
+        scaleAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+//        scaleAnimation.setStartOffset(1000);//执行前的等待时间
+        scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
 
             }
         });
+
+        AlphaAnimation inAlphaAnimation = new AlphaAnimation(1, 0);
+        inAlphaAnimation.setRepeatCount(0);//设置重复次数
+        inAlphaAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+        inAlphaAnimation.setDuration(1000);
+        inAlphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isWifiPopupWindow.dismiss();
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        AnimationSet animationSet =new AnimationSet(false);
+        animationSet.addAnimation(inAlphaAnimation);
+        animationSet.addAnimation(scaleAnimation);
+
+        BabyPopWindow.backgroundAlpha(mContext, 1.0f);
+
+
+        if(option==1){
+            integral02.setVisibility(View.INVISIBLE);
+            integral03.setVisibility(View.INVISIBLE);
+            integral01.startAnimation(animationSet);
+
+        }
+        if(option==2){
+            integral01.setVisibility(View.INVISIBLE);
+            integral03.setVisibility(View.INVISIBLE);
+            integral02.startAnimation(animationSet);
+        }
+        if(option==3){
+            integral01.setVisibility(View.INVISIBLE);
+            integral02.setVisibility(View.INVISIBLE);
+            integral03.startAnimation(animationSet);
+        }
+
     }
 
 
@@ -295,5 +411,97 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     }
 
 
+
+
+
+    SessionData sessionData;
+    private void initIsLogonParame(String url,String reward) {
+
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if(isLogin){
+            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+            sessionData = JSON.parseObject(sessionString, SessionData.class);
+            if(sessionData!=null){
+
+                ZanOrFaroviteParame zanOrFaroviteInfo=new ZanOrFaroviteParame();
+                zanOrFaroviteInfo.setSession(sessionData);
+                if(rewardItemData!=null){
+                    zanOrFaroviteInfo.setPost_id(rewardItemData.getId());
+                    zanOrFaroviteInfo.setReward(reward);
+
+                    networkReward(JSON.toJSONString(zanOrFaroviteInfo), url);
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+        }else{
+            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+    /**
+     * 打赏
+     */
+    RewardData rewardData;
+    private void networkReward(String paramNet,String url) {
+
+        Map<String, String> mapTou = new HashMap<String, String>();
+        mapTou.put("json", paramNet);
+
+
+
+
+        Log.d("MonfanAdapter", paramNet + "      ");
+
+
+        FastJsonRequest<RewardDataInfo> fastJsonCommunity = new FastJsonRequest<RewardDataInfo>(Request.Method.POST, url, RewardDataInfo.class, null, new Response.Listener<RewardDataInfo>() {
+            @Override
+            public void onResponse(RewardDataInfo rewardDataInfo) {
+
+                DataStatus status = rewardDataInfo.getStatus();
+                if (status.getSucceed() == 1) {
+                    rewardData = rewardDataInfo.getData();
+                    if(rewardData!=null){
+
+                        Toast.makeText(mContext, "打赏成功" , Toast.LENGTH_SHORT).show();
+                        Log.d("MonfanAdapter", "MonfanAdapter 成功返回信息：   " + JSON.toJSONString(rewardData)+ "++++succeed");
+                    }
+
+
+                } else {
+                    // 请求失败
+                    Log.d("MonfanAdapter", "succeded=0  MonfanAdapter 返回信息 " + JSON.toJSONString(status) + "");
+                    Toast.makeText(mContext, "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("MonfanAdapter", "errror" + volleyError.toString() + "");
+            }
+        });
+        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        fastJsonCommunity.setParams(mapTou);
+        fastJsonCommunity.setShouldCache(true);
+        mQueue.add(fastJsonCommunity);
+    }
 }
 
