@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -40,6 +41,22 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
    @Bind(R.id.loginOut)
    LinearLayout loginOut;
 
+
+    @Bind(R.id.helpLinear)
+    LinearLayout helpLinear;
+
+    @Bind(R.id.fackLinear)
+    LinearLayout fackLinear;
+
+    @Bind(R.id.back_but)
+    ImageView back_but;
+
+
+
+
+
+
+
   RequestQueue mQueue;
 
 
@@ -61,6 +78,9 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
 
     private void setListen() {
         loginOut.setOnClickListener(this);
+        helpLinear.setOnClickListener(this);
+        fackLinear.setOnClickListener(this);
+        back_but.setOnClickListener(this);
     }
 
     private void intData() {
@@ -103,6 +123,26 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
                        }
 
               break;
+
+             case  R.id.helpLinear:
+                 //帮助
+                 Intent intent = new Intent(this, HelpDataActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                 this.startActivity(intent);
+                 break;
+             case R.id.fackLinear:
+                 //帮助
+                 Intent intent2 = new Intent(this, FeedbackActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                 this.startActivity(intent2);
+                 break;
+             case  R.id.back_but:
+                 finish();
+                 break;
 
          }
     }

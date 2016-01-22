@@ -1,0 +1,203 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:background="@color/top_bar_bgColor"
+    android:orientation="vertical">
+    <LinearLayout
+            android:layout_width="fill_parent" android:layout_height="@dimen/head_height" android:orientation="horizontal">
+
+        <ImageView
+                android:id="@+id/backBUt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingRight="25dp"
+                android:src="@mipmap/back" />
+
+        <TextView
+                android:id="@+id/tv_top_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="我的钱包"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        <ImageView
+                android:layout_width="0dp"
+                android:padding="@dimen/space_10"
+                android:src="@mipmap/wallet_help"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent"  android:background="@color/connet_bgColor" android:layout_weight="1">
+
+
+
+        
+       <LinearLayout
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content">
+              <LinearLayout
+                  android:layout_weight="0.8"
+                  android:layout_width="0dp"
+                  android:gravity="center"
+                  android:orientation="vertical"
+                  android:background="@color/white"
+                  android:layout_height="fill_parent">
+                  <TextView
+
+                      android:layout_width="wrap_content"
+                      android:textColor="#353535"
+                      android:textSize="16sp"
+                      android:layout_centerVertical="true"
+                      android:layout_height="wrap_content" android:text="总计金额"/>
+                  <TextView
+                      android:id="@+id/qianbaoSum"
+                      android:layout_width="wrap_content"
+                      android:textColor="#EF4F57"
+                      android:textSize="14sp"
+                      android:layout_centerVertical="true"
+                      android:layout_height="wrap_content" android:text="Y23"/>
+              </LinearLayout>
+
+
+              <LinearLayout
+                  android:background="@color/connet_bgColor"
+                  android:layout_width="2px"
+                  android:layout_height="fill_parent"></LinearLayout>
+
+
+
+               <LinearLayout
+                   android:layout_weight="1.4"
+                   android:layout_width="0dp"
+                   android:orientation="vertical"
+                   android:layout_height="fill_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp">
+
+                        <RelativeLayout
+                            android:padding="@dimen/space_17"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:textColor="#353535"
+                                android:textSize="16sp"
+                                android:layout_centerVertical="true"
+                                android:layout_height="wrap_content" android:text="可用金额"/>
+                            <TextView
+                                android:id="@+id/useMoney"
+                                android:layout_alignParentRight="true"
+                                android:layout_width="wrap_content"
+                                android:textColor="#EF4F57"
+                                android:textSize="14sp"
+                                android:layout_centerVertical="true"
+                                android:layout_height="wrap_content" android:text="Y23"/>
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+                   <LinearLayout
+                       android:layout_width="fill_parent"
+                       android:layout_height="2px"></LinearLayout>
+                   <LinearLayout
+                       android:layout_weight="1"
+                       android:background="@color/white"
+                       android:layout_width="fill_parent"
+                       android:layout_height="0dp">
+                       <RelativeLayout
+                           android:padding="@dimen/space_17"
+                           android:layout_width="fill_parent"
+                           android:layout_height="fill_parent">
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:textColor="#353535"
+                               android:textSize="16sp"
+                               android:layout_centerVertical="true"
+                               android:layout_height="wrap_content" android:text="冻结金额"/>
+                           <TextView
+                               android:id="@+id/deongMoney"
+                               android:layout_alignParentRight="true"
+                               android:layout_width="wrap_content"
+                               android:textColor="#EF4F57"
+                               android:textSize="14sp"
+                               android:layout_centerVertical="true"
+                               android:layout_height="wrap_content" android:text="Y23"/>
+                       </RelativeLayout>
+                   </LinearLayout>
+               </LinearLayout>
+       </LinearLayout>
+
+
+        <RelativeLayout  android:id="@+id/touImeBut" android:padding="10dp" android:layout_marginTop="10dp"  android:layout_width="fill_parent"  android:layout_height="wrap_content"  android:background="@color/white"  >
+            <TextView
+                android:layout_width="wrap_content"
+                android:textColor="#999999"
+                android:textSize="18sp"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content" android:text="钱包明细"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="#999999"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content" android:text="更多"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content" android:background="@mipmap/more" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:background="@color/connet_bgColor"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"></LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+        	android:id="@+id/recyclerView"
+            android:overScrollMode="never"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+      	    android:scrollbars="vertical" />
+        <ImageView
+            android:id="@+id/itegralNone"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:background="@mipmap/int_itegral" />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

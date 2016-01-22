@@ -4,6 +4,7 @@ package com.smarter.LoveLog.adapter;
  * Created by Administrator on 2015/12/22.
  */
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.FeedbackActivity;
+import com.smarter.LoveLog.activity.ItegralSelfActivity;
+import com.smarter.LoveLog.activity.WalletSelfActivity;
 
 /**
  * @Description:gridview的Adapter
@@ -52,7 +56,7 @@ public class MyGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final  int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.grid_item, parent, false);
@@ -60,6 +64,38 @@ public class MyGridAdapter extends BaseAdapter {
         TextView tv = BaseViewHolder.get(convertView, R.id.tv_item);
         ImageView iv = BaseViewHolder.get(convertView, R.id.iv_item);
         iv.setBackgroundResource(imgs[position]);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(position==img_text.length-8){
+                    //
+                    Intent intent2 = new Intent(mContext, WalletSelfActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent2);
+                }
+                if(position==img_text.length-6){
+                    //
+                    Intent intent2 = new Intent(mContext, ItegralSelfActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent2);
+                }
+                if(position==img_text.length-1){
+                    //反馈
+                    Intent intent2 = new Intent(mContext, FeedbackActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent2);
+                }
+
+            }
+        });
 
         tv.setText(img_text[position]);
         return convertView;

@@ -8,7 +8,7 @@
             android:layout_width="fill_parent" android:layout_height="@dimen/head_height" android:orientation="horizontal">
 
         <ImageView
-                android:id="@+id/iv_shao"
+                android:id="@+id/back_but"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -192,6 +192,7 @@
             android:layout_height="wrap_content">
             <!--意见反馈-->
             <LinearLayout
+                android:id="@+id/fackLinear"
                  android:paddingTop="14dp"
                 android:paddingBottom="15dp"
                 android:paddingLeft="10dp"
@@ -207,6 +208,36 @@
                     android:textColor="#646464"
                     android:textSize="16sp"
                     android:layout_height="wrap_content" android:text="意见反馈"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_height="wrap_content" android:background="@mipmap/more" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:background="@color/connet_bgColor" android:layout_width="fill_parent" android:layout_height="1sp"></LinearLayout>
+            <!--帮助中心-->
+            <LinearLayout
+
+                android:id="@+id/helpLinear"
+                android:paddingTop="14dp"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:textColor="#646464"
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content" android:text="帮助中心"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
