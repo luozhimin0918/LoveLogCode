@@ -145,6 +145,17 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".activity.MyCommentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".activity.MyInvitationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
+
 
 
 

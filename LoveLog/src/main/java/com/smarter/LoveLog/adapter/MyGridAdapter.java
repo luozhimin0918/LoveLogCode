@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.FeedbackActivity;
 import com.smarter.LoveLog.activity.ItegralSelfActivity;
+import com.smarter.LoveLog.activity.MyCommentActivity;
+import com.smarter.LoveLog.activity.MyInvitationActivity;
+import com.smarter.LoveLog.activity.MyRedPacketActivity;
 import com.smarter.LoveLog.activity.WalletSelfActivity;
 
 /**
@@ -68,7 +71,22 @@ public class MyGridAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(position==0){//帖子
+                    //
+                    Intent intent2 = new Intent(mContext, MyInvitationActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent2);
+                }
+                if(position==1){//评论
+                    //
+                    Intent intent2 = new Intent(mContext, MyCommentActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent2);
+                }
                 if(position==img_text.length-8){
                     //
                     Intent intent2 = new Intent(mContext, WalletSelfActivity.class);
@@ -77,6 +95,16 @@ public class MyGridAdapter extends BaseAdapter {
                     intent.putExtras(bundle);*/
                     mContext.startActivity(intent2);
                 }
+                if(position==img_text.length-7){
+                    //
+                    Intent intent2 = new Intent(mContext, MyRedPacketActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent2);
+                }
+
+
                 if(position==img_text.length-6){
                     //
                     Intent intent2 = new Intent(mContext, ItegralSelfActivity.class);

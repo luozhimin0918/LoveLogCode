@@ -14,8 +14,16 @@ public class Pinglun implements Serializable {
 
 
     private String add_time;
+    private ObjectComment object;
     private User user;
 
+    public ObjectComment getObject() {
+        return object;
+    }
+
+    public void setObject(ObjectComment object) {
+        this.object = object;
+    }
 
     public String getCmt_id() {
         return cmt_id;

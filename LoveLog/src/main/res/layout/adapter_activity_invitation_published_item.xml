@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/connet_bgColor">
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_margin="@dimen/space_10"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/imglist"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent"
+            android:paddingLeft="@dimen/space_10"
+            android:paddingRight="@dimen/space_10"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/pinglunTitle"
+                android:text="买了很多次了"
+                android:textColor="#313131"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent"
+            android:paddingLeft="@dimen/space_10"
+            android:paddingRight="@dimen/space_10"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/pinglunConnet"
+                android:text="买了很多次了"
+                android:textColor="#656565"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="@dimen/space_10"
+            android:layout_width="fill_parent"
+            android:paddingLeft="@dimen/space_10"
+            android:paddingRight="@dimen/space_10"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/addTime"
+                android:text="买了很多次了"
+                android:textColor="#929292"
+                android:textSize="16sp"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/pinglunNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:text="2"
+                android:layout_centerVertical="true"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@mipmap/commont"
+                android:textColor="#929292"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+
+
+
+
+    </LinearLayout>
+
+    <View
+        android:background="@color/connet_bgColor"
+        android:layout_width="fill_parent"
+        android:layout_height="1sp"></View>
+
+</LinearLayout>
