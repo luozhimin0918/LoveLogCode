@@ -17,6 +17,7 @@ import com.smarter.LoveLog.activity.FeedbackActivity;
 import com.smarter.LoveLog.activity.ItegralSelfActivity;
 import com.smarter.LoveLog.activity.MyCommentActivity;
 import com.smarter.LoveLog.activity.MyInvitationActivity;
+import com.smarter.LoveLog.activity.MyNotificationActivity;
 import com.smarter.LoveLog.activity.MyRedPacketActivity;
 import com.smarter.LoveLog.activity.WalletSelfActivity;
 
@@ -108,6 +109,14 @@ public class MyGridAdapter extends BaseAdapter {
                 if(position==img_text.length-6){
                     //
                     Intent intent2 = new Intent(mContext, ItegralSelfActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent2);
+                }
+                if(position==img_text.length-3){
+                    //反馈
+                    Intent intent2 = new Intent(mContext, MyNotificationActivity.class);
                   /*  Bundle bundle = new Bundle();
                     bundle.putSerializable("PromotePostsData", (Serializable) pp);
                     intent.putExtras(bundle);*/

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="@dimen/space_10"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <com.smarter.LoveLog.ui.CircleNetworkImage
+                    android:id="@+id/imageTitle"
+                    android:background="@mipmap/takeout_ic_avatar_default"
+                    android:layout_width="wrap_content"
+                    app:civ_border_width="0dp"
+                    app:civ_border_color="@color/red"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/notiTitle"
+                            android:text="买家家"
+                            android:textSize="14sp"
+                            android:layout_marginLeft="@dimen/space_10"
+                            android:textColor="#989898"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/AddTime"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="@dimen/space_2"
+                            android:layout_marginLeft="@dimen/space_10"
+                            android:text="2015—12—26"
+                            android:textSize="12sp"
+                            android:layout_centerVertical="true"
+                            android:textColor="#989898"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/space_5"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="@dimen/space_10"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/notifiContent"
+                            android:text="买了很多次了，效果一如既往的好。补水效果也是一如既往的好。强烈推荐去买，棒棒哒的。"
+                            android:textColor="#373737"
+                            android:lines="2"
+                            android:textSize="14sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:background="@color/connet_bgColor"
+        android:layout_width="fill_parent"
+        android:layout_height="1sp"></View>
+
+</LinearLayout>

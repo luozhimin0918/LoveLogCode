@@ -155,6 +155,11 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".activity.MyNotificationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
 
 
 

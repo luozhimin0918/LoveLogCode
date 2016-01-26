@@ -16,6 +16,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.fragment.CommentReceiveFragment;
 import com.smarter.LoveLog.fragment.CommentSendoutFragment;
+import com.smarter.LoveLog.fragment.InvitationDraftFragment;
 import com.smarter.LoveLog.fragment.InvitationPublishedFragment;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class MyInvitationActivity extends BaseFragmentActivity implements View.O
     private List<String> list_title;                                     //tab名称列表
 
     private InvitationPublishedFragment invitationPublishedFragment;                          //已发布
-    private CommentSendoutFragment commentSendoutFragment;            //草稿箱
+    private InvitationDraftFragment invitationDraftFragment;            //草稿箱
     Activity mActivity;
     Context mContext;
 
@@ -69,11 +70,11 @@ public class MyInvitationActivity extends BaseFragmentActivity implements View.O
     private void intData() {
         //fragment List
         invitationPublishedFragment=new InvitationPublishedFragment();
-        commentSendoutFragment=new CommentSendoutFragment();
+        invitationDraftFragment=new InvitationDraftFragment();
 
         list_fragment=new ArrayList<Fragment>();
         list_fragment.add(invitationPublishedFragment);
-        list_fragment.add(commentSendoutFragment);
+        list_fragment.add(invitationDraftFragment);
 
         //tab title List
         list_title=new ArrayList<String>();
