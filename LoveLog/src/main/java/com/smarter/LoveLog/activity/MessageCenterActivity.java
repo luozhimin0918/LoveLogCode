@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,16 +24,10 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.RecycleNotifacationAdapter;
-import com.smarter.LoveLog.adapter.RecyclePinglunAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.PaginationJson;
-import com.smarter.LoveLog.model.community.InvitationDataPinglunActi;
-import com.smarter.LoveLog.model.community.Pinglun;
-import com.smarter.LoveLog.model.community.PinglunData;
-import com.smarter.LoveLog.model.community.PinglunDataInfo;
-import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.notifacation.notificationActi;
@@ -51,7 +44,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class MyNotificationActivity extends BaseFragmentActivity implements View.OnClickListener{
+public class MessageCenterActivity extends BaseFragmentActivity implements View.OnClickListener{
     String Tag= "MyNotification";
     Context  mContext;
 
@@ -110,7 +103,7 @@ public class MyNotificationActivity extends BaseFragmentActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification_my_view);
+        setContentView(R.layout.activity_message_center_view);
         ButterKnife.bind(this);
         mContext=this;
         getDataIntent();

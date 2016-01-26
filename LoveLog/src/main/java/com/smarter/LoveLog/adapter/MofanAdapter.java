@@ -6,6 +6,7 @@ package com.smarter.LoveLog.adapter;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ import com.smarter.LoveLog.model.jsonModel.ZanOrFaroviteParame;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
-
+import com.smarter.LoveLog.ui.popwindow.AlertDialog;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -290,9 +291,24 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
 
-                startAnimatSet(1);
-                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
-                initIsLogonParame(url,"5");
+
+                new AlertDialog(mContext).builder().setTitle("提示")
+                        .setMsg("此次打赏您将消耗5个积分")
+                        .setPositiveButton("确认", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                startAnimatSet(1);
+                                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
+                                initIsLogonParame(url,"5");
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+
             }
         });
         integral02.setOnClickListener(new View.OnClickListener() {

@@ -9,11 +9,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.fragment.RedpacketHaveExpiredFragment;
 import com.smarter.LoveLog.fragment.RedpacketUnusedFragment;
+import com.smarter.LoveLog.fragment.RedpacketUsedFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +33,17 @@ public class MyRedPacketActivity extends BaseFragmentActivity implements View.On
    SlidingTabLayout tabLayout_2;
     @Bind(R.id.view_pager)
     ViewPager vp;
+
+
+    @Bind(R.id.back_but)
+    ImageView back_but;
+
     private List<Fragment> list_fragment;                                //定义要装fragment的列表
     private List<String> list_title;                                     //tab名称列表
 
     private RedpacketUnusedFragment redpacketUnusedFragment;                          //未使用fragment
-    private RedpacketUnusedFragment redpacketUnusedFragment2;
-    private RedpacketUnusedFragment redpacketUnusedFragment3;
+    private RedpacketUsedFragment redpacketUsedFragment;
+    private RedpacketHaveExpiredFragment redpacketHaveExpiredFragment;
     Activity mActivity;
     Context mContext;
 
@@ -55,26 +63,26 @@ public class MyRedPacketActivity extends BaseFragmentActivity implements View.On
     }
 
     private void setListen() {
-
+        back_but.setOnClickListener(this);
     }
 
     private void intData() {
         //fragment List
         redpacketUnusedFragment=new RedpacketUnusedFragment();
-        redpacketUnusedFragment2=new RedpacketUnusedFragment();
-        redpacketUnusedFragment3=new RedpacketUnusedFragment();
+        redpacketUsedFragment=new RedpacketUsedFragment();
+        redpacketHaveExpiredFragment=new RedpacketHaveExpiredFragment();
 
         list_fragment=new ArrayList<Fragment>();
         list_fragment.add(redpacketUnusedFragment);
 
-        list_fragment.add(redpacketUnusedFragment2);
-        list_fragment.add(redpacketUnusedFragment3);
+        list_fragment.add(redpacketUsedFragment);
+        list_fragment.add(redpacketHaveExpiredFragment);
 
         //tab title List
         list_title=new ArrayList<String>();
         list_title.add("未使用");
-        list_title.add("已过期");
         list_title.add("已使用");
+        list_title.add("已过期");
 
 
         vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -137,7 +145,9 @@ public class MyRedPacketActivity extends BaseFragmentActivity implements View.On
     @Override
     public void onClick(View v) {
          switch (v.getId()){
-
+             case R.id.back_but:
+                 finish();
+                 break;
 
          }
     }

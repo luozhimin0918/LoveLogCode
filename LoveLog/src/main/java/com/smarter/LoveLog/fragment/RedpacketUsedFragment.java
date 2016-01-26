@@ -23,14 +23,12 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.RecycleOrderAllAdapter;
-import com.smarter.LoveLog.adapter.RecycleReceivePinglunAdapter;
 import com.smarter.LoveLog.adapter.RecycleRedpacketUnusedAdapter;
+import com.smarter.LoveLog.adapter.RecycleRedpacketUsedAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.PaginationJson;
-import com.smarter.LoveLog.model.community.InvitationDataPinglunActi;
-import com.smarter.LoveLog.model.community.Pinglun;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.redpacket.RedList;
@@ -48,7 +46,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class RedpacketUnusedFragment extends Fragment implements RecycleOrderAllAdapter.OnCheckDefaultListener {
+public class RedpacketUsedFragment extends Fragment implements RecycleOrderAllAdapter.OnCheckDefaultListener {
     protected WeakReference<View> mRootView;
     private View view;
     @Bind(R.id.recyclerview)
@@ -153,13 +151,13 @@ public class RedpacketUnusedFragment extends Fragment implements RecycleOrderAll
             paginationJson.setCount("10");
             paginationJson.setPage((++page)+"");
             String string = JSON.toJSONString(paginationJson);
-            String  d="{\"pagination\":"+string+" ,\"type\":\"1\",\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";//type 2为收到的评论
+            String  d="{\"pagination\":"+string+" ,\"type\":\"2\",\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";//type 2为收到的评论
             map.put("json", d);
             Log.d("CommentReceiveFragment", d + "》》》》");
         }
         if(loadingTag==2){//第一次加载数据
             map = new HashMap<String, String>();
-            String oneString ="{\"type\":\"1\",\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";
+            String oneString ="{\"type\":\"2\",\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";
             map.put("json",oneString);
             Log.d("CommentReceiveFragment", oneString + "》》》》");
         }
@@ -244,7 +242,7 @@ public class RedpacketUnusedFragment extends Fragment implements RecycleOrderAll
 
     }
 
-    private RecycleRedpacketUnusedAdapter mAdapter;
+    private RecycleRedpacketUsedAdapter mAdapter;
     private void intView() {
 
 
@@ -296,7 +294,7 @@ public class RedpacketUnusedFragment extends Fragment implements RecycleOrderAll
 
 
         if(redListList!=null&&redListList.size()>0){
-            mAdapter = new RecycleRedpacketUnusedAdapter(redListList);
+            mAdapter = new RecycleRedpacketUsedAdapter(redListList);
 
             mRecyclerView.setAdapter(mAdapter);
         }

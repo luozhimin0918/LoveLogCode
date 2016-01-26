@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.model.community.Pinglun;
@@ -68,11 +69,11 @@ public class RecycleNotifacationAdapter extends RecyclerView.Adapter<RecycleNoti
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public CircleNetworkImage imageTitle;
+        public NetworkImageView imageTitle;
         TextView notiTitle,AddTime,notifiContent;
         public ViewHolder(View itemView) {
             super(itemView);
-            imageTitle= (CircleNetworkImage) itemView.findViewById(R.id.imageTitle);
+            imageTitle= (NetworkImageView) itemView.findViewById(R.id.imageTitle);
             notiTitle= (TextView) itemView.findViewById(R.id.notiTitle);
             AddTime= (TextView) itemView.findViewById(R.id.AddTime);
             notifiContent= (TextView) itemView.findViewById(R.id.notifiContent);

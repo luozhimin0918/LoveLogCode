@@ -14,12 +14,13 @@
            android:layout_width="fill_parent"
            >
            <ImageView
+               android:id="@+id/redImage"
                android:background="@mipmap/red_packet_red"
                android:layout_width="fill_parent"
                android:layout_height="wrap_content" />
           <LinearLayout
-               android:layout_marginTop="@dimen/space_16"
-               android:layout_marginBottom="@dimen/space_20"
+               android:layout_marginTop="@dimen/space_10"
+               android:layout_marginBottom="@dimen/space_15"
                android:orientation="horizontal"
                android:layout_width="fill_parent"
                android:layout_height="wrap_content">
@@ -33,17 +34,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <TextView
+                            android:id="@+id/moneyTag"
                             android:layout_width="wrap_content"
                             android:textColor="@color/top_bar_bgColor"
                             android:textSize="20sp"
-                            android:layout_height="wrap_content" android:text="￥"/>
+                            android:layout_height="wrap_content" android:text="¥"/>
                         <TextView
+                            android:id="@+id/redMoney"
                             android:layout_width="wrap_content"
                             android:textColor="@color/top_bar_bgColor"
-                            android:textSize="38sp"
+                            android:textSize="35sp"
                             android:layout_height="wrap_content" android:text="9"/>
                     </LinearLayout>
                    <TextView
+                       android:id="@+id/manMoney"
                        android:layout_marginTop="@dimen/space_5"
                        android:layout_width="wrap_content"
                        android:textColor="#696969"
@@ -58,10 +62,11 @@
                    android:gravity="left"
                    android:layout_height="wrap_content">
                    <TextView
+                       android:id="@+id/nameRed"
                        android:layout_width="wrap_content"
-                       android:textColor="#333333"
-                       android:layout_marginTop="@dimen/space_2"
-                       android:textSize="18sp"
+                       android:textColor="#383838"
+                       android:layout_marginTop="@dimen/space_5"
+                       android:textSize="15sp"
                        android:layout_height="wrap_content" android:text="支付红包"/>
                    <TextView
                        android:layout_marginTop="@dimen/space_12"
@@ -71,7 +76,7 @@
                        android:lines="2"
                        android:lineSpacingMultiplier="1"
                        android:layout_height="wrap_content"
-                       android:text="156256396585，App下单使用，在线支付专享。"/>
+                       android:text=""/>
                </LinearLayout>
            </LinearLayout>
 
@@ -97,15 +102,16 @@
                    android:layout_marginLeft="@dimen/space_5"
                    android:layout_width="wrap_content"
                    android:textColor="#9C9C9C"
-                   android:textSize="15sp"
+                   android:textSize="13sp"
                    android:layout_height="wrap_content"
                    android:text="还有7天过期"/>
                <TextView
+                   android:id="@+id/endTime"
                    android:layout_width="0dp"
                    android:layout_weight="1"
                    android:gravity="right"
                    android:textColor="#9C9C9C"
-                   android:textSize="15sp"
+                   android:textSize="13sp"
                    android:layout_height="wrap_content"
                    android:text="有效期至：2016-1-06"/>
            </LinearLayout>

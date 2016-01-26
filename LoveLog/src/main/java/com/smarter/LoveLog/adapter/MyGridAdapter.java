@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.AddressManageActivity;
 import com.smarter.LoveLog.activity.FeedbackActivity;
 import com.smarter.LoveLog.activity.ItegralSelfActivity;
+import com.smarter.LoveLog.activity.MessageCenterActivity;
 import com.smarter.LoveLog.activity.MyCommentActivity;
 import com.smarter.LoveLog.activity.MyInvitationActivity;
 import com.smarter.LoveLog.activity.MyNotificationActivity;
@@ -114,6 +116,27 @@ public class MyGridAdapter extends BaseAdapter {
                     intent.putExtras(bundle);*/
                     mContext.startActivity(intent2);
                 }
+
+
+                if(position==img_text.length-5){
+                    //
+
+                    //挑战到地址管理界面
+                    Intent intent2 = new Intent(mContext, AddressManageActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent2);
+                }
+                if(position==img_text.length-4){
+                    //反馈
+                    Intent intent2 = new Intent(mContext, MessageCenterActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent2);
+                }
+
                 if(position==img_text.length-3){
                     //反馈
                     Intent intent2 = new Intent(mContext, MyNotificationActivity.class);

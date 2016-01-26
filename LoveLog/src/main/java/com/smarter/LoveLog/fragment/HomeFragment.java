@@ -30,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.MessageCenterActivity;
 import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.adapter.Adapter_GridView;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
@@ -78,6 +79,17 @@ public class HomeFragment extends Fragment {
     @Bind(R.id.progreView)
     ImageView progreView;
 
+    @Bind(R.id.messageBut)
+    ImageView messageBut;
+
+    @Bind(R.id.munuBut)
+    ImageView munuBut;
+
+
+
+
+
+
 
 
 
@@ -117,6 +129,8 @@ public class HomeFragment extends Fragment {
 
             ButterKnife.bind(this, view);
                 initData();
+                setListen();
+
 
 
 
@@ -131,6 +145,29 @@ public class HomeFragment extends Fragment {
         return mRootView.get();
 
     }
+
+    private void setListen() {
+
+        messageBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //反馈
+                Intent intent2 = new Intent(mContext, MessageCenterActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                mContext.startActivity(intent2);
+            }
+        });
+        munuBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"敬请期待",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
     private void initData() {
 

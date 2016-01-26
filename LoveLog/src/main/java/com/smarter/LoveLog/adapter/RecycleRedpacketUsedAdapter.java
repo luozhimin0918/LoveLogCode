@@ -1,7 +1,9 @@
 package com.smarter.LoveLog.adapter;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.smarter.LoveLog.R;
@@ -12,7 +14,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/12/22.
  */
-public class RecycleRedpacketUnusedAdapter extends RecyclerView.Adapter<RecycleRedpacketUnusedAdapter.ViewHolder>{
+public class RecycleRedpacketUsedAdapter extends RecyclerView.Adapter<RecycleRedpacketUsedAdapter.ViewHolder>{
 
 
 
@@ -21,7 +23,7 @@ public class RecycleRedpacketUnusedAdapter extends RecyclerView.Adapter<RecycleR
     // 数据集
     List<RedList> redListList;
 
-    public RecycleRedpacketUnusedAdapter(List<RedList> redListList) {
+    public RecycleRedpacketUsedAdapter(List<RedList> redListList) {
         super();
         this.redListList=redListList;
     }
@@ -39,9 +41,12 @@ public class RecycleRedpacketUnusedAdapter extends RecyclerView.Adapter<RecycleR
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         // 绑定数据到ViewHolder上
        viewHolder.redMoney.setText(redListList.get(i).getAmount().replace(".00","").replace("¥",""));
-        viewHolder.manMoney.setText("满"+redListList.get(i).getMin_order_amount().replace(".00","").replace("¥","")+"可用");
+        viewHolder.manMoney.setText("满"+redListList.get(i).getMin_order_amount().replace(".00", "").replace("¥","")+"可用");
         viewHolder.nameRed.setText(redListList.get(i).getName());
         viewHolder.endTime.setText("有效期至："+redListList.get(i).getEnd_time());
+        viewHolder.redImage.setImageResource(R.mipmap.red_packet_gray);
+        viewHolder.moneyTag.setTextColor(Color.parseColor("#8B8B8B"));
+        viewHolder.redMoney.setTextColor(Color.parseColor("#8B8B8B"));
 
 
 
@@ -65,17 +70,17 @@ public class RecycleRedpacketUnusedAdapter extends RecyclerView.Adapter<RecycleR
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView redMoney,manMoney,nameRed,endTime;
-
+        public TextView redMoney,manMoney,nameRed,endTime,moneyTag;
+        public ImageView redImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
+            moneyTag = (TextView) itemView.findViewById(R.id.moneyTag);
             redMoney = (TextView) itemView.findViewById(R.id.redMoney);
             manMoney= (TextView) itemView.findViewById(R.id.manMoney);
             nameRed= (TextView) itemView.findViewById(R.id.nameRed);
             endTime= (TextView) itemView.findViewById(R.id.endTime);
-
+            redImage= (ImageView) itemView.findViewById(R.id.redImage);
 
         }
     }
