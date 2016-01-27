@@ -165,6 +165,17 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".activity.WebViewUrlActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".activity.ShowWebImageActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
+
 
 
 

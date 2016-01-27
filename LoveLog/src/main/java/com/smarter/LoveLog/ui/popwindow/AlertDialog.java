@@ -57,8 +57,8 @@ public class AlertDialog {
         btn_neg.setVisibility(View.GONE);
         btn_pos = (Button) view.findViewById(R.id.btn_pos);
         btn_pos.setVisibility(View.GONE);
-        img_line = (ImageView) view.findViewById(R.id.img_line);
-        img_line.setVisibility(View.GONE);
+//        img_line = (ImageView) view.findViewById(R.id.img_line);
+//        img_line.setVisibility(View.GONE);
 
         // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.AlertDialogStyle);
@@ -66,7 +66,7 @@ public class AlertDialog {
 
         // 调整dialog背景大小
         lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
-                .getWidth() * 0.85), LayoutParams.WRAP_CONTENT));
+                .getWidth() * 0.75), LayoutParams.WRAP_CONTENT));
 
         return this;
     }
@@ -163,7 +163,7 @@ public class AlertDialog {
             btn_pos.setBackgroundResource(R.drawable.login_button);
             btn_neg.setVisibility(View.VISIBLE);
             btn_neg.setBackgroundResource(R.drawable.login_button);
-            img_line.setVisibility(View.VISIBLE);
+//            img_line.setVisibility(View.VISIBLE);
         }
 
         if (showPosBtn && !showNegBtn) {

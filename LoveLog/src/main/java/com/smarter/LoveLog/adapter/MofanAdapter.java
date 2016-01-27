@@ -174,7 +174,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
                  rewardItemData=promotePostsDataList.get(position);
                     int[] location = new int[2];
                     viewHolder.reword.getLocationOnScreen(location);
-                    isWifiPopupWindow.showAtLocation(viewHolder.reword, Gravity.NO_GRAVITY, location[0], location[1] - viewHolder.reword.getHeight() * 7);//
+                    isWifiPopupWindow.showAtLocation(viewHolder.reword, Gravity.NO_GRAVITY, location[0], location[1] - viewHolder.reword.getHeight() * 8);//
                     /**
                      * 动画
                      */
@@ -210,7 +210,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
                     /**
                      * 动画后的黑色蒙层
                      */
-                    BabyPopWindow.backgroundAlpha(mContext,0.2f);
+                    BabyPopWindow.backgroundAlpha(mContext,0.55f);
             }
         });
     }
@@ -290,44 +290,46 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
         integral01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                new AlertDialog(mContext).builder().setTitle("提示")
-                        .setMsg("此次打赏您将消耗5个积分")
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                startAnimatSet(1);
-                                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
-                                initIsLogonParame(url,"5");
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).show();
+                showAlertDialog(1,"5");
 
             }
         });
         integral02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startAnimatSet(2);
-                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
-                initIsLogonParame(url,"10");
+                showAlertDialog(2, "10");
             }
         });
         integral03.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startAnimatSet(3);
-                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
-                initIsLogonParame(url,"15");
+                showAlertDialog(3,"15");
             }
         });
     }
+
+    private void  showAlertDialog(final int num,final String jifen){
+        BabyPopWindow.backgroundAlpha(mContext,1.0f);
+
+        new AlertDialog(mContext).builder().setTitle("提示")
+                .setMsg("此次打赏您将消耗"+jifen+"个积分")
+                .setPositiveButton("确认", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        startAnimatSet(num);
+                        String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
+                        initIsLogonParame(url, jifen);
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 isWifiPopupWindow.dismiss();
+            }
+        }).show();
+
+    }
+
 
     private void startAnimatSet(int option) {
 

@@ -68,6 +68,7 @@ import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
 import com.smarter.LoveLog.ui.QCheckBox;
+import com.smarter.LoveLog.ui.popwindow.AlertDialog;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
@@ -120,7 +121,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
 
     @Bind(R.id.reword)
-    ImageView reword;
+    TextView reword;
 
 
 
@@ -551,7 +552,8 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
         int[] location = new int[2];
         reword.getLocationOnScreen(location);
-        isWifiPopupWindow.showAtLocation(reword, Gravity.NO_GRAVITY, location[0], location[1] - reword.getHeight() * 7);//
+        isWifiPopupWindow.showAtLocation(reword, Gravity.NO_GRAVITY, location[0], location[1]-(reword.getHeight()*4));//
+        Log.d("test",reword.getHeight()+"");
         /**
          * 动画
          */
@@ -587,7 +589,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         /**
          * 动画后的黑色蒙层
          */
-        BabyPopWindow.backgroundAlpha(mContext,0.2f);
+        BabyPopWindow.backgroundAlpha(mContext,0.55f);
 
     }
 
@@ -821,28 +823,46 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         integral01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showAlertDialog(1, "5");
 
-                startAnimatSet(1);
-                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
-                initIsLogonParame(url,"5");
             }
         });
         integral02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startAnimatSet(2);
-                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
-                initIsLogonParame(url,"10");
+                showAlertDialog(2, "10");
             }
         });
         integral03.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startAnimatSet(3);
-                String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
-                initIsLogonParame(url,"15");
+                showAlertDialog(3,"15");
             }
         });
+    }
+
+
+
+    private void  showAlertDialog(final int num,final String jifen){
+        BabyPopWindow.backgroundAlpha(mContext,1.0f);
+
+        new AlertDialog(mContext).builder().setTitle("提示")
+                .setMsg("此次打赏您将消耗"+jifen+"个积分")
+                .setPositiveButton("确认", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        startAnimatSet(num);
+                        String url = "http://mapp.aiderizhi.com/?url=/post/reward";//打赏
+                        initIsLogonParame(url, jifen);
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isWifiPopupWindow.dismiss();
+            }
+        }).show();
+
     }
 
 

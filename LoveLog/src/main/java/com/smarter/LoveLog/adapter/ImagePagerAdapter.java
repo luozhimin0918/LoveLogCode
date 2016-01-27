@@ -22,6 +22,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.ProductDeatilActivity;
+import com.smarter.LoveLog.activity.WebViewUrlActivity;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.model.home.SliderUrlData;
 
@@ -105,12 +106,23 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ProductDeatilActivity.class);
-                intent.putExtra("ObjectData",getPosition(position)+">>>");
-                context.startActivity(intent);
+               SliderUrlData slider=sliderUrlDataList.get(getPosition(position));
+                actionTo(slider.getAction(), slider.getParam());
+
             }
         });
         return view;
+    }
+
+    private void actionTo(String action,String param) {
+
+
+           if(action.equals("url")){
+        Intent intent = new Intent(context, WebViewUrlActivity.class);
+        intent.putExtra("param", param);
+        context.startActivity(intent);
+           }
+
     }
 
     private static class ViewHolder {
