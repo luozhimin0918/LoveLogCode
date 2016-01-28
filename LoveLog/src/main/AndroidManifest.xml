@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-
+    　<uses-permission android:name="android.permission.SET_WALLPAPER"/>
 
 
     <application android:allowBackup="true"

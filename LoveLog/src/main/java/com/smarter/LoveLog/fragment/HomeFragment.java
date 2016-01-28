@@ -30,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.MainActivity;
 import com.smarter.LoveLog.activity.MessageCenterActivity;
 import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.adapter.Adapter_GridView;
@@ -38,6 +39,7 @@ import com.smarter.LoveLog.adapter.HomeAdapter;
 import com.smarter.LoveLog.adapter.MofanAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.home.Ad;
 import com.smarter.LoveLog.model.home.AdIndexUrlData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.HomeDataFrag;
@@ -58,7 +60,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment  {
     protected WeakReference<View> mRootView;
     private View view;
     Context mContext;
@@ -117,7 +119,9 @@ public class HomeFragment extends Fragment {
     Boolean  isLoadReresh=false;//是否是刷新
 
     HomeDataInfo  homeDataInfo=null;//homeFragment所有数据
-    ImagePagerAdapter imagePagerAdapter;//首页轮播的界面的adapter
+     public static ImagePagerAdapter imagePagerAdapter;//首页轮播的界面的adapter
+
+
 
     @Nullable
     @Override
@@ -286,6 +290,7 @@ public class HomeFragment extends Fragment {
         imagePagerAdapter.notifyDataSetChanged();
 
 
+
         viewgroup.removeAllViews();//remove圆点
         //创建小图像集合
         imageViews=new ImageView[sliderUrlDataList.size()];
@@ -370,13 +375,13 @@ public class HomeFragment extends Fragment {
          * 主list
          */
         ad= homeDataInfo.getAd();
-        List<AdIndexUrlData> adIndexTopAd=new ArrayList<AdIndexUrlData>();
+        List<AdIndexUrlData> adIndexTopAdCom=new ArrayList<AdIndexUrlData>();
         for(int i=0;i<ad.size();i++){
             if(ad.get(i).getIndex_com()!=null){
-                adIndexTopAd.add(ad.get(i));
+                adIndexTopAdCom.add(ad.get(i));
             }
         }
-        mAdapter = new HomeAdapter(mContext,adIndexTopAd);
+        mAdapter = new HomeAdapter(mContext,adIndexTopAdCom);
 
         mRecyclerView.setAdapter(mAdapter);
         /**
@@ -405,7 +410,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initTopAd() {
-        List<AdIndexUrlData> adIndexTopAdHot=new ArrayList<AdIndexUrlData>();
+         List<AdIndexUrlData> adIndexTopAdHot=new ArrayList<AdIndexUrlData>();
         for(int i=0;i<ad.size();i++){
             if(ad.get(i).getIndex_com()==null){
                 adIndexTopAdHot.add(ad.get(i));
@@ -423,12 +428,23 @@ public class HomeFragment extends Fragment {
             networkImageViewList.get(j).setErrorImageResId(R.mipmap.loadding);
             RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
             String imageUrl=adIndexTopAdHot.get(j).getIndex_hot().getImage_url();
+
+           final Ad  ad=adIndexTopAdHot.get(j).getIndex_hot();
+
             Log.d("ImagePagerAdapter", mQueue.getCache().get(imageUrl) == null ? "null" : "bu null");
             if(mQueue.getCache().get(imageUrl)==null){
                 networkImageViewList.get(j).startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
             }
             networkImageViewList.get(j).setImageUrl(imageUrl, AppContextApplication.getInstance().getmImageLoader());
+            networkImageViewList.get(j).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imagePagerAdapter.actionTo(mContext,ad.getAction(),ad.getParam());
+                }
+            });
         }
+
+
 
     }
 
@@ -496,7 +512,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-
     private void initGridView() {
         navIndexUrlDataList=homeDataInfo.getNav();
         gridView_classify.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -505,9 +520,11 @@ public class HomeFragment extends Fragment {
         gridView_classify.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                //挑战到宝贝搜索界面
+
+                imagePagerAdapter.actionTo(mContext, navIndexUrlDataList.get(arg2).getAction(), navIndexUrlDataList.get(arg2).getParam());
+               /* //挑战到宝贝搜索界面
                 Intent intent = new Intent(getActivity(), ProductDeatilActivity.class);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
     }

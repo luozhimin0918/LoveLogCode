@@ -6,7 +6,8 @@ package com.smarter.LoveLog.model.home;
 public class Ad {
     private String name;
     private String image_url;
-    private String url;
+    private String action;
+    private String param;
 
     public String getName() {
         return name;
@@ -24,11 +25,19 @@ public class Ad {
         this.image_url = image_url;
     }
 
-    public String getUrl() {
-        return url;
+    public String getAction() {
+        return action;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
     }
 }

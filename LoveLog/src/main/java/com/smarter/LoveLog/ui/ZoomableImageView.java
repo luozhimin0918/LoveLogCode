@@ -14,6 +14,7 @@ package com.smarter.LoveLog.ui;
         import android.os.Build;
         import android.os.SystemClock;
         import android.util.AttributeSet;
+        import android.util.Log;
         import android.view.GestureDetector;
         import android.view.MotionEvent;
         import android.view.ScaleGestureDetector;
@@ -22,6 +23,9 @@ package com.smarter.LoveLog.ui;
         import android.view.animation.TranslateAnimation;
 
         import com.smarter.LoveLog.interfaces.OnImageTouchedListener;
+        import com.smarter.LoveLog.model.address.AddressData;
+
+        import java.util.List;
 
 @SuppressLint("NewApi")
 public class ZoomableImageView extends View {
@@ -538,6 +542,23 @@ public class ZoomableImageView extends View {
         }
 
         @Override
+        public void onLongPress(MotionEvent event) {
+            if (longPressRunnable != null) {
+
+                //TODO 这里可以增加一些规则，比如：模糊XY的判定，使长按更容易触发
+
+                removeCallbacks(longPressRunnable);
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN
+                        && event.getPointerCount() == 1) {
+
+                    postCheckForLongTouch(event.getX(), event.getY());
+                }
+            }
+            super.onLongPress(event);
+        }
+
+        @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 
             // Skip if there are multiple points of contact
@@ -598,14 +619,84 @@ public class ZoomableImageView extends View {
         if(mBitmap!=null){
 
             // Check the scale detector
-            mScaleDetector.onTouchEvent( event );
+            mScaleDetector.onTouchEvent(event);
 
             // Check the gesture detector
-            if(!mScaleDetector.isInProgress())
+            if(!mScaleDetector.isInProgress()){
+
                 mGestureDetector.onTouchEvent( event );
+
+            }
+
+
         }
+
+
+
+
 
         // Default case
         return true;
+    }
+
+
+
+
+    /**
+     * 当长按事件发生时，要触发的任务
+     */
+    private LongPressRunnable longPressRunnable = new LongPressRunnable();
+
+   /* @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+
+        if (longPressRunnable != null) {
+
+            //TODO 这里可以增加一些规则，比如：模糊XY的判定，使长按更容易触发
+
+            removeCallbacks(longPressRunnable);
+
+            if (event.getAction() == MotionEvent.ACTION_DOWN
+                    && event.getPointerCount() == 1) {
+
+                postCheckForLongTouch(event.getX(), event.getY());
+            }
+        }
+
+        return true;
+    }*/
+
+    private void postCheckForLongTouch(float x, float y) {
+
+        longPressRunnable.setPressLocation(x, y);
+        postDelayed(longPressRunnable, 800);
+    }
+
+
+    private class LongPressRunnable implements Runnable {
+
+        private int x, y;
+
+        public void setPressLocation(float x, float y) {
+            this.x = (int) x;
+            this.y = (int) y;
+        }
+
+        @Override
+        public void run() {
+            onZoomLongClickListener.onZoomlongClick();
+            Log.d("ZoomableImageView","发生长按事件，位置在：" + x + "、" + y);
+        }
+
+    }
+
+    //回调开始
+    public interface OnZoomLongClickListener {
+        void  onZoomlongClick();
+    }
+    private OnZoomLongClickListener onZoomLongClickListener;
+
+    public void setOnZoomLoogClick(OnZoomLongClickListener onZoomLongClickListener) {
+        this.onZoomLongClickListener=onZoomLongClickListener;
     }
 }

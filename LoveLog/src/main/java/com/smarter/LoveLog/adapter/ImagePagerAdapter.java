@@ -21,9 +21,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.InvitationDeatilActivity;
+import com.smarter.LoveLog.activity.MainActivity;
 import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.activity.WebViewUrlActivity;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.home.SliderUrlData;
 
 
@@ -46,6 +49,10 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
         this.size =imageIdList.size();
         isInfiniteLoop = false;
     }*/
+
+    public ImagePagerAdapter(){
+
+    }
     public ImagePagerAdapter(Context context,List<SliderUrlData> sliderUrlDataList) {
 
         this.context = context;
@@ -107,23 +114,49 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
             @Override
             public void onClick(View v) {
                SliderUrlData slider=sliderUrlDataList.get(getPosition(position));
-                actionTo(slider.getAction(), slider.getParam());
+                actionTo(context,slider.getAction(), slider.getParam());
 
             }
         });
         return view;
     }
 
-    private void actionTo(String action,String param) {
+    public  void actionTo(Context context,String action,String param) {
 
 
            if(action.equals("url")){
-        Intent intent = new Intent(context, WebViewUrlActivity.class);
-        intent.putExtra("param", param);
-        context.startActivity(intent);
+            Intent intent = new Intent(context, WebViewUrlActivity.class);
+            intent.putExtra("param", param);
+            context.startActivity(intent);
            }
 
+           if(action.equals("post_detail")){
+               Intent intent = new Intent(context, InvitationDeatilActivity.class);
+               PromotePostsData postsData=new PromotePostsData();
+               postsData.setId(param);
+               intent.putExtra("PromotePostsData",postsData);
+               context.startActivity(intent);
+
+           }
+        if(action.equals("product_detail")||action.equals("goods_detail")){
+            Intent intent = new Intent(context, ProductDeatilActivity.class);
+           /* PromotePostsData postsData=new PromotePostsData();
+            postsData.setId(param);
+            intent.putExtra("PromotePostsData",postsData);*/
+            context.startActivity(intent);
+
+        }
+        if(action.equals("post_index")){
+            MainActivity.mainActivity.onDoMainListener();
+        }
+
+
     }
+
+
+
+
+
 
     private static class ViewHolder {
 

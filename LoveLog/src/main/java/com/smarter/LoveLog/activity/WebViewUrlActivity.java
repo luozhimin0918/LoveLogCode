@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -271,7 +272,7 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
         public JavascriptInterface(Context context) {
             this.context = context;
         }
-
+         @android.webkit.JavascriptInterface
         public void openImage(String img) {
             System.out.println(img);
             //

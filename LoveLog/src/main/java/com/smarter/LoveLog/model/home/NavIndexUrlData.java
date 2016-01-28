@@ -8,11 +8,9 @@ import java.io.Serializable;
 public class NavIndexUrlData implements Serializable {
   private String  icon ;
     private String  name ;
-    private String  url ;
-    private String  sort_order ;
+    private String  action ;
+    private String  param ;
     private String  id ;
-
-    private int  action_id ;
 
   public String getIcon() {
     return icon;
@@ -30,20 +28,20 @@ public class NavIndexUrlData implements Serializable {
     this.name = name;
   }
 
-  public String getUrl() {
-    return url;
+  public String getAction() {
+    return action;
   }
 
-  public void setUrl(String url) {
-    this.url = url;
+  public void setAction(String action) {
+    this.action = action;
   }
 
-  public String getSort_order() {
-    return sort_order;
+  public String getParam() {
+    return param;
   }
 
-  public void setSort_order(String sort_order) {
-    this.sort_order = sort_order;
+  public void setParam(String param) {
+    this.param = param;
   }
 
   public String getId() {
@@ -52,13 +50,5 @@ public class NavIndexUrlData implements Serializable {
 
   public void setId(String id) {
     this.id = id;
-  }
-
-  public int getAction_id() {
-    return action_id;
-  }
-
-  public void setAction_id(int action_id) {
-    this.action_id = action_id;
   }
 }

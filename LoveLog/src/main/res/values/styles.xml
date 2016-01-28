@@ -68,28 +68,6 @@
 
 
 
-   <!-- <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabMaxWidth">135dp</item>
-        <item name="tabMinWidth">90dp</item>
-        <item name="tabIndicatorHeight">1dp</item>
-        <item name="tabPaddingStart">12dp</item>
-        <item name="tabPaddingEnd">12dp</item>
-        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
-    </style>
-
-    <style name="MyCustomTabLayout1" parent="Widget.Design.TabLayout">
-        <item name="tabMaxWidth">135dp</item>
-        <item name="tabMinWidth">90dp</item>
-        <item name="tabIndicatorHeight">1dp</item>
-        <item name="tabPaddingStart">0dp</item>
-        <item name="tabPaddingEnd">0dp</item>
-        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
-    </style>
-    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">16sp</item>
-        <item name="textAllCaps">true</item>
-    </style>
--->
 
 
 

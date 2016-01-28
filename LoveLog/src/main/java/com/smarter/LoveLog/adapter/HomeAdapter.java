@@ -21,6 +21,8 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.model.home.Ad;
 import com.smarter.LoveLog.model.home.AdIndexUrlData;
 
 import java.util.List;
@@ -31,6 +33,7 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<AdIndexUrlData> adIndexUrlDataList;
     Context mContext;
+    ViewGroup viewGroup;
     public HomeAdapter(Context mContext,List<AdIndexUrlData> adIndexUrlDataList ) {
         this.adIndexUrlDataList=adIndexUrlDataList;
         this.mContext=mContext;
@@ -41,32 +44,46 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 //        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.home_xrecy_item,viewGroup);
         View view = View.inflate(viewGroup.getContext(), R.layout.home_xrecy_item, null);
         ViewHolder vh = new ViewHolder(view);
+        this.viewGroup=viewGroup;
         return vh;
     }
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder,final int position) {
 
-
-
-       /* viewHolder.imglist.setScaleType(ImageView.ScaleType.FIT_XY);
-
-
-
-
-        viewHolder.imglist.setDefaultImageResId(R.mipmap.loadding);
-        viewHolder.imglist.setErrorImageResId(R.mipmap.loadding);
-
-
+        //imgList
+        viewHolder.imglist.removeAllViews();
+        String imglistString="";
+        imglistString=adIndexUrlDataList.get(position).getIndex_com().getImage_url();
         RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
-        String imageUrl=adIndexUrlDataList.get(position).getIndex_com().getImage_url();
-        Log.d("HomeAdapter", mQueue.getCache().get(imageUrl) == null ? "null" : "bu null");
-        if(mQueue.getCache().get(imageUrl)==null){
-            viewHolder.imglist.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+        final Ad ad=adIndexUrlDataList.get(position).getIndex_com();
+        View view;
+        if(position==adIndexUrlDataList.size()-1){
+            view = View.inflate(viewGroup.getContext(), R.layout.item_image_home_com_ad, null);
+        }else{
+            view = View.inflate(viewGroup.getContext(), R.layout.item_image_home_com_produt, null);
         }
-        viewHolder.imglist.setImageUrl(imageUrl, AppContextApplication.getInstance().getmImageLoader());*/
 
-     final RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+        NetworkImageView img = (NetworkImageView) view.findViewById(R.id.iv_item);
+
+        img.setDefaultImageResId(R.mipmap.loadding);
+        img.setErrorImageResId(R.mipmap.loadding);
+        if(mQueue.getCache().get(imglistString)==null){
+            img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+        }
+        img.setImageUrl(imglistString, AppContextApplication.getInstance().getmImageLoader());
+        viewHolder.imglist.addView(view);
+        viewHolder.imglist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ImagePagerAdapter().actionTo(mContext,ad.getAction(),ad.getParam());
+            }
+        });
+
+
+
+
+   /*  final RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
 //        viewHolder.imglist.setImageResource(R.mipmap.loadding);
         String imageUrl=adIndexUrlDataList.get(position).getIndex_com().getImage_url();
         ImageRequest imageRequest = new ImageRequest(imageUrl,
@@ -95,6 +112,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
 
         mQueue.add(imageRequest);
+*/
+
 
 
     }
@@ -105,11 +124,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imglist;
-        public LinearLayout views;
+        public LinearLayout views,imglist;
         public ViewHolder(View view){
             super(view);
-            imglist = (ImageView) view.findViewById(R.id.imglist);
+            imglist = (LinearLayout) view.findViewById(R.id.imglist);
             views=(LinearLayout) view.findViewById(R.id.view);
         }
     }

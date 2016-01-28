@@ -49,6 +49,10 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     ImageView pro_share;
     @Bind(R.id.buy_now)
     TextView buy_now;
+    @Bind(R.id.back_but)
+    ImageView back_but;
+
+
 
     McoyProductDetailInfoPage  topPage;
     McoyProductContentPage bottomPage;
@@ -100,6 +104,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     private void setListen() {
         pro_share.setOnClickListener(this);
         buy_now.setOnClickListener(this);
+        back_but.setOnClickListener(this);
     }
 
 
@@ -156,6 +161,9 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
                 break;
             case R.id.pro_share:
                 showShare();
+                break;
+            case  R.id.back_but:
+                finish();
                 break;
 
         }

@@ -5,15 +5,56 @@ package com.smarter.LoveLog.utills;
  */
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import java.io.IOException;
+
 
 /**
  * Created by tiansj on 14/12/30.
  */
 public class DeviceUtil {
+    /** 保存方法 */
+    public static Boolean saveBitmap(Bitmap bm,File f) {
+
+        if (f.exists()) {
+            f.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return  false;
+    }
+    /**
+     * 获取url最后的文件名
+     *
+     * @param url
+     * @return
+     */
+    public static String fileName(String url) {
+        String filename = "";
+        if (url != null && !url.equals("")) {
+            filename = url.substring(url.lastIndexOf("/") + 1, url.length());
+        }
+        return filename;
+    }
 
     /**
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
