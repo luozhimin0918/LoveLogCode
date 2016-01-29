@@ -21,12 +21,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.HelpDataActivity;
+import com.smarter.LoveLog.activity.HelpDataThreeWebActivity;
+import com.smarter.LoveLog.activity.HelpDataTwoActivity;
 import com.smarter.LoveLog.activity.InvitationDeatilActivity;
 import com.smarter.LoveLog.activity.MainActivity;
 import com.smarter.LoveLog.activity.ProductDeatilActivity;
 import com.smarter.LoveLog.activity.WebViewUrlActivity;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.smarter.LoveLog.model.help.HelpData;
+import com.smarter.LoveLog.model.help.HelpDataList;
 import com.smarter.LoveLog.model.home.SliderUrlData;
 
 
@@ -146,6 +151,32 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
             context.startActivity(intent);
 
         }
+
+        if(action.equals("help_index")){
+            Intent intent = new Intent(context, HelpDataActivity.class);
+
+            context.startActivity(intent);
+
+        }
+
+        if(action.equals("help_category")){
+            Intent intent = new Intent(context, HelpDataTwoActivity.class);
+            HelpDataList helpDataList=new HelpDataList();
+            helpDataList.setId(param);
+            intent.putExtra("twoHelpdata",helpDataList);
+            context.startActivity(intent);
+
+        }
+
+        if(action.equals("help_detail")){
+            Intent intent = new Intent(context, HelpDataThreeWebActivity.class);
+            HelpDataList helpDataList=new HelpDataList();
+            helpDataList.setId(param);
+            intent.putExtra("threeWebHelpdata",helpDataList);
+            context.startActivity(intent);
+
+        }
+
         if(action.equals("post_index")){
             MainActivity.mainActivity.onDoMainListener();
         }
