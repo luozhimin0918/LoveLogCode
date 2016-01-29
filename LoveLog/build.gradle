@@ -52,4 +52,5 @@ dependencies {
     compile project(':FlycoTabLayout_Lib')
     //    compile 'com.bigkoo:pickerview:2.0.8'
     compile project(':pickerview')
+    compile project(':IMKitWithVoIP')
 }

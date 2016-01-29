@@ -197,6 +197,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/kefuBut"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"

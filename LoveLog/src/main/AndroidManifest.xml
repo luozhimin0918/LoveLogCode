@@ -183,6 +183,21 @@
 
 
 
+        <activity android:name=".activity.ConversationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="com.smarter.LoveLog"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
+
+        </activity>
+
+
 
 
 

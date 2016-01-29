@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import com.flyco.tablayout.CommonTabLayout;
@@ -18,10 +19,12 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
+import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.fragment.SelfFragment;
 import com.smarter.LoveLog.fragment.CommunityFragment;
 import com.smarter.LoveLog.fragment.ShopCarFragment;
 import com.smarter.LoveLog.fragment.HomeFragment;
+import com.smarter.LoveLog.rongCloud.RongCloudEvent;
 import com.smarter.LoveLog.ui.TabEntity;
 
 import java.util.ArrayList;
@@ -30,6 +33,9 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.sharesdk.framework.ShareSDK;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 
 /**
  * Created by Administrator on 2015/11/30.
@@ -76,10 +82,109 @@ public class MainActivity extends BaseFragmentActivity  {
 
         //
           initData();
+
+         initRound();
+
+
 //        init();
 //        setListen();
 //        setTabSelection(0);
     }
+
+    private void initRound() {
+
+
+        /**
+         * 启动单聊
+         * context - 应用上下文。
+         * targetUserId - 要与之聊天的用户 Id。
+         * title - 聊天的标题，如果传入空值，则默认显示与之聊天的用户名称。
+         */
+               /* if (RongIM.getInstance() != null) {
+                    RongIM.getInstance().startPrivateChat(MainActivity.this, "22222222", "hello");
+                }*/
+        /**
+         * 启动客服聊天界面。
+         *
+         * @param context          应用上下文。
+         * @param conversationType 开启会话类型。
+         * @param targetId         客服 Id。
+         * @param title            客服标题。
+         */
+      /*  RongIM.getInstance().startConversation(MainActivity.this, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
+
+*/
+
+
+        /**
+         * 启动客服聊天界面。
+         *
+         * @param context          应用上下文。
+         * @param conversationType 会话类型，此处应该传 Conversation.ConversationType.APP_PUBLIC_SERVICE。
+         * @param targetId         公众号 Id。
+         * @param title            客服标题。
+         */
+//                RongIM.getInstance().startConversation(MainActivity.this, Conversation.ConversationType.APP_PUBLIC_SERVICE, "luozhimin", "罗志敏");
+
+
+        connect(Token);
+    }
+
+
+    /**
+     * 建立与融云服务器的连接
+     *
+     * @param token
+     */
+    String Token = "Ndy2PTG3/i/OQTdIxkIlfolWW0NIKFhANmdk75YpJ9L2vYqGIP2Ep5nO72KgdCUYUKv9fv2KU5W9J7tYGWxRPQ=="; //test dd
+    //    String Token = "v0PjdIA3EKRyApOF2mqccbAdUWU/UP60b3vQW1NesNJAdWdGu1v1DSSvW9wqc6AoD0lsot/llkW+D+wrsitRvedKOmGO8aW9"; //test22222222
+    private void connect(String token) {
+
+        if (getApplicationInfo().packageName.equals(AppContextApplication.getCurProcessName(getApplicationContext()))) {
+
+            /**
+             * IMKit SDK调用第二步,建立与服务器的连接
+             */
+            RongIM.connect(token, new RongIMClient.ConnectCallback() {
+
+                /**
+                 * Token 错误，在线上环境下主要是因为 Token 已经过期，您需要向 App Server 重新请求一个新的 Token
+                 */
+                @Override
+                public void onTokenIncorrect() {
+
+                    Log.d("MainActivity", "--onTokenIncorrect");
+                }
+
+                /**
+                 * 连接融云成功
+                 * @param userid 当前 token
+                 */
+                @Override
+                public void onSuccess(String userid) {
+
+                    Log.d("MainActivity", "--onSuccess" + userid);
+                  /*  startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    finish();*/
+                    RongCloudEvent.init(mActivity);
+//                    RongCloudEvent.getInstance().setOtherListener();
+                }
+
+                /**
+                 * 连接融云失败
+                 * @param errorCode 错误码，可到官网 查看错误码对应的注释
+                 */
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+
+                    Log.d("MainActivity", "--onError" + errorCode);
+                }
+            });
+        }
+    }
+
+
+
 
     private void initData() {
         fragment_flash_main = new HomeFragment();

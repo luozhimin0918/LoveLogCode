@@ -23,6 +23,9 @@ import com.smarter.LoveLog.activity.MyNotificationActivity;
 import com.smarter.LoveLog.activity.MyRedPacketActivity;
 import com.smarter.LoveLog.activity.WalletSelfActivity;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.Conversation;
+
 /**
  * @Description:gridview的Adapter
  * @author http://blog.csdn.net/finddreams
@@ -144,6 +147,19 @@ public class MyGridAdapter extends BaseAdapter {
                     bundle.putSerializable("PromotePostsData", (Serializable) pp);
                     intent.putExtras(bundle);*/
                     mContext.startActivity(intent2);
+                }
+                if(position==img_text.length-2){
+                    /**
+                     * 启动客服聊天界面。
+                     *
+                     * @param context          应用上下文。
+                     * @param conversationType 开启会话类型。
+                     * @param targetId         客服 Id。
+                     * @param title            客服标题。
+                     */
+                    RongIM.getInstance().startConversation(mContext, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
+
+
                 }
                 if(position==img_text.length-1){
                     //反馈

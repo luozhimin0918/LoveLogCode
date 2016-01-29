@@ -36,6 +36,8 @@ import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.Conversation;
 
 /**
  * Created by Administrator on 2015/11/30.
@@ -51,7 +53,8 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
     TextView loginText;
     @Bind(R.id.setBut)
     ImageView setBut;
-
+    @Bind(R.id.kefuBut)
+    LinearLayout kefuBut;
 
 
 
@@ -74,7 +77,7 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
                 parent.removeView(mRootView.get());
             }
         }
-        Log.d("SelfFragment","onCreateView");
+        Log.d("SelfFragment", "onCreateView");
         return mRootView.get();
 
     }
@@ -82,6 +85,7 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
     private void setListen() {
         loginImg.setOnClickListener(this);
         setBut.setOnClickListener(this);
+        kefuBut.setOnClickListener(this);
     }
 
     private void initData() {
@@ -125,10 +129,25 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
                 intent.putExtras(bundle);*/
                 mContext.startActivity(intent2);
                 break;
+            case R.id.kefuBut:
+                /**
+                 * 启动客服聊天界面。
+                 *
+                 * @param context          应用上下文。
+                 * @param conversationType 开启会话类型。
+                 * @param targetId         客服 Id。
+                 * @param title            客服标题。
+                 */
+                RongIM.getInstance().startConversation(getContext(), Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
 
+
+                break;
 
         }
     }
+
+
+
 
 
     @Override

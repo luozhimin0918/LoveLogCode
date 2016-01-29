@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler.Callback;
 import android.os.Handler;
@@ -17,6 +18,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -37,11 +40,16 @@ public class ShowWebImageActivity extends BaseFragmentActivity implements Zoomab
     private ZoomableImageView imageView = null;
     LinearLayout allLinear;
     Bitmap bitmapDrawable;
+
+    Uri uri=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_webimage);
         this.imagePath = getIntent().getStringExtra("image");
+
+
+         this.uri = getIntent().getParcelableExtra("photo");
 
         this.imageTextView = (TextView) findViewById(R.id.show_webimage_imagepath_textview);
         imageTextView.setText(this.imagePath);
@@ -65,10 +73,16 @@ public class ShowWebImageActivity extends BaseFragmentActivity implements Zoomab
                     if(imagePath!=null&&!imagePath.equals("")){
                         bitmapDrawable =((BitmapDrawable) ShowWebImageActivity.loadImageFromUrl(imagePath)).getBitmap();
 
-                        if(bitmapDrawable!=null){
-                            handler.sendEmptyMessageDelayed(SHOW_VIEW, 100);
-                        }
 
+
+                    }
+
+                    if(uri!=null){
+                        bitmapDrawable= getBitmapFromUri(uri);
+                    }
+
+                    if(bitmapDrawable!=null){
+                        handler.sendEmptyMessageDelayed(SHOW_VIEW, 100);
                     }
 
                 } catch (IOException e) {
@@ -80,6 +94,23 @@ public class ShowWebImageActivity extends BaseFragmentActivity implements Zoomab
 
 
 
+    }
+
+
+    private Bitmap getBitmapFromUri(Uri uri)
+    {
+        try
+        {
+            // 读取uri所在的图片
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            return bitmap;
+        }
+        catch (Exception e)
+        {
+
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -269,6 +300,20 @@ public class ShowWebImageActivity extends BaseFragmentActivity implements Zoomab
             }
 
 
+        }
+
+        if(bitmapDrawable != null && uri!=null){
+            File picFile = new File(pictureFileDir, DeviceUtil.fileName(uri.toString()));
+
+
+//                            picFile.createNewFile();
+            Boolean isSava = DeviceUtil.saveBitmap(bitmapDrawable, picFile);
+
+            if (isSava) {
+                Toast.makeText(getApplicationContext(), "已保存至"+pictureFileDir.getAbsolutePath()+"文件夹下", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "保存失败", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

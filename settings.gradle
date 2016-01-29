@@ -1,1 +1,1 @@
-include ':LoveLog', ':xrecyclerview', ':sharesdk', ':onekeyshare', ':FlycoTabLayout_Lib', ':pickerview'
+include ':LoveLog', ':xrecyclerview', ':sharesdk', ':onekeyshare', ':FlycoTabLayout_Lib', ':pickerview', ':IMKitWithVoIP'

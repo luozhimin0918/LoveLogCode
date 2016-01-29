@@ -12,6 +12,8 @@ import com.smarter.LoveLog.model.loginData.LoginDataActi;
 
 import java.util.LinkedList;
 
+import io.rong.imkit.RongIM;
+
 /**
  * Created by Administrator on 2016/1/4.
  */
@@ -46,6 +48,20 @@ public class AppContextApplication extends Application {
         mRequestQueue= Volley.newRequestQueue(this);
         //创建ImageLoader,用于将图片存入缓存和从缓存中取出图片
         mImageLoader=new ImageLoader(mRequestQueue,new BitmapCache());
+
+
+        /**
+         * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIM 的进程和 Push 进程执行了 init。
+         * io.rong.push 为融云 push 进程名称，不可修改。
+         */
+        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
+                "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
+
+            /**
+             * IMKit SDK调用第一步 初始化
+             */
+            RongIM.init(this);
+        }
     }
 
     /**
@@ -146,4 +162,28 @@ public class AppContextApplication extends Application {
 
 
 
+
+
+    /**
+     * 获得当前进程的名字
+     *
+     * @param context
+     * @return 进程号
+     */
+    public static String getCurProcessName(Context context) {
+
+        int pid = android.os.Process.myPid();
+
+        ActivityManager activityManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager
+                .getRunningAppProcesses()) {
+
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return "";
+    }
 }
