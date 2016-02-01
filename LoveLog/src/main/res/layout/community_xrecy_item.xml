@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/CommunityItem"
-    android:background="@color/white">
+    android:layout_marginBottom="15dp"
+    android:background="@color/connet_bgColor">
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="8dp">
 
-
-      <LinearLayout
+     <LinearLayout
           android:orientation="vertical"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content">
@@ -224,12 +231,12 @@
 
 
 
-           <LinearLayout
+        <!-- <LinearLayout
                    android:id="@+id/view"
                    android:orientation="horizontal"
                    android:layout_width="fill_parent" android:layout_height="15dp"
-           android:background="@color/connet_bgColor"></LinearLayout>
+           android:background="@color/connet_bgColor"></LinearLayout>-->
       </LinearLayout>
-
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

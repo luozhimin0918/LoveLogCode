@@ -36,7 +36,7 @@ android:background="@color/white">
 <View
     android:background="@color/connet_bgColor"
     android:layout_width="fill_parent"
-    android:layout_height="1sp"></View>
+    android:layout_height="0sp"></View>
 
 </LinearLayout>
 

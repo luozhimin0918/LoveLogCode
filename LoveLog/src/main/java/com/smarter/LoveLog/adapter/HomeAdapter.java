@@ -128,7 +128,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         public ViewHolder(View view){
             super(view);
             imglist = (LinearLayout) view.findViewById(R.id.imglist);
-            views=(LinearLayout) view.findViewById(R.id.view);
         }
     }
 }
