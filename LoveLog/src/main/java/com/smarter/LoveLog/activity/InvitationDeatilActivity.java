@@ -2,6 +2,7 @@ package com.smarter.LoveLog.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -79,6 +80,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 /**
  * Created by Administrator on 2015/11/30.
@@ -117,6 +119,11 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     @Bind(R.id.pinglunBut)
     TextView pinglunBut;
 
+    @Bind(R.id.sharePic)
+    TextView sharePic;
+
+
+
 
 
 
@@ -124,7 +131,8 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     TextView reword;
 
 
-
+    @Bind(R.id.shareBut)
+    ImageView shareBut;
 
 
 
@@ -167,6 +175,8 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         collectBut.setOnClickListener(this);
         reword.setOnClickListener(this);
         pinglunBut.setOnClickListener(this);
+        shareBut.setOnClickListener(this);
+        sharePic.setOnClickListener(this);
         /*invitation_Detail_scrollview.setOnJDScrollListener(new McoyScrollView.OnJDScrollListener() {
             @Override
             public void onScroll(int x, int y, int oldx, int oldy) {
@@ -324,22 +334,28 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
     private void createWebview() {
         webview.getSettings().setJavaScriptEnabled(true);
+        // 添加js交互接口类，并起别名 imagelistner
+        webview.addJavascriptInterface(new JavascriptInterface(this), "imagelistner");
         webview.setWebViewClient(new WebViewClient() {
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 // TODO Auto-generated method stub
+                view.getSettings().setJavaScriptEnabled(true);
 
 
-
-                view.loadUrl("javascript:alert( $('#app_data').html() )");
                 super.onPageFinished(view, url);
-
+                addImageClickListner();
 
 
 
             }
 
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                view.getSettings().setJavaScriptEnabled(true);
+                super.onPageStarted(view, url, favicon);
+            }
         });
 
 
@@ -376,6 +392,41 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
 
         webview.loadUrl("http://mapp.aiderizhi.com/?url=/post/content&id=" + promotePostsData.getId());
+    }
+
+
+    // 注入js函数监听
+    private void addImageClickListner() {
+        // 这段js函数的功能就是，遍历所有的img几点，并添加onclick函数，在还是执行的时候调用本地接口传递url过去
+        webview.loadUrl("javascript:(function(){" +
+                "var objs = document.getElementsByTagName(\"img\"); " +
+                "for(var i=0;i<objs.length;i++)  " +
+                "{"
+                + "    objs[i].onclick=function()  " +
+                "    {  "
+                + "        window.imagelistner.openImage(this.src);  " +
+                "    }  " +
+                "}" +
+                "})()");
+    }
+    // js通信接口
+    public class JavascriptInterface {
+
+        private Context context;
+
+        public JavascriptInterface(Context context) {
+            this.context = context;
+        }
+        @android.webkit.JavascriptInterface
+        public void openImage(String img) {
+            System.out.println(img);
+            //
+            Intent intent = new Intent();
+            intent.putExtra("image", img);
+            intent.setClass(context, ShowWebImageActivity.class);
+            context.startActivity(intent);
+            System.out.println(img);
+        }
     }
 
     //头图片，多个两个图片
@@ -542,7 +593,45 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                  intent2.putExtras(bundle);
                  this.startActivity(intent2);
                  break;
+             case R.id.shareBut:
+             case R.id.sharePic:
+
+                 showShare(promotePostsData);
+
+                 break;
          }
+    }
+
+    /**
+     * 分享内容方法
+     */
+    private void showShare(PromotePostsData pro) {
+//        ShareSDK.initSDK(this);
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+// 分享时Notification的图标和文字    2.5.9以后的版本不调用此方法
+        //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+        oks.setTitle(pro.getShare().getTitle());
+        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+        oks.setTitleUrl(pro.getShare().getUrl());
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText(pro.getShare().getDesc());
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+//        oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        //网络图片的url：所有平台
+        oks.setImageUrl(pro.getShare().getThumb());//网络图片rul
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl(pro.getShare().getUrl());
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("comment");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite("爱的日志");
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl(pro.getShare().getUrl());
+// 启动分享GUI
+        oks.show(mContext);
     }
 
     private  void showPopuwindow(){

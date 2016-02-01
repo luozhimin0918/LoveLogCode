@@ -34,6 +34,15 @@ public class PromotePostsData implements Serializable {
     private List<Pinglun> cmt;
     private User    user;
     private Img    img;
+    private Share share;
+
+    public Share getShare() {
+        return share;
+    }
+
+    public void setShare(Share share) {
+        this.share = share;
+    }
 
     public String getCollect_count() {
         return collect_count;

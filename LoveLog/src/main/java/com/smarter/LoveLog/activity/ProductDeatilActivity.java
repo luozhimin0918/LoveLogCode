@@ -278,7 +278,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
      * 分享内容方法
      */
     private void showShare() {
-        ShareSDK.initSDK(this);
+//        ShareSDK.initSDK(this);
         OnekeyShare oks = new OnekeyShare();
         //关闭sso授权
         oks.disableSSOWhenAuthorize();

@@ -105,12 +105,16 @@ public class HelpDataActivity extends BaseFragmentActivity implements View.OnCli
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(sessionData!=null){
+        if(sessionData==null){
+            sessionData=new SessionData();
+            sessionData.setSid("");
+            sessionData.setUid("");
+        }
 
                     networkPersonl(sessionData.getUid(),sessionData.getSid());
 
                 Log.d("HelpDataActivity","  Session  "+ sessionData.getUid() + "      "+sessionData.getSid());
-            }
+
 
 
     }

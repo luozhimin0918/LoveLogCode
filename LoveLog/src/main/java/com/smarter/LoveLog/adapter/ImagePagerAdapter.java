@@ -24,6 +24,7 @@ import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.HelpDataActivity;
 import com.smarter.LoveLog.activity.HelpDataThreeWebActivity;
 import com.smarter.LoveLog.activity.HelpDataTwoActivity;
+import com.smarter.LoveLog.activity.InvitationActivity;
 import com.smarter.LoveLog.activity.InvitationDeatilActivity;
 import com.smarter.LoveLog.activity.MainActivity;
 import com.smarter.LoveLog.activity.ProductDeatilActivity;
@@ -32,6 +33,7 @@ import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.help.HelpData;
 import com.smarter.LoveLog.model.help.HelpDataList;
+import com.smarter.LoveLog.model.home.NavIndexUrlData;
 import com.smarter.LoveLog.model.home.SliderUrlData;
 
 
@@ -143,6 +145,15 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
                context.startActivity(intent);
 
            }
+        if(action.equals("post_category")){
+            Intent intent = new Intent(context, InvitationActivity.class);
+            NavIndexUrlData navIndexUrlData=new NavIndexUrlData();
+            navIndexUrlData.setId(param);
+            navIndexUrlData.setName("帖子列表");
+            intent.putExtra("NavIndexUrlData",navIndexUrlData);
+            context.startActivity(intent);
+
+        }
         if(action.equals("product_detail")||action.equals("goods_detail")){
             Intent intent = new Intent(context, ProductDeatilActivity.class);
            /* PromotePostsData postsData=new PromotePostsData();
@@ -163,6 +174,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
             Intent intent = new Intent(context, HelpDataTwoActivity.class);
             HelpDataList helpDataList=new HelpDataList();
             helpDataList.setId(param);
+            helpDataList.setName("帮助分类");
             intent.putExtra("twoHelpdata",helpDataList);
             context.startActivity(intent);
 

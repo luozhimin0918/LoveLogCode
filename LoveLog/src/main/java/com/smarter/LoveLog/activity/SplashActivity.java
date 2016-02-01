@@ -160,10 +160,12 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
 
                 Intent intent = new Intent(mContext, MainActivity.class);
                 mContext.startActivity(intent);
-                SharedPreferences.getInstance().putBoolean("first-time-use", false);
-                finish();
                 overridePendingTransition(R.anim.in_from_right,
                         R.anim.out_to_left);
+
+                SharedPreferences.getInstance().putBoolean("first-time-use", false);
+                finish();
+
             }
         });
 

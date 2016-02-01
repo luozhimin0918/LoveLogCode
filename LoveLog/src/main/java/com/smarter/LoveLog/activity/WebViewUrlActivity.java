@@ -136,7 +136,7 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
             urlParam= intent.getStringExtra("param");
 
            if(urlParam!=null&&!urlParam.equals("")){
-              urlParam="http://mapp.aiderizhi.com/?url=/post/content&id=22737";
+//              urlParam="http://mapp.aiderizhi.com/?url=/post/content&id=22737";
                networkLoading();
 
            }

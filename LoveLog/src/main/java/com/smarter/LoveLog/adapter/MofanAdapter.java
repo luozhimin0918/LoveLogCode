@@ -63,6 +63,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+
 /**
  * Created by jianghejie on 15/11/26.
  */
@@ -131,7 +134,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
         //imgList  多个图片list
         viewHolder.imglist.removeAllViews();
         String imglistString="";
-        PromotePostsData promotePostsDataItem=promotePostsDataList.get(position);
+        final PromotePostsData promotePostsDataItem=promotePostsDataList.get(position);
         if(promotePostsDataItem.getImg().getCover()!=null&&!promotePostsDataItem.getImg().getCover().equals("")){
             imglistString=promotePostsDataItem.getImg().getCover();
         }
@@ -213,7 +216,55 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
                     BabyPopWindow.backgroundAlpha(mContext,0.55f);
             }
         });
+
+
+
+        viewHolder.pinglunNum.setText(promotePostsDataItem.getCmt_count());
+        viewHolder.likeNum.setText(promotePostsDataItem.getCollect_count());
+        viewHolder.sharePic.setOnClickListener(new View.OnClickListener() {//分享
+            @Override
+            public void onClick(View v) {
+                showShare(promotePostsDataItem);
+            }
+        });
     }
+
+
+
+    /**
+     * 分享内容方法
+     */
+    private void showShare(PromotePostsData pro) {
+//        ShareSDK.initSDK(this);
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+// 分享时Notification的图标和文字    2.5.9以后的版本不调用此方法
+        //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+        oks.setTitle(pro.getShare().getTitle());
+        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+        oks.setTitleUrl(pro.getShare().getUrl());
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText(pro.getShare().getDesc());
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+//        oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        //网络图片的url：所有平台
+             oks.setImageUrl(pro.getShare().getThumb());//网络图片rul
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl(pro.getShare().getUrl());
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("comment");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite("爱的日志");
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl(pro.getShare().getUrl());
+// 启动分享GUI
+        oks.show(mContext);
+    }
+
+
+
     //获取数据的数量
     @Override
     public int getItemCount() {
@@ -222,7 +273,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView reword;
-        TextView sharePic,title,brief,userName,userTime;
+        TextView sharePic,title,brief,userName,userTime,pinglunNum,likeNum;
         CircleNetworkImage imageTitle;//头像
         LinearLayout  imglist,isJinghua,isHot;
         RelativeLayout CommunityItem;
@@ -240,6 +291,9 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
             brief=(TextView) view.findViewById(R.id.brief);
             userName=(TextView) view.findViewById(R.id.userName);
             userTime=(TextView) view.findViewById(R.id.userTime);
+
+            pinglunNum=(TextView) view.findViewById(R.id.pinglunNum);
+            likeNum=(TextView) view.findViewById(R.id.likeNum);
 
             reword= (ImageView) view.findViewById(R.id.reword);
         }

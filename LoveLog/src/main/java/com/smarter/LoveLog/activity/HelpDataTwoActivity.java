@@ -96,6 +96,11 @@ public class HelpDataTwoActivity extends BaseFragmentActivity implements View.On
         }
 
                if(helpDataList!=null){
+                   if(sessionData==null){
+                       sessionData=new SessionData();
+                       sessionData.setUid("");
+                       sessionData.setSid("");
+                   }
                    networkPersonl(sessionData.getUid(),sessionData.getSid(),helpDataList.getId());
                }
 
