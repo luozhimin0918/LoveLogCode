@@ -2,17 +2,25 @@ package com.smarter.LoveLog.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -21,16 +29,27 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.goods.GoodsData;
+import com.smarter.LoveLog.model.goods.GoodsDataInfo;
+import com.smarter.LoveLog.model.help.HelpData;
+import com.smarter.LoveLog.model.help.HelpDataInfo;
+import com.smarter.LoveLog.model.home.DataStatus;
+import com.smarter.LoveLog.model.home.HomeDataFrag;
+import com.smarter.LoveLog.model.home.HomeDataInfo;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductContentPage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductDetailInfoPage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoySnapPageLayout;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.ui.productViewPager.AutoLoopViewPager;
 import com.smarter.LoveLog.ui.productViewPager.CirclePageIndicator;
+import com.smarter.LoveLog.utills.DeviceUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,6 +72,18 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     ImageView back_but;
 
 
+    @Bind(R.id.networkInfo)
+    LinearLayout networkInfo;
+    @Bind(R.id.errorInfo)
+    ImageView errorInfo;
+    @Bind(R.id.newLoading)
+    LinearLayout newLoading;
+    @Bind(R.id.progressLinear)
+    LinearLayout progressLinear;
+    @Bind(R.id.progreView)
+    ImageView progreView;
+
+
 
     McoyProductDetailInfoPage  topPage;
     McoyProductContentPage bottomPage;
@@ -62,7 +93,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     /**
      * topView
      */
-    AutoLoopViewPager pager;
+    ViewPager pager;
     CirclePageIndicator indicator;
     TextView price_shanchu;
 
@@ -96,8 +127,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         FindView();
         getDataIntent();
 
-        initData();
-        setListen();
+
 
     }
 
@@ -123,7 +153,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         /**
          * topVIew mcoy_produt_detail_layout
          */
-        pager= (AutoLoopViewPager) topView.findViewById(R.id.pager);
+        pager= (ViewPager) topView.findViewById(R.id.pager);
         indicator= (CirclePageIndicator) topView.findViewById(R.id.indicator);
         price_shanchu= (TextView) topView.findViewById(R.id.price_shanchu);
         /**
@@ -173,12 +203,100 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     public void onClickOKPop() {
 
     }
+    String  param;
     private void getDataIntent() {
         Intent intent = getIntent();
         if(intent!=null){
-            String  str = intent.getStringExtra("ObjectData");
+            param= intent.getStringExtra("param");
             //   Toast.makeText(this,str+"",Toast.LENGTH_LONG).show();
+            if(param!=null&&!param.equals("")){
+                netInitData();
+            }
         }
+
+
+    }
+   private void netInitData(){
+       if(DeviceUtil.checkConnection(mContext)){
+           //加载动画
+           progressLinear.setVisibility(View.VISIBLE);
+           AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
+           animationDrawable.start();
+
+           mcoySnapPageLayout.setVisibility(View.GONE);
+           networkInfo.setVisibility(View.GONE);
+           initNew();
+
+       }else{
+           errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
+           mcoySnapPageLayout.setVisibility(View.GONE);
+           networkInfo.setVisibility(View.VISIBLE);
+           newLoading.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   netInitData();
+               }
+           });
+       }
+   }
+
+
+   GoodsData goodsData;
+    private void initNew() {
+
+        String url = "http://mapp.aiderizhi.com/?url=/goods/detail";
+        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
+        Map<String, String> mapTou = new HashMap<String, String>();
+        String  sessinStr ="{\"id\":\""+param+"\"}";
+        mapTou.put("json", sessinStr);
+
+        Log.d("ProductDeatil", "" + sessinStr + "++++sessionSTR》》》》");
+        FastJsonRequest<GoodsDataInfo> fastJsonCommunity = new FastJsonRequest<GoodsDataInfo>(Request.Method.POST, url, GoodsDataInfo.class, null, new Response.Listener<GoodsDataInfo>() {
+            @Override
+            public void onResponse(GoodsDataInfo goodsDataInfo) {
+
+                DataStatus status = goodsDataInfo.getStatus();
+                if(status.getSucceed()==1){
+
+
+                    progressLinear.setVisibility(View.GONE);//网络加载成功
+                    mcoySnapPageLayout.setVisibility(View.VISIBLE);
+                    goodsData = goodsDataInfo.getData();
+                    initData();
+                    setListen();
+
+                    Log.d("ProductDeatil", "" + status.getSucceed() + "++++succeed》》》》" );
+                }else{
+                    // 请求失败 无数据
+                    progressLinear.setVisibility(View.GONE);
+                    mcoySnapPageLayout.setVisibility(View.GONE);
+                    errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
+                    networkInfo.setVisibility(View.VISIBLE);
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                //未知错误
+                progressLinear.setVisibility(View.GONE);
+                mcoySnapPageLayout.setVisibility(View.GONE);
+                networkInfo.setVisibility(View.VISIBLE);
+                try {
+                    errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
+                }
+                Log.d("ProductDeatil", "Error  ProductDeatil>>>" );
+            }
+        });
+        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //fastJsonCommunity.setTag(TAG);
+        fastJsonCommunity.setParams(mapTou);
+        fastJsonCommunity.setShouldCache(true);
+        mQueue.add(fastJsonCommunity);
 
 
     }

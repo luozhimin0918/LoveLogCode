@@ -159,6 +159,7 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
            /* PromotePostsData postsData=new PromotePostsData();
             postsData.setId(param);
             intent.putExtra("PromotePostsData",postsData);*/
+            intent.putExtra("param",param);
             context.startActivity(intent);
 
         }
