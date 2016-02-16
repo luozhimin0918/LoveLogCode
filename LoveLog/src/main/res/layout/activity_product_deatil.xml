@@ -25,13 +25,14 @@
                     <TextView
                         android:id="@+id/tv_top_title"
                         android:layout_width="0dp"
+                        android:ellipsize="end"
                         android:layout_height="match_parent"
                         android:layout_weight="5"
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="商品详情"
                         android:textColor="@color/white"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
                    <ImageView
                     android:id="@+id/pro_car"
                     android:layout_width="0dp"
@@ -129,7 +130,20 @@
                     android:layout_weight="0.6"
                     android:gravity="center"
                     android:orientation="vertical">
-                     <ImageView
+
+                    <com.smarter.LoveLog.ui.QCheckBox
+                        android:id="@+id/kefuBut"
+                        android:button="@null"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#656565"
+                        android:layout_marginTop="5dp"
+                        android:textSize="12sp"
+                        android:text="客服"
+                        android:drawablePadding="3dp"
+                        android:drawableTop="@mipmap/service"
+                        />
+                  <!--   <ImageView
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content" android:background="@mipmap/service" />
                     <TextView
@@ -138,7 +152,7 @@
                         android:textColor="#656565"
                         android:layout_marginTop="3dp"
                         android:textSize="12sp"
-                        android:text="客服"/>
+                        android:text="客服"/>-->
                     </LinearLayout>
                 <LinearLayout android:layout_width="1dp" android:background="@color/connet_bgColor" android:layout_height="fill_parent" android:orientation="horizontal"></LinearLayout>
 
@@ -148,16 +162,19 @@
                     android:layout_weight="0.6"
                     android:gravity="center"
                     android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:background="@mipmap/love" />
-                    <TextView
+                    <com.smarter.LoveLog.ui.QCheckBox
+                        android:id="@+id/collectBut"
+                        android:button="@null"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#656565"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="5dp"
                         android:textSize="12sp"
-                        android:text="喜欢"/>
+                        android:text="收藏"
+                        android:drawablePadding="3dp"
+                        android:drawableTop="@drawable/collect_checkbox_button"
+                       />
+
                 </LinearLayout>
                 <LinearLayout android:layout_width="1dp" android:background="@color/connet_bgColor" android:layout_height="fill_parent" android:orientation="horizontal"></LinearLayout>
 

@@ -3,57 +3,53 @@ package com.smarter.LoveLog.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
+import com.smarter.LoveLog.adapter.RecyclePinglunGoodsAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.goods.GoodsData;
 import com.smarter.LoveLog.model.goods.GoodsDataInfo;
-import com.smarter.LoveLog.model.help.HelpData;
-import com.smarter.LoveLog.model.help.HelpDataInfo;
+import com.smarter.LoveLog.model.goods.Pictures;
 import com.smarter.LoveLog.model.home.DataStatus;
-import com.smarter.LoveLog.model.home.HomeDataFrag;
-import com.smarter.LoveLog.model.home.HomeDataInfo;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductContentPage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductDetailInfoPage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoySnapPageLayout;
+import com.smarter.LoveLog.ui.SyLinearLayoutManager;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
-import com.smarter.LoveLog.ui.productViewPager.AutoLoopViewPager;
 import com.smarter.LoveLog.ui.productViewPager.CirclePageIndicator;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
 /**
@@ -97,12 +93,16 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     CirclePageIndicator indicator;
     TextView price_shanchu;
 
-    private int[] imageViewIds;
+    TextView  tv_top_title;//产品标题
+    TextView isLike;//喜欢
+    TextView isShoping;//购买
+    TextView goodsName;//
+    TextView goodsBrief;//
+    TextView shopPrice;
+    TextView goods_number;
+    XRecyclerView mRecyclerView;
     private GalleryPagerAdapter galleryAdapter;
-    private List<String> imageList = new ArrayList<String>(Arrays.asList(
-                                    "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg",
-                                    "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg",
-                                    "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg"));
+    private List<Pictures> imageList = new ArrayList<Pictures>();
 
 
     /**
@@ -150,29 +150,104 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
     }
     private void FindView() {
+        tv_top_title= (TextView) findViewById(R.id.tv_top_title);
+
         /**
          * topVIew mcoy_produt_detail_layout
          */
+
+
+        mRecyclerView= (XRecyclerView) topView.findViewById(R.id.recyclerview);
+       /* LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+*/
+        SyLinearLayoutManager layoutManager = new SyLinearLayoutManager(mContext);
+        layoutManager.setOrientation(SyLinearLayoutManager.VERTICAL);
+
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.SysProgress);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
+        mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
+
+
+
+
         pager= (ViewPager) topView.findViewById(R.id.pager);
         indicator= (CirclePageIndicator) topView.findViewById(R.id.indicator);
         price_shanchu= (TextView) topView.findViewById(R.id.price_shanchu);
+        isLike=(TextView) topView.findViewById(R.id.isLike);
+        isShoping=(TextView) topView.findViewById(R.id.isShoping);
+        goodsName=(TextView) topView.findViewById(R.id.goodsName);
+        goodsBrief=(TextView) topView.findViewById(R.id.goodsBrief);
+        shopPrice=(TextView) topView.findViewById(R.id.shopPrice);
+
+        goods_number=(TextView) topView.findViewById(R.id.goods_number);
         /**
          * bootomVIew mcoy_product_content_page
          */
     }
 
+    public static void setListViewHeightBasedOnChildren(XRecyclerView recyclerView) {
+        RecyclerView.Adapter listAdapter = recyclerView.getAdapter();
+        int totalHeight=0;
+        if(recyclerView.getAdapter().getItemCount()>0){
+            for(int i=1; i<recyclerView.getAdapter().getItemCount(); i++) {
+//                View listItem=recyclerView.findViewHolderForAdapterPosition(i).itemView;
+                View listItem=recyclerView.getRootView();
+                listItem.measure(0, 0);
+                totalHeight += listItem.getMeasuredHeight();
+
+            }
+
+            ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+            params.height = totalHeight ;
+            //recyclerView1.getDividerHeight()获取子项间分隔符占用的高度
+            //params.height最后得到整个recyclerView1完整显示需要的高度
+            recyclerView.setLayoutParams(params);
+        }
+
+
+
+    }
+
     private void initData() {
+        tv_top_title.setText(goodsData.getGoods_name());
 
 /**
  * topView
  */
-        imageViewIds = new int[] { R.mipmap.house_background, R.mipmap.house_background_1, R.mipmap.house_background_2};
+        imageList=goodsData.getPictures();
         galleryAdapter = new GalleryPagerAdapter();
         pager.setAdapter(galleryAdapter);
-//        pager.setInterval(2000);
         indicator.setViewPager(pager);
         indicator.setPadding(5, 5, 10, 5);
+
+        isLike.setText(goodsData.getClick_count() + "人喜欢");
+        isShoping.setText(goodsData.getCollect_count() + "人购买");
+
+        goodsName.setText(goodsData.getGoods_name());
+        goodsBrief.setText(goodsData.getGoods_brief());
+
+        shopPrice.setText(goodsData.getShop_price());
+        price_shanchu.setText(goodsData.getMarket_price());
+
+        goods_number.setText(goodsData.getGoods_number() + "");
+
         price_shanchu.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);//价格删除线
+
+
+
+
+        /**
+         * 加载完网页再加载评论
+         */
+        List<CmtGoods> cmtGoodsesList=goodsData.getCmt();
+        // 创建Adapter，并指定数据集
+        RecyclePinglunGoodsAdapter adapter = new RecyclePinglunGoodsAdapter(cmtGoodsesList);
+        // 设置Adapter
+        mRecyclerView.setAdapter(adapter);
+        setListViewHeightBasedOnChildren(mRecyclerView);
 /**
  * bottomView
  */
@@ -332,11 +407,11 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
 
             RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
-            Log.d("ProductDeatilActivity", mQueue.getCache().get(imageList.get(position)) == null ? "null" : "bu null");
-            if(mQueue.getCache().get(imageList.get(position))==null){
+            Log.d("ProductDeatilActivity", mQueue.getCache().get(imageList.get(position).getCover()) == null ? "null" : "bu null");
+            if(mQueue.getCache().get(imageList.get(position).getCover())==null){
                 item.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
             }
-            item.setImageUrl(imageList.get(position), AppContextApplication.getInstance().getmImageLoader());
+            item.setImageUrl(imageList.get(position).getCover(), AppContextApplication.getInstance().getmImageLoader());
 
 
             /*ImageRequest imageRequest = new ImageRequest(imageList.get(position),

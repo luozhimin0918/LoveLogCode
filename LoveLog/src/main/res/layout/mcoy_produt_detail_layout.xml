@@ -39,6 +39,7 @@
                 android:gravity="right"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/isLike"
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:text="125080人喜欢"
@@ -48,6 +49,7 @@
                     android:background="@mipmap/yellow"
                     android:layout_height="wrap_content" />
                 <TextView
+                    android:id="@+id/isShoping"
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:text="6892人购买"
@@ -68,6 +70,7 @@
             android:layout_height="wrap_content">
               <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" >
                    <TextView
+                       android:id="@+id/goodsName"
                        android:layout_width="wrap_content"
                        android:layout_alignParentLeft="true"
                        android:textColor="@color/bg_Black"
@@ -80,20 +83,24 @@
                       android:layout_height="wrap_content" android:background="@mipmap/more" />
               </RelativeLayout>
               <TextView
+                  android:id="@+id/goodsBrief"
                 android:layout_width="wrap_content"
                 android:layout_alignParentLeft="true"
+                  android:lineSpacingMultiplier="1.2"
                   android:textColor="#656565"
-                android:textSize="14sp"
+                  android:textSize="14sp"
                   android:paddingTop="2dp"
                 android:layout_height="wrap_content" android:text="植物性温泉水，唤醒肌肤年轻活力"/>
               <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
                   <TextView
+                      android:visibility="gone"
                       android:layout_width="wrap_content"
                       android:layout_alignParentLeft="true"
                       android:textColor="#F5595D"
                       android:textSize="25sp"
                       android:layout_height="wrap_content" android:text="￥"/>
                   <TextView
+                      android:id="@+id/shopPrice"
                       android:layout_width="wrap_content"
                       android:layout_alignParentLeft="true"
                       android:textColor="#F5595D"
@@ -187,6 +194,7 @@
                        android:textSize="15sp"
                        android:layout_height="wrap_content" android:text="库存"/>
                    <TextView
+                       android:id="@+id/goods_number"
                        android:layout_width="wrap_content"
                        android:paddingLeft="20dp"
                        android:textColor="@color/bg_Black"
@@ -316,6 +324,17 @@
                 android:textSize="14sp"
                 android:layout_height="wrap_content" android:text="99%   50876人评论"/>
         </LinearLayout>
+
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+        </com.jcodecraeer.xrecyclerview.XRecyclerView>
+
+
+
         <LinearLayout android:layout_width="fill_parent" android:layout_height="1dp" android:background="@color/connet_bgColor"></LinearLayout>
 
     </LinearLayout>
