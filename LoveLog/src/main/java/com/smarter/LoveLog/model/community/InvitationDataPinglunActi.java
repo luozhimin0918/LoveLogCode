@@ -1,6 +1,7 @@
 package com.smarter.LoveLog.model.community;
 
 import com.smarter.LoveLog.model.category.Paginated;
+import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.home.DataStatus;
 
 import java.io.Serializable;
@@ -10,15 +11,15 @@ import java.util.List;
  * Created by Administrator on 2015/12/8.
  */
 public class InvitationDataPinglunActi implements Serializable{
-    private List<Pinglun> data;
+    private List<CmtGoods> data;
     private Paginated paginated;
     private DataStatus  status;
 
-    public List<Pinglun> getData() {
+    public List<CmtGoods> getData() {
         return data;
     }
 
-    public void setData(List<Pinglun> data) {
+    public void setData(List<CmtGoods> data) {
         this.data = data;
     }
 

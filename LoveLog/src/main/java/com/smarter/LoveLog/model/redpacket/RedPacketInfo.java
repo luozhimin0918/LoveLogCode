@@ -1,11 +1,9 @@
 package com.smarter.LoveLog.model.redpacket;
 
 import com.smarter.LoveLog.model.category.Paginated;
-import com.smarter.LoveLog.model.community.Pinglun;
 import com.smarter.LoveLog.model.home.DataStatus;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Administrator on 2015/12/8.

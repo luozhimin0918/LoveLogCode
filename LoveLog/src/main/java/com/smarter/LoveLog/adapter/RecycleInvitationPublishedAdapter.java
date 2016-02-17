@@ -9,10 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
-import com.smarter.LoveLog.model.community.Pinglun;
 import com.smarter.LoveLog.model.community.PromotePostsData;
-import com.smarter.LoveLog.model.community.User;
-import com.smarter.LoveLog.ui.CircleNetworkImage;
 
 import java.util.List;
 

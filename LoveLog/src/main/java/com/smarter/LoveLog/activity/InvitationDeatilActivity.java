@@ -26,7 +26,6 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import org.json.JSONException;
@@ -55,16 +54,14 @@ import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.category.InvitationDataDeatil;
 import com.smarter.LoveLog.model.community.CollectData;
 import com.smarter.LoveLog.model.community.CollectDataInfo;
-import com.smarter.LoveLog.model.community.Pinglun;
 import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.community.RewardData;
 import com.smarter.LoveLog.model.community.RewardDataInfo;
-import com.smarter.LoveLog.model.community.User;
 import com.smarter.LoveLog.model.community.ZanOrFaroDataInfo;
 import com.smarter.LoveLog.model.community.ZanOrfaroData;
+import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.jsonModel.ZanOrFaroviteParame;
-import com.smarter.LoveLog.model.loginData.PersonalDataInfo;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
@@ -311,7 +308,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         /**
          * 加载完网页再加载评论
          */
-        List<Pinglun> pinglun=promotePostsData.getCmt();
+        List<CmtGoods> pinglun=promotePostsData.getCmt();
         // 创建Adapter，并指定数据集
         RecyclePinglunAdapter adapter = new RecyclePinglunAdapter(pinglun);
         // 设置Adapter

@@ -2,15 +2,13 @@ package com.smarter.LoveLog.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
-import com.smarter.LoveLog.model.community.Pinglun;
 import com.smarter.LoveLog.model.community.User;
+import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 
 import java.util.List;
@@ -26,9 +24,9 @@ public class RecyclePinglunAdapter extends RecyclerView.Adapter<RecyclePinglunAd
 
     // 数据集
 
-    private List<Pinglun> pinglunList;
+    private List<CmtGoods> pinglunList;
     RequestQueue mQueue;
-    public RecyclePinglunAdapter(List<Pinglun> pinglunList) {
+    public RecyclePinglunAdapter(List<CmtGoods> pinglunList) {
         super();
         mQueue =  AppContextApplication.getInstance().getmRequestQueue();
         this.pinglunList=pinglunList;

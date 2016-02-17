@@ -24,7 +24,7 @@ import com.android.volley.VolleyError;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
-import com.smarter.LoveLog.adapter.RecyclePinglunAdapter;
+import com.smarter.LoveLog.adapter.RecyclePinglunGoodsAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
@@ -48,8 +48,8 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class InvitationAllPinglunActivity extends BaseFragmentActivity implements View.OnClickListener{
-    String Tag= "InvitationActivity";
+public class GoodsAllPinglunActivity extends BaseFragmentActivity implements View.OnClickListener{
+    String Tag= "GoodsAllPinglunActivity";
     Context  mContext;
 
 
@@ -102,7 +102,7 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 
 
 
-    private RecyclePinglunAdapter mAdapter;
+    private RecyclePinglunGoodsAdapter mAdapter;
     private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
 
 
@@ -164,7 +164,7 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 //                new Handler().postDelayed(new Runnable() {
 //                    public void run() {
                 loadingTag = -1;
-                Log.d("InvitationActivityURL", "initial    more");
+                Log.d("GoodsAllPinglunURL", "initial    more");
                 initData(promotePostsData.getId());
 //                        mRecyclerView.loadMoreComplete();
 //                    }
@@ -177,7 +177,7 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 
 
        if(promotePostDateList!=null&&promotePostDateList.size()>0){
-           mAdapter = new RecyclePinglunAdapter(promotePostDateList);
+           mAdapter = new RecyclePinglunGoodsAdapter(promotePostDateList,mContext);
 
            mRecyclerView.setAdapter(mAdapter);
        }
@@ -247,13 +247,13 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
             paginationJson.setCount("10");
             paginationJson.setPage((++page)+"");
             String string = JSON.toJSONString(paginationJson);
-            String  d="{\"id\":\""+id+"\",\"pagination\":"+string+" ,\"type\":\"2\"}";
+            String  d="{\"id\":\""+id+"\",\"pagination\":"+string+" ,\"type\":\"0\"}";
             map.put("json", d);
             Log.d("pingluActivity", d + "》》》》");
         }
         if(loadingTag==2){//第一次加载数据
             map = new HashMap<String, String>();
-            String oneString ="{\"type\":\"2\",\"id\":\""+id+"\"}";
+            String oneString ="{\"type\":\"0\",\"id\":\""+id+"\"}";
             map.put("json",oneString);
             Log.d("pingluActivity", oneString + "》》》》");
         }
@@ -478,7 +478,7 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 
                 if(promotePostsData!=null){
 
-                  String param="{\"type\":\"2\",\"id\":\""+promotePostsData.getId()+"\",\"reply_id\":\"\",\"content\":\""+pinglunEdit.getText().toString()+"\",\"session\":{\"uid\":\""+sessionData.getUid()+"\",\"sid\":\""+sessionData.getSid()+"\"}}";
+                  String param="{\"type\":\"0\",\"id\":\""+promotePostsData.getId()+"\",\"reply_id\":\"\",\"content\":\""+pinglunEdit.getText().toString()+"\",\"session\":{\"uid\":\""+sessionData.getUid()+"\",\"sid\":\""+sessionData.getSid()+"\"}}";
                     networkReward(param, url);
                 }
 

@@ -6,6 +6,9 @@ import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -23,20 +27,30 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
+import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.RecyclePinglunGoodsAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.fragment.GoodsImgTextFragment;
+import com.smarter.LoveLog.fragment.GoodsPinglunFragment;
+import com.smarter.LoveLog.fragment.RedpacketHaveExpiredFragment;
+import com.smarter.LoveLog.fragment.RedpacketUnusedFragment;
+import com.smarter.LoveLog.fragment.RedpacketUsedFragment;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.goods.GoodsData;
 import com.smarter.LoveLog.model.goods.GoodsDataInfo;
 import com.smarter.LoveLog.model.goods.Pictures;
 import com.smarter.LoveLog.model.home.DataStatus;
+import com.smarter.LoveLog.ui.CustomViewPager;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductContentPage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductDetailInfoPage;
+import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoySnapPageLayout;
 import com.smarter.LoveLog.ui.SyLinearLayoutManager;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
@@ -44,6 +58,7 @@ import com.smarter.LoveLog.ui.productViewPager.CirclePageIndicator;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +70,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class ProductDeatilActivity extends BaseFragmentActivity implements View.OnClickListener,BabyPopWindow.OnItemClickListener {
+public class ProductDeatilActivity extends BaseFragmentActivity implements View.OnClickListener,BabyPopWindow.OnItemClickListener,OnTabSelectListener {
 
 
     @Bind(R.id.flipLayout)
@@ -103,12 +118,22 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     XRecyclerView mRecyclerView;
     private GalleryPagerAdapter galleryAdapter;
     private List<Pictures> imageList = new ArrayList<Pictures>();
-
+    RelativeLayout  pingLinear;
 
     /**
      * bottomView
      */
 
+    SlidingTabLayout tabLayout_2;
+    CustomViewPager vp;
+    private List<Fragment> list_fragment;                                //定义要装fragment的列表
+    private List<String> list_title;                                     //tab名称列表
+
+    private GoodsImgTextFragment goodsImgTextFragment;                          //未使用fragment
+    private GoodsImgTextFragment goodsImgTextFragmentAttr;
+    private GoodsPinglunFragment goodsImgTextFragmentPinglun;
+
+    McoyScrollView productDetail_scrollview;
 
     /**弹出商品订单信息详情*/
     private BabyPopWindow popWindow;
@@ -135,6 +160,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         pro_share.setOnClickListener(this);
         buy_now.setOnClickListener(this);
         back_but.setOnClickListener(this);
+        pingLinear.setOnClickListener(this);
     }
 
 
@@ -183,9 +209,16 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         shopPrice=(TextView) topView.findViewById(R.id.shopPrice);
 
         goods_number=(TextView) topView.findViewById(R.id.goods_number);
+
+        pingLinear= (RelativeLayout) topView.findViewById(R.id.pingLinear);
         /**
          * bootomVIew mcoy_product_content_page
          */
+        tabLayout_2= (SlidingTabLayout) bottomView.findViewById(R.id.tl_2);
+        vp= (CustomViewPager) bottomView.findViewById(R.id.view_pager);
+        productDetail_scrollview= (McoyScrollView) bottomView.findViewById(R.id.productDetail_scrollview);
+
+
     }
 
     public static void setListViewHeightBasedOnChildren(XRecyclerView recyclerView) {
@@ -244,7 +277,8 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
          */
         List<CmtGoods> cmtGoodsesList=goodsData.getCmt();
         // 创建Adapter，并指定数据集
-        RecyclePinglunGoodsAdapter adapter = new RecyclePinglunGoodsAdapter(cmtGoodsesList);
+        Collections.reverse(cmtGoodsesList);
+        RecyclePinglunGoodsAdapter adapter = new RecyclePinglunGoodsAdapter(cmtGoodsesList,mContext);
         // 设置Adapter
         mRecyclerView.setAdapter(adapter);
         setListViewHeightBasedOnChildren(mRecyclerView);
@@ -255,6 +289,85 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         popWindow = new BabyPopWindow(this);
         popWindow.setOnItemClickListener(this);
 
+
+
+        String  desc="http://mapp.aiderizhi.com/?url=/goods/desc&id="+goodsData.getId();
+        String  attr="http://mapp.aiderizhi.com/?url=/goods/attr&id="+goodsData.getId();
+        goodsImgTextFragment=new GoodsImgTextFragment(productDetail_scrollview,desc);
+        goodsImgTextFragmentAttr=new GoodsImgTextFragment(productDetail_scrollview,attr);
+        goodsImgTextFragmentPinglun=new GoodsPinglunFragment();
+
+        list_fragment=new ArrayList<Fragment>();
+        list_fragment.add(goodsImgTextFragment);
+
+        list_fragment.add(goodsImgTextFragmentAttr);
+        list_fragment.add(goodsImgTextFragmentPinglun);
+
+        //tab title List
+        list_title=new ArrayList<String>();
+        list_title.add("图文详情");
+        list_title.add("规格参数");
+        list_title.add("买家点评");
+
+
+        vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+
+        tabLayout_2.setViewPager(vp);
+        tabLayout_2.setOnTabSelectListener(this);
+//        tabLayout_2.showDot(0);
+        vp.setCurrentItem(0);
+//        tabLayout_2.showMsg(1, 5);
+//        tabLayout_2.setMsgMargin(1, 12.0f, 10.0f);
+
+    }
+
+    @Override
+    public void onTabSelect(int position) {
+        if(position==2){
+            //挑战到所有评论界面//
+            //
+            Intent intent2 = new Intent(this, GoodsAllPinglunActivity.class);
+            Bundle bundle = new Bundle();
+            PromotePostsData promotePostsData=new PromotePostsData();
+            promotePostsData.setId(goodsData.getId());
+            bundle.putSerializable("allpinglun",promotePostsData);
+            intent2.putExtras(bundle);
+            this.startActivity(intent2);
+        }
+    }
+
+    @Override
+    public void onTabReselect(int position) {
+
+
+    }
+
+    private class MyPagerAdapter extends FragmentPagerAdapter {
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return list_fragment.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return list_title.get(position);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return list_fragment.get(position);
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        vp.setCurrentItem(0);
     }
 
     @Override
@@ -269,6 +382,18 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
                 break;
             case  R.id.back_but:
                 finish();
+                break;
+            case R.id.pingLinear:
+
+                //挑战到所有评论界面//
+                //
+                Intent intent2 = new Intent(this, GoodsAllPinglunActivity.class);
+                Bundle bundle = new Bundle();
+                PromotePostsData promotePostsData=new PromotePostsData();
+                promotePostsData.setId(goodsData.getId());
+                bundle.putSerializable("allpinglun",promotePostsData);
+                intent2.putExtras(bundle);
+                this.startActivity(intent2);
                 break;
 
         }

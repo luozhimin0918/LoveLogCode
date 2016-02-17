@@ -29,7 +29,7 @@ import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.PaginationJson;
 import com.smarter.LoveLog.model.community.InvitationDataPinglunActi;
-import com.smarter.LoveLog.model.community.Pinglun;
+import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.utills.DeviceUtil;
@@ -133,7 +133,7 @@ public class CommentSendoutFragment extends Fragment implements RecycleOrderAllA
 //        initRecycleViewVertical();
 
 
-    List<Pinglun> promotePostDateList;//本类帖子 分类里所有数据
+    List<CmtGoods> promotePostDateList;//本类帖子 分类里所有数据
     public  int page=1;
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
     private void initData(SessionData sessionDataOne) {
@@ -178,7 +178,7 @@ public class CommentSendoutFragment extends Fragment implements RecycleOrderAllA
                     if(loadingTag==-1){
 
 
-                        List<Pinglun> p=pinglunActi.getData();
+                        List<CmtGoods> p=pinglunActi.getData();
                         Log.d("CommentSendoutFragment", "" + promotePostDateList.size() + "1111++++promotePostDateList" );
                         for(int i=0;i<p.size();i++){
                             promotePostDateList.add(p.get(i));

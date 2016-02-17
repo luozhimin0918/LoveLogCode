@@ -1,5 +1,6 @@
 package com.smarter.LoveLog.model.goods;
 
+import com.smarter.LoveLog.model.community.ObjectComment;
 import com.smarter.LoveLog.model.community.User;
 import com.smarter.LoveLog.model.help.HelpDataList;
 
@@ -15,8 +16,26 @@ public class CmtGoods implements Serializable {
     private String cmt_rank;
     private String content;
     private String like_count;
+    private int floor;
+    private ObjectComment object;
     private String add_time;
     private User user;
+
+    public ObjectComment getObject() {
+        return object;
+    }
+
+    public void setObject(ObjectComment object) {
+        this.object = object;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
 
     public String getCmt_id() {
         return cmt_id;

@@ -1,7 +1,6 @@
 package com.smarter.LoveLog.model.notifacation;
 
 import com.smarter.LoveLog.model.category.Paginated;
-import com.smarter.LoveLog.model.community.Pinglun;
 import com.smarter.LoveLog.model.home.DataStatus;
 
 import java.io.Serializable;

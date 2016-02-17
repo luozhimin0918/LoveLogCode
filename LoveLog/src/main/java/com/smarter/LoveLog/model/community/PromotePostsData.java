@@ -1,5 +1,6 @@
 package com.smarter.LoveLog.model.community;
 
+import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.home.Ad;
 
 import java.io.Serializable;
@@ -31,7 +32,7 @@ public class PromotePostsData implements Serializable {
     private String is_like;
     private String add_time;
 
-    private List<Pinglun> cmt;
+    private List<CmtGoods> cmt;
     private User    user;
     private Img    img;
     private Share share;
@@ -220,11 +221,11 @@ public class PromotePostsData implements Serializable {
         this.audit = audit;
     }
 
-    public List<Pinglun> getCmt() {
+    public List<CmtGoods> getCmt() {
         return cmt;
     }
 
-    public void setCmt(List<Pinglun> cmt) {
+    public void setCmt(List<CmtGoods> cmt) {
         this.cmt = cmt;
     }
 }

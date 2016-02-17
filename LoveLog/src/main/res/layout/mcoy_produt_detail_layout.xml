@@ -5,6 +5,7 @@
     android:layout_height="fill_parent"
     android:background="@color/connet_bgColor"
     android:fadeScrollbars="true"
+    android:scrollbars="none"
     android:focusable="true"
     android:fillViewport="true" >
 
@@ -289,7 +290,8 @@
         android:orientation="vertical"
         android:background="@color/white"
         android:layout_height="wrap_content">
-        <RelativeLayout android:layout_width="fill_parent" android:paddingLeft="10dp" android:layout_marginTop="10dp" android:gravity="center" android:paddingRight="10dp" android:layout_height="wrap_content" >
+        <RelativeLayout   android:id="@+id/pingLinear"
+            android:clickable="true" android:layout_width="fill_parent" android:paddingLeft="10dp" android:layout_marginTop="10dp" android:layout_marginBottom="10dp" android:gravity="center" android:paddingRight="10dp" android:layout_height="wrap_content" >
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -311,6 +313,7 @@
         </RelativeLayout>
 
         <LinearLayout
+             android:visibility="gone"
             android:layout_width="fill_parent" android:layout_height="wrap_content"  android:orientation="horizontal" android:paddingRight="10dp" android:paddingLeft="10dp" android:layout_marginTop="5dp" android:layout_marginBottom="5dp">
             <TextView
                 android:layout_width="wrap_content"
@@ -324,12 +327,13 @@
                 android:textSize="14sp"
                 android:layout_height="wrap_content" android:text="99%   50876人评论"/>
         </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="1dp" android:background="@color/connet_bgColor"></LinearLayout>
 
         <com.jcodecraeer.xrecyclerview.XRecyclerView
             android:id="@+id/recyclerview"
             android:layout_weight="1"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="300dp" >
 
         </com.jcodecraeer.xrecyclerview.XRecyclerView>
 

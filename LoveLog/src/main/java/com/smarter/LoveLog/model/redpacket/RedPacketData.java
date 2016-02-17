@@ -1,8 +1,5 @@
 package com.smarter.LoveLog.model.redpacket;
 
-import com.smarter.LoveLog.model.community.Pinglun;
-import com.smarter.LoveLog.model.community.User;
-
 import java.io.Serializable;
 import java.util.List;
 
