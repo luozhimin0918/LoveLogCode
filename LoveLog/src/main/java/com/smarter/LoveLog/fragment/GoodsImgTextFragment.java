@@ -42,7 +42,9 @@ import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.redpacket.RedList;
 import com.smarter.LoveLog.model.redpacket.RedPacketInfo;
+import com.smarter.LoveLog.ui.FoundWebView;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
+import com.smarter.LoveLog.ui.McoySnapPageLayout.McoySnapPageLayout;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 import org.json.JSONException;
@@ -76,7 +78,7 @@ public class GoodsImgTextFragment extends Fragment{
 
 
     @Bind(R.id.webview)
-    WebView webview;
+    FoundWebView webview;
 
 
     @Bind(R.id.progressLinear)
@@ -87,9 +89,11 @@ public class GoodsImgTextFragment extends Fragment{
     Context mContext;
    String  url="";
     McoyScrollView mcoyScrollView;
-    public GoodsImgTextFragment(McoyScrollView mcoyScrollView,String url) {
+    McoySnapPageLayout mcoySnapPageLayout;
+    public GoodsImgTextFragment(McoySnapPageLayout mcoySnapPageLayout,McoyScrollView mcoyScrollView,String url) {
         this.url = url;
         this.mcoyScrollView=mcoyScrollView;
+        this.mcoySnapPageLayout=mcoySnapPageLayout;
     }
 
     @Nullable
@@ -215,30 +219,30 @@ public class GoodsImgTextFragment extends Fragment{
        webview.setOnTouchListener(new View.OnTouchListener() {
 
            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
+           public boolean onTouch(View v, MotionEvent event) {
+               // TODO Auto-generated method stub
 
 
-                //继承了Activity的onTouchEvent方法，直接监听点击事件
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    //当手指按下的时候
-                    x1 = event.getX();
-                    y1 = event.getY();
-                }
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    //当手指离开的时候
-                    x2 = event.getX();
-                    y2 = event.getY();
-                    if(y1 - y2 > 50) {
+               //继承了Activity的onTouchEvent方法，直接监听点击事件
+               if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                   //当手指按下的时候
+                   x1 = event.getX();
+                   y1 = event.getY();
+               }
+               if (event.getAction() == MotionEvent.ACTION_UP) {
+                   //当手指离开的时候
+                   x2 = event.getX();
+                   y2 = event.getY();
+                   if (y1 - y2 > 50) {
 //                        Toast.makeText(MainActivity.this, "向上滑", Toast.LENGTH_SHORT).show();
-                    } else if(y2 - y1 > 50) {
+                   } else if (y2 - y1 > 50) {
 //                        Toast.makeText(MainActivity.this, "向下滑", Toast.LENGTH_SHORT).show();
-                    } else if(x1 - x2 > 50) {
+                   } else if (x1 - x2 > 50) {
 //                        Toast.makeText(MainActivity.this, "向左滑", Toast.LENGTH_SHORT).show();
-                    } else if(x2 - x1 > 50) {
+                   } else if (x2 - x1 > 50) {
 //                        Toast.makeText(MainActivity.this, "向右滑", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                   }
+               }
 
 
                /*
@@ -254,18 +258,59 @@ public class GoodsImgTextFragment extends Fragment{
 
 
                */
+
+
+
                if (event.getAction() == MotionEvent.ACTION_UP){
 
                    mcoyScrollView.requestDisallowInterceptTouchEvent(false);
-               }
-               if(webview.getScrollY()==0){
 
+
+               }else{
                    mcoyScrollView.requestDisallowInterceptTouchEvent(true);
+
                }
-                return false;
+               if (webview.getScrollY() == 0&&event.getAction() == MotionEvent.ACTION_UP) {
+                   mcoySnapPageLayout.snapToPrev();
+//                    Toast.makeText(getContext(), "已经顶端", Toast.LENGTH_SHORT).show();
+               }
+
+
+               return false;
+           }
+
+
+       });
+
+
+
+
+
+        webview.setOnCustomScroolChangeListener(new FoundWebView.ScrollInterface() {
+            @Override
+            public void onSChanged(int l, int t, int oldl, int oldt) {
+
+// TODO Auto-generated method stub
+                float webcontent = webview.getContentHeight() * webview.getScale();//webview的高度
+                float webnow = webview.getHeight() + webview.getScrollY();//当前webview的高度
+                if (webview.getContentHeight() * webview.getScale() - (webview.getHeight() + webview.getScrollY()) == 0) {
+
+//已经处于底端
+
+//                    Toast.makeText(getContext(), "已经处于底端", Toast.LENGTH_SHORT).show();
+                } else {
+
+//                    Toast.makeText(getContext(), "中间", Toast.LENGTH_SHORT).show();
+                }
+//已经处于顶端
+                if (webview.getScrollY() == 0) {
+//                    mcoySnapPageLayout.snapToPrev();
+//                    Toast.makeText(getContext(), "已经顶端", Toast.LENGTH_SHORT).show();
+                }
+
+//                Log.d("test", webview.getScrollY() + "-----");
+
             }
-
-
         });
 
     }

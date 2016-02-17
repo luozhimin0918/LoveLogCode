@@ -292,9 +292,11 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
 
         String  desc="http://mapp.aiderizhi.com/?url=/goods/desc&id="+goodsData.getId();
-        String  attr="http://mapp.aiderizhi.com/?url=/goods/attr&id="+goodsData.getId();
-        goodsImgTextFragment=new GoodsImgTextFragment(productDetail_scrollview,desc);
-        goodsImgTextFragmentAttr=new GoodsImgTextFragment(productDetail_scrollview,attr);
+//        String  attr="http://mapp.aiderizhi.com/?url=/goods/attr&id="+goodsData.getId();
+        String  attr="http://mapp.aiderizhi.com/?url=/post/content&id=22737";
+
+        goodsImgTextFragment=new GoodsImgTextFragment(mcoySnapPageLayout,productDetail_scrollview,desc);
+        goodsImgTextFragmentAttr=new GoodsImgTextFragment(mcoySnapPageLayout,productDetail_scrollview,attr);
         goodsImgTextFragmentPinglun=new GoodsPinglunFragment();
 
         list_fragment=new ArrayList<Fragment>();
