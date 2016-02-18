@@ -66,8 +66,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         NetworkImageView img = (NetworkImageView) view.findViewById(R.id.iv_item);
 
-        img.setDefaultImageResId(R.drawable.loading);
-        img.setErrorImageResId(R.drawable.loading);
+        img.setDefaultImageResId(R.drawable.loading_small);
+        img.setErrorImageResId(R.drawable.loading_small);
         if(mQueue.getCache().get(imglistString)==null){
             img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
         }
