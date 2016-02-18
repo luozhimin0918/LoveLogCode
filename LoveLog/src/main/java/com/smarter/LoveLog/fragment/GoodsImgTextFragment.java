@@ -90,6 +90,10 @@ public class GoodsImgTextFragment extends Fragment{
    String  url="";
     McoyScrollView mcoyScrollView;
     McoySnapPageLayout mcoySnapPageLayout;
+
+    public GoodsImgTextFragment(){
+
+    }
     public GoodsImgTextFragment(McoySnapPageLayout mcoySnapPageLayout,McoyScrollView mcoyScrollView,String url) {
         this.url = url;
         this.mcoyScrollView=mcoyScrollView;
@@ -236,6 +240,10 @@ public class GoodsImgTextFragment extends Fragment{
                    if (y1 - y2 > 50) {
 //                        Toast.makeText(MainActivity.this, "向上滑", Toast.LENGTH_SHORT).show();
                    } else if (y2 - y1 > 50) {
+                       if (webview.getScrollY() == 0&&event.getAction() == MotionEvent.ACTION_UP) {
+                           mcoySnapPageLayout.snapToPrev();
+                           //                    Toast.makeText(getContext(), "已经顶端", Toast.LENGTH_SHORT).show();
+                       }
 //                        Toast.makeText(MainActivity.this, "向下滑", Toast.LENGTH_SHORT).show();
                    } else if (x1 - x2 > 50) {
 //                        Toast.makeText(MainActivity.this, "向左滑", Toast.LENGTH_SHORT).show();
@@ -245,35 +253,27 @@ public class GoodsImgTextFragment extends Fragment{
                }
 
 
-               /*
-                if(event.getAction() == MotionEvent.ACTION_UP&&webview.getScrollY()==0){
-                    //已经处于底端
-                    mcoyScrollView.requestDisallowInterceptTouchEvent(true);
-                }else{
-
-                    mcoyScrollView.requestDisallowInterceptTouchEvent(false);
-                    webview.requestDisallowInterceptTouchEvent(true);
-
-                }
 
 
-               */
+               if(mcoyScrollView!=null&&mcoySnapPageLayout !=null){
+
+                   if (event.getAction() == MotionEvent.ACTION_UP){
+
+                       mcoyScrollView.requestDisallowInterceptTouchEvent(false);
 
 
+                   }else{
+                       mcoyScrollView.requestDisallowInterceptTouchEvent(true);
 
-               if (event.getAction() == MotionEvent.ACTION_UP){
+                   }
+                  /* if (webview.getScrollY() == 0&&event.getAction() == MotionEvent.ACTION_UP) {
+                       mcoySnapPageLayout.snapToPrev();
+                       //                    Toast.makeText(getContext(), "已经顶端", Toast.LENGTH_SHORT).show();
+                   }*/
 
-                   mcoyScrollView.requestDisallowInterceptTouchEvent(false);
-
-
-               }else{
-                   mcoyScrollView.requestDisallowInterceptTouchEvent(true);
 
                }
-               if (webview.getScrollY() == 0&&event.getAction() == MotionEvent.ACTION_UP) {
-                   mcoySnapPageLayout.snapToPrev();
-//                    Toast.makeText(getContext(), "已经顶端", Toast.LENGTH_SHORT).show();
-               }
+
 
 
                return false;
@@ -304,7 +304,6 @@ public class GoodsImgTextFragment extends Fragment{
                 }
 //已经处于顶端
                 if (webview.getScrollY() == 0) {
-//                    mcoySnapPageLayout.snapToPrev();
 //                    Toast.makeText(getContext(), "已经顶端", Toast.LENGTH_SHORT).show();
                 }
 

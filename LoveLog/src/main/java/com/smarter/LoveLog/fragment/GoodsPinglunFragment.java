@@ -74,7 +74,7 @@ public class GoodsPinglunFragment extends Fragment{
             mRootView = new WeakReference<View>(view);
             mContext=getContext();
             ButterKnife.bind(this, view);
-            networkLoading();
+//            networkLoading();
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
             if (parent != null) {

@@ -292,8 +292,8 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
 
         String  desc="http://mapp.aiderizhi.com/?url=/goods/desc&id="+goodsData.getId();
-//        String  attr="http://mapp.aiderizhi.com/?url=/goods/attr&id="+goodsData.getId();
-        String  attr="http://mapp.aiderizhi.com/?url=/post/content&id=22737";
+        String  attr="http://mapp.aiderizhi.com/?url=/goods/attr&id="+goodsData.getId();
+//        String  attr="http://mapp.aiderizhi.com/?url=/post/content&id=22737";
 
         goodsImgTextFragment=new GoodsImgTextFragment(mcoySnapPageLayout,productDetail_scrollview,desc);
         goodsImgTextFragmentAttr=new GoodsImgTextFragment(mcoySnapPageLayout,productDetail_scrollview,attr);
@@ -323,8 +323,16 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
     }
 
+
+    int viewPagerNum=0;
     @Override
     public void onTabSelect(int position) {
+
+
+        if(position!=2){
+            viewPagerNum=position;
+        }
+
         if(position==2){
             //挑战到所有评论界面//
             //
@@ -369,7 +377,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     @Override
     protected void onResume() {
         super.onResume();
-        vp.setCurrentItem(0);
+        vp.setCurrentItem(viewPagerNum);
     }
 
     @Override
