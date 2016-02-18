@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,6 +36,7 @@ import com.smarter.LoveLog.adapter.Adapter_GridView;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.MofanAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.community.CommunityDataFrag;
 import com.smarter.LoveLog.model.community.CommunityDataInfo;
@@ -42,6 +44,8 @@ import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.home.NavIndexUrlData;
 import com.smarter.LoveLog.model.home.SliderUrlData;
+import com.smarter.LoveLog.model.jsonModel.ZanOrFaroviteParame;
+import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.AutoScrollViewPager;
 import com.smarter.LoveLog.ui.MyGridView;
 import com.smarter.LoveLog.utills.DeviceUtil;
@@ -154,7 +158,7 @@ public class CommunityFragment extends Fragment {
         }
 
     }
-
+    SessionData sessionData;
     private void initNew() {
         String url = "http://mapp.aiderizhi.com/?url=/post/index";
         RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
@@ -207,10 +211,23 @@ public class CommunityFragment extends Fragment {
 
             }
         });
+
+
         Map<String, String> map = new HashMap<String, String>();
-//        map.put("params1", "value1");
-//        map.put("params2", "value2");
-//        fastJsonCommunity.setParams(map);
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if(isLogin){
+            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+            sessionData = JSON.parseObject(sessionString, SessionData.class);
+            if(sessionData!=null){
+
+                ZanOrFaroviteParame zanOrFaroviteInfo=new ZanOrFaroviteParame();
+                zanOrFaroviteInfo.setSession(sessionData);
+                map.put("json", JSON.toJSONString(zanOrFaroviteInfo));
+                fastJsonCommunity.setParams(map);
+
+            }
+
+        }
 
         mQueue.add(fastJsonCommunity);
     }
@@ -279,6 +296,8 @@ public class CommunityFragment extends Fragment {
 
         promotePostsData=communityDataInfo.getPromote_posts();
         mAdapter = new MofanAdapter(mContext,promotePostsData);
+
+
 
         mRecyclerView.setAdapter(mAdapter);
         /**

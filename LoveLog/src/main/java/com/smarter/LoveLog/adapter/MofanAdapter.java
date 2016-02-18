@@ -56,6 +56,7 @@ import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.jsonModel.ZanOrFaroviteParame;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
+import com.smarter.LoveLog.ui.QCheckBox;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.ui.popwindow.AlertDialog;
 import java.io.Serializable;
@@ -174,53 +175,60 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
                 integral02.setVisibility(View.VISIBLE);
                 integral03.setVisibility(View.VISIBLE);
 
-                 rewardItemData=promotePostsDataList.get(position);
-                    int[] location = new int[2];
-                    viewHolder.reword.getLocationOnScreen(location);
-                    isWifiPopupWindow.showAtLocation(viewHolder.reword, Gravity.NO_GRAVITY, location[0], location[1] - viewHolder.reword.getHeight() * 8);//
-                    /**
-                     * 动画
-                     */
-                    AnimationSet animationSet = new AnimationSet(true);
-                    // Animation myAnimation= AnimationUtils.loadAnimation(mContext, R.anim.da_shan);
-                    RotateAnimation rotateAnimation = new RotateAnimation(
-                            270, 0, RotateAnimation.RELATIVE_TO_PARENT, 0.5f, RotateAnimation.RELATIVE_TO_PARENT, 0.4f);
-                    rotateAnimation.setInterpolator(new LinearInterpolator());
-                    rotateAnimation.setDuration(200);
-                    rotateAnimation.setRepeatCount(0);
-                    rotateAnimation.setFillAfter(true);
-                    // rotateAnimation.setStartOffset(50);
+                rewardItemData = promotePostsDataList.get(position);
+                int[] location = new int[2];
+                viewHolder.reword.getLocationOnScreen(location);
+                isWifiPopupWindow.showAtLocation(viewHolder.reword, Gravity.NO_GRAVITY, location[0], location[1] - viewHolder.reword.getHeight() * 8);//
+                /**
+                 * 动画
+                 */
+                AnimationSet animationSet = new AnimationSet(true);
+                // Animation myAnimation= AnimationUtils.loadAnimation(mContext, R.anim.da_shan);
+                RotateAnimation rotateAnimation = new RotateAnimation(
+                        270, 0, RotateAnimation.RELATIVE_TO_PARENT, 0.5f, RotateAnimation.RELATIVE_TO_PARENT, 0.4f);
+                rotateAnimation.setInterpolator(new LinearInterpolator());
+                rotateAnimation.setDuration(200);
+                rotateAnimation.setRepeatCount(0);
+                rotateAnimation.setFillAfter(true);
+                // rotateAnimation.setStartOffset(50);
 
 
-                    /** 设置缩放动画 */
-                    final ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f, 1.0f, 0.1f, 1.0f,
-                            Animation.RELATIVE_TO_PARENT, 0.3f, Animation.RELATIVE_TO_PARENT, 0.4f);
-                    scaleAnimation.setInterpolator(new LinearInterpolator());
-                    scaleAnimation.setDuration(200);//设置动画持续时间
-                    /** 常用方法 */
-                    scaleAnimation.setRepeatCount(0);//设置重复次数
-                    scaleAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
-                    // scaleAnimation.setStartOffset(1000);//执行前的等待时间
+                /** 设置缩放动画 */
+                final ScaleAnimation scaleAnimation = new ScaleAnimation(0.1f, 1.0f, 0.1f, 1.0f,
+                        Animation.RELATIVE_TO_PARENT, 0.3f, Animation.RELATIVE_TO_PARENT, 0.4f);
+                scaleAnimation.setInterpolator(new LinearInterpolator());
+                scaleAnimation.setDuration(200);//设置动画持续时间
+                /** 常用方法 */
+                scaleAnimation.setRepeatCount(0);//设置重复次数
+                scaleAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+                // scaleAnimation.setStartOffset(1000);//执行前的等待时间
 
 
 //                    animationSet.addAnimation(rotateAnimation);
-                    animationSet.addAnimation(scaleAnimation);
+                animationSet.addAnimation(scaleAnimation);
 
 
-                    integral01.startAnimation(animationSet);
-                    integral02.startAnimation(animationSet);
-                    integral03.startAnimation(animationSet);
-                    /**
-                     * 动画后的黑色蒙层
-                     */
-                    BabyPopWindow.backgroundAlpha(mContext,0.55f);
+                integral01.startAnimation(animationSet);
+                integral02.startAnimation(animationSet);
+                integral03.startAnimation(animationSet);
+                /**
+                 * 动画后的黑色蒙层
+                 */
+                BabyPopWindow.backgroundAlpha(mContext, 0.55f);
             }
         });
 
 
 
         viewHolder.pinglunNum.setText(promotePostsDataItem.getCmt_count());
-        viewHolder.likeNum.setText(promotePostsDataItem.getCollect_count());
+        viewHolder.zanBut.setText(promotePostsDataItem.getLike_count());
+
+        if(promotePostsDataItem.getIs_like().equals("1")){
+            viewHolder.zanBut.setChecked(true);
+        }else{
+            viewHolder.zanBut.setChecked(false);
+        }
+
         viewHolder.sharePic.setOnClickListener(new View.OnClickListener() {//分享
             @Override
             public void onClick(View v) {
@@ -273,10 +281,11 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView reword;
-        TextView sharePic,title,brief,userName,userTime,pinglunNum,likeNum;
+        TextView sharePic,title,brief,userName,userTime,pinglunNum;
         CircleNetworkImage imageTitle;//头像
         LinearLayout  imglist,isJinghua,isHot;
         RelativeLayout CommunityItem;
+        QCheckBox zanBut;
 
         public ViewHolder(View view){
             super(view);
@@ -293,9 +302,10 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
             userTime=(TextView) view.findViewById(R.id.userTime);
 
             pinglunNum=(TextView) view.findViewById(R.id.pinglunNum);
-            likeNum=(TextView) view.findViewById(R.id.likeNum);
 
             reword= (ImageView) view.findViewById(R.id.reword);
+
+            zanBut= (QCheckBox) view.findViewById(R.id.zanBut);
         }
     }
 

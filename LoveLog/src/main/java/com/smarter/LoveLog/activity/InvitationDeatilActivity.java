@@ -253,12 +253,16 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
         if(promotePostsData.getIs_like().equals("1")){
             zanBut.setChecked(true);
+        }else{
+            zanBut.setChecked(false);
         }
         zanBut.setText(promotePostsData.getLike_count());//点赞
 
 
         if(promotePostsData.getIs_collect().equals("1")){
             collectBut.setChecked(true);
+        }else{
+            collectBut.setChecked(false);
         }
         pinglunBut.setText(promotePostsData.getCmt_count()+"");//评论数
         collectBut.setText(promotePostsData.getCollect_count());//收藏

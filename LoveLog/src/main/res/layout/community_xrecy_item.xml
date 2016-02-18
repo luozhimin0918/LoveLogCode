@@ -180,7 +180,32 @@
             android:layout_marginBottom="@dimen/space_12"
             android:gravity="center_vertical"
             android:layout_height="wrap_content">
-            <TextView
+
+
+               <com.smarter.LoveLog.ui.QCheckBox
+                   android:button="@null"
+                   android:id="@+id/zanBut"
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:gravity="center"
+                   android:text="0"
+
+                   android:drawablePadding="10dp"
+                   android:drawableLeft="@drawable/zan_checkbox_button"
+                   android:textColor="#929292"
+                   android:textSize="14sp" />
+               <TextView
+                   android:id="@+id/pinglunNum"
+                   android:layout_marginLeft="@dimen/space_20"
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:gravity="center"
+                   android:drawablePadding="10dp"
+                   android:text="0"
+                   android:drawableLeft="@mipmap/message_tiezi"
+                   android:textColor="#929292"
+                   android:textSize="14sp" />
+           <!-- <TextView
                 android:id="@+id/pinglunNum"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -189,8 +214,8 @@
                 android:drawablePadding="5dp"
                 android:drawableLeft="@mipmap/commont"
                 android:textColor="#929292"
-                android:textSize="14sp" />
-            <TextView
+                android:textSize="14sp" />-->
+          <!--  <TextView
                 android:id="@+id/likeNum"
                 android:layout_marginLeft="@dimen/space_20"
                 android:layout_width="wrap_content"
@@ -200,8 +225,8 @@
                 android:drawablePadding="5dp"
                 android:drawableLeft="@mipmap/community_love"
                 android:textColor="#929292"
-                android:textSize="14sp" />
-            <TextView
+                android:textSize="14sp" />-->
+           <!-- <TextView
                 android:id="@+id/sharePic"
                 android:layout_marginLeft="@dimen/space_20"
                 android:layout_width="wrap_content"
@@ -211,7 +236,18 @@
                 android:text="分享"
                 android:drawableLeft="@mipmap/community_share"
                 android:textColor="#929292"
-                android:textSize="14sp" />
+                android:textSize="14sp" />-->
+               <TextView
+                   android:id="@+id/sharePic"
+                   android:layout_marginLeft="@dimen/space_20"
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent"
+                   android:gravity="center"
+                   android:drawablePadding="5dp"
+                   android:text="分享"
+                   android:drawableLeft="@mipmap/share_tiezi"
+                   android:textColor="#929292"
+                   android:textSize="13sp" />
 
             <FrameLayout
                 android:layout_weight="1"
