@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Request;
@@ -131,7 +132,7 @@ public class CommunityFragment extends Fragment {
         return mRootView.get();
 
     }
-    private void initData() {
+    public  void initData() {
         if(DeviceUtil.checkConnection(mContext)){
 
             //加载动画
@@ -174,10 +175,18 @@ public class CommunityFragment extends Fragment {
 
                     communityDataInfo=communityDataFrag.getData();
                     if( isLoadReresh==true){
+//                        promotePostsData=new ArrayList<PromotePostsData>();
+//                        promotePostsData=communityDataInfo.getPromote_posts();
+//                        mAdapter = new MofanAdapter(mContext,promotePostsData);
+//                        mAdapter.notifyDataSetChanged();
 //                        if(communityDataFrag.getData().equals(communityDataInfo)){
 //                            refresh();
+
 //                            Log.d("ddd", "trur" );
 //                        }
+
+
+
                     }
 
 

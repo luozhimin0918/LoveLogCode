@@ -3,6 +3,7 @@ package com.smarter.LoveLog.activity;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import com.flyco.tablayout.CommonTabLayout;
@@ -28,6 +32,7 @@ import com.smarter.LoveLog.rongCloud.RongCloudEvent;
 import com.smarter.LoveLog.ui.TabEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -185,7 +190,7 @@ public class MainActivity extends BaseFragmentActivity  {
 
 
 
-
+    MyPagerAdapter myPagerAdapter;
     private void initData() {
         fragment_flash_main = new HomeFragment();
         fragment_jw = new CommunityFragment();
@@ -200,8 +205,8 @@ public class MainActivity extends BaseFragmentActivity  {
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
-
-        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        myPagerAdapter=new MyPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(myPagerAdapter);
 
 
 
@@ -217,7 +222,7 @@ public class MainActivity extends BaseFragmentActivity  {
             public void onTabSelect(int position) {
                 mViewPager.setCurrentItem(position);
                 mViewPagerSetCurrent(position);
-
+                myPagerAdapter.update(position);
             }
 
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -239,6 +244,7 @@ public class MainActivity extends BaseFragmentActivity  {
             public void onPageSelected(int position) {
                 mTabLayout_2.setCurrentTab(position);
                 mViewPagerSetCurrent(position);
+                myPagerAdapter.update(position);
             }
 
             @Override
@@ -271,8 +277,13 @@ public class MainActivity extends BaseFragmentActivity  {
 
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
+        private List<String> tagList;
+       FragmentManager fm;
         public MyPagerAdapter(FragmentManager fm) {
+
             super(fm);
+            this.fm=fm;
+            tagList=new ArrayList<String>();
         }
 
         @Override
@@ -288,6 +299,48 @@ public class MainActivity extends BaseFragmentActivity  {
         @Override
         public Fragment getItem(int position) {
             return mFragments.get(position);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            tagList.add(makeFragmentName(container.getId(),position));
+            return super.instantiateItem(container, position);
+        }
+       /* @Override
+        public int getItemPosition(Object object) {
+            View view = (View)object;
+            int currentPage = mViewPager.getCurrentItem(); // Get current page index
+            if (currentPage == (Integer)view.getTag()){
+                return POSITION_NONE;
+            }else{
+                return POSITION_UNCHANGED;
+            }
+//      return POSITION_NONE;
+        }*/
+       public void update(int item) {
+           Fragment fragment = null;
+           if(tagList.size()>0){
+                fragment = fm.findFragmentByTag(tagList.get(item));
+           }
+
+           if (fragment != null) {
+               switch (item) {
+                   case 0:
+
+                       break;
+                   case 1:
+                       ((CommunityFragment) fragment).initData();
+                       break;
+                   case 2:
+
+                       break;
+                   default:
+                       break;
+               }
+           }
+       }
+        public  String makeFragmentName(int viewId, int index) {
+            return "android:switcher:" + viewId + ":" + index;
         }
     }
     @Override
