@@ -17,7 +17,7 @@
         <RelativeLayout
             android:id="@+id/layout_ent_gallery"
             android:layout_width="fill_parent"
-            android:layout_height="260dp"
+            android:layout_height="320dp"
             android:background="@color/white">
 
             <android.support.v4.view.ViewPager
@@ -329,13 +329,13 @@
         </LinearLayout>
         <LinearLayout android:layout_width="fill_parent" android:layout_height="1dp" android:background="@color/connet_bgColor"></LinearLayout>
 
-        <com.jcodecraeer.xrecyclerview.XRecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
-            android:layout_height="300dp" >
 
-        </com.jcodecraeer.xrecyclerview.XRecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:overScrollMode="never"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
 
 
 

@@ -115,7 +115,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     TextView goodsBrief;//
     TextView shopPrice;
     TextView goods_number;
-    XRecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
     private GalleryPagerAdapter galleryAdapter;
     private List<Pictures> imageList = new ArrayList<Pictures>();
     RelativeLayout  pingLinear;
@@ -183,18 +183,14 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
          */
 
 
-        mRecyclerView= (XRecyclerView) topView.findViewById(R.id.recyclerview);
-       /* LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView= (RecyclerView) topView.findViewById(R.id.recyclerview);
 
-*/
+
         SyLinearLayoutManager layoutManager = new SyLinearLayoutManager(mContext);
         layoutManager.setOrientation(SyLinearLayoutManager.VERTICAL);
 
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.SysProgress);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
-        mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
+
 
 
 
@@ -221,28 +217,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
     }
 
-    public static void setListViewHeightBasedOnChildren(XRecyclerView recyclerView) {
-        RecyclerView.Adapter listAdapter = recyclerView.getAdapter();
-        int totalHeight=0;
-        if(recyclerView.getAdapter().getItemCount()>0){
-            for(int i=1; i<recyclerView.getAdapter().getItemCount(); i++) {
-//                View listItem=recyclerView.findViewHolderForAdapterPosition(i).itemView;
-                View listItem=recyclerView.getRootView();
-                listItem.measure(0, 0);
-                totalHeight += listItem.getMeasuredHeight();
 
-            }
-
-            ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
-            params.height = totalHeight ;
-            //recyclerView1.getDividerHeight()获取子项间分隔符占用的高度
-            //params.height最后得到整个recyclerView1完整显示需要的高度
-            recyclerView.setLayoutParams(params);
-        }
-
-
-
-    }
 
     private void initData() {
         tv_top_title.setText(goodsData.getGoods_name());
@@ -281,7 +256,6 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         RecyclePinglunGoodsAdapter adapter = new RecyclePinglunGoodsAdapter(cmtGoodsesList,mContext);
         // 设置Adapter
         mRecyclerView.setAdapter(adapter);
-        setListViewHeightBasedOnChildren(mRecyclerView);
 /**
  * bottomView
  */
@@ -377,7 +351,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     @Override
     protected void onResume() {
         super.onResume();
-        vp.setCurrentItem(viewPagerNum);
+        vp.setCurrentItem(viewPagerNum,false);
     }
 
     @Override
