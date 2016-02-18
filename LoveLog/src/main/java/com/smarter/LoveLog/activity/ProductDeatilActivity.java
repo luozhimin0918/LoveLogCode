@@ -539,7 +539,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
                 @Override
                 public void onErrorResponse(VolleyError arg0) {
                     // TODO Auto-generated method stub
-                    item.setImageResource(R.mipmap.loadding);
+                    item.setImageResource(R.mipmap.loading);
                 }
             });
             RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();

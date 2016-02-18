@@ -84,7 +84,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
 
    /*  final RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
-//        viewHolder.imglist.setImageResource(R.mipmap.loadding);
+//        viewHolder.imglist.setImageResource(R.mipmap.loading);
         String imageUrl=adIndexUrlDataList.get(position).getIndex_com().getImage_url();
         ImageRequest imageRequest = new ImageRequest(imageUrl,
                 new Response.Listener<Bitmap>() {
@@ -101,7 +101,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onErrorResponse(VolleyError arg0) {
                 // TODO Auto-generated method stub
-                viewHolder.imglist.setImageResource(R.mipmap.loadding);
+                viewHolder.imglist.setImageResource(R.mipmap.loading);
             }
         });
 
