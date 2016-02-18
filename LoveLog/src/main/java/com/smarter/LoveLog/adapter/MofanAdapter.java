@@ -121,8 +121,8 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
 
 
         //头像
-        viewHolder.imageTitle.setDefaultImageResId(R.mipmap.loadding);
-        viewHolder.imageTitle.setErrorImageResId(R.mipmap.loadding);
+        viewHolder.imageTitle.setDefaultImageResId(R.drawable.loading);
+        viewHolder.imageTitle.setErrorImageResId(R.drawable.loading);
         RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
         String UserimageUrl=promotePostsDataList.get(position).getUser().getAvatar();
         if(mQueue.getCache().get(UserimageUrl)==null){
@@ -143,8 +143,8 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
             View view = View.inflate(viewGroup.getContext(), R.layout.item_image_invitation, null);
               NetworkImageView img = (NetworkImageView) view.findViewById(R.id.iv_item);
 
-            img.setDefaultImageResId(R.mipmap.loadding);
-            img.setErrorImageResId(R.mipmap.loadding);
+            img.setDefaultImageResId(R.drawable.loading);
+            img.setErrorImageResId(R.drawable.loading);
             if(mQueue.getCache().get(imglistString)==null){
                 img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
             }

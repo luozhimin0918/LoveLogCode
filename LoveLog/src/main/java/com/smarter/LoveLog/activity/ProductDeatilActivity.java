@@ -82,6 +82,10 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     @Bind(R.id.back_but)
     ImageView back_but;
 
+    @Bind(R.id.xuanfuBar)
+    LinearLayout xuanfuBar;
+
+
 
     @Bind(R.id.networkInfo)
     LinearLayout networkInfo;
@@ -146,7 +150,6 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         ButterKnife.bind(this);
         mContext=this;
         initView();
-
 
 
         FindView();
@@ -221,6 +224,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
     private void initData() {
         tv_top_title.setText(goodsData.getGoods_name());
+        xuanfuBar.setVisibility(View.VISIBLE);
 
 /**
  * topView
@@ -511,8 +515,8 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
 
 
-            item.setDefaultImageResId(R.mipmap.loadding);
-            item.setErrorImageResId(R.mipmap.loadding);
+            item.setDefaultImageResId(R.drawable.loading);
+            item.setErrorImageResId(R.drawable.loading);
 
 
             RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();

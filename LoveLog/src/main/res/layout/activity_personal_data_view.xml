@@ -60,7 +60,7 @@
 
                 <com.smarter.LoveLog.ui.CircleNetworkImage
                     android:id="@+id/imageTitle"
-                    android:src="@mipmap/loadding"
+                    android:src="@drawable/loading"
                     android:layout_width="50dp"
                     android:layout_marginTop="@dimen/space_5"
                     android:layout_marginBottom="@dimen/space_5"

@@ -424,8 +424,8 @@ public class HomeFragment extends Fragment  {
         networkImageViewList.add(topAd3);
 
         for(int j=0;j<adIndexTopAdHot.size();j++){
-            networkImageViewList.get(j).setDefaultImageResId(R.mipmap.loadding);
-            networkImageViewList.get(j).setErrorImageResId(R.mipmap.loadding);
+            networkImageViewList.get(j).setDefaultImageResId(R.drawable.loading);
+            networkImageViewList.get(j).setErrorImageResId(R.drawable.loading);
             RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();
             String imageUrl=adIndexTopAdHot.get(j).getIndex_hot().getImage_url();
 

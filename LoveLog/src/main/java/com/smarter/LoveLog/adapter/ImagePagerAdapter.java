@@ -103,8 +103,8 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
 
 
 
-        holder.imageView.setDefaultImageResId(R.mipmap.loadding);
-        holder.imageView.setErrorImageResId(R.mipmap.loadding);
+        holder.imageView.setDefaultImageResId(R.drawable.loading);
+        holder.imageView.setErrorImageResId(R.drawable.loading);
 
 
         RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();

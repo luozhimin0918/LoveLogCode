@@ -62,8 +62,8 @@ ViewGroup viewGroup;
         View view = View.inflate(viewGroup.getContext(), R.layout.item_image_invitation_published, null);
         NetworkImageView img = (NetworkImageView) view.findViewById(R.id.iv_item);
 
-        img.setDefaultImageResId(R.mipmap.loadding);
-        img.setErrorImageResId(R.mipmap.loadding);
+        img.setDefaultImageResId(R.drawable.loading);
+        img.setErrorImageResId(R.drawable.loading);
         if(mQueue.getCache().get(imglistString)==null){
             img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
         }

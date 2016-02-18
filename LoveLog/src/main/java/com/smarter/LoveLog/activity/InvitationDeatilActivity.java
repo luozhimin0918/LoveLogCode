@@ -439,8 +439,8 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
             View view = View.inflate(this, R.layout.item_image_invitation, null);
             NetworkImageView img = (NetworkImageView) view.findViewById(R.id.iv_item);
-            img.setDefaultImageResId(R.mipmap.loadding);
-            img.setErrorImageResId(R.mipmap.loadding);
+            img.setDefaultImageResId(R.drawable.loading);
+            img.setErrorImageResId(R.drawable.loading);
             if(mQueue.getCache().get(imglistString)==null){
                 img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(1000));
             }

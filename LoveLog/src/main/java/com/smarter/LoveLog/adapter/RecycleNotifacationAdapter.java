@@ -44,8 +44,8 @@ public class RecycleNotifacationAdapter extends RecyclerView.Adapter<RecycleNoti
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         // 绑定数据到ViewHolder上
         String UserimageUrl=notificationDataList.get(i).getIcon();
-        viewHolder.imageTitle.setDefaultImageResId(R.mipmap.loadding);
-        viewHolder.imageTitle.setErrorImageResId(R.mipmap.loadding);
+        viewHolder.imageTitle.setDefaultImageResId(R.drawable.loading);
+        viewHolder.imageTitle.setErrorImageResId(R.drawable.loading);
         if(mQueue.getCache().get(UserimageUrl)==null){
             viewHolder.imageTitle.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
         }
