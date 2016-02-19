@@ -178,7 +178,13 @@ public class HomeFragment extends Fragment  {
 
         if(DeviceUtil.checkConnection(mContext)){
             //加载动画
-            progressLinear.setVisibility(View.VISIBLE);
+            if(isLoadReresh==true){
+                progressLinear.setVisibility(View.GONE);
+            }else{
+                progressLinear.setVisibility(View.VISIBLE);
+            }
+
+
             AnimationDrawable     animationDrawable = (AnimationDrawable) progreView.getDrawable();
             animationDrawable.start();
 

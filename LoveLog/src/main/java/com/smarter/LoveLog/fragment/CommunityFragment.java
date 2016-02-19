@@ -141,6 +141,10 @@ public class CommunityFragment extends Fragment {
             }else{
                 progressLinear.setVisibility(View.VISIBLE);
             }
+/*
+             if(loadingTag==1){
+                progressLinear.setVisibility(View.VISIBLE);
+            }*/
 
             AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
             animationDrawable.start();
@@ -257,6 +261,8 @@ public class CommunityFragment extends Fragment {
         viewPager.startAutoScroll();
     }
 
+
+    int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
     private void initFind() {
         /**
          *
@@ -275,7 +281,10 @@ public class CommunityFragment extends Fragment {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                initNew();
+                initData();
+             /*   loadingTag=1;
+                initData();
+                loadingTag=2;*/
 //                new Handler().postDelayed(new Runnable() {
 //                    public void run() {
 //                        mRecyclerView.refreshComplete();
