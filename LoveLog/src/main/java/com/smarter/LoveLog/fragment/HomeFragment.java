@@ -116,6 +116,7 @@ public class HomeFragment extends Fragment  {
     List<SliderUrlData>  sliderUrlDataList;//轮播
     List<NavIndexUrlData> navIndexUrlDataList=new ArrayList<NavIndexUrlData>();//GridView
     List<AdIndexUrlData> ad;//广告
+    List<AdIndexUrlData> adIndexTopAdCom;//zhu  list
     Boolean  isLoadReresh=false;//是否是刷新
 
     HomeDataInfo  homeDataInfo=null;//homeFragment所有数据
@@ -220,7 +221,7 @@ public class HomeFragment extends Fragment  {
                             homeDataInfo=homeDataFrag.getData();
                             if( isLoadReresh==true){
     //                        if(communityDataFrag.getData().equals(communityDataInfo)){
-//                                refresh();
+                                refresh();
     //                            Log.d("ddd", "trur" );
     //                        }
                             }
@@ -265,19 +266,19 @@ public class HomeFragment extends Fragment  {
     private void refresh() {
         initViewPagerRefresh();
         //gridvie
-        navIndexUrlDataList=homeDataInfo.getNav();//GridView
-        adapter_GridView_classify = new Adapter_GridView(getActivity(),navIndexUrlDataList);
-        gridView_classify.setAdapter(adapter_GridView_classify);
+        navIndexUrlDataList.clear();
+        navIndexUrlDataList.addAll(homeDataInfo.getNav());
         adapter_GridView_classify.notifyDataSetChanged();//gridview刷新
+        //三个正长广告
+        initTopAd();
         //listHome
         ad= homeDataInfo.getAd();
-        List<AdIndexUrlData> adIndexTopAd=new ArrayList<AdIndexUrlData>();
+        adIndexTopAdCom.clear();
         for(int i=0;i<ad.size();i++){
             if(ad.get(i).getIndex_com()!=null){
-                adIndexTopAd.add(ad.get(i));
+                adIndexTopAdCom.add(ad.get(i));
             }
         }
-        mAdapter = new HomeAdapter(mContext,adIndexTopAd);
         mAdapter.notifyDataSetChanged();
         //刷新完成
         mRecyclerView.refreshComplete();
@@ -343,14 +344,14 @@ public class HomeFragment extends Fragment  {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-
-                new Handler().postDelayed(new Runnable() {
+                initData();
+               /* new Handler().postDelayed(new Runnable() {
                     public void run() {
-//                         initNew();
+                         initNew();
                         mRecyclerView.refreshComplete();
                         viewPager.startAutoScroll();
                     }
-                }, 1000);
+                }, 1000);*/
 
 
             }
@@ -364,7 +365,7 @@ public class HomeFragment extends Fragment  {
 
                           mRecyclerView.loadMoreComplete();
                     }
-                }, 2000);
+                }, 500);
 
             }
 
@@ -375,7 +376,7 @@ public class HomeFragment extends Fragment  {
          * 主list
          */
         ad= homeDataInfo.getAd();
-        List<AdIndexUrlData> adIndexTopAdCom=new ArrayList<AdIndexUrlData>();
+         adIndexTopAdCom=new ArrayList<AdIndexUrlData>();
         for(int i=0;i<ad.size();i++){
             if(ad.get(i).getIndex_com()!=null){
                 adIndexTopAdCom.add(ad.get(i));
@@ -416,7 +417,6 @@ public class HomeFragment extends Fragment  {
                 adIndexTopAdHot.add(ad.get(i));
             }
         }
-
 
         List<NetworkImageView> networkImageViewList=new ArrayList<NetworkImageView>();
         networkImageViewList.add(topAd1);

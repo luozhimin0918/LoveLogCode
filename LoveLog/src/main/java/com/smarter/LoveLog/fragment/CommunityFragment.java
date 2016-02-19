@@ -93,7 +93,7 @@ public class CommunityFragment extends Fragment {
 
 
 
-    private MofanAdapter mAdapter;
+    public MofanAdapter mAdapter;
     //首页轮播
     private AutoScrollViewPager viewPager;
     ViewGroup viewgroup;
@@ -121,7 +121,7 @@ public class CommunityFragment extends Fragment {
             mContext=this.getContext();
 
             ButterKnife.bind(this, view);
-            initData();
+//            initData();
             // getJSONByVolley();
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
@@ -136,7 +136,12 @@ public class CommunityFragment extends Fragment {
         if(DeviceUtil.checkConnection(mContext)){
 
             //加载动画
-            progressLinear.setVisibility(View.VISIBLE);
+            if(isLoadReresh==true){
+                progressLinear.setVisibility(View.GONE);
+            }else{
+                progressLinear.setVisibility(View.VISIBLE);
+            }
+
             AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
             animationDrawable.start();
 
@@ -175,15 +180,10 @@ public class CommunityFragment extends Fragment {
 
                     communityDataInfo=communityDataFrag.getData();
                     if( isLoadReresh==true){
-//                        promotePostsData=new ArrayList<PromotePostsData>();
-//                        promotePostsData=communityDataInfo.getPromote_posts();
-//                        mAdapter = new MofanAdapter(mContext,promotePostsData);
-//                        mAdapter.notifyDataSetChanged();
-//                        if(communityDataFrag.getData().equals(communityDataInfo)){
-//                            refresh();
 
-//                            Log.d("ddd", "trur" );
-//                        }
+                            refresh();
+
+                            Log.d("ddd", "trur" );
 
 
 
@@ -243,15 +243,14 @@ public class CommunityFragment extends Fragment {
 
     private void refresh() {
         initViewPagerRefresh();
-        //gridvie
-        navIndexUrlDataList=communityDataInfo.getNav();//GridView
-        adapter_GridView_classify = new Adapter_GridView(getActivity(),navIndexUrlDataList);
-        my_community_gridview.setAdapter(adapter_GridView_classify);
+        //GridView
+        navIndexUrlDataList.clear();
+        navIndexUrlDataList.addAll(communityDataInfo.getNav());
         adapter_GridView_classify.notifyDataSetChanged();//gridview刷新
+
         //listMofan
-        promotePostsData=communityDataInfo.getPromote_posts();
-        mAdapter = new MofanAdapter(mContext,promotePostsData);
-        mRecyclerView.setAdapter(mAdapter);
+        promotePostsData.clear();
+        promotePostsData.addAll(communityDataInfo.getPromote_posts());
         mAdapter.notifyDataSetChanged();
        //刷新完成
         mRecyclerView.refreshComplete();
@@ -276,17 +275,16 @@ public class CommunityFragment extends Fragment {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-//                    initNew();
-                        mRecyclerView.refreshComplete();
-                        viewPager.startAutoScroll();
-
-
-                    }
-
-                }, 1000);            //refresh data here
+                initNew();
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//                        mRecyclerView.refreshComplete();
+//                        viewPager.startAutoScroll();
+//
+//
+//                    }
+//
+//                }, 500);            //refresh data here
             }
 
             @Override
@@ -298,7 +296,7 @@ public class CommunityFragment extends Fragment {
 
                         mRecyclerView.loadMoreComplete();
                     }
-                }, 2000);
+                }, 500);
 
             }
         });
@@ -515,6 +513,7 @@ public class CommunityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        initData();
         if(viewPager!=null){
             viewPager.startAutoScroll();
         }

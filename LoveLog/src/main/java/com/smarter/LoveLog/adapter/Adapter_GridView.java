@@ -70,8 +70,8 @@ public class Adapter_GridView extends BaseAdapter {
 
 
 
-        holderView.iv_pic.setDefaultImageResId(R.drawable.loading);
-        holderView.iv_pic.setErrorImageResId(R.drawable.loading);
+        holderView.iv_pic.setDefaultImageResId(R.mipmap.loading_normal);
+        holderView.iv_pic.setErrorImageResId(R.mipmap.loading_normal);
 
 
         RequestQueue mQueue =  AppContextApplication.getInstance().getmRequestQueue();

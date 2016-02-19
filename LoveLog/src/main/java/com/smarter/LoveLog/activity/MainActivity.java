@@ -329,7 +329,7 @@ public class MainActivity extends BaseFragmentActivity  {
 
                        break;
                    case 1:
-                       ((CommunityFragment) fragment).initData();
+//                       ((CommunityFragment) fragment).initData();
                        break;
                    case 2:
 
