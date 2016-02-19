@@ -350,14 +350,15 @@ public class HomeFragment extends Fragment  {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                initData();
-               /* new Handler().postDelayed(new Runnable() {
+//                initData();//刷新
+
+
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
-                         initNew();
                         mRecyclerView.refreshComplete();
                         viewPager.startAutoScroll();
                     }
-                }, 1000);*/
+                }, 500);
 
 
             }

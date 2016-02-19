@@ -281,19 +281,21 @@ public class CommunityFragment extends Fragment {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                initData();
+//                initData();//刷新
+
+
              /*   loadingTag=1;
                 initData();
                 loadingTag=2;*/
-//                new Handler().postDelayed(new Runnable() {
-//                    public void run() {
-//                        mRecyclerView.refreshComplete();
-//                        viewPager.startAutoScroll();
-//
-//
-//                    }
-//
-//                }, 500);            //refresh data here
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        mRecyclerView.refreshComplete();
+                        viewPager.startAutoScroll();
+
+
+                    }
+
+                }, 500);
             }
 
             @Override
