@@ -1,11 +1,13 @@
 package com.smarter.LoveLog.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.volley.RequestQueue;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
 
@@ -14,6 +16,7 @@ import com.smarter.LoveLog.db.AppContextApplication;
  */
 public class BaseFragmentActivity extends AppCompatActivity {
     RequestQueue  mQueue;
+    SystemBarTintManager tintManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,12 +31,15 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
 
 // 修改状态栏颜色，4.4+生效
-      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus();
         }
-        SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.top_bar_bgColor);//通知栏所需颜色*/
+          tintManager = new SystemBarTintManager(this);
+//        tintManager.setStatusBarTintEnabled(true);
+//        tintManager.setStatusBarTintColor(R.color.top_bar_bgColor);
+//        tintManager.setStatusBarTintResource(R.color.top_bar_bgColor);//通知栏所需颜色
+        tintManager.setNavigationBarTintEnabled(true);
+        tintManager.setNavigationBarTintResource(R.color.top_bar_bgColor);
         this.setTheme(R.style.BrowserThemeDefault);
         mQueue =  AppContextApplication.getInstance().getmRequestQueue();
     }

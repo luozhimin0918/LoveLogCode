@@ -1,5 +1,6 @@
 package com.smarter.LoveLog.activity;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -26,6 +28,7 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import org.json.JSONException;
@@ -45,6 +48,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.RecyclePinglunAdapter;
@@ -86,6 +90,9 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     String Tag= "InvitationDeatilActivity";
     Context  mContext;
 
+
+    @Bind(R.id.frameLayout)
+    FrameLayout frameLayout;
 
     @Bind(R.id.recyclerview)
     XRecyclerView mRecyclerView;
@@ -160,9 +167,25 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         ButterKnife.bind(this);
         mContext=this;
         mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+        navigationBar();
         getDataIntent();
         intData();
         setListen();
+
+    }
+
+    private void navigationBar() {
+
+
+        boolean  isHasNavigationBar = DeviceUtil.checkDeviceHasNavigationBar(mContext);
+        if(isHasNavigationBar){
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            int hegit = DeviceUtil.getNavigationBarHeight(mContext);
+//            Log.d("inTest","+++"+hegit);
+            layoutParams.setMargins(0, 0, 0, hegit);//4个参数按顺序分别是左上右下
+
+            frameLayout.setLayoutParams(layoutParams);
+        }
 
     }
 
@@ -190,7 +213,10 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                 }
             }
         });*/
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+
+
+       /* mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             private int totalDy = 0;
 
             @Override
@@ -198,8 +224,8 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                 totalDy += dy;
                 // setTranslation/Alpha here according to totalDy.
 
-                if (imgTop != null && imgTop.getHeight() > 0) {
-                    int height = imgTop.getHeight();
+                if (imglist != null && imglist.getHeight() > 0) {
+                    int height = imglist.getHeight();
                     if (totalDy < 10) {
                         alphaBar.getBackground().setAlpha(0);
                     } else if (totalDy < height) {
@@ -213,7 +239,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                     Log.d("YJL", "" + height + ">>>>>>>>>" + totalDy);
                 }
             }
-        });
+        });*/
     }
 
     private void intData() {
