@@ -274,13 +274,13 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
         }
          @android.webkit.JavascriptInterface
         public void openImage(String img) {
-            System.out.println(img);
+           /* System.out.println(img);
             //
             Intent intent = new Intent();
             intent.putExtra("image", img);
             intent.setClass(context, ShowWebImageActivity.class);
             context.startActivity(intent);
-            System.out.println(img);
+            System.out.println(img);*/
         }
     }
 
