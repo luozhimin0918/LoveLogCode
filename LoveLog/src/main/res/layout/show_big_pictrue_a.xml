@@ -11,4 +11,28 @@
         android:layout_height="match_parent"
         android:background="#000000" />
 
+    <TextView
+        android:id="@+id/textTag"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/space_10"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:gravity="right"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/saveBut"
+            android:layout_margin="@dimen/space_20"
+            android:background="@mipmap/beautiful"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
 </RelativeLayout>

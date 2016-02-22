@@ -105,6 +105,12 @@ public class PictrueFragment extends Fragment {
     });
 
 
+    public Bitmap getBitmapDrawable() {
+        return bitmapDrawable;
+    }
 
+    public void setBitmapDrawable(Bitmap bitmapDrawable) {
+        this.bitmapDrawable = bitmapDrawable;
+    }
 }
 
