@@ -75,6 +75,7 @@ import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -426,12 +427,18 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     private void addImageClickListner() {
         // 这段js函数的功能就是，遍历所有的img几点，并添加onclick函数，在还是执行的时候调用本地接口传递url过去
         webview.loadUrl("javascript:(function(){" +
+                " var srcs = [];"+
                 "var objs = document.getElementsByTagName(\"img\"); " +
+                "for(var i=0;i<objs.length;i++){"+
+                "srcs[i] = objs[i].src; }"+
+
+
+
                 "for(var i=0;i<objs.length;i++)  " +
                 "{"
                 + "    objs[i].onclick=function()  " +
                 "    {  "
-                + "        window.imagelistner.openImage(this.src);  " +
+                + "  srcs.push(this.src);      window.imagelistner.openImage(srcs);  " +
                 "    }  " +
                 "}" +
                 "})()");
@@ -445,14 +452,20 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
             this.context = context;
         }
         @android.webkit.JavascriptInterface
-        public void openImage(String img) {
-            System.out.println(img);
+        public void openImage(String[] img) {
+
+            Intent intent = new Intent();
+            intent.putExtra("images",img);
+            intent.setClass(context, ShowAnoWebImageActivity.class);
+            context.startActivity(intent);
+
+           /* System.out.println(img);
             //
             Intent intent = new Intent();
             intent.putExtra("image", img);
             intent.setClass(context, ShowWebImageActivity.class);
             context.startActivity(intent);
-            System.out.println(img);
+            System.out.println(img);*/
         }
     }
 

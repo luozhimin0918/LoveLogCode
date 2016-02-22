@@ -182,6 +182,12 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".activity.ShowAnoWebImageActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
+
 
 
 
