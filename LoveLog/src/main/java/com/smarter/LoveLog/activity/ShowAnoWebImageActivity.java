@@ -153,20 +153,24 @@ public class ShowAnoWebImageActivity extends BaseFragmentActivity implements Vie
             pictureFileDir.mkdirs();
         }
 
-        if (pictrueFragmentList.get(position).getBitmapDrawable() != null && imgList.get(position) != null) {
-            File picFile = new File(pictureFileDir, DeviceUtil.fileName(imgList.get(position)));
+        if(pictrueFragmentList.size()>0&&imgList.size()>0){
 
 
-//                            picFile.createNewFile();
-            Boolean isSava = DeviceUtil.saveBitmap(pictrueFragmentList.get(position).getBitmapDrawable(), picFile);
+            if (pictrueFragmentList.get(position).getBitmapDrawable() != null && imgList.get(position) != null) {
+                File picFile = new File(pictureFileDir, DeviceUtil.fileName(imgList.get(position)));
 
-            if (isSava) {
-                Toast.makeText(getApplicationContext(), "已保存至"+pictureFileDir.getAbsolutePath()+"文件夹下", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "保存失败", Toast.LENGTH_SHORT).show();
+
+    //                            picFile.createNewFile();
+                Boolean isSava = DeviceUtil.saveBitmap(pictrueFragmentList.get(position).getBitmapDrawable(), picFile);
+
+                if (isSava) {
+                    Toast.makeText(getApplicationContext(), "已保存至"+pictureFileDir.getAbsolutePath()+"文件夹下", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "保存失败", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
-
-
         }
     }
 
@@ -175,6 +179,7 @@ public class ShowAnoWebImageActivity extends BaseFragmentActivity implements Vie
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
+            pictrueFragmentList.clear();
         }
 
 
