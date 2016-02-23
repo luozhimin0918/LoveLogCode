@@ -81,6 +81,7 @@ public class ShowAnoWebImageActivity extends BaseFragmentActivity implements Vie
             urlStrArr=intent.getStringArrayExtra("images");
 
            if(urlStrArr!=null&&urlStrArr.length>0){
+               imgList.clear();
                Collections.addAll(imgList, urlStrArr);
 
 

@@ -438,7 +438,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                 "{"
                 + "    objs[i].onclick=function()  " +
                 "    {  "
-                + "  srcs.push(this.src);      window.imagelistner.openImage(srcs);  " +
+                + "  srcs.push(this.src);      window.imagelistner.openImage(srcs);  srcs.pop(); " +
                 "    }  " +
                 "}" +
                 "})()");
