@@ -5,6 +5,8 @@ package com.smarter.LoveLog.activity;
  */
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
@@ -63,6 +65,8 @@ public class ShowAnoWebImageActivity extends BaseFragmentActivity implements Vie
     @Bind(R.id.saveBut)
     TextView saveBut;
 
+    Activity mContext;
+
 
 
 
@@ -71,6 +75,7 @@ public class ShowAnoWebImageActivity extends BaseFragmentActivity implements Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_big_pictrue_a);
         ButterKnife.bind(this);
+        mContext=this;
         if(getIntent()!=null){
             Intent intent=getIntent();
             urlStrArr=intent.getStringArrayExtra("images");
@@ -96,6 +101,8 @@ public class ShowAnoWebImageActivity extends BaseFragmentActivity implements Vie
 
 
     }
+
+
 
     private void initViewPager(){
 
@@ -175,8 +182,9 @@ public class ShowAnoWebImageActivity extends BaseFragmentActivity implements Vie
         @Override
         public Fragment getItem(int position) {
             String show_resId=imgList.get(position);
-            PictrueFragment p=new PictrueFragment(show_resId);
+            PictrueFragment p=new PictrueFragment(show_resId,mContext);
             pictrueFragmentList.add(p);
+
             return p;
         }
 

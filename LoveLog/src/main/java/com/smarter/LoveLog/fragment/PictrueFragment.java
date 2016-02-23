@@ -4,6 +4,8 @@ package com.smarter.LoveLog.fragment;
  * Created by Administrator on 2016/2/22.
  */
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -15,8 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.ui.scaleView.ScaleView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,10 +37,10 @@ public class PictrueFragment extends Fragment {
 
     private String urlString;
     Bitmap bitmapDrawable;
-
+    Activity mContext;
     @SuppressLint("ValidFragment")
-    public PictrueFragment(String urlString){
-
+    public PictrueFragment(String urlString,Activity mContext){
+        this.mContext=mContext;
         this.urlString=urlString;
     }
 
@@ -48,9 +52,17 @@ public class PictrueFragment extends Fragment {
         initView(view);
         return view;
     }
-    ImageView imageView;
+    ScaleView imageView;
+    LinearLayout linearBar;
     private void initView(View view){
-        imageView=(ImageView) view.findViewById(R.id.scale_pic_item);
+        imageView=(ScaleView) view.findViewById(R.id.scale_pic_item);
+        linearBar= (LinearLayout) view.findViewById(R.id.linearBar);
+        linearBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.finish();
+            }
+        });
         Runnable downloadRun = new Runnable(){
 
             @Override
