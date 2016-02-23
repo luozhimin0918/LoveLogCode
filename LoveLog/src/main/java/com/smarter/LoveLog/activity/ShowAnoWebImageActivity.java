@@ -61,7 +61,7 @@ public class ShowAnoWebImageActivity extends BaseFragmentActivity implements Vie
     TextView  textTag;
 
     @Bind(R.id.saveBut)
-    ImageView saveBut;
+    TextView saveBut;
 
 
 

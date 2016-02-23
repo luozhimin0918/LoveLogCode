@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
+    android:fitsSystemWindows="true"
     android:orientation="vertical" >
 
     <com.smarter.LoveLog.ui.HackyViewPager
@@ -25,10 +26,13 @@
         android:layout_width="fill_parent"
         android:gravity="right"
         android:layout_height="wrap_content">
-        <ImageView
+        <TextView
             android:id="@+id/saveBut"
-            android:layout_margin="@dimen/space_20"
-            android:background="@mipmap/beautiful"
+            android:text="保存"
+            android:textColor="@color/white"
+            android:textSize="@dimen/space_18"
+            android:padding="@dimen/space_10"
+            android:layout_marginRight="@dimen/space_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
