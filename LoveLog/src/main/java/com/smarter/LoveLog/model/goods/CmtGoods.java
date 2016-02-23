@@ -16,10 +16,28 @@ public class CmtGoods implements Serializable {
     private String cmt_rank;
     private String content;
     private String like_count;
+    private String digg_count;
+    private String is_digg;
     private int floor;
     private ObjectComment object;
     private String add_time;
     private User user;
+
+    public String getDigg_count() {
+        return digg_count;
+    }
+
+    public void setDigg_count(String digg_count) {
+        this.digg_count = digg_count;
+    }
+
+    public String getIs_digg() {
+        return is_digg;
+    }
+
+    public void setIs_digg(String is_digg) {
+        this.is_digg = is_digg;
+    }
 
     public ObjectComment getObject() {
         return object;

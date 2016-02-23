@@ -55,21 +55,20 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:layout_height="fill_parent">
-                    <TextView
-                        android:id="@+id/zanText"
+
+                    <com.smarter.LoveLog.ui.QCheckBox
+                        android:button="@null"
+                        android:id="@+id/zanBut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
                         android:text="0"
-                        android:layout_marginTop="@dimen/space_3"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="13sp"
-                        android:textColor="#989898"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <ImageView
-                        android:layout_marginLeft="@dimen/space_3"
-                        android:layout_gravity="center_vertical"
-                        android:background="@mipmap/icon_zan_list"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:padding="@dimen/space_8"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@drawable/zan_checkbox_button"
+                        android:textColor="#929292"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
             </LinearLayout>
 

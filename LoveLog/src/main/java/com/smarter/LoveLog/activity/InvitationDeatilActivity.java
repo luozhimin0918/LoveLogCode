@@ -341,7 +341,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
          */
         List<CmtGoods> pinglun=promotePostsData.getCmt();
         // 创建Adapter，并指定数据集
-        RecyclePinglunAdapter adapter = new RecyclePinglunAdapter(pinglun);
+        RecyclePinglunAdapter adapter = new RecyclePinglunAdapter(pinglun,mContext);
         // 设置Adapter
         mRecyclerView.setAdapter(adapter);
 

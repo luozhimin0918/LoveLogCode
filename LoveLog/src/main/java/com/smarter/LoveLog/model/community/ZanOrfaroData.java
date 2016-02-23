@@ -11,6 +11,15 @@ public class ZanOrfaroData implements Serializable {
     private String id;
     private String type;
     private String like_count;
+    private String total;
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
 
     public String getId() {
         return id;

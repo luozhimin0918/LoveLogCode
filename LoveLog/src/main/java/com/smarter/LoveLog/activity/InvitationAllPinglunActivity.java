@@ -177,7 +177,7 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 
 
        if(promotePostDateList!=null&&promotePostDateList.size()>0){
-           mAdapter = new RecyclePinglunAdapter(promotePostDateList);
+           mAdapter = new RecyclePinglunAdapter(promotePostDateList,mContext);
 
            mRecyclerView.setAdapter(mAdapter);
        }
@@ -240,6 +240,14 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 
 
 
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        String sessStr="";
+        if(isLogin){
+            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+            if(sessionString!=null&&!sessionString.equals("")){
+                sessStr=",\"session\":"+sessionString;
+            }
+        }
 
         if(loadingTag==-1){
             map = new HashMap<String, String>();
@@ -247,13 +255,13 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
             paginationJson.setCount("10");
             paginationJson.setPage((++page)+"");
             String string = JSON.toJSONString(paginationJson);
-            String  d="{\"id\":\""+id+"\",\"pagination\":"+string+" ,\"type\":\"2\"}";
+            String  d="{\"id\":\""+id+"\",\"pagination\":"+string+" ,\"type\":\"2\""+sessStr+"}";
             map.put("json", d);
             Log.d("pingluActivity", d + "》》》》");
         }
         if(loadingTag==2){//第一次加载数据
             map = new HashMap<String, String>();
-            String oneString ="{\"type\":\"2\",\"id\":\""+id+"\"}";
+            String oneString ="{\"type\":\"2\",\"id\":\""+id+"\""+sessStr+"}";
             map.put("json",oneString);
             Log.d("pingluActivity", oneString + "》》》》");
         }
