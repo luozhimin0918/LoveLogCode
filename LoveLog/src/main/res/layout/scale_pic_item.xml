@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,8 +8,18 @@
 
     <com.smarter.LoveLog.ui.scaleView.ScaleView
         android:id="@+id/scale_pic_item"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
       />
 
-</LinearLayout>
+    <com.smarter.LoveLog.ui.ZdpImageView
+        android:id="@+id/zdpImage"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/bgpic"
+        android:scaleType="matrix" />
+
+
+</FrameLayout>

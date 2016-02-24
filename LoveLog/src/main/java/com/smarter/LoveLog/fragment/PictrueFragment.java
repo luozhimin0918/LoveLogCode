@@ -4,11 +4,13 @@ package com.smarter.LoveLog.fragment;
  * Created by Administrator on 2016/2/22.
  */
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,15 +18,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.Target;
+import com.mob.tools.network.BufferedByteArrayOutputStream;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.ui.ZdpImageView;
 import com.smarter.LoveLog.ui.scaleView.ScaleView;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
 
 
 /**
@@ -36,6 +45,7 @@ import java.net.URL;
 public class PictrueFragment extends Fragment {
 
     private String urlString;
+
     Bitmap bitmapDrawable;
     Activity mContext;
     @SuppressLint("ValidFragment")
@@ -53,11 +63,14 @@ public class PictrueFragment extends Fragment {
         return view;
     }
     ScaleView imageView;
-    LinearLayout linearBar;
+    ZdpImageView zdpImageView;
+
+    FrameLayout linearBar;
     private void initView(View view){
         imageView=(ScaleView) view.findViewById(R.id.scale_pic_item);
-        linearBar= (LinearLayout) view.findViewById(R.id.linearBar);
-        linearBar.setOnClickListener(new View.OnClickListener() {
+        zdpImageView=(ZdpImageView) view.findViewById(R.id.zdpImage);
+        linearBar= (FrameLayout) view.findViewById(R.id.linearBar);
+        zdpImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mContext.finish();
@@ -70,24 +83,43 @@ public class PictrueFragment extends Fragment {
                 // TODO Auto-generated method stub
                 try {
                     if(urlString!=null&&!urlString.equals("")){
+                        if(urlString.endsWith(".gif")){
+
+
+
+                            handler.sendEmptyMessageDelayed(SHOW_VIEW_GIF, 100);
+
+                        }
+
                         bitmapDrawable =((BitmapDrawable)loadImageFromUrl(urlString)).getBitmap();
 
 
+                        if(bitmapDrawable!=null&&!urlString.endsWith(".gif")){
+
+                            handler.sendEmptyMessageDelayed(SHOW_VIEW, 100);
+
+
+                        }
+
 
                     }
 
 
 
-                    if(bitmapDrawable!=null){
-                        handler.sendEmptyMessageDelayed(SHOW_VIEW, 100);
-                    }
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         };
-        new Thread(downloadRun).start();
+
+
+
+            new Thread(downloadRun).start();
+
+
+
     }
 
 
@@ -100,15 +132,26 @@ public class PictrueFragment extends Fragment {
     }
 
 
+
+
+
     private final int SHOW_VIEW = 0;
+    private final int SHOW_VIEW_GIF = 1;
     Handler handler = new Handler(new Handler.Callback() {
 
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case SHOW_VIEW:
-                    imageView.setImageBitmap(bitmapDrawable);
+                    zdpImageView.setImageBitmap(bitmapDrawable);
                     break;
+                case SHOW_VIEW_GIF:
+                    Glide.with(mContext).load(urlString).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .placeholder(R.drawable.bgpic).into(zdpImageView);
 
+
+
+                    break;
                 default:
                     break;
             }
