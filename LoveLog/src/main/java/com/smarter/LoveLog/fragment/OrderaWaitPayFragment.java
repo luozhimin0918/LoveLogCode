@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.RecycleOrderAllAdapter;
-import com.smarter.LoveLog.adapter.RecycleRedpacketUnusedAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
@@ -33,10 +31,7 @@ import com.smarter.LoveLog.model.PaginationJson;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.orderMy.MyOrderInfo;
-import com.smarter.LoveLog.model.orderMy.OrderInfo;
 import com.smarter.LoveLog.model.orderMy.OrderList;
-import com.smarter.LoveLog.model.redpacket.RedList;
-import com.smarter.LoveLog.model.redpacket.RedPacketInfo;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 import java.lang.ref.WeakReference;
@@ -50,7 +45,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class OrderAllFragment extends Fragment implements RecycleOrderAllAdapter.OnCheckDefaultListener {
+public class OrderaWaitPayFragment extends Fragment implements RecycleOrderAllAdapter.OnCheckDefaultListener {
     protected WeakReference<View> mRootView;
     private View view;
 
@@ -64,12 +59,11 @@ public class OrderAllFragment extends Fragment implements RecycleOrderAllAdapter
     ImageView errorInfo;
     @Bind(R.id.newLoading)
     LinearLayout newLoading;
+
     @Bind(R.id.loadingTextLinear)
     LinearLayout loadingTextLinear;
     @Bind(R.id.loadingText)
     TextView loadingText;
-
-
 
 
     @Bind(R.id.progressLinear)
@@ -161,15 +155,15 @@ public class OrderAllFragment extends Fragment implements RecycleOrderAllAdapter
             paginationJson.setCount("10");
             paginationJson.setPage((++page)+"");
             String string = JSON.toJSONString(paginationJson);
-            String  d="{\"pagination\":"+string+" ,\"type\":\"all\",\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";//type all为所有的订单
+            String  d="{\"pagination\":"+string+" ,\"type\":\"await_pay\",\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";//type all为所有的订单
             map.put("json", d);
-            Log.d("OrderAllFragment", d + "》》》》");
+            Log.d("OrderaWaitPayFragment", d + "》》》》");
         }
         if(loadingTag==2){//第一次加载数据
             map = new HashMap<String, String>();
-            String oneString ="{\"type\":\"all\",\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";
+            String oneString ="{\"type\":\"await_pay\",\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";
             map.put("json",oneString);
-            Log.d("OrderAllFragment", oneString + "》》》》");
+            Log.d("OrderaWaitPayFragment", oneString + "》》》》");
         }
 
 
@@ -190,11 +184,11 @@ public class OrderAllFragment extends Fragment implements RecycleOrderAllAdapter
 
 
                         List<OrderList> p=myOrderInfo.getData();
-                        Log.d("OrderAllFragment", "" + orderListList.size() + "1111++++orderListList" );
+                        Log.d("OrderaWaitPayFragment", "" + orderListList.size() + "1111++++orderListList" );
                         for(int i=0;i<p.size();i++){
                             orderListList.add(p.get(i));
                         }
-                        Log.d("OrderAllFragment", "" + orderListList.size() + "2222++++orderListList" );
+                        Log.d("OrderaWaitPayFragment", "" + orderListList.size() + "2222++++orderListList" );
 
 
 
@@ -217,13 +211,12 @@ public class OrderAllFragment extends Fragment implements RecycleOrderAllAdapter
                             loadingTextLinear.setVisibility(View.VISIBLE);
                             loadingText.setText("您没有相关订单");
                         }
-
                         mRecyclerView.refreshComplete();
                     }
 
 
 
-//                    Log.d("OrderAllFragment", "" + status.getSucceed() + "++++succeed》》》》" + promotePostDateList.get(0).getCat_name());
+//                    Log.d("OrderaWaitPayFragment", "" + status.getSucceed() + "++++succeed》》》》" + promotePostDateList.get(0).getCat_name());
                 } else {
                     // 请求失败
                     progressLinear.setVisibility(View.GONE);
@@ -233,7 +226,7 @@ public class OrderAllFragment extends Fragment implements RecycleOrderAllAdapter
                     // 请求失败
 
                     Toast.makeText(mContext, status.getError_desc(), Toast.LENGTH_SHORT).show();
-                    Log.d("OrderAllFragment", "" + status.getSucceed() + "++++success=0》》》》" );
+                    Log.d("OrderaWaitPayFragment", "" + status.getSucceed() + "++++success=0》》》》" );
 
                 }
 
@@ -247,7 +240,7 @@ public class OrderAllFragment extends Fragment implements RecycleOrderAllAdapter
                 mRecyclerView.setVisibility(View.GONE);
                 errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
                 networkInfo.setVisibility(View.VISIBLE);
-                Log.d("OrderAllFragment", "errror" + volleyError.toString() + "++++》》》》" );
+                Log.d("OrderaWaitPayFragment", "errror" + volleyError.toString() + "++++》》》》" );
             }
         });
 
@@ -316,7 +309,7 @@ public class OrderAllFragment extends Fragment implements RecycleOrderAllAdapter
 //                new Handler().postDelayed(new Runnable() {
 //                    public void run() {
                 loadingTag = -1;
-                Log.d("OrderAllFragment", "initial    more");
+                Log.d("OrderaWaitPayFragment", "initial    more");
                 initData(sessionData);
 //                        mRecyclerView.loadMoreComplete();
 //                    }

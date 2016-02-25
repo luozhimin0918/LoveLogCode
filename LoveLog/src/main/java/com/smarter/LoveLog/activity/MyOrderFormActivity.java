@@ -14,9 +14,9 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.fragment.OrderAllFragment;
-import com.smarter.LoveLog.fragment.OrderCompletedFragment;
-import com.smarter.LoveLog.fragment.OrderObligationFragment;
-import com.smarter.LoveLog.fragment.OrderWaitTakeOverFragment;
+import com.smarter.LoveLog.fragment.OrderAwaitShipFragment;
+import com.smarter.LoveLog.fragment.OrderShippedFragment;
+import com.smarter.LoveLog.fragment.OrderaWaitPayFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,9 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
     private List<String> list_title;                                     //tab名称列表
 
     private OrderAllFragment orderAllFragment;                          //全部fragment
-    private OrderObligationFragment orderObligationFragment;            //待收款fragment
-    private OrderWaitTakeOverFragment orderWaitTakeOverFragment;        //待收货fragment
-    private OrderCompletedFragment orderCompletedFragment;              //已完成fragment
+    private OrderaWaitPayFragment orderaWaitPayFragment;            //待付款fragment
+    private OrderAwaitShipFragment orderAwaitShipFragment;        //待发货fragment
+    private OrderShippedFragment orderShippedFragment;              //待收货fragment
     Activity mActivity;
     Context mContext;
 
@@ -67,20 +67,20 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
     private void intData() {
         //fragment List
         orderAllFragment=new OrderAllFragment();
-        orderObligationFragment=new OrderObligationFragment();
-        orderWaitTakeOverFragment=new OrderWaitTakeOverFragment();
-        orderCompletedFragment=new OrderCompletedFragment();
+        orderaWaitPayFragment=new OrderaWaitPayFragment();
+        orderAwaitShipFragment=new OrderAwaitShipFragment();
+        orderShippedFragment=new OrderShippedFragment();
         list_fragment=new ArrayList<Fragment>();
         list_fragment.add(orderAllFragment);
-        list_fragment.add(orderObligationFragment);
-        list_fragment.add(orderWaitTakeOverFragment);
-        list_fragment.add(orderCompletedFragment);
+        list_fragment.add(orderaWaitPayFragment);
+        list_fragment.add(orderAwaitShipFragment);
+        list_fragment.add(orderShippedFragment);
         //tab title List
         list_title=new ArrayList<String>();
         list_title.add("全部");
-        list_title.add("待收款");
+        list_title.add("待付款");
+        list_title.add("待发货");
         list_title.add("待收货");
-        list_title.add("已完成");
 
 
         vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));

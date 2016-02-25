@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -18,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.InvitationDeatilActivity;
 import com.smarter.LoveLog.activity.LoginActivity;
+import com.smarter.LoveLog.activity.MyOrderFormActivity;
 import com.smarter.LoveLog.activity.PersonalDataActivity;
 import com.smarter.LoveLog.activity.QuaiRegitedActivity;
 import com.smarter.LoveLog.activity.SetActivity;
@@ -56,6 +58,10 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.kefuBut)
     LinearLayout kefuBut;
 
+    @Bind(R.id.orderMySelf)
+    RelativeLayout orderMySelf;
+
+
 
 
 
@@ -86,6 +92,7 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
         loginImg.setOnClickListener(this);
         setBut.setOnClickListener(this);
         kefuBut.setOnClickListener(this);
+        orderMySelf.setOnClickListener(this);
     }
 
     private void initData() {
@@ -141,6 +148,14 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
                 RongIM.getInstance().startConversation(getContext(), Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
 
 
+                break;
+            case R.id.orderMySelf:
+                //挑战到宝贝搜索界面
+                Intent intent3 = new Intent(mContext, MyOrderFormActivity.class);
+              /*  Bundle bundle = new Bundle();
+                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                intent.putExtras(bundle);*/
+                mContext.startActivity(intent3);
                 break;
 
         }

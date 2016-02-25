@@ -16,8 +16,6 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.fragment.CommentReceiveFragment;
 import com.smarter.LoveLog.fragment.CommentSendoutFragment;
-import com.smarter.LoveLog.fragment.OrderCompletedFragment;
-import com.smarter.LoveLog.fragment.OrderWaitTakeOverFragment;
 
 import java.util.ArrayList;
 import java.util.List;
