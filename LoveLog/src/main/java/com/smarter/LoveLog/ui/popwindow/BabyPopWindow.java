@@ -10,11 +10,13 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,8 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.InvitationAllPinglunActivity;
+import com.smarter.LoveLog.activity.MakeOutOrderActivity;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.Data;
@@ -218,8 +222,16 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
                 break;
             case R.id.pop_ok:
                 listener.onClickOKPop();
+                //挑战到所有评论界面//
+                //
+                Intent intent = new Intent(context, MakeOutOrderActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putBoolean("allPinglun",true);dd
+//                bundle.putSerializable("allpinglun",postsData);
+//                  intent2.putExtras(bundle);
+                context.startActivity(intent);
 
-                    HashMap<String, Object> allHashMap=new HashMap<String,Object>();
+                   /* HashMap<String, Object> allHashMap=new HashMap<String,Object>();
 
                     allHashMap.put("type",str_type);
                     allHashMap.put("num",pop_num.getText().toString());
@@ -227,7 +239,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
                     Data.arrayList_cart.add(allHashMap);
                     setSaveData();
-                    dissmiss();
+                    dissmiss();*/
 
 
                 break;

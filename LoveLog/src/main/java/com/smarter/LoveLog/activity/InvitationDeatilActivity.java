@@ -1298,7 +1298,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                         //
                         Intent intent2 = new Intent(this, InvitationAllPinglunActivity.class);
                         Bundle bundle = new Bundle();
-//                 bundle.putBoolean("allPinglun",true);dd
+//                      bundle.putBoolean("allPinglun",true);dd
                         bundle.putSerializable("allpinglun",postsData);
                         intent2.putExtras(bundle);
                         this.startActivity(intent2);
