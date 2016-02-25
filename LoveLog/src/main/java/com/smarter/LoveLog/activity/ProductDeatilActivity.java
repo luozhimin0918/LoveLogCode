@@ -20,7 +20,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,23 +37,29 @@ import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.RecyclePinglunGoodsAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.fragment.GoodsImgTextFragment;
 import com.smarter.LoveLog.fragment.GoodsPinglunFragment;
 import com.smarter.LoveLog.fragment.RedpacketHaveExpiredFragment;
 import com.smarter.LoveLog.fragment.RedpacketUnusedFragment;
 import com.smarter.LoveLog.fragment.RedpacketUsedFragment;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.community.CollectData;
+import com.smarter.LoveLog.model.community.CollectDataInfo;
 import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.goods.GoodsData;
 import com.smarter.LoveLog.model.goods.GoodsDataInfo;
 import com.smarter.LoveLog.model.goods.Pictures;
 import com.smarter.LoveLog.model.home.DataStatus;
+import com.smarter.LoveLog.model.jsonModel.ZanOrFaroviteParame;
+import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CustomViewPager;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductContentPage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyProductDetailInfoPage;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoySnapPageLayout;
+import com.smarter.LoveLog.ui.QCheckBox;
 import com.smarter.LoveLog.ui.SyLinearLayoutManager;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.ui.productViewPager.CirclePageIndicator;
@@ -66,6 +74,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.Conversation;
 
 /**
  * Created by Administrator on 2015/11/30.
@@ -87,6 +97,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
 
 
+
     @Bind(R.id.networkInfo)
     LinearLayout networkInfo;
     @Bind(R.id.errorInfo)
@@ -105,6 +116,11 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
     View  topView,bottomView;
     Context mContext;
+
+    @Bind(R.id.kefuBut)
+    QCheckBox kefuBut;
+    @Bind(R.id.collectBut)
+    QCheckBox collectBut;
     /**
      * topView
      */
@@ -122,7 +138,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     RecyclerView mRecyclerView;
     private GalleryPagerAdapter galleryAdapter;
     private List<Pictures> imageList = new ArrayList<Pictures>();
-    RelativeLayout  pingLinear;
+    RelativeLayout  pingLinear,yiSelected;
 
     /**
      * bottomView
@@ -164,6 +180,9 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         buy_now.setOnClickListener(this);
         back_but.setOnClickListener(this);
         pingLinear.setOnClickListener(this);
+        yiSelected.setOnClickListener(this);
+        kefuBut.setOnClickListener(this);
+        collectBut.setOnClickListener(this);
     }
 
 
@@ -200,6 +219,8 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
         pager= (ViewPager) topView.findViewById(R.id.pager);
         indicator= (CirclePageIndicator) topView.findViewById(R.id.indicator);
+        yiSelected=(RelativeLayout) topView.findViewById(R.id.yiSelected);
+
         price_shanchu= (TextView) topView.findViewById(R.id.price_shanchu);
         isLike=(TextView) topView.findViewById(R.id.isLike);
         isShoping=(TextView) topView.findViewById(R.id.isShoping);
@@ -225,6 +246,12 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     private void initData() {
         tv_top_title.setText(goodsData.getGoods_name());
         xuanfuBar.setVisibility(View.VISIBLE);
+
+        if(goodsData.getIs_collect().equals("1")){
+            collectBut.setChecked(true);
+        }else {
+            collectBut.setChecked(false);
+        }
 
 /**
  * topView
@@ -264,7 +291,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
  * bottomView
  */
 
-        popWindow = new BabyPopWindow(this);
+        popWindow = new BabyPopWindow(this,goodsData);
         popWindow.setOnItemClickListener(this);
 
 
@@ -360,8 +387,10 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
     @Override
     public void onClick(View v) {
+        String url = "";//
         switch (v.getId()){
-            case R.id.buy_now:
+            case   R.id.buy_now:
+            case   R.id.yiSelected:
                 BabyPopWindow.backgroundAlpha(mContext,0.2f);
                 popWindow.showAsDropDown(v);
                 break;
@@ -383,9 +412,115 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
                 intent2.putExtras(bundle);
                 this.startActivity(intent2);
                 break;
+            case R.id.kefuBut:
+                /**
+                 * 启动客服聊天界面。
+                 *
+                 * @param context          应用上下文。
+                 * @param conversationType 开启会话类型。
+                 * @param targetId         客服 Id。
+                 * @param title            客服标题。
+                 */
+                RongIM.getInstance().startConversation(mContext, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
+
+
+                break;
+            case  R.id.collectBut:
+                url = "http://mapp.aiderizhi.com/?url=/collect";//收藏
+                initIsLogonParame(url);
+                break;
 
         }
     }
+
+    private void initIsLogonParame(String url) {
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if(isLogin){
+            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+            sessionData = JSON.parseObject(sessionString,SessionData.class);
+            if(sessionData!=null){
+
+                ZanOrFaroviteParame zanOrFaroviteInfo=new ZanOrFaroviteParame();
+                zanOrFaroviteInfo.setSession(sessionData);
+                zanOrFaroviteInfo.setId(param);
+                zanOrFaroviteInfo.setType("0");
+
+
+
+
+                if(url.endsWith("collect")){
+                    networkTieCollect(JSON.toJSONString(zanOrFaroviteInfo),url);
+                }
+
+
+
+            }
+
+        }else{
+            Toast.makeText(getApplicationContext(), "未登录，请先登录", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+    /**
+     * 帖子收藏
+     */
+    CollectData collectData;
+    private void networkTieCollect(String paramNet,String url) {
+
+        Map<String, String> mapTou = new HashMap<String, String>();
+        mapTou.put("json", paramNet);
+
+
+
+
+        Log.d("ProductDeatilActivity", paramNet + "      ");
+
+
+        FastJsonRequest<CollectDataInfo> fastJsonCommunity = new FastJsonRequest<CollectDataInfo>(Request.Method.POST, url, CollectDataInfo.class, null, new Response.Listener<CollectDataInfo>() {
+            @Override
+            public void onResponse(CollectDataInfo collectDataInfo) {
+
+                DataStatus status = collectDataInfo.getStatus();
+                if (status.getSucceed() == 1) {
+                    collectData = collectDataInfo.getData();
+                    if(collectData!=null){
+                        if(collectData.getIs_collect().equals("1")){
+                            collectBut.setChecked(true);
+                        }else {
+                            collectBut.setChecked(false);
+                        }
+                        Toast.makeText(getApplicationContext(), "" + collectData.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("ProductDeatilActivity", "ProductDeatilActivity 成功返回信息：   " + JSON.toJSONString(collectData)+ "++++succeed");
+                    }
+
+
+                } else {
+
+                    // 请求失败
+                    Log.d("ProductDeatilActivity", "succeded=0  ProductDeatilActivity 返回信息 " + JSON.toJSONString(status) + "");
+                    Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("ProductDeatilActivity", "errror" + volleyError.toString() + "");
+            }
+        });
+        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        fastJsonCommunity.setParams(mapTou);
+        fastJsonCommunity.setShouldCache(true);
+        mQueue.add(fastJsonCommunity);
+    }
+
+
+
 
     @Override
     public void onClickOKPop() {
@@ -430,13 +565,39 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
 
    GoodsData goodsData;
+    SessionData sessionData;
     private void initNew() {
 
         String url = "http://mapp.aiderizhi.com/?url=/goods/detail";
         RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
         Map<String, String> mapTou = new HashMap<String, String>();
-        String  sessinStr ="{\"id\":\""+param+"\"}";
-        mapTou.put("json", sessinStr);
+
+
+
+        String  sessinStr="";
+
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if(isLogin){
+            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+            sessionData = JSON.parseObject(sessionString, SessionData.class);
+            if(sessionData!=null){
+
+                ZanOrFaroviteParame zanOrFaroviteInfo=new ZanOrFaroviteParame();
+                zanOrFaroviteInfo.setSession(sessionData);
+                zanOrFaroviteInfo.setId(param);
+                sessinStr=JSON.toJSONString(zanOrFaroviteInfo);
+                mapTou.put("json", sessinStr);
+
+            }
+
+        }else{
+               sessinStr ="{\"id\":\""+param+"\"}";
+              mapTou.put("json", sessinStr);
+        }
+
+
+
+
 
         Log.d("ProductDeatil", "" + sessinStr + "++++sessionSTR》》》》");
         FastJsonRequest<GoodsDataInfo> fastJsonCommunity = new FastJsonRequest<GoodsDataInfo>(Request.Method.POST, url, GoodsDataInfo.class, null, new Response.Listener<GoodsDataInfo>() {

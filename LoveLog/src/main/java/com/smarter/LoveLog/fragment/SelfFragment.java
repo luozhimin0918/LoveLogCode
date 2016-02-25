@@ -61,6 +61,15 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.orderMySelf)
     RelativeLayout orderMySelf;
 
+    @Bind(R.id.waitPay)
+    TextView waitPay;
+    @Bind(R.id.waitShipped)
+    TextView waitShipped;
+
+
+
+
+
 
 
 
@@ -93,6 +102,8 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
         setBut.setOnClickListener(this);
         kefuBut.setOnClickListener(this);
         orderMySelf.setOnClickListener(this);
+        waitPay.setOnClickListener(this);
+        waitShipped.setOnClickListener(this);
     }
 
     private void initData() {
@@ -152,10 +163,25 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
             case R.id.orderMySelf:
                 //挑战到宝贝搜索界面
                 Intent intent3 = new Intent(mContext, MyOrderFormActivity.class);
-              /*  Bundle bundle = new Bundle();
-                bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                intent.putExtras(bundle);*/
+               Bundle bundle = new Bundle();
+                bundle.putSerializable("order","");
+                intent3.putExtras(bundle);
                 mContext.startActivity(intent3);
+                break;
+            case  R.id.waitPay:
+                //挑战到宝贝搜索界面
+                Intent intent4 = new Intent(mContext, MyOrderFormActivity.class);
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("order","waitPay");
+                intent4.putExtras(bundle2);
+                mContext.startActivity(intent4);
+                break;
+            case R.id.waitShipped:
+                Intent intent5 = new Intent(mContext, MyOrderFormActivity.class);
+                Bundle bundle3 = new Bundle();
+                bundle3.putString("order","shipped");
+                intent5.putExtras(bundle3);
+                mContext.startActivity(intent5);
                 break;
 
         }

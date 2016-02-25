@@ -29,8 +29,17 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.adapter.ImagePagerAdapter;
+import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.Data;
+import com.smarter.LoveLog.model.goods.GoodsData;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
@@ -40,6 +49,17 @@ import com.smarter.LoveLog.db.Data;
  */
 @SuppressLint("CommitPrefEdits")
 public class BabyPopWindow implements OnDismissListener, OnClickListener {
+    @Bind(R.id.iv_adapter_grid_pic)
+    NetworkImageView iv_adapter_grid_pic;
+    @Bind(R.id.shopPrice)
+    TextView shopPrice;
+    @Bind(R.id.goodsNumber)
+    TextView goodsNumber;
+
+
+
+    RequestQueue mQueue;
+
     private TextView pop_num,pop_ok;
     private ImageView pop_del,pop_reduce,pop_add;
     private LinearLayout outside;
@@ -52,11 +72,16 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
     /**保存选择的类型的数据*/
     private String str_type="校园版";
+    GoodsData goodsData=new GoodsData();
 
-
-    public BabyPopWindow(Context context) {
+    public BabyPopWindow(Context context,GoodsData goodsData) {
         this.context=context;
+        this.goodsData=goodsData;
+        mQueue =  AppContextApplication.getInstance().getmRequestQueue();
         View view=LayoutInflater.from(context).inflate(R.layout.popwindow_activity_car_popwindow, null);
+        ButterKnife.bind(this, view);
+
+        initData();
 
         pop_add=(ImageView) view.findViewById(R.id.pop_add);
         pop_reduce=(ImageView) view.findViewById(R.id.pop_reduce);
@@ -100,7 +125,27 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
         popupWindow.setOnDismissListener(this);// 当popWindow消失时的监听
     }
 
+    private void initData() {
+        //产品图片
+        iv_adapter_grid_pic.setDefaultImageResId(R.drawable.loading_small);
+        iv_adapter_grid_pic.setErrorImageResId(R.drawable.loading_small);
+        String UserimageUrl="";
+        if(goodsData.getImg().getThumb()!=null){
+            UserimageUrl=goodsData.getImg().getThumb();
+        }
 
+        if(mQueue.getCache().get(UserimageUrl)==null){
+            iv_adapter_grid_pic.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+        }
+        iv_adapter_grid_pic.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
+
+        //产品卖价
+        shopPrice.setText(goodsData.getShop_price());
+        goodsNumber.setText("库存:"+goodsData.getGoods_number());
+
+
+
+    }
 
 
     public interface OnItemClickListener{

@@ -875,7 +875,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                             collectBut.setChecked(false);
                         }
                         Toast.makeText(getApplicationContext(), "" + collectData.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("invitationDeatil", "invitationDeatil 成功返回信息：   " + JSON.toJSONString(zanOrfaroData)+ "++++succeed");
+                        Log.d("invitationDeatil", "invitationDeatil 成功返回信息：   " + JSON.toJSONString(collectData)+ "++++succeed");
                     }
 
 

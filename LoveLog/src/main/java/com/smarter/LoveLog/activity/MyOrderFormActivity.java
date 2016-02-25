@@ -9,11 +9,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.fragment.OrderAllFragment;
+import com.smarter.LoveLog.fragment.OrderAwaitCmtFragment;
 import com.smarter.LoveLog.fragment.OrderAwaitShipFragment;
 import com.smarter.LoveLog.fragment.OrderShippedFragment;
 import com.smarter.LoveLog.fragment.OrderaWaitPayFragment;
@@ -29,10 +33,17 @@ import butterknife.ButterKnife;
  */
 public class MyOrderFormActivity extends BaseFragmentActivity implements View.OnClickListener,OnTabSelectListener {
     String Tag= "MyOrderFormActivity";
-   @Bind(R.id.tl_2)
-   SlidingTabLayout tabLayout_2;
+    @Bind(R.id.tv_top_title)
+    TextView tv_top_title;
+
+    @Bind(R.id.tl_2)
+    SlidingTabLayout tabLayout_2;
     @Bind(R.id.view_pager)
     ViewPager vp;
+    @Bind(R.id.back_but)
+    ImageView back_but;
+
+
     private List<Fragment> list_fragment;                                //定义要装fragment的列表
     private List<String> list_title;                                     //tab名称列表
 
@@ -40,6 +51,7 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
     private OrderaWaitPayFragment orderaWaitPayFragment;            //待付款fragment
     private OrderAwaitShipFragment orderAwaitShipFragment;        //待发货fragment
     private OrderShippedFragment orderShippedFragment;              //待收货fragment
+    private OrderAwaitCmtFragment orderAwaitCmtFragment;       //待评价fragment
     Activity mActivity;
     Context mContext;
 
@@ -55,41 +67,70 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
 
 
         getDataIntent();
-        intData();
+
         setListen();
 
     }
 
     private void setListen() {
-
+        back_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void intData() {
+
+
         //fragment List
         orderAllFragment=new OrderAllFragment();
         orderaWaitPayFragment=new OrderaWaitPayFragment();
         orderAwaitShipFragment=new OrderAwaitShipFragment();
         orderShippedFragment=new OrderShippedFragment();
+        orderAwaitCmtFragment=new OrderAwaitCmtFragment();
+        //tab Fragment list
         list_fragment=new ArrayList<Fragment>();
-        list_fragment.add(orderAllFragment);
-        list_fragment.add(orderaWaitPayFragment);
-        list_fragment.add(orderAwaitShipFragment);
-        list_fragment.add(orderShippedFragment);
         //tab title List
         list_title=new ArrayList<String>();
-        list_title.add("全部");
-        list_title.add("待付款");
-        list_title.add("待发货");
-        list_title.add("待收货");
+
+        if(orderTag.endsWith("waitPay")){
+            list_fragment.add(orderaWaitPayFragment);
+            list_title.add("待付款");
+            tabLayout_2.setVisibility(View.GONE);
+            tv_top_title.setText("待付款订单");
+        }
+        if(orderTag.endsWith("shipped")){
+            list_fragment.add(orderShippedFragment);
+            list_title.add("待收货");
+            tabLayout_2.setVisibility(View.GONE);
+            tv_top_title.setText("待收货订单");
+        }
+
+        if(orderTag.equals("")){
+            list_fragment.add(orderAllFragment);
+            list_fragment.add(orderaWaitPayFragment);
+            list_fragment.add(orderAwaitShipFragment);
+            list_fragment.add(orderShippedFragment);
+            list_fragment.add(orderAwaitCmtFragment);
+
+            list_title.add("全部");
+            list_title.add("待付款");
+            list_title.add("待发货");
+            list_title.add("待收货");
+            list_title.add("待评价");
+        }
+
 
 
         vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         tabLayout_2.setViewPager(vp);
         tabLayout_2.setOnTabSelectListener(this);
-        tabLayout_2.showDot(0);
         vp.setCurrentItem(0);
-        tabLayout_2.showMsg(1, 5);
-        tabLayout_2.setMsgMargin(1, 0.0f, 10.0f);
+//        tabLayout_2.showDot(0);
+//        tabLayout_2.showMsg(1, 5);
+//        tabLayout_2.setMsgMargin(1, 0.0f, 10.0f);
 
     }
 
@@ -126,12 +167,18 @@ public class MyOrderFormActivity extends BaseFragmentActivity implements View.On
 
 
 
+    String orderTag ="";
     private void getDataIntent() {
         Intent intent = getIntent();
         if(intent!=null){
-            String  str = intent.getStringExtra("ObjectData");
-           // Toast.makeText(this,str+"",Toast.LENGTH_LONG).show();
+            orderTag = intent.getStringExtra("order");
+            if(orderTag!=null){
+                intData();
+            }
+
+
         }
+
 
 
     }
