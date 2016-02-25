@@ -48,6 +48,8 @@ import butterknife.ButterKnife;
 public class RedpacketUnusedFragment extends Fragment implements RecycleOrderAllAdapter.OnCheckDefaultListener {
     protected WeakReference<View> mRootView;
     private View view;
+
+
     @Bind(R.id.recyclerview)
     XRecyclerView mRecyclerView;
 
