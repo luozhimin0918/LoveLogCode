@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:padding="@dimen/space_10"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/isImage"
+            android:layout_marginBottom="@dimen/space_20"
+            android:layout_marginRight="@dimen/space_10"
+            android:background="@mipmap/choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <!---->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+
+                    <com.android.volley.toolbox.NetworkImageView
+                        android:id="@+id/iv_adapter_grid_pic"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/loading_small" />
+
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="@dimen/space_10"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/nameInfo"
+                            android:layout_marginTop="@dimen/space_5"
+                            android:layout_width="wrap_content"
+                            android:textColor="#696969"
+                            android:textSize="16sp"
+                            android:singleLine="true"
+                            android:layout_height="wrap_content"
+                            android:text="玫瑰面膜"/>
+                        <TextView
+                            android:id="@+id/desInfo"
+                            android:layout_marginTop="@dimen/space_5"
+
+                            android:layout_width="wrap_content"
+                            android:textColor="#696969"
+                            android:textSize="16sp"
+                            android:singleLine="true"
+                            android:layout_height="wrap_content"
+                            android:text="超级超级的补水面膜"/>
+                        <TextView
+                            android:layout_marginTop="@dimen/space_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="版本：青春版"
+                            android:textColor="#5D5D5D"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/shopPrice"
+                            android:layout_marginTop="@dimen/space_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="￥49.00  "
+                            android:textColor="@color/top_bar_bgColor"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+            </LinearLayout>
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/space_5"
+                android:layout_marginBottom="@dimen/space_5"
+                android:gravity="center_vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:background="@drawable/yuanjiao_white_bg"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/pop_reduce"
+                        android:layout_marginLeft="@dimen/space_2"
+                        android:layout_marginRight="@dimen/space_2"
+                        android:background="@drawable/jian_price_button"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+                    <View
+                        android:background="@color/bg_Gray"
+                        android:layout_width="1px"
+                        android:layout_height="fill_parent"></View>
+                    <TextView
+                        android:id="@+id/pop_num"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:text="1" />
+                    <View
+                        android:background="@color/bg_Gray"
+                        android:layout_width="1px"
+                        android:layout_height="fill_parent"></View>
+                    <ImageView
+                        android:id="@+id/pop_add"
+                        android:layout_marginLeft="@dimen/space_2"
+                        android:layout_marginRight="@dimen/space_2"
+                        android:background="@drawable/add_price_button"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/yuanjiao_white_bg"
+                    android:layout_width="wrap_content"
+                    android:padding="@dimen/space_5"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="延保服务"
+                        android:textColor="#5D5D5D"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/connet_bgColor" android:layout_width="fill_parent" android:layout_height="1dp"></LinearLayout>
+
+
+</LinearLayout>
+

@@ -225,10 +225,9 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
                 //挑战到所有评论界面//
                 //
                 Intent intent = new Intent(context, MakeOutOrderActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putBoolean("allPinglun",true);dd
-//                bundle.putSerializable("allpinglun",postsData);
-//                  intent2.putExtras(bundle);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("goods",goodsData);
+                intent.putExtras(bundle);
                 context.startActivity(intent);
 
                    /* HashMap<String, Object> allHashMap=new HashMap<String,Object>();

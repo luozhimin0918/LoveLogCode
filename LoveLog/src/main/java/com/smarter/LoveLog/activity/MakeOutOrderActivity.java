@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -22,6 +23,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.RecyclePersonAdapter;
@@ -29,6 +31,7 @@ import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.community.User;
+import com.smarter.LoveLog.model.goods.GoodsData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.jsonModel.PersonParamInfo;
 import com.smarter.LoveLog.model.loginData.PersonalDataInfo;
@@ -48,23 +51,14 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class MakeOutOrderActivity extends BaseFragmentActivity implements View.OnClickListener,RecyclePersonAdapter.OnItemClickListener{
-    String Tag= "MakeOutOrderActivity";
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @Bind(R.id.imageTitle)
-    CircleNetworkImage imageTitle;
-
-    @Bind(R.id.touImeBut)
-    RelativeLayout touImeBut;
-
+public class MakeOutOrderActivity extends BaseFragmentActivity implements View.OnClickListener{
+    String Tag = "MakeOutOrderActivity";
+    @Bind(R.id.iv_adapter_grid_pic)
+    NetworkImageView iv_adapter_grid_pic;
+    @Bind(R.id.goodDes)
+    TextView goodDes;
     @Bind(R.id.backBUt)
     ImageView backBUt;
-
-
-
-
-
 
 
 
@@ -73,9 +67,8 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_data_view);
+        setContentView(R.layout.activity_make_out_order_data_view);
         ButterKnife.bind(this);
-
 
 
         getDataIntent();
@@ -87,263 +80,85 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
     @Override
     protected void onResume() {
         super.onResume();
-        intData();
     }
 
     private void setListen() {
-        touImeBut.setOnClickListener(this);
         backBUt.setOnClickListener(this);
     }
+
     SessionData sessionData;
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void intData() {
 
-        Boolean isLogin =SharedPreferences.getInstance().getBoolean("islogin", false);
-        if(isLogin){
-            String  sessionString=SharedPreferences.getInstance().getString("session", "");
-           sessionData = JSON.parseObject(sessionString,SessionData.class);
-            if(sessionData!=null){
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if (isLogin) {
+            String sessionString = SharedPreferences.getInstance().getString("session", "");
+            sessionData = JSON.parseObject(sessionString, SessionData.class);
+            if (sessionData != null) {
 
-                    networkPersonl(sessionData.getUid(),sessionData.getSid());
+//                networkPersonl(sessionData.getUid(), sessionData.getSid());
 
-                Log.d("MakeOutOrderActivity","  Session  "+ sessionData.getUid() + "      "+sessionData.getSid());
+                Log.d("MakeOutOrderActivity", "  Session  " + sessionData.getUid() + "      " + sessionData.getSid());
             }
 
-        }else{
-            initRecycleViewVertical();
-            Toast.makeText(getApplicationContext(), "未登录，请先登录" , Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "未登录，请先登录", Toast.LENGTH_SHORT).show();
         }
 
 
     }
-
+    GoodsData goodsData;
     private void getDataIntent() {
         Intent intent = getIntent();
-        if(intent!=null){
-            String  str = intent.getStringExtra("ObjectData");
-           // Toast.makeText(this,str+"",Toast.LENGTH_LONG).show();
+        if (intent != null) {
+             goodsData = (GoodsData) intent.getSerializableExtra("goods");
+            // Toast.makeText(this,str+"",Toast.LENGTH_LONG).show();
+            if(goodsData!=null){
+                initRecycleViewVertical();
+            }
         }
 
 
     }
 
-    public void initRecycleViewVertical(){
+    public void initRecycleViewVertical() {
 
-        //头像
-        imageTitle.setDefaultImageResId(R.mipmap.login);
-        imageTitle.setErrorImageResId(R.mipmap.login);
+        //产品图片
+        iv_adapter_grid_pic.setDefaultImageResId(R.drawable.loading_small);
+        iv_adapter_grid_pic.setErrorImageResId(R.drawable.loading_small);
         String UserimageUrl="";
-        if(user!=null&&user.getAvatar()!=null){
-             UserimageUrl=user.getAvatar();
+        if(goodsData.getImg().getThumb()!=null){
+            UserimageUrl=goodsData.getImg().getThumb();
         }
 
         if(mQueue.getCache().get(UserimageUrl)==null){
-            imageTitle.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
+            iv_adapter_grid_pic.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
         }
-        imageTitle.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
+        iv_adapter_grid_pic.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
 
 
 
 
-        // 创建一个线性布局管理器
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        // 默认是Vertical，可以不写
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        // 设置布局管理器
-        recyclerView.setLayoutManager(layoutManager);
-
-        // 创建数据集
-        String[] dataset = new String[]{"用户名/昵称","绑定手机号","性别","会员等级","修改密码","收货地址"};
-//        String[] dataValue=new String[]{"美羊羊","15083806689","男","V0初级会员","",""};
-        String[] dataValue=new String[]{"","","","","",""};
-        if(user!=null){
-            dataValue[0]=user.getName();
-            dataValue[1]=user.getMobile();
-
-            dataValue[2]=user.getSex();
-
-            dataValue[3]=user.getRank_level()+"";
-        }
-
-        // 创建Adapter，并指定数据集
-        RecyclePersonAdapter adapter = new RecyclePersonAdapter(dataset,dataValue);
-        // 设置Adapter
-        recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(this);
+        goodDes.setText(goodsData.getGoods_name());
     }
 
 
-
-
-
-
-
-    private final int PIC_FROM_CAMERA = 1;
-    private final int PIC_FROM＿LOCALPHOTO = 0;
-    private Uri photoUri;
     @Override
     public void onClick(View v) {
-         switch (v.getId()){
-             case  R.id.touImeBut:
-                 new ActionSheetDialog(MakeOutOrderActivity.this)
-                         .builder()
-                         .setCancelable(true)
-                         .setTitle("选项")
-                         .setCanceledOnTouchOutside(false)
-                         .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
-                                 new ActionSheetDialog.OnSheetItemClickListener() {
-                                     @Override
-                                     public void onClick(int which) {
-                                         doHandlerPhoto(PIC_FROM_CAMERA);// 用户点击了从照相机获取
-                                     }
-                                 })
-                         .addSheetItem("从相册中选取", ActionSheetDialog.SheetItemColor.Blue,
-                                 new ActionSheetDialog.OnSheetItemClickListener() {
-                                     @Override
-                                     public void onClick(int which) {
-                                         doHandlerPhoto(PIC_FROM＿LOCALPHOTO);
-                                     }
-                                 })
-                         .show();
+        switch (v.getId()) {
 
-                 break;
              case  R.id.backBUt:
                  finish();
                  break;
-         }
-    }
 
-
-
-
-
-
-
-
-
-    private void doHandlerPhoto(int type) {
-        try {
-            // 保存裁剪后的图片文件
-            File pictureFileDir = new File(
-                    Environment.getExternalStorageDirectory(), "/LoveLogupload");
-            if (!pictureFileDir.exists()) {
-                pictureFileDir.mkdirs();
-            }
-            File picFile = new File(pictureFileDir, "love.jpeg");
-            if (!picFile.exists()) {
-                picFile.createNewFile();
-            }
-            photoUri = Uri.fromFile(picFile);
-
-            if (type == PIC_FROM＿LOCALPHOTO) {
-                Intent intent = getCropImageIntent();
-                startActivityForResult(intent, PIC_FROM＿LOCALPHOTO);
-            } else {
-                Intent cameraIntent = new Intent(
-                        MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(cameraIntent, PIC_FROM_CAMERA);
-            }
-
-        } catch (Exception e) {
-            Log.i("HandlerPicError", "处理图片出现错误");
         }
     }
 
-    /**
-     * 调用图片剪辑程序
-     */
-    public Intent getCropImageIntent() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
-        intent.setType("image/*");
-        setIntentParams(intent);
-        return intent;
-    }
-
-    /**
-     * 设置公用参数
-     */
-    private void setIntentParams(Intent intent)
-    {
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 600);
-        intent.putExtra("outputY", 600);
-        intent.putExtra("noFaceDetection", true); // no face detection
-        intent.putExtra("scale", true);
-        intent.putExtra("return-data", false);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-    }
-    /**
-     * 启动裁剪
-     */
-    private void cropImageUriByTakePhoto() {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(photoUri, "image/*");
-        setIntentParams(intent);
-        startActivityForResult(intent, PIC_FROM＿LOCALPHOTO);
-    }
-
-
-    private Bitmap decodeUriAsBitmap(Uri uri)
-    {
-        Bitmap bitmap = null;
-        try
-        {
-            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-        } catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-        return bitmap;
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode)
-        {
-            case PIC_FROM_CAMERA: // 拍照
-                try
-                {
-                    cropImageUriByTakePhoto();
-                } catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-                break;
-            case PIC_FROM＿LOCALPHOTO:
-                try
-                {
-                    if (photoUri != null)
-                    {
-                        Bitmap bitmap = decodeUriAsBitmap(photoUri);
-                        String imgStr =TestUtil.bitmaptoBase64String(bitmap,80);
-                                if(sessionData!=null){
-                                    PersonParamInfo  paramInfo=new PersonParamInfo();
-                                    paramInfo.setSession(sessionData);
-                                    paramInfo.setAvatar(imgStr);
-                                    paramInfo.setAction("avatar");
-                                    String  param= JSON.toJSONString(paramInfo);
-                                    networkUpTouMig(param);
-                                }else{
-                                    Log.d("MakeOutOrderActivity", null + "    nullSession  ");
-                                }
-
-//                        imageTitle.setImageBitmap(bitmap);
-                    }
-                } catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-                break;
-        }
-    }
 
     /**
      * 获取个人资料
-     */
+     *//*
     User  user;
     private void networkPersonl(String uid,String sid) {
         String url = "http://mapp.aiderizhi.com/?url=/user/info";//
@@ -394,107 +209,7 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
         fastJsonCommunity.setShouldCache(true);
         mQueue.add(fastJsonCommunity);
     }
+*/
 
 
-    /**
-     * 上传头像
-     */
-    User  userTou;
-    private void networkUpTouMig(String paramNet) {
-        String url = "http://mapp.aiderizhi.com/?url=/user/modify";//
-        Map<String, String> mapTou = new HashMap<String, String>();
-        mapTou.put("json", paramNet);
-
-
-
-
-        Log.d("MakeOutOrderActivity", paramNet + "      ");
-
-
-        FastJsonRequest<PersonalDataInfo> fastJsonCommunity = new FastJsonRequest<PersonalDataInfo>(Request.Method.POST, url, PersonalDataInfo.class, null, new Response.Listener<PersonalDataInfo>() {
-            @Override
-            public void onResponse(PersonalDataInfo personalDataInfo) {
-
-                DataStatus status = personalDataInfo.getStatus();
-                if (status.getSucceed() == 1) {
-                    userTou = personalDataInfo.getData();
-                    if(userTou!=null){
-                        intData();
-//                        SharedPreferences.getInstance().putString("user",JSON.toJSONString(user));
-//                        initRecycleViewVertical();//ok
-                        Log.d("MakeOutOrderActivity", "modift 成功返回信息：   " + JSON.toJSONString(userTou)+ "++++succeed");
-                    }
-
-
-                } else {
-
-                    // 请求失败
-                    Log.d("MakeOutOrderActivity", "succeded=0  modift 返回信息 " + JSON.toJSONString(status) + "");
-                    Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
-
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d("MakeOutOrderActivity", "errror" + volleyError.toString() + "");
-            }
-        });
-        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        //fastJsonCommunity.setTag(TAG);
-        fastJsonCommunity.setParams(mapTou);
-        fastJsonCommunity.setShouldCache(true);
-        mQueue.add(fastJsonCommunity);
-    }
-
-
-
-
-
-    //个人资料修改Item点击处理
-    @Override
-    public void onItemClickAdapter(int ischeckArray) {
-        if(ischeckArray==0){
-            //挑战到修改用户名/昵称界面//
-            //给CreateAddress传参数 表示修改用户名昵称
-            Intent intent2 = new Intent(this, CreateAddressActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("xiugaiName",true);
-            intent2.putExtras(bundle);
-            this.startActivity(intent2);
-        }
-
-        if(ischeckArray==2){
-            //挑战到修改性别界面//
-            //
-            Intent intent2 = new Intent(this, CreateAddressActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("xiugaiSex",true);
-            bundle.putString("sexValue", user.getSex());
-            intent2.putExtras(bundle);
-            this.startActivity(intent2);
-        }
-        if(ischeckArray==4){
-            //挑战到修改密码界面//
-            //
-            Intent intent2 = new Intent(this, CreateAddressActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("xiugaiPassword",true);
-            intent2.putExtras(bundle);
-            this.startActivity(intent2);
-        }
-
-
-        if(ischeckArray==5){//收货地址
-            //挑战到地址管理界面
-            Intent intent2 = new Intent(this, AddressManageActivity.class);
-              /*  Bundle bundle = new Bundle();
-                bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                intent.putExtras(bundle);*/
-            this.startActivity(intent2);
-        }
-    }
 }
