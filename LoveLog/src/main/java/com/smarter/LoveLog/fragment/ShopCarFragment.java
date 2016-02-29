@@ -1,6 +1,7 @@
 package com.smarter.LoveLog.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,12 +24,14 @@ import com.android.volley.VolleyError;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.LoginActivity;
 import com.smarter.LoveLog.adapter.RecycleOrderAllAdapter;
 import com.smarter.LoveLog.adapter.RecycleShopCarAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.PaginationJson;
+import com.smarter.LoveLog.model.address.AddressData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.orderMy.MyOrderInfo;
@@ -76,6 +79,10 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
     @Bind(R.id.carLinear)
     LinearLayout carLinear;
 
+    @Bind(R.id.xuanfuBar)
+    LinearLayout xuanfuBar;
+
+
 
     Context mContext;
     @Nullable
@@ -86,7 +93,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             mRootView = new WeakReference<View>(view);
             mContext=getContext();
             ButterKnife.bind(this, view);
-            isLogiin();
+
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
             if (parent != null) {
@@ -96,8 +103,17 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         return mRootView.get();
 
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isLogiin(false);
+    }
+
     SessionData sessionData;
-    private void isLogiin() {
+    Boolean isLoginTag=false;
+    public void isLogiin(Boolean isFistOnTab) {
 
         Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
         if(isLogin){
@@ -111,10 +127,40 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             }
 
         }else{
-            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
+
+
+            if(isFistOnTab){
+                //登录
+                Intent intent = new Intent(mContext, LoginActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                mContext.startActivity(intent);
+                isLoginTag=true;
+//            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
+            }else{
+
+                if(isLoginTag){
+                    onShopCarLonginListener.onBackShopCarOK(false);
+                    isLoginTag=false;
+                }
+            }
+
+
+
         }
     }
 
+
+    //回调开始
+    public interface OnShopCarLonginListener {
+        void onBackShopCarOK(Boolean  isBack);
+    }
+    private OnShopCarLonginListener onShopCarLonginListener;
+
+    public void setOnShopCarListener(OnShopCarLonginListener onShopCarLongin) {
+        this.onShopCarLonginListener=onShopCarLongin;
+    }
     private void newWait() {
         if(DeviceUtil.checkConnection(mContext)){
             //加载动画
@@ -124,6 +170,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
             mRecyclerView.setVisibility(View.VISIBLE);
             networkInfo.setVisibility(View.GONE);
+            carLinear.setVisibility(View.GONE);
 
             initData(sessionData);
 
@@ -327,6 +374,11 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             adapter.setOnCheckDefaultListener(this);
             mRecyclerView.setAdapter(adapter);
         }
+
+
+
+
+        xuanfuBar.setVisibility(View.VISIBLE);
 
 
 

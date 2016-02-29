@@ -45,11 +45,15 @@ import io.rong.imlib.model.Conversation;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class MainActivity extends BaseFragmentActivity  {
+public class MainActivity extends BaseFragmentActivity  implements ShopCarFragment.OnShopCarLonginListener {
    Activity mActivity;
    public static   MainActivity mainActivity;
-    Fragment  fragment_flash_main,fragment_jw,fragment_kxthq,fragment_self;
+//    Fragment  fragment_flash_main,fragment_jw,fragment_kxthq,fragment_self;
 
+    HomeFragment  homeFragment;
+    CommunityFragment communityFragment;
+    ShopCarFragment  shopCarFragment;
+    SelfFragment  selfFragment;
 
     @Bind(R.id.main_zt_color)
      LinearLayout  main_zt_color;
@@ -192,15 +196,18 @@ public class MainActivity extends BaseFragmentActivity  {
 
     MyPagerAdapter myPagerAdapter;
     private void initData() {
-        fragment_flash_main = new HomeFragment();
-        fragment_jw = new CommunityFragment();
-        fragment_kxthq = new ShopCarFragment();
-        fragment_self = new SelfFragment();
+        homeFragment = new HomeFragment();
+        communityFragment = new CommunityFragment();
+        shopCarFragment = new ShopCarFragment();
+        selfFragment = new SelfFragment();
 
-        mFragments.add(fragment_flash_main);
-        mFragments.add(fragment_jw);
-        mFragments.add(fragment_kxthq);
-        mFragments.add(fragment_self);
+        shopCarFragment.setOnShopCarListener(this);//回调函数
+
+
+        mFragments.add(homeFragment);
+        mFragments.add(communityFragment);
+        mFragments.add(shopCarFragment);
+        mFragments.add(selfFragment);
 
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
@@ -213,6 +220,11 @@ public class MainActivity extends BaseFragmentActivity  {
         intTalayoug();
     }
 
+
+
+
+    Boolean  isOnTab=false;
+    int  TempPostion=0;
     private void intTalayoug() {
 
         mTabLayout_2.setTabData(mTabEntities);
@@ -220,9 +232,19 @@ public class MainActivity extends BaseFragmentActivity  {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTabSelect(int position) {
+                isOnTab=true;
+
                 mViewPager.setCurrentItem(position);
                 mViewPagerSetCurrent(position);
                 myPagerAdapter.update(position);
+
+                isOnTab=false;
+
+
+                if(position!=2){
+                    TempPostion=position;
+                }
+
             }
 
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -242,9 +264,19 @@ public class MainActivity extends BaseFragmentActivity  {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onPageSelected(int position) {
-                mTabLayout_2.setCurrentTab(position);
-                mViewPagerSetCurrent(position);
-                myPagerAdapter.update(position);
+
+
+                if(isOnTab==false){
+                    mTabLayout_2.setCurrentTab(position);
+                    mViewPagerSetCurrent(position);
+                    myPagerAdapter.update(position);
+                }
+
+
+                if(position!=2){
+                    TempPostion=position;
+                }
+
             }
 
             @Override
@@ -273,6 +305,18 @@ public class MainActivity extends BaseFragmentActivity  {
     public  void onDoMainListener() {
         mViewPager.setCurrentItem(1);
         mViewPagerSetCurrent(1);
+    }
+
+    @Override
+    public void onBackShopCarOK(Boolean isBack) {
+
+        if(isBack==false){
+            mTabLayout_2.setCurrentTab(TempPostion);
+            mViewPager.setCurrentItem(TempPostion,false);
+            mViewPagerSetCurrent(TempPostion);
+        }
+
+
     }
 
 
@@ -332,7 +376,11 @@ public class MainActivity extends BaseFragmentActivity  {
 //                       ((CommunityFragment) fragment).initData();
                        break;
                    case 2:
-
+                       try {
+                           ((ShopCarFragment) fragment).isLogiin(true);
+                       } catch (ClassCastException e) {
+                           e.printStackTrace();
+                       }
                        break;
                    default:
                        break;
