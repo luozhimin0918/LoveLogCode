@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment  {
     private MyGridView gridView_classify;
     private Adapter_GridView adapter_GridView_classify;
         /* 分类九宫格的资源文件*/
-    private int[] pic_path_classify = { R.mipmap.icon01, R.mipmap.icon02, R.mipmap.icon03, R.mipmap.icon04, R.mipmap.icon05, R.mipmap.icon06, R.mipmap.icon07, R.mipmap.icon08 };
+//    private int[] pic_path_classify = { R.mipmap.icon01, R.mipmap.icon02, R.mipmap.icon03, R.mipmap.icon04, R.mipmap.icon05, R.mipmap.icon06, R.mipmap.icon07, R.mipmap.icon08 };
 //    private String[]  pic_title={"首单立减","会员礼包","三人团","真伪查询","红包返现","减免运费","安全保障","支付通道"};
 //    private List<String> imageRecycleList;
     NetworkImageView  topAd1,topAd2,topAd3;

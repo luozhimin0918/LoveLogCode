@@ -50,12 +50,10 @@ public class RecyclePersonAdapter extends RecyclerView.Adapter<RecyclePersonAdap
 
         public TextView titleText;
         public TextView valueGetText;
-        public ImageView imageURl;
         public ViewHolder(View itemView) {
             super(itemView);
             titleText = (TextView) itemView.findViewById(R.id.titleText);
             valueGetText=(TextView)itemView.findViewById(R.id.valueGetText);
-            imageURl= (ImageView) itemView.findViewById(R.id.imageURl);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

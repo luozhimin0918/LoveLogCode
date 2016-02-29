@@ -103,7 +103,7 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 
 
     private RecyclePinglunAdapter mAdapter;
-    private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
+//    private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
 
 
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多

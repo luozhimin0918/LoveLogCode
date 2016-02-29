@@ -36,12 +36,7 @@
                     android:layout_height="180dp"
                     android:scaleType="fitXY"
                     android:contentDescription="@string/app_name" />
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/imageTopHeader"
-                    android:background="@mipmap/invitation_top_bg"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+
                 <LinearLayout
                     android:layout_marginTop="@dimen/space_10"
                     android:layout_marginLeft="@dimen/space_14"

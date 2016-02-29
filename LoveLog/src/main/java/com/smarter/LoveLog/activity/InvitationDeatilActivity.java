@@ -260,7 +260,6 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
         View header =   LayoutInflater.from(mContext).inflate(R.layout.activity_invitation_deatil_top_view,null);
-         imageTopHeader= (ImageView) header.findViewById(R.id.imageTopHeader);
         imgTop= (NetworkImageView) header.findViewById(R.id.imgTop);
         imglist= (LinearLayout) header.findViewById(R.id.imglist);
 

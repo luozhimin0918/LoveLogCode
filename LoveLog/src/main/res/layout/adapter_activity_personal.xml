@@ -6,6 +6,8 @@
     android:background="@color/white">
     <RelativeLayout
         android:layout_weight="1"
+        android:layout_marginTop="@dimen/space_8"
+        android:layout_marginBottom="@dimen/space_8"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:layout_width="fill_parent"
@@ -26,11 +28,7 @@
             android:paddingRight="10dp"
             android:gravity="center"
             android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/imageURl"
-                android:visibility="invisible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:background="@mipmap/icon01" />
+
             <TextView
                 android:id="@+id/valueGetText"
                 android:layout_width="wrap_content"
