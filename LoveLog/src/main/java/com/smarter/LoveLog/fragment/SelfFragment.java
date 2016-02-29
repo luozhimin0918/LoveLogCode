@@ -117,10 +117,11 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Boolean islogin=   SharedPreferences.getInstance().getBoolean("islogin", false);
         switch (v.getId()){
 
             case R.id.loginImg:
-                Boolean islogin=   SharedPreferences.getInstance().getBoolean("islogin", false);
+
 
                 if( islogin){
                     //个人资料
@@ -148,40 +149,80 @@ public class SelfFragment extends Fragment implements View.OnClickListener {
                 mContext.startActivity(intent2);
                 break;
             case R.id.kefuBut:
-                /**
-                 * 启动客服聊天界面。
-                 *
-                 * @param context          应用上下文。
-                 * @param conversationType 开启会话类型。
-                 * @param targetId         客服 Id。
-                 * @param title            客服标题。
-                 */
-                RongIM.getInstance().startConversation(getContext(), Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
 
+                if( islogin){
+                    /**
+                     * 启动客服聊天界面。
+                     *
+                     * @param context          应用上下文。
+                     * @param conversationType 开启会话类型。
+                     * @param targetId         客服 Id。
+                     * @param title            客服标题。
+                     */
+                    RongIM.getInstance().startConversation(getContext(), Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
+                }else {
+                    //登录
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent);
+                }
 
                 break;
             case R.id.orderMySelf:
-                //挑战到宝贝搜索界面
-                Intent intent3 = new Intent(mContext, MyOrderFormActivity.class);
-               Bundle bundle = new Bundle();
-                bundle.putSerializable("order","");
-                intent3.putExtras(bundle);
-                mContext.startActivity(intent3);
+
+                if( islogin){
+                    //挑战到宝贝搜索界面
+                    Intent intent3 = new Intent(mContext, MyOrderFormActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("order","");
+                    intent3.putExtras(bundle);
+                    mContext.startActivity(intent3);
+                }else {
+                    //登录
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent);
+                }
+
                 break;
             case  R.id.waitPay:
-                //挑战到宝贝搜索界面
-                Intent intent4 = new Intent(mContext, MyOrderFormActivity.class);
-                Bundle bundle2 = new Bundle();
-                bundle2.putString("order","waitPay");
-                intent4.putExtras(bundle2);
-                mContext.startActivity(intent4);
+                if( islogin){
+                    //挑战到宝贝搜索界面
+                    Intent intent4 = new Intent(mContext, MyOrderFormActivity.class);
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putString("order", "waitPay");
+                    intent4.putExtras(bundle2);
+                    mContext.startActivity(intent4);
+                }else {
+                    //登录
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent);
+                }
+
                 break;
             case R.id.waitShipped:
-                Intent intent5 = new Intent(mContext, MyOrderFormActivity.class);
-                Bundle bundle3 = new Bundle();
-                bundle3.putString("order","shipped");
-                intent5.putExtras(bundle3);
-                mContext.startActivity(intent5);
+                if( islogin){
+                    Intent intent5 = new Intent(mContext, MyOrderFormActivity.class);
+                    Bundle bundle3 = new Bundle();
+                    bundle3.putString("order","shipped");
+                    intent5.putExtras(bundle3);
+                    mContext.startActivity(intent5);
+                }else {
+                    //登录
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                  /*  Bundle bundle = new Bundle();
+                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                    intent.putExtras(bundle);*/
+                    mContext.startActivity(intent);
+                }
+
                 break;
 
         }

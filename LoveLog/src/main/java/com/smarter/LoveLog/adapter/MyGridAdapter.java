@@ -16,12 +16,15 @@ import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.AddressManageActivity;
 import com.smarter.LoveLog.activity.FeedbackActivity;
 import com.smarter.LoveLog.activity.ItegralSelfActivity;
+import com.smarter.LoveLog.activity.LoginActivity;
 import com.smarter.LoveLog.activity.MessageCenterActivity;
 import com.smarter.LoveLog.activity.MyCommentActivity;
 import com.smarter.LoveLog.activity.MyInvitationActivity;
 import com.smarter.LoveLog.activity.MyNotificationActivity;
 import com.smarter.LoveLog.activity.MyRedPacketActivity;
+import com.smarter.LoveLog.activity.PersonalDataActivity;
 import com.smarter.LoveLog.activity.WalletSelfActivity;
+import com.smarter.LoveLog.db.SharedPreferences;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Conversation;
@@ -77,98 +80,121 @@ public class MyGridAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(position==0){//帖子
-                    //
-                    Intent intent2 = new Intent(mContext, MyInvitationActivity.class);
-                  /*  Bundle bundle = new Bundle();
-                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*/
-                    mContext.startActivity(intent2);
-                }
-                if(position==1){//评论
-                    //
-                    Intent intent2 = new Intent(mContext, MyCommentActivity.class);
-                  /*  Bundle bundle = new Bundle();
-                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*/
-                    mContext.startActivity(intent2);
-                }
-                if(position==img_text.length-8){
-                    //
-                    Intent intent2 = new Intent(mContext, WalletSelfActivity.class);
-                  /*  Bundle bundle = new Bundle();
-                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*/
-                    mContext.startActivity(intent2);
-                }
-                if(position==img_text.length-7){
-                    //
-                    Intent intent2 = new Intent(mContext, MyRedPacketActivity.class);
-                  /*  Bundle bundle = new Bundle();
-                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*/
-                    mContext.startActivity(intent2);
-                }
+                Boolean islogin=   SharedPreferences.getInstance().getBoolean("islogin", false);
+
+                if( islogin){
 
 
-                if(position==img_text.length-6){
-                    //
-                    Intent intent2 = new Intent(mContext, ItegralSelfActivity.class);
+
+
+                            if(position==0){//帖子
+                                //
+                                Intent intent2 = new Intent(mContext, MyInvitationActivity.class);
+                              /*  Bundle bundle = new Bundle();
+                                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                intent.putExtras(bundle);*/
+                                mContext.startActivity(intent2);
+                            }
+                            if(position==1){//评论
+                                //
+                                Intent intent2 = new Intent(mContext, MyCommentActivity.class);
+                              /*  Bundle bundle = new Bundle();
+                                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                intent.putExtras(bundle);*/
+                                mContext.startActivity(intent2);
+                            }
+                            if(position==img_text.length-8){
+                                //
+                                Intent intent2 = new Intent(mContext, WalletSelfActivity.class);
+                              /*  Bundle bundle = new Bundle();
+                                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                intent.putExtras(bundle);*/
+                                mContext.startActivity(intent2);
+                            }
+                            if(position==img_text.length-7){
+                                //
+                                Intent intent2 = new Intent(mContext, MyRedPacketActivity.class);
+                              /*  Bundle bundle = new Bundle();
+                                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                intent.putExtras(bundle);*/
+                                mContext.startActivity(intent2);
+                            }
+
+
+                            if(position==img_text.length-6){
+                                //
+                                Intent intent2 = new Intent(mContext, ItegralSelfActivity.class);
+                              /*  Bundle bundle = new Bundle();
+                                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                intent.putExtras(bundle);*/
+                                mContext.startActivity(intent2);
+                            }
+
+
+                            if(position==img_text.length-5){
+                                //
+
+                                //挑战到地址管理界面
+                                Intent intent2 = new Intent(mContext, AddressManageActivity.class);
+                              /*  Bundle bundle = new Bundle();
+                                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                intent.putExtras(bundle);*/
+                                mContext.startActivity(intent2);
+                            }
+                            if(position==img_text.length-4){
+                                //反馈
+                                Intent intent2 = new Intent(mContext, MessageCenterActivity.class);
+                              /*  Bundle bundle = new Bundle();
+                                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                intent.putExtras(bundle);*/
+                                mContext.startActivity(intent2);
+                            }
+
+                            if(position==img_text.length-3){
+                                //反馈
+                                Intent intent2 = new Intent(mContext, MyNotificationActivity.class);
+                              /*  Bundle bundle = new Bundle();
+                                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                intent.putExtras(bundle);*/
+                                mContext.startActivity(intent2);
+                            }
+                            if(position==img_text.length-2){
+                                /**
+                                 * 启动客服聊天界面。
+                                 *
+                                 * @param context          应用上下文。
+                                 * @param conversationType 开启会话类型。
+                                 * @param targetId         客服 Id。
+                                 * @param title            客服标题。
+                                 */
+                                RongIM.getInstance().startConversation(mContext, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
+
+
+                            }
+
+
+
+
+                            if(position==img_text.length-1){
+                                //反馈
+                                Intent intent2 = new Intent(mContext, FeedbackActivity.class);
+                              /*  Bundle bundle = new Bundle();
+                                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                intent.putExtras(bundle);*/
+                                mContext.startActivity(intent2);
+                            }
+
+
+
+                }else {
+                    //登录
+                    Intent intent = new Intent(mContext, LoginActivity.class);
                   /*  Bundle bundle = new Bundle();
                     bundle.putSerializable("PromotePostsData", (Serializable) pp);
                     intent.putExtras(bundle);*/
-                    mContext.startActivity(intent2);
+                    mContext.startActivity(intent);
                 }
 
-
-                if(position==img_text.length-5){
-                    //
-
-                    //挑战到地址管理界面
-                    Intent intent2 = new Intent(mContext, AddressManageActivity.class);
-                  /*  Bundle bundle = new Bundle();
-                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*/
-                    mContext.startActivity(intent2);
-                }
-                if(position==img_text.length-4){
-                    //反馈
-                    Intent intent2 = new Intent(mContext, MessageCenterActivity.class);
-                  /*  Bundle bundle = new Bundle();
-                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*/
-                    mContext.startActivity(intent2);
-                }
-
-                if(position==img_text.length-3){
-                    //反馈
-                    Intent intent2 = new Intent(mContext, MyNotificationActivity.class);
-                  /*  Bundle bundle = new Bundle();
-                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*/
-                    mContext.startActivity(intent2);
-                }
-                if(position==img_text.length-2){
-                    /**
-                     * 启动客服聊天界面。
-                     *
-                     * @param context          应用上下文。
-                     * @param conversationType 开启会话类型。
-                     * @param targetId         客服 Id。
-                     * @param title            客服标题。
-                     */
-                    RongIM.getInstance().startConversation(mContext, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
-
-
-                }
-                if(position==img_text.length-1){
-                    //反馈
-                    Intent intent2 = new Intent(mContext, FeedbackActivity.class);
-                  /*  Bundle bundle = new Bundle();
-                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*/
-                    mContext.startActivity(intent2);
-                }
 
             }
         });
