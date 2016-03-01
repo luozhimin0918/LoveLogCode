@@ -131,12 +131,13 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
             if(isFistOnTab){
-                //登录
+               /* //登录
                 Intent intent = new Intent(mContext, LoginActivity.class);
-                  /*  Bundle bundle = new Bundle();
+                  *//*  Bundle bundle = new Bundle();
                     bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*/
-                mContext.startActivity(intent);
+                    intent.putExtras(bundle);*//*
+                mContext.startActivity(intent);*/
+                ViewUtill.ShowAlertDialog(mContext);
                 isLoginTag=true;
 //            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
             }else{
@@ -172,7 +173,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             mRecyclerView.setVisibility(View.VISIBLE);
             networkInfo.setVisibility(View.GONE);
             carLinear.setVisibility(View.GONE);
-
+            xuanfuBar.setVisibility(View.GONE);
             initData(sessionData);
 
         }else{
@@ -346,7 +347,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             @Override
             public void onRefresh() {
                 loadingTag = 2;//重新加载
-                page=1;
+                page = 1;
                 initData(sessionData);
 //                new Handler().postDelayed(new Runnable() {
 //                    public void run() {
