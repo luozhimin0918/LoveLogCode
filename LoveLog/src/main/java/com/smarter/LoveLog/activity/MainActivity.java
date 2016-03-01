@@ -3,6 +3,7 @@ package com.smarter.LoveLog.activity;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -90,7 +91,8 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 
 
         //
-          initData();
+        getDataIntent();
+
 
          initRound();
 
@@ -98,6 +100,23 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 //        init();
 //        setListen();
 //        setTabSelection(0);
+    }
+
+    String MainTag ="";
+    private void getDataIntent() {
+        Intent intent = getIntent();
+        if(intent!=null){
+            MainTag = intent.getStringExtra("main");
+            if(MainTag==null){
+                MainTag="";
+            }
+            initData();
+
+
+        }
+
+
+
     }
 
     private void initRound() {
@@ -204,20 +223,28 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
         shopCarFragment.setOnShopCarListener(this);//回调函数
 
 
-        mFragments.add(homeFragment);
-        mFragments.add(communityFragment);
-        mFragments.add(shopCarFragment);
-        mFragments.add(selfFragment);
+        if(MainTag.endsWith("shopCar")){
+            mFragments.add(shopCarFragment);
+            main_zt_color.setBackgroundColor(Color.parseColor("#fc1359"));
+            mTabLayout_2.setVisibility(View.GONE);
+        }else {
+            mFragments.add(homeFragment);
+            mFragments.add(communityFragment);
+            mFragments.add(shopCarFragment);
+            mFragments.add(selfFragment);
 
-        for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+            for (int i = 0; i < mTitles.length; i++) {
+                mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+            }
+            intTalayoug();
         }
+
         myPagerAdapter=new MyPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(myPagerAdapter);
 
 
 
-        intTalayoug();
+
     }
 
 

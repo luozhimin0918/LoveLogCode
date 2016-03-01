@@ -123,6 +123,10 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     QCheckBox kefuBut;
     @Bind(R.id.collectBut)
     QCheckBox collectBut;
+
+    @Bind(R.id.pro_car)
+    ImageView pro_car;
+
     /**
      * topView
      */
@@ -180,6 +184,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     }
 
     private void setListen() {
+        pro_car.setOnClickListener(this);
         pro_share.setOnClickListener(this);
         buy_now.setOnClickListener(this);
         back_but.setOnClickListener(this);
@@ -259,6 +264,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         }else {
             collectBut.setChecked(false);
         }
+
 
 /**
  * topView
@@ -459,6 +465,14 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
             case  R.id.collectBut:
                 url = "http://mapp.aiderizhi.com/?url=/collect";//收藏
                 initIsLogonParame(url);
+                break;
+            case  R.id.pro_car:
+                //登录
+                Intent intent = new Intent(mContext, MainActivity.class);
+                Bundle bundle2 = new Bundle();
+                bundle2.putSerializable("main","shopCar");
+                intent.putExtras(bundle2);
+                mContext.startActivity(intent);
                 break;
 
         }
