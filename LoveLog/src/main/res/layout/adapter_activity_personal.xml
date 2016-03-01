@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:clickable="true"
+    android:background="@drawable/button_press_gray_white_select">
     <RelativeLayout
         android:layout_weight="1"
         android:layout_marginTop="@dimen/space_8"

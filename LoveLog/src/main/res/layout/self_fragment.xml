@@ -73,6 +73,8 @@
                 android:layout_height="wrap_content" android:orientation="vertical">
                 <RelativeLayout
                     android:id="@+id/orderMySelf"
+                    android:clickable="true"
+                    android:background="@drawable/button_press_gray_white_select"
                     android:layout_width="fill_parent" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_height="wrap_content" >
                     <LinearLayout
                         android:layout_width="wrap_content"

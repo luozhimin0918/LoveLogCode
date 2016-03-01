@@ -17,7 +17,7 @@
         <RelativeLayout
             android:id="@+id/layout_ent_gallery"
             android:layout_width="fill_parent"
-            android:layout_height="320dp"
+            android:layout_height="420dp"
             android:background="@color/white">
 
             <android.support.v4.view.ViewPager
@@ -66,10 +66,10 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:orientation="vertical"
-            android:padding="8dp"
+
             android:background="@color/white"
             android:layout_height="wrap_content">
-              <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" >
+              <RelativeLayout   android:paddingLeft="8dp" android:paddingRight="8dp"  android:paddingTop="8dp" android:paddingBottom="8dp"  android:id="@+id/toDetailPicRelative" android:background="@drawable/button_press_gray_white_select" android:layout_width="fill_parent" android:layout_height="wrap_content" >
                    <TextView
                        android:id="@+id/goodsName"
                        android:layout_width="wrap_content"
@@ -84,6 +84,7 @@
                       android:layout_height="wrap_content" android:background="@mipmap/more" />
               </RelativeLayout>
               <TextView
+                  android:paddingLeft="8dp" android:paddingRight="8dp"
                   android:id="@+id/goodsBrief"
                 android:layout_width="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -92,7 +93,7 @@
                   android:textSize="14sp"
                   android:paddingTop="2dp"
                 android:layout_height="wrap_content" android:text="植物性温泉水，唤醒肌肤年轻活力"/>
-              <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+              <LinearLayout android:layout_width="fill_parent" android:paddingLeft="8dp" android:paddingRight="8dp"  android:paddingBottom="8dp" android:layout_height="wrap_content" android:orientation="horizontal">
                   <TextView
                       android:visibility="gone"
                       android:layout_width="wrap_content"
@@ -123,6 +124,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/youhuiTimeRelative"
             android:layout_width="fill_parent"
             android:background="#FCEBE3"
             android:padding="10dp"
@@ -159,6 +161,7 @@
         android:layout_height="wrap_content">
            <RelativeLayout
                android:id="@+id/yiSelected"
+               android:background="@drawable/button_press_gray_white_select"
                android:layout_width="fill_parent" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_height="wrap_content" >
                <LinearLayout
                    android:layout_width="wrap_content"
@@ -175,7 +178,7 @@
                        android:paddingLeft="20dp"
                        android:textColor="@color/bg_Black"
                        android:textSize="15sp"
-                       android:layout_height="wrap_content" android:text="黄色   1个"/>
+                       android:layout_height="wrap_content" android:text="请选择"/>
                </LinearLayout>
 
                <ImageView
@@ -209,7 +212,7 @@
            </RelativeLayout>
            <LinearLayout android:layout_width="fill_parent" android:layout_height="1dp" android:background="@color/connet_bgColor"></LinearLayout>
 
-           <RelativeLayout android:layout_width="fill_parent" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_height="wrap_content" >
+           <RelativeLayout android:clickable="true" android:background="@drawable/button_press_gray_white_select" android:layout_width="fill_parent" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_height="wrap_content" >
                <LinearLayout
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -293,7 +296,8 @@
         android:background="@color/white"
         android:layout_height="wrap_content">
         <RelativeLayout   android:id="@+id/pingLinear"
-            android:clickable="true" android:layout_width="fill_parent" android:paddingLeft="10dp" android:layout_marginTop="10dp" android:layout_marginBottom="10dp" android:gravity="center" android:paddingRight="10dp" android:layout_height="wrap_content" >
+            android:background="@drawable/button_press_gray_white_select"
+            android:clickable="true" android:paddingTop="@dimen/space_10" android:paddingBottom="@dimen/space_10" android:layout_width="fill_parent" android:paddingLeft="10dp"  android:gravity="center" android:paddingRight="10dp" android:layout_height="wrap_content" >
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

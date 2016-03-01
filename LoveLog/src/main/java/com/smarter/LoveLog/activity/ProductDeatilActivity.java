@@ -61,9 +61,11 @@ import com.smarter.LoveLog.ui.McoySnapPageLayout.McoyScrollView;
 import com.smarter.LoveLog.ui.McoySnapPageLayout.McoySnapPageLayout;
 import com.smarter.LoveLog.ui.QCheckBox;
 import com.smarter.LoveLog.ui.SyLinearLayoutManager;
+import com.smarter.LoveLog.ui.popwindow.AlertDialog;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.ui.productViewPager.CirclePageIndicator;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -129,6 +131,8 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     TextView price_shanchu;
 
     TextView  tv_top_title;//产品标题
+
+    RelativeLayout toDetailPicRelative,youhuiTimeRelative;
     TextView isLike;//喜欢
     TextView isShoping;//购买
     TextView goodsName;//
@@ -183,6 +187,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         yiSelected.setOnClickListener(this);
         kefuBut.setOnClickListener(this);
         collectBut.setOnClickListener(this);
+        toDetailPicRelative.setOnClickListener(this);
     }
 
 
@@ -231,6 +236,8 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         goods_number=(TextView) topView.findViewById(R.id.goods_number);
 
         pingLinear= (RelativeLayout) topView.findViewById(R.id.pingLinear);
+        toDetailPicRelative= (RelativeLayout) topView.findViewById(R.id.toDetailPicRelative);
+        youhuiTimeRelative= (RelativeLayout) topView.findViewById(R.id.youhuiTimeRelative);
         /**
          * bootomVIew mcoy_product_content_page
          */
@@ -265,15 +272,29 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         isLike.setText(goodsData.getClick_count() + "人喜欢");
         isShoping.setText(goodsData.getCollect_count() + "人购买");
 
-        goodsName.setText(goodsData.getGoods_name());
-        goodsBrief.setText(goodsData.getGoods_brief());
+        goodsName.setText(goodsData.getGoods_name());//商品名称
 
-        shopPrice.setText(goodsData.getShop_price());
+
+        if(goodsData.getGoods_brief().equals("")){//商品描述
+            goodsBrief.setVisibility(View.GONE);
+        }else{
+            goodsBrief.setText(goodsData.getGoods_brief());
+        }
+
+
+        shopPrice.setText(goodsData.getShop_price());//商品价格
         price_shanchu.setText(goodsData.getMarket_price());
-
-        goods_number.setText(goodsData.getGoods_number() + "");
-
         price_shanchu.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);//价格删除线
+
+
+        if(goodsData.getPromote().getStart_date().equals("")||goodsData.getPromote().getEnd_date().equals("")){//优惠倒计时
+            youhuiTimeRelative.setVisibility(View.GONE);
+        }
+
+
+        goods_number.setText(goodsData.getGoods_number() + "");//商品库存
+
+
 
 
 
@@ -394,6 +415,9 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
                 BabyPopWindow.backgroundAlpha(mContext,0.2f);
                 popWindow.showAsDropDown(v);
                 break;
+            case R.id.toDetailPicRelative:
+                 mcoySnapPageLayout.snapToNext();
+                break;
             case R.id.pro_share:
                 showShare();
                 break;
@@ -413,15 +437,22 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
                 this.startActivity(intent2);
                 break;
             case R.id.kefuBut:
-                /**
-                 * 启动客服聊天界面。
-                 *
-                 * @param context          应用上下文。
-                 * @param conversationType 开启会话类型。
-                 * @param targetId         客服 Id。
-                 * @param title            客服标题。
-                 */
-                RongIM.getInstance().startConversation(mContext, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
+                Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+                if(isLogin) {
+                    /**
+                     * 启动客服聊天界面。
+                     *
+                     * @param context          应用上下文。
+                     * @param conversationType 开启会话类型。
+                     * @param targetId         客服 Id。
+                     * @param title            客服标题。
+                     */
+                    RongIM.getInstance().startConversation(mContext, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
+
+
+                }else{
+                    ViewUtill.ShowAlertDialog(mContext);
+                }
 
 
                 break;
@@ -457,7 +488,8 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
             }
 
         }else{
-            Toast.makeText(getApplicationContext(), "未登录，请先登录", Toast.LENGTH_SHORT).show();
+            ViewUtill.ShowAlertDialog(mContext);
+//            Toast.makeText(getApplicationContext(), "未登录，请先登录", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -500,6 +532,11 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
 
                     // 请求失败
                     Log.d("ProductDeatilActivity", "succeded=0  ProductDeatilActivity 返回信息 " + JSON.toJSONString(status) + "");
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(mContext);
+                    }
+
                     Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
 
                 }
@@ -723,9 +760,9 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ProductDeatilActivity.this, ProductDeatilActivity.class);
+                  /*  Intent intent = new Intent(ProductDeatilActivity.this, ProductDeatilActivity.class);
                     intent.putExtra("position", pos);
-                    startActivity(intent);
+                    startActivity(intent);*/
                 }
             });
 
