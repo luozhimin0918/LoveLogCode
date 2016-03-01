@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -63,8 +64,8 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
 
     RequestQueue mQueue;
-
-    private TextView pop_num,pop_ok;
+    private TextView pop_num;
+    private TextView pop_ok;
     private ImageView pop_del,pop_reduce,pop_add;
     private LinearLayout outside;
     private PopupWindow popupWindow;
@@ -198,7 +199,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pop_add:
-                if (!pop_num.getText().toString().equals("750")) {
+                if (!pop_num.getText().toString().equals(""+goodsData.getGoods_number())) {
 
                     String num_add=Integer.valueOf(pop_num.getText().toString())+ADDORREDUCE+"";
                     pop_num.setText(num_add);
