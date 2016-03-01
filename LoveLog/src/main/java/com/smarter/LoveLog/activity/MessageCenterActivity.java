@@ -33,6 +33,7 @@ import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.notifacation.notificationActi;
 import com.smarter.LoveLog.model.notifacation.notificationData;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.util.HashMap;
 import java.util.List;
@@ -331,6 +332,12 @@ public class MessageCenterActivity extends BaseFragmentActivity implements View.
                     Toast.makeText(mContext,status.getError_desc(),Toast.LENGTH_SHORT).show();
                         // 请求失败
                         Log.d("MyNotification", "" + status.getSucceed() + "++++success=0》》》》" );
+
+
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(mContext);
+                    }
 
                 }
 

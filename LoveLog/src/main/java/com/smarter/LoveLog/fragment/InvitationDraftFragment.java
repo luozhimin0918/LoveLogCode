@@ -34,6 +34,7 @@ import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -228,6 +229,12 @@ public class InvitationDraftFragment extends Fragment implements RecycleOrderAll
                     networkInfo.setVisibility(View.VISIBLE);
                     // 请求失败
                     Log.d("InvitationDraft", "" + status.getSucceed() + "++++success=0》》》》" );
+
+
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(mContext);
+                    }
 
                 }
 

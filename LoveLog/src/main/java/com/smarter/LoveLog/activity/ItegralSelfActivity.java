@@ -40,6 +40,7 @@ import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.popwindow.ActionSheetDialog;
 import com.smarter.LoveLog.utills.TestUtil;
+import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -232,6 +233,11 @@ public class ItegralSelfActivity extends BaseFragmentActivity implements View.On
                     // 请求失败
                     Log.d(Tag, "succeded=00000  " + JSON.toJSONString(status) + "");
                     Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(getApplicationContext());
+                    }
 
                 }
 

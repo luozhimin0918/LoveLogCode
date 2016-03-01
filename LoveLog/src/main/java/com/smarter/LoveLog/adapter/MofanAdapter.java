@@ -59,6 +59,8 @@ import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.QCheckBox;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.ui.popwindow.AlertDialog;
+import com.smarter.LoveLog.utills.ViewUtill;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -528,7 +530,10 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
             }
 
         }else{
-            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
+
+                ViewUtill.ShowAlertDialog(mContext);
+
+//            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -568,6 +573,12 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
                     // 请求失败
                     Log.d("MonfanAdapter", "succeded=0  MonfanAdapter 返回信息 " + JSON.toJSONString(status) + "");
                     Toast.makeText(mContext, "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(mContext);
+                    }
 
                 }
 

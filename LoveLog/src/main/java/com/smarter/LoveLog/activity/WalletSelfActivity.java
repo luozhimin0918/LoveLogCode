@@ -28,6 +28,7 @@ import com.smarter.LoveLog.model.itegralself.Itegraldata;
 import com.smarter.LoveLog.model.itegralself.WalletData;
 import com.smarter.LoveLog.model.itegralself.WalletDataInfo;
 import com.smarter.LoveLog.model.loginData.SessionData;
+import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -238,6 +239,11 @@ public class WalletSelfActivity extends BaseFragmentActivity implements View.OnC
                     // 请求失败
                     Log.d(Tag, "succeded=00000  " + JSON.toJSONString(status) + "");
                     Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(getApplicationContext());
+                    }
 
                 }
 

@@ -73,6 +73,7 @@ import com.smarter.LoveLog.ui.QCheckBox;
 import com.smarter.LoveLog.ui.popwindow.AlertDialog;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.smarter.LoveLog.utills.ViewUtill;
 
 
 import java.lang.reflect.Array;
@@ -753,7 +754,10 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
             }
 
         }else{
-            Toast.makeText(getApplicationContext(), "未登录，请先登录" , Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "未登录，请先登录" , Toast.LENGTH_SHORT).show();
+
+                ViewUtill.ShowAlertDialog(mContext);
+
         }
     }
 
@@ -822,6 +826,11 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                     Log.d("invitationDeatil", "succeded=0  invitationDeatil 返回信息 " + JSON.toJSONString(status) + "");
                     Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
 
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(mContext);
+                    }
+
                 }
 
 
@@ -884,6 +893,10 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                     Log.d("invitationDeatil", "succeded=0  invitationDeatil 返回信息 " + JSON.toJSONString(status) + "");
                     Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
 
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(mContext);
+                    }
                 }
 
 
@@ -1132,7 +1145,10 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
             }
 
         }else{
-            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
+
+                ViewUtill.ShowAlertDialog(mContext);
+
+//            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1173,6 +1189,12 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                     // 请求失败
                     Log.d("MonfanAdapter", "succeded=0  MonfanAdapter 返回信息 " + JSON.toJSONString(status) + "");
                     Toast.makeText(mContext, "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(mContext);
+                    }
 
                 }
 

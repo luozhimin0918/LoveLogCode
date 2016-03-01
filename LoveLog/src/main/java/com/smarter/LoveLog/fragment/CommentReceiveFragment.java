@@ -33,6 +33,7 @@ import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -209,6 +210,11 @@ public class CommentReceiveFragment extends Fragment implements RecycleOrderAllA
                     networkInfo.setVisibility(View.VISIBLE);
                     // 请求失败
                     Log.d("CommentReceiveFragment", "" + status.getSucceed() + "++++success=0》》》》" );
+
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(mContext);
+                    }
 
                 }
 

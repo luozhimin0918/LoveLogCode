@@ -29,6 +29,7 @@ import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.PersonalDataInfo;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.utills.TestUtil;
+import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.util.HashMap;
 import java.util.List;
@@ -202,6 +203,12 @@ public class AddressManageActivity extends BaseFragmentActivity implements View.
                     // 请求失败
                     Log.d("AddressManageActivity", "succeded=00000  " + JSON.toJSONString(status) + "");
                     Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
+
+
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(getApplicationContext());
+                    }
 
                 }
 

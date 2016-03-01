@@ -37,6 +37,7 @@ import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.orderMy.MyOrderInfo;
 import com.smarter.LoveLog.model.orderMy.OrderList;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -277,6 +278,13 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
                     Toast.makeText(mContext, status.getError_desc(), Toast.LENGTH_SHORT).show();
                     Log.d("ShopCarFragment", "" + status.getSucceed() + "++++success=0》》》》" );
+
+
+
+                    if(status.getError_code()==1000){
+                        SharedPreferences.getInstance().putBoolean("islogin",false);
+                        ViewUtill.ShowAlertDialog(mContext);
+                    }
 
                 }
 
