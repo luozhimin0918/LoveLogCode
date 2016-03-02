@@ -206,6 +206,13 @@ public class OrderAwaitShipFragment extends Fragment implements RecycleOrderAllA
                             progressLinear.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.GONE);
                             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
+
+                            //RecyclerView.computeHorizontalScrollOffset nullPointException异常处理
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+                            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            mRecyclerView.setLayoutManager(layoutManager);
+                            //end
+
                             networkInfo.setVisibility(View.VISIBLE);
                             newLoading.setVisibility(View.GONE);
                             loadingTextLinear.setVisibility(View.VISIBLE);
