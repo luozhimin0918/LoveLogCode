@@ -214,7 +214,6 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             mRecyclerView.setVisibility(View.VISIBLE);
             networkInfo.setVisibility(View.GONE);
             carLinear.setVisibility(View.GONE);
-            xuanfuBar.setVisibility(View.GONE);
             initData(sessionData);
 
         }else{
@@ -231,6 +230,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
     public  int page=1;
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
     private void initData(SessionData sessionDataOne) {
+
         String url ="http://mapp.aiderizhi.com/?url=/order/list";//
 
         Map<String, String> map = new HashMap<String, String>();
@@ -282,7 +282,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
 
-
+                       loadingTag=2;
 
                         mRecyclerView.loadMoreComplete();
                     }
@@ -291,6 +291,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
                         if(orderListList!=null&&orderListList.size()>0){
                             initData();//初始界面
+
                         }else{
                             progressLinear.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.GONE);
