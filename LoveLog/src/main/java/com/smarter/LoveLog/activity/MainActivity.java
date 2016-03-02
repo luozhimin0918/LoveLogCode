@@ -261,7 +261,7 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
             public void onTabSelect(int position) {
                 isOnTab=true;
 
-                mViewPager.setCurrentItem(position);
+                mViewPager.setCurrentItem(position,false);
                 mViewPagerSetCurrent(position);
                 myPagerAdapter.update(position);
 

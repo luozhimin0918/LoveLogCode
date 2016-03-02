@@ -36,6 +36,7 @@ import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.orderMy.MyOrderInfo;
 import com.smarter.LoveLog.model.orderMy.OrderList;
+import com.smarter.LoveLog.ui.popwindow.AlertDialog;
 import com.smarter.LoveLog.utills.DeviceUtil;
 import com.smarter.LoveLog.utills.ViewUtill;
 
@@ -95,6 +96,9 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             mContext=getContext();
             ButterKnife.bind(this, view);
 
+
+            initFivew();
+
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
             if (parent != null) {
@@ -103,6 +107,15 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         }
         return mRootView.get();
 
+    }
+
+    private void initFivew() {
+        newLoading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isLogiin(false);
+            }
+        });
     }
 
 
@@ -120,7 +133,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         if(isLogin){
             String  sessionString=SharedPreferences.getInstance().getString("session", "");
             sessionData = JSON.parseObject(sessionString, SessionData.class);
-            if(sessionData!=null){
+            if(sessionData!=null&&isFistOnTab==false){
                 newWait();
 
 
@@ -131,14 +144,36 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
             if(isFistOnTab){
-               /* //登录
-                Intent intent = new Intent(mContext, LoginActivity.class);
-                  *//*  Bundle bundle = new Bundle();
-                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                    intent.putExtras(bundle);*//*
-                mContext.startActivity(intent);*/
-                ViewUtill.ShowAlertDialog(mContext);
-                isLoginTag=true;
+
+                new AlertDialog(mContext).builder().setTitle("提示")
+                        .setMsg("您未登录，请登录")
+                        .setPositiveButton("确认", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                isLoginTag=true;
+                                //登录
+                                Intent intent = new Intent(mContext, LoginActivity.class);
+                                  /*  Bundle bundle = new Bundle();
+                                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                    intent.putExtras(bundle);*/
+                                mContext.startActivity(intent);
+
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onShopCarLonginListener.onBackShopCarOK(false);
+                    }
+                }).show();
+
+
+                mRecyclerView.setVisibility(View.GONE);
+                networkInfo.setVisibility(View.VISIBLE);
+                carLinear.setVisibility(View.GONE);
+                xuanfuBar.setVisibility(View.GONE);
+
+
 //            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
             }else{
 
@@ -146,6 +181,12 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                     onShopCarLonginListener.onBackShopCarOK(false);
                     isLoginTag=false;
                 }
+
+                mRecyclerView.setVisibility(View.GONE);
+                networkInfo.setVisibility(View.VISIBLE);
+                carLinear.setVisibility(View.GONE);
+                xuanfuBar.setVisibility(View.GONE);
+
             }
 
 
@@ -180,12 +221,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
             mRecyclerView.setVisibility(View.GONE);
             networkInfo.setVisibility(View.VISIBLE);
-            newLoading.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    newWait();
-                }
-            });
+
         }
     }
 
