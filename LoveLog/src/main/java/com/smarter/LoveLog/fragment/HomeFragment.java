@@ -498,7 +498,7 @@ public class HomeFragment extends Fragment  {
     private void  initViewPager(){
 
         sliderUrlDataList=new ArrayList<SliderUrlData>();
-        for(int i=0;i<2;i++){
+        for(int i=0;i<3;i++){
             sliderUrlDataList.add(new SliderUrlData());
         }
         imagePagerAdapter =new ImagePagerAdapter(mContext, sliderUrlDataList).setInfiniteLoop(true);
