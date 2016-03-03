@@ -50,6 +50,8 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
     private boolean       isInfiniteLoop;
     private List<SliderUrlData> sliderUrlDataList;
 
+    NetworkImageView netImage;
+
     /* public ImagePagerAdapter(Context context, List<String> imageIdList) {
         this.context = context;
         this.imageIdList = imageIdList;
@@ -87,19 +89,20 @@ public class ImagePagerAdapter extends RecyclingPagerAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup container) {
-       final ViewHolder holder;
+        ViewHolder holder = new ViewHolder();
         if (view == null) {
-            holder = new ViewHolder();
-            view = holder.imageView = new NetworkImageView(context);
+            view=View.inflate(container.getContext(), R.layout.image_pager_adapter_item, null);
+//            view = holder.imageView = new NetworkImageView(context);
+
             view.setTag(holder);
         } else {
             holder = (ViewHolder)view.getTag();
         }
 
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
-        holder.imageView.setLayoutParams(params);
-        holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-
+//        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
+//        holder.imageView.setLayoutParams(params);
+//        holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        holder.imageView= (NetworkImageView) view.findViewById(R.id.netImage);
 
 
 

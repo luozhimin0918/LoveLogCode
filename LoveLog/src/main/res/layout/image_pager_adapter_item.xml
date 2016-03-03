@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/connet_bgColor">
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/netImage"
+        android:scaleType="fitXY"
+        android:src="@drawable/loading"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent">
+
+    </com.android.volley.toolbox.NetworkImageView>
+
+</LinearLayout>
+
+
+
+   
