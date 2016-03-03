@@ -41,6 +41,7 @@ import com.smarter.LoveLog.utills.DeviceUtil;
 import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,9 +96,8 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             mRootView = new WeakReference<View>(view);
             mContext=getContext();
             ButterKnife.bind(this, view);
+            initRecycleViewVertical();
 
-
-            initFivew();
 
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
@@ -109,14 +109,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
     }
 
-    private void initFivew() {
-        newLoading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isLogiin(false);
-            }
-        });
-    }
+
 
 
     @Override
@@ -174,6 +167,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                 xuanfuBar.setVisibility(View.GONE);
 
 
+
 //            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
             }else{
 
@@ -226,7 +220,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
 
-    List<OrderList> orderListList;//
+    List<OrderList> orderListList=new ArrayList<OrderList>();//
     public  int page=1;
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
     private void initData(SessionData sessionDataOne) {
@@ -287,7 +281,10 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                         mRecyclerView.loadMoreComplete();
                     }
                     if(loadingTag==2){
-                        orderListList=myOrderInfo.getData();
+                        List<OrderList> oLists=myOrderInfo.getData();
+
+                        orderListList.clear();
+                        orderListList.addAll(oLists);
 
                         if(orderListList!=null&&orderListList.size()>0){
                             initData();//初始界面
@@ -359,9 +356,16 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
     private void initData() {
-        initRecycleViewVertical();
+        if(orderListList!=null&&orderListList.size()>0){
 
 
+            adapter.notifyDataSetChanged();
+
+        }
+
+
+
+        xuanfuBar.setVisibility(View.VISIBLE);
     }
 
 
@@ -415,16 +419,20 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
 
-        if(orderListList!=null&&orderListList.size()>0){
+        if(orderListList!=null){
             adapter = new RecycleShopCarAdapter(orderListList);
             adapter.setOnCheckDefaultListener(this);
             mRecyclerView.setAdapter(adapter);
         }
 
+        newLoading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isLogiin(false);
+            }
+        });
 
 
-
-        xuanfuBar.setVisibility(View.VISIBLE);
 
 
 

@@ -31,10 +31,12 @@ import com.smarter.LoveLog.model.PaginationJson;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.orderMy.MyOrderInfo;
+import com.smarter.LoveLog.model.orderMy.OrderInfo;
 import com.smarter.LoveLog.model.orderMy.OrderList;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,8 +83,9 @@ public class OrderAwaitShipFragment extends Fragment implements RecycleOrderAllA
             mRootView = new WeakReference<View>(view);
             mContext=getContext();
             ButterKnife.bind(this, view);
+            initRecycleViewVertical();
             isLogiin();
-//            initData();
+
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
             if (parent != null) {
@@ -138,7 +141,7 @@ public class OrderAwaitShipFragment extends Fragment implements RecycleOrderAllA
 
 
 
-    List<OrderList> orderListList;//
+    List<OrderList> orderListList=new ArrayList<OrderList>();//
     public  int page=1;
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
     private void initData(SessionData sessionDataOne) {
@@ -198,7 +201,11 @@ public class OrderAwaitShipFragment extends Fragment implements RecycleOrderAllA
                         mRecyclerView.loadMoreComplete();
                     }
                     if(loadingTag==2){
-                        orderListList=myOrderInfo.getData();
+                        List<OrderList> oLists=myOrderInfo.getData();
+
+                           orderListList.clear();
+                            orderListList.addAll(oLists);
+
 
                         if(orderListList!=null&&orderListList.size()>0){
                             initData();//初始界面
@@ -207,11 +214,6 @@ public class OrderAwaitShipFragment extends Fragment implements RecycleOrderAllA
                             mRecyclerView.setVisibility(View.GONE);
                             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
 
-                            //RecyclerView.computeHorizontalScrollOffset nullPointException异常处理
-                            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-                            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                            mRecyclerView.setLayoutManager(layoutManager);
-                            //end
 
                             networkInfo.setVisibility(View.VISIBLE);
                             newLoading.setVisibility(View.GONE);
@@ -271,7 +273,13 @@ public class OrderAwaitShipFragment extends Fragment implements RecycleOrderAllA
 
 
     private void initData() {
-        initRecycleViewVertical();
+
+        if(orderListList!=null&&orderListList.size()>0){
+
+
+            adapter.notifyDataSetChanged();
+
+        }
 
 
     }
@@ -329,10 +337,11 @@ public class OrderAwaitShipFragment extends Fragment implements RecycleOrderAllA
 
 
 
-        if(orderListList!=null&&orderListList.size()>0){
+        if(orderListList!=null){
             adapter = new RecycleOrderAllAdapter(orderListList);
             adapter.setOnCheckDefaultListener(this);
             mRecyclerView.setAdapter(adapter);
+            Log.d("OrderAwaitShipFragment", "initial    setAdapter");
         }
 
        /* // 创建一个线性布局管理器

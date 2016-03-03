@@ -36,6 +36,7 @@ import com.smarter.LoveLog.utills.DeviceUtil;
 import com.smarter.LoveLog.utills.ViewUtill;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,8 +83,8 @@ public class OrderaWaitPayFragment extends Fragment implements RecycleOrderAllAd
             mRootView = new WeakReference<View>(view);
             mContext=getContext();
             ButterKnife.bind(this, view);
+            initRecycleViewVertical();
             isLogiin();
-//            initData();
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
             if (parent != null) {
@@ -139,7 +140,7 @@ public class OrderaWaitPayFragment extends Fragment implements RecycleOrderAllAd
 
 
 
-    List<OrderList> orderListList;//
+    List<OrderList> orderListList=new ArrayList<OrderList>();//
     public  int page=1;
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
     private void initData(SessionData sessionDataOne) {
@@ -199,7 +200,10 @@ public class OrderaWaitPayFragment extends Fragment implements RecycleOrderAllAd
                         mRecyclerView.loadMoreComplete();
                     }
                     if(loadingTag==2){
-                        orderListList=myOrderInfo.getData();
+                        List<OrderList> oLists=myOrderInfo.getData();
+
+                        orderListList.clear();
+                        orderListList.addAll(oLists);
 
                         if(orderListList!=null&&orderListList.size()>0){
                             initData();//初始界面
@@ -270,7 +274,12 @@ public class OrderaWaitPayFragment extends Fragment implements RecycleOrderAllAd
 
 
     private void initData() {
-        initRecycleViewVertical();
+        if(orderListList!=null&&orderListList.size()>0){
+
+
+            adapter.notifyDataSetChanged();
+
+        }
 
 
     }
@@ -328,7 +337,7 @@ public class OrderaWaitPayFragment extends Fragment implements RecycleOrderAllAd
 
 
 
-        if(orderListList!=null&&orderListList.size()>0){
+        if(orderListList!=null){
             adapter = new RecycleOrderAllAdapter(orderListList);
             adapter.setOnCheckDefaultListener(this);
             mRecyclerView.setAdapter(adapter);

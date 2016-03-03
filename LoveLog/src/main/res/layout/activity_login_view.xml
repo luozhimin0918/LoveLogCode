@@ -5,6 +5,7 @@
               android:background="@color/top_bar_bgColor"
               android:orientation="vertical" >
     <LinearLayout
+            android:background="@color/top_bar_bgColor"
             android:layout_width="fill_parent" android:layout_height="@dimen/head_height" android:orientation="horizontal">
 
         <ImageView
