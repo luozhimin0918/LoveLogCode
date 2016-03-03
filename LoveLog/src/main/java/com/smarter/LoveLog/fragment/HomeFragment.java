@@ -107,15 +107,12 @@ public class HomeFragment extends Fragment  {
     //分类的九宫格
     private MyGridView gridView_classify;
     private Adapter_GridView adapter_GridView_classify;
-        /* 分类九宫格的资源文件*/
-//    private int[] pic_path_classify = { R.mipmap.icon01, R.mipmap.icon02, R.mipmap.icon03, R.mipmap.icon04, R.mipmap.icon05, R.mipmap.icon06, R.mipmap.icon07, R.mipmap.icon08 };
-//    private String[]  pic_title={"首单立减","会员礼包","三人团","真伪查询","红包返现","减免运费","安全保障","支付通道"};
-//    private List<String> imageRecycleList;
+
     NetworkImageView  topAd1,topAd2,topAd3;
 
     List<SliderUrlData>  sliderUrlDataList;//轮播
     List<NavIndexUrlData> navIndexUrlDataList=new ArrayList<NavIndexUrlData>();//GridView
-    List<AdIndexUrlData> ad;//广告
+    List<AdIndexUrlData> ad=new ArrayList<AdIndexUrlData>();//广告
     List<AdIndexUrlData> adIndexTopAdCom;//zhu  list
     Boolean  isLoadReresh=false;//是否是刷新
 
@@ -133,6 +130,7 @@ public class HomeFragment extends Fragment  {
             mContext=this.getContext();
 
             ButterKnife.bind(this, view);
+                initFind();//初始界面
                 initData();
                 setListen();
 
@@ -225,18 +223,12 @@ public class HomeFragment extends Fragment  {
                             progressLinear.setVisibility(View.GONE);//网络加载成功
 
                             homeDataInfo=homeDataFrag.getData();
-                            if( isLoadReresh==true){
-    //                        if(communityDataFrag.getData().equals(communityDataInfo)){
+                            if( homeDataInfo!=null){
                                 refresh();
-    //                            Log.d("ddd", "trur" );
-    //                        }
                             }
 
 
-                            if( isLoadReresh==false&&homeDataInfo!=null){
-                                Log.d("ddd", "false" );
-                                initFind();//初始界面
-                            }
+
 
                             Log.d("HomeFragmentURL", "" + status.getSucceed() + "++++succeed》》》》" + homeDataInfo.getSlider().get(0).getImage_url());
                         }else{
@@ -275,10 +267,12 @@ public class HomeFragment extends Fragment  {
         navIndexUrlDataList.clear();
         navIndexUrlDataList.addAll(homeDataInfo.getNav());
         adapter_GridView_classify.notifyDataSetChanged();//gridview刷新
+
+
+        ad= homeDataInfo.getAd();
         //三个正长广告
         initTopAd();
         //listHome
-        ad= homeDataInfo.getAd();
         adIndexTopAdCom.clear();
         for(int i=0;i<ad.size();i++){
             if(ad.get(i).getIndex_com()!=null){
@@ -289,41 +283,17 @@ public class HomeFragment extends Fragment  {
         //刷新完成
         mRecyclerView.refreshComplete();
         viewPager.startAutoScroll();
+
+        isLoadReresh=true;
     }
     private void  initViewPagerRefresh(){
-        sliderUrlDataList=homeDataInfo.getSlider();
-        imagePagerAdapter=new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true);
-        viewPager.setAdapter(imagePagerAdapter);
+      List<SliderUrlData>  sliderList=homeDataInfo.getSlider();
+        sliderUrlDataList.clear();
+        sliderUrlDataList.addAll(sliderList);
         imagePagerAdapter.notifyDataSetChanged();
 
 
-
-        viewgroup.removeAllViews();//remove圆点
-        //创建小图像集合
-        imageViews=new ImageView[sliderUrlDataList.size()];
-        RelativeLayout.LayoutParams params;
-        for(int i=0;i<imageViews.length;i++){
-
-            //圆点之间的空白
-            ImageView  kong = new ImageView(mContext);
-            params = new RelativeLayout.LayoutParams(25,0);
-
-            kong.setLayoutParams(params);
-            kong.setBackgroundColor(Color.parseColor("#000000" + ""));
-            viewgroup.addView(kong);
-
-            imageViews[i]=new ImageView(mContext);
-            if(i==0){
-                imageViews[i].setBackgroundResource(R.mipmap.play_display);
-            }else{
-                imageViews[i].setBackgroundResource(R.mipmap.play_hide);
-            }
-
-
-            viewgroup.addView(imageViews[i]);
-        }
-        viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
-
+      createViewPagerPoint();
     }
 
 
@@ -344,21 +314,22 @@ public class HomeFragment extends Fragment  {
         mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallPulse);
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
+
        View header =   LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_header,null);
 
         mRecyclerView.addHeaderView(header);
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-//                initData();//刷新
+                initData();//刷新
 
 
-                new Handler().postDelayed(new Runnable() {
+               /* new Handler().postDelayed(new Runnable() {
                     public void run() {
                         mRecyclerView.refreshComplete();
                         viewPager.startAutoScroll();
                     }
-                }, 500);
+                }, 500);*/
 
 
             }
@@ -382,15 +353,8 @@ public class HomeFragment extends Fragment  {
         /**
          * 主list
          */
-        ad= homeDataInfo.getAd();
          adIndexTopAdCom=new ArrayList<AdIndexUrlData>();
-        for(int i=0;i<ad.size();i++){
-            if(ad.get(i).getIndex_com()!=null){
-                adIndexTopAdCom.add(ad.get(i));
-            }
-        }
         mAdapter = new HomeAdapter(mContext,adIndexTopAdCom);
-
         mRecyclerView.setAdapter(mAdapter);
         /**
          * 轮播广告
@@ -412,8 +376,6 @@ public class HomeFragment extends Fragment  {
         topAd2= (NetworkImageView) header.findViewById(R.id.topAd2);
         topAd3= (NetworkImageView) header.findViewById(R.id.topAd3);
 
-        initTopAd();
-        isLoadReresh=true;//之后就是刷新了
 
     }
 
@@ -520,7 +482,6 @@ public class HomeFragment extends Fragment  {
 
 
     private void initGridView() {
-        navIndexUrlDataList=homeDataInfo.getNav();
         gridView_classify.setSelector(new ColorDrawable(Color.TRANSPARENT));
         adapter_GridView_classify = new Adapter_GridView(getActivity(), navIndexUrlDataList);
         gridView_classify.setAdapter(adapter_GridView_classify);
@@ -529,23 +490,33 @@ public class HomeFragment extends Fragment  {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
                 imagePagerAdapter.actionTo(mContext, navIndexUrlDataList.get(arg2).getAction(), navIndexUrlDataList.get(arg2).getParam());
-               /* //挑战到宝贝搜索界面
-                Intent intent = new Intent(getActivity(), ProductDeatilActivity.class);
-                startActivity(intent);*/
+
             }
         });
     }
 
     private void  initViewPager(){
 
-        sliderUrlDataList=homeDataInfo.getSlider();
-      imagePagerAdapter =new ImagePagerAdapter(mContext, sliderUrlDataList).setInfiniteLoop(true);
+        sliderUrlDataList=new ArrayList<SliderUrlData>();
+        for(int i=0;i<2;i++){
+            sliderUrlDataList.add(new SliderUrlData());
+        }
+        imagePagerAdapter =new ImagePagerAdapter(mContext, sliderUrlDataList).setInfiniteLoop(true);
         viewPager.setAdapter(imagePagerAdapter);
 
         viewPager.setInterval(2000);
         viewPager.startAutoScroll();
         viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % ListUtils.getSize(sliderUrlDataList));
 
+        createViewPagerPoint();
+
+    }
+    /**
+     * 创建小图像集合
+     */
+    private void createViewPagerPoint() {
+
+        viewgroup.removeAllViews();//remove圆点
         //创建小图像集合
         imageViews=new ImageView[sliderUrlDataList.size()];
         RelativeLayout.LayoutParams params;
@@ -570,7 +541,6 @@ public class HomeFragment extends Fragment  {
             viewgroup.addView(imageViews[i]);
         }
         viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
-
     }
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 

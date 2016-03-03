@@ -101,15 +101,13 @@ public class CommunityFragment extends Fragment {
     private MyGridView my_community_gridview;
     private Adapter_GridView adapter_GridView_classify;
 
-//    private int[] pic_path_classify = { R.mipmap.notice, R.mipmap.sup, R.mipmap.beautiful, R.mipmap.all};
-//    private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
-    private ImageView[] imageViews;//轮播圆点
+    private ImageView[] imageViews=new ImageView[]{};//轮播圆点
     ImagePagerAdapter imagePagerAdapter;//首页轮播的界面的adapter
-    List<SliderUrlData> sliderUrlDataList;  //首页轮播的界面的资源
+    List<SliderUrlData> sliderUrlDataList=new ArrayList<SliderUrlData>();  //首页轮播的界面的资源
 
-    List<NavIndexUrlData> navIndexUrlDataList;//gridVIew数据
+    List<NavIndexUrlData> navIndexUrlDataList=new ArrayList<NavIndexUrlData>();//gridVIew数据
     private CommunityDataInfo communityDataInfo=null;//本页所有数据
-    public static List<PromotePostsData>  promotePostsData;//推荐list最新话题
+    public static List<PromotePostsData>  promotePostsData=new ArrayList<PromotePostsData>();//推荐list最新话题
 
     Boolean  isLoadReresh=false;//是否是刷新
     @Nullable
@@ -121,8 +119,15 @@ public class CommunityFragment extends Fragment {
             mContext=this.getContext();
 
             ButterKnife.bind(this, view);
-//            initData();
-            // getJSONByVolley();
+
+            for(int i=0;i<2;i++){
+                SliderUrlData s=new SliderUrlData();
+
+
+                sliderUrlDataList.add(s);
+            }
+            initFind();
+
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
             if (parent != null) {
@@ -141,10 +146,6 @@ public class CommunityFragment extends Fragment {
             }else{
                 progressLinear.setVisibility(View.VISIBLE);
             }
-/*
-             if(loadingTag==1){
-                progressLinear.setVisibility(View.VISIBLE);
-            }*/
 
             AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
             animationDrawable.start();
@@ -183,21 +184,20 @@ public class CommunityFragment extends Fragment {
                     progressLinear.setVisibility(View.GONE);//消失加载进度
 
                     communityDataInfo=communityDataFrag.getData();
-                    if( isLoadReresh==true){
+
+
+                    if( communityDataInfo!=null){
 
                             refresh();
 
-                            Log.d("ddd", "trur" );
+                            Log.d("ddd", "trur");
 
 
 
                     }
 
 
-                    if( isLoadReresh==false&&communityDataInfo!=null){
-                        Log.d("ddd", "false" );
-                            initFind();//初始界面
-                    }
+
 
 
 
@@ -284,10 +284,10 @@ public class CommunityFragment extends Fragment {
 //                initData();//刷新
 
 
-             /*   loadingTag=1;
+                loadingTag=1;
                 initData();
-                loadingTag=2;*/
-                new Handler().postDelayed(new Runnable() {
+                loadingTag=2;
+              /*  new Handler().postDelayed(new Runnable() {
                     public void run() {
                         mRecyclerView.refreshComplete();
                         viewPager.startAutoScroll();
@@ -295,7 +295,7 @@ public class CommunityFragment extends Fragment {
 
                     }
 
-                }, 500);
+                }, 500);*/
             }
 
             @Override
@@ -312,7 +312,6 @@ public class CommunityFragment extends Fragment {
             }
         });
 
-        promotePostsData=communityDataInfo.getPromote_posts();
         mAdapter = new MofanAdapter(mContext,promotePostsData);
 
 
@@ -398,7 +397,6 @@ public class CommunityFragment extends Fragment {
 
     private void initGridView() {
 
-      navIndexUrlDataList=communityDataInfo.getNav();;//GridView
 
 
         my_community_gridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -421,12 +419,35 @@ public class CommunityFragment extends Fragment {
 
 
     private void  initViewPagerRefresh(){
-        sliderUrlDataList=communityDataInfo.getSlider();
+        sliderUrlDataList.clear();
+        sliderUrlDataList.addAll(communityDataInfo.getSlider());
+        imagePagerAdapter.notifyDataSetChanged();
+
+
+       createViewPagerPoint();
+
+    }
+
+
+    private void  initViewPager(){
 
         imagePagerAdapter=new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true);
         viewPager.setAdapter(imagePagerAdapter);
-        imagePagerAdapter.notifyDataSetChanged();
 
+        viewPager.setInterval(2000);
+        viewPager.startAutoScroll();
+        viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % ListUtils.getSize(sliderUrlDataList));
+
+
+        createViewPagerPoint();
+
+
+    }
+
+    /**
+     * 创建小图像集合
+     */
+    private void createViewPagerPoint() {
 
         viewgroup.removeAllViews();//remove圆点
         //创建小图像集合
@@ -453,49 +474,8 @@ public class CommunityFragment extends Fragment {
             viewgroup.addView(imageViews[i]);
         }
         viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
-
     }
 
-
-    private void  initViewPager(){
-
-        sliderUrlDataList=communityDataInfo.getSlider();
-
-        viewgroup.removeAllViews();
-        viewPager.setAdapter(null);
-        imagePagerAdapter=new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true);
-        viewPager.setAdapter(imagePagerAdapter);
-
-        viewPager.setInterval(2000);
-        viewPager.startAutoScroll();
-        viewPager.setCurrentItem(Integer.MAX_VALUE / 2 - Integer.MAX_VALUE / 2 % ListUtils.getSize(sliderUrlDataList));
-
-        //创建小图像集合
-        imageViews=new ImageView[sliderUrlDataList.size()];
-        RelativeLayout.LayoutParams params;
-        for(int i=0;i<imageViews.length;i++){
-
-            //圆点之间的空白
-            ImageView  kong = new ImageView(mContext);
-            params = new RelativeLayout.LayoutParams(25,0);
-
-            kong.setLayoutParams(params);
-            kong.setBackgroundColor(Color.parseColor("#000000" + ""));
-            viewgroup.addView(kong);
-
-            imageViews[i]=new ImageView(mContext);
-            if(i==0){
-                imageViews[i].setBackgroundResource(R.mipmap.play_display);
-            }else{
-                imageViews[i].setBackgroundResource(R.mipmap.play_hide);
-            }
-
-
-            viewgroup.addView(imageViews[i]);
-        }
-        viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
-
-    }
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
