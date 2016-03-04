@@ -309,6 +309,7 @@ public class HomeFragment extends Fragment  {
 
 
         imagePagerAdapter =new ImagePagerAdapter(mContext, sliderUrlDataList).setInfiniteLoop(true);
+        viewPager.setAdapter(imagePagerAdapter);
         imagePagerAdapter.notifyDataSetChanged();
 
 
