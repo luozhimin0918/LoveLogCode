@@ -36,6 +36,7 @@ import com.smarter.LoveLog.model.community.PromotePostsData;
 import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
+import com.smarter.LoveLog.ui.SildingFinishLayout;
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 import java.util.HashMap;
@@ -96,8 +97,11 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 
 
 
+    @Bind(R.id.sildingFinishLayout)
+    SildingFinishLayout sildingFinishLayout;
 
-
+    @Bind(R.id.allLinear)
+    LinearLayout allLinear;
 
 
 
@@ -124,6 +128,19 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
         backBUt.setOnClickListener(this);
         fasongText.setOnClickListener(this);
 
+
+
+
+        //右滑finish
+        sildingFinishLayout.setOnSildingFinishListener(new SildingFinishLayout.OnSildingFinishListener() {
+
+            @Override
+            public void onSildingFinish() {
+                InvitationAllPinglunActivity.this.finish();
+            }
+        });
+
+        sildingFinishLayout.setTouchView(mRecyclerView);
     }
 
     private void intData() {
@@ -654,9 +671,13 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
                     if (distanceX > XDISTANCE_MIN
                             && (distanceY < YDISTANCE_MIN && distanceY > -YDISTANCE_MIN)
                             && ySpeed < YSPEED_MIN) {
-                        finish();
+
+
+                     /*   finish();
                         overridePendingTransition(R.anim.in_from_left,
-                                R.anim.out_to_right);
+                                R.anim.out_to_right);*/
+
+
                     } else if (distanceX < -XDISTANCE_MIN
                             && (distanceY < YDISTANCE_MIN && distanceY > -YDISTANCE_MIN)
                             && ySpeed < YSPEED_MIN) {
