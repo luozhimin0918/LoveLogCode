@@ -110,7 +110,7 @@ public class HomeFragment extends Fragment  {
 
     NetworkImageView  topAd1,topAd2,topAd3;
 
-    List<SliderUrlData>  sliderUrlDataList;//轮播
+    List<SliderUrlData>  sliderUrlDataList=new ArrayList<SliderUrlData>();//轮播
     List<NavIndexUrlData> navIndexUrlDataList=new ArrayList<NavIndexUrlData>();//GridView
     List<AdIndexUrlData> ad=new ArrayList<AdIndexUrlData>();//广告
     List<AdIndexUrlData> adIndexTopAdCom;//zhu  list
@@ -261,8 +261,26 @@ public class HomeFragment extends Fragment  {
 
         mQueue.add(fastJsonHome);
     }
+
+    boolean   isInitViewPager=false;//是否第一次加载轮播
     private void refresh() {
-        initViewPagerRefresh();
+       //    刷新viewpager轮播;
+        List<SliderUrlData>  sliderList=homeDataInfo.getSlider();
+
+        if(sliderUrlDataList.size()!=sliderList.size()){
+            sliderUrlDataList.clear();
+            sliderUrlDataList.addAll(sliderList);
+            if(isInitViewPager){
+                initViewPagerRefresh();
+
+            }else{
+                initViewPager();
+                isInitViewPager=true;
+            }
+
+        }
+
+
         //gridvie
         navIndexUrlDataList.clear();
         navIndexUrlDataList.addAll(homeDataInfo.getNav());
@@ -287,9 +305,10 @@ public class HomeFragment extends Fragment  {
         isLoadReresh=true;
     }
     private void  initViewPagerRefresh(){
-      List<SliderUrlData>  sliderList=homeDataInfo.getSlider();
-        sliderUrlDataList.clear();
-        sliderUrlDataList.addAll(sliderList);
+
+
+
+        imagePagerAdapter =new ImagePagerAdapter(mContext, sliderUrlDataList).setInfiniteLoop(true);
         imagePagerAdapter.notifyDataSetChanged();
 
 
@@ -361,7 +380,7 @@ public class HomeFragment extends Fragment  {
          */
         viewPager = (AutoScrollViewPager) header.findViewById(R.id.viewPager_menu);
         viewgroup =(ViewGroup) header.findViewById(R.id.viewgroup);
-        initViewPager();
+//        initViewPager();
 
         /**
          * 分类grid
@@ -497,10 +516,7 @@ public class HomeFragment extends Fragment  {
 
     private void  initViewPager(){
 
-        sliderUrlDataList=new ArrayList<SliderUrlData>();
-        for(int i=0;i<3;i++){
-            sliderUrlDataList.add(new SliderUrlData());
-        }
+
         imagePagerAdapter =new ImagePagerAdapter(mContext, sliderUrlDataList).setInfiniteLoop(true);
         viewPager.setAdapter(imagePagerAdapter);
 

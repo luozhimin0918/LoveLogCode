@@ -120,7 +120,7 @@ public class CommunityFragment extends Fragment {
 
             ButterKnife.bind(this, view);
 
-            for(int i=0;i<2;i++){
+            for(int i=0;i<1;i++){
                 SliderUrlData s=new SliderUrlData();
 
 
@@ -246,7 +246,10 @@ public class CommunityFragment extends Fragment {
     }
 
     private void refresh() {
-        initViewPagerRefresh();
+        if(isViewPager){
+            initViewPagerRefresh();
+        }
+
         //GridView
         navIndexUrlDataList.clear();
         navIndexUrlDataList.addAll(communityDataInfo.getNav());
@@ -419,8 +422,12 @@ public class CommunityFragment extends Fragment {
 
 
     private void  initViewPagerRefresh(){
+
+
         sliderUrlDataList.clear();
         sliderUrlDataList.addAll(communityDataInfo.getSlider());
+        imagePagerAdapter=new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true);
+        viewPager.setAdapter(imagePagerAdapter);
         imagePagerAdapter.notifyDataSetChanged();
 
 
@@ -428,7 +435,7 @@ public class CommunityFragment extends Fragment {
 
     }
 
-
+   boolean  isViewPager=false;
     private void  initViewPager(){
 
         imagePagerAdapter=new ImagePagerAdapter(mContext,sliderUrlDataList ).setInfiniteLoop(true);
@@ -440,6 +447,7 @@ public class CommunityFragment extends Fragment {
 
 
         createViewPagerPoint();
+        isViewPager=true;
 
 
     }
