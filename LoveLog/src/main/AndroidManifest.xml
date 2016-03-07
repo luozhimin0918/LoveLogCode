@@ -116,6 +116,7 @@
 
         <activity android:name=".activity.InvitationAllPinglunActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/AppTranslucentTheme"
             android:screenOrientation="portrait">
 
         </activity>
