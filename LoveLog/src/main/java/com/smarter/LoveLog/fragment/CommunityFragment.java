@@ -160,12 +160,7 @@ public class CommunityFragment extends Fragment {
             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
             mRecyclerView.setVisibility(View.GONE);
             networkInfo.setVisibility(View.VISIBLE);
-            newLoading.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    initData();
-                }
-            });
+
         }
 
     }
@@ -219,7 +214,13 @@ public class CommunityFragment extends Fragment {
                 //未知错误
                 progressLinear.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.GONE);
-                errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
+
+
+                try {
+                    errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
                 networkInfo.setVisibility(View.VISIBLE);
 
             }
@@ -267,6 +268,14 @@ public class CommunityFragment extends Fragment {
 
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
     private void initFind() {
+
+
+        newLoading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initData();
+            }
+        });
         /**
          *
          */

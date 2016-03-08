@@ -632,11 +632,11 @@ private  void  loadingImage(){
                         mContext.startActivity(intent);
                         finish();
                     }
-                }, 2000);
+                }, 1000);
                 Log.d("SplashActivity", "errror" + volleyError.toString() + "");
             }
         });
-        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
+        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(3000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         fastJsonCommunity.setShouldCache(true);
         mQueue.add(fastJsonCommunity);
@@ -706,7 +706,7 @@ private  void  loadingImage(){
                         mContext.startActivity(intent);
                         finish();
                     }
-                }, 2000);
+                }, 1000);
                 Log.d("SplashActivity", "errror" + volleyError.toString() + "");
             }
         });

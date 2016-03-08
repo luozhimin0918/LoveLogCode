@@ -194,12 +194,7 @@ public class HomeFragment extends Fragment  {
             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
             mRecyclerView.setVisibility(View.GONE);
             networkInfo.setVisibility(View.VISIBLE);
-            newLoading.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    initData();
-                }
-            });
+
         }
 
 
@@ -252,7 +247,7 @@ public class HomeFragment extends Fragment  {
                 networkInfo.setVisibility(View.VISIBLE);
                 try {
                     errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
-                } catch (Resources.NotFoundException e) {
+                } catch (IllegalStateException e) {
                     e.printStackTrace();
                 }
                 Log.d("HomeFragmentURL", "Error  HomeDataFrag>>>" );
@@ -320,7 +315,12 @@ public class HomeFragment extends Fragment  {
 
     private void initFind() {
 
-
+        newLoading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initData();
+            }
+        });
 
         /**
          *
