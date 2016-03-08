@@ -15,6 +15,24 @@
             android:layout_height="fill_parent"
             />
         <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="@dimen/space_10"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+              <TextView
+                  android:id="@+id/tiaoguoBut"
+                  android:text="跳过"
+                  android:background="@drawable/yuanjiao_love_red_bg"
+                  android:paddingBottom="@dimen/space_5"
+                  android:paddingTop="@dimen/space_5"
+                  android:paddingRight="@dimen/space_10"
+                  android:paddingLeft="@dimen/space_10"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
             android:visibility="gone"
             android:orientation="vertical"
             android:gravity="bottom|center_horizontal"
@@ -43,7 +61,7 @@
 
 
 
-    <FrameLayout
+  <FrameLayout
         android:id="@+id/viewFragment"
         android:orientation="vertical"
         android:layout_width="fill_parent"

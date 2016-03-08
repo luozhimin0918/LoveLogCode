@@ -69,6 +69,10 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
     public ImageView welcomeBg;
     @Bind(R.id.fraglay)
     public FrameLayout fraglay;
+    @Bind(R.id.tiaoguoBut)
+    public TextView tiaoguoBut;
+
+
     @Bind(R.id.viewFragment)
     public FrameLayout viewFragment;
 
@@ -244,14 +248,16 @@ public class SplashActivity extends BaseFragmentActivity implements View.OnClick
          }
     }
 
+    boolean   isTiaoguo=false;
+    boolean   isClickAdBut=false;
 private  void  loadingImage(){
 
-    if(startImgData!=null){
+    if(startImgDataList!=null){
 
         netWorkImageView.setDefaultImageResId(R.mipmap.welcome);
         netWorkImageView.setErrorImageResId(R.mipmap.welcome);
         netWorkImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        netWorkImageView.setImageUrl(startImgData.getImg(), AppContextApplication.getInstance().getmImageLoader());
+        netWorkImageView.setImageUrl(startImgDataList.get(0).getImg_url(), AppContextApplication.getInstance().getmImageLoader());
 
         try {
             textData.setText(DataCleanManager.getTotalCacheSize(mContext));//缓存get大小
@@ -260,23 +266,37 @@ private  void  loadingImage(){
         }
 
 
+        if(startImgDataList.get(0).getType().equals("ad")){
+            tiaoguoBut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isTiaoguo=true;
+                    Intent intent = new Intent(mContext, MainActivity.class);
+                    mContext.startActivity(intent);
+                    finish();
+                }
+            });
+
+            netWorkImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isClickAdBut=true;
+                    Intent intent = new Intent(mContext, WebViewUrlActivity.class);
+                    intent.putExtra("param", startImgDataList.get(0).getLink_url());
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
+
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                welcomeBg.setVisibility(View.GONE);
+                fraglay.setVisibility(View.VISIBLE);
+                startAnima();
 
-//                  if(mQueue.getCache().get(startImgData.getImg())!=null){
-                      welcomeBg.setVisibility(View.GONE);
-                      fraglay.setVisibility(View.VISIBLE);
-
-
-                      startAnima();
-//                     textData.setText(new String(mQueue.getCache().get(startImgData.getImg()).data).toString());
-//                 }else{
-//                      Intent intent = new Intent(mContext, MainActivity.class);
-//                      mContext.startActivity(intent);
-//                      finish();
-//                      Log.d("SplashActivity", " null cache");
-//                  }
             }
         }, 1000);
 
@@ -318,7 +338,7 @@ private  void  loadingImage(){
         AlphaAnimation inAlphaAnimation = new AlphaAnimation(0, 1);
         inAlphaAnimation.setRepeatCount(0);//设置重复次数
         inAlphaAnimation.setFillAfter(true);//动画执行完后是否停留在执行完的状态
-        inAlphaAnimation.setDuration(3000);
+        inAlphaAnimation.setDuration(1000);
         inAlphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -327,9 +347,19 @@ private  void  loadingImage(){
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(mContext, MainActivity.class);
-                mContext.startActivity(intent);
-                finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!isTiaoguo&&!isClickAdBut) {
+                            Intent intent = new Intent(mContext, MainActivity.class);
+                            mContext.startActivity(intent);
+                            finish();
+                        }
+                    }
+
+                }, 2000);
+
+
             }
 
             @Override
@@ -355,18 +385,7 @@ private  void  loadingImage(){
 
 
 
-       /* new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                welcomeBg.setVisibility(View.GONE);
-                fraglay.setVisibility(View.VISIBLE);
 
-
-
-
-
-            }
-        }, 1500);*/
     }
 
 
@@ -541,25 +560,28 @@ private  void  loadingImage(){
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+         new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                 if(isClickAdBut){
+                Intent intent = new Intent(mContext, MainActivity.class);
+                mContext.startActivity(intent);
+                finish();
+                }
 
+            }
+        }, 150);
 
-
-
-
-
-
-
-
-
-
-
-
+    }
 
     /**
      * 获取Start
      */
-    StartImgData startImgData;
+    List<StartImgData> startImgDataList;
     private void networkStart() {
 
            String  url = "http://mapp.aiderizhi.com/?url=/start";//
@@ -570,10 +592,10 @@ private  void  loadingImage(){
 
                 DataStatus status = startImgInfo.getStatus();
                 if (status.getSucceed() == 1) {
-                    startImgData = startImgInfo.getData();
-                    if(startImgData!=null){
+                    startImgDataList = startImgInfo.getData();
+                    if(startImgDataList!=null&&startImgDataList.size()>0){
                         loadingImage();
-                        Log.d("SplashActivity", "Splash：start   " + JSON.toJSONString(startImgData)+ "++++succeed");
+                        Log.d("SplashActivity", "Splash：start   " + JSON.toJSONString(startImgDataList.get(0))+ "++++succeed");
                     }
 
 
