@@ -41,6 +41,11 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
     @Bind(R.id.backBUt)
     ImageView backBUt;
 
+    @Bind(R.id.tv_right_title)
+    TextView tv_right_title;
+
+
+
 
     private RichEditor mEditor;
     private TextView mPreview;
@@ -73,12 +78,13 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
         mEditor.setEditorHeight(500);
         mEditor.setEditorFontSize(22);
         mEditor.setEditorFontColor(Color.RED);
+        mEditor.setHtml("");//TODO
         //mEditor.setEditorBackgroundColor(Color.BLUE);
         //mEditor.setBackgroundColor(Color.BLUE);
         //mEditor.setBackgroundResource(R.drawable.bg);
-        mEditor.setPadding(10, 10, 10, 10);
+        mEditor.setPadding(10, 10, 10, 60);
         //    mEditor.setBackground("https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg");
-        mEditor.setPlaceholder("Insert text here...");
+        mEditor.setPlaceholder("发表你的帖子吧........");
 
         mPreview = (TextView) findViewById(R.id.preview);
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
@@ -227,7 +233,7 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
 
         findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                mEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
+                mEditor.insertImage("http://www.aiderizhi.com/uploads/image/201603/1457425089230872.png",
                         "dachshund");
             }
         });
@@ -249,6 +255,7 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
 
     private void setListen() {
         backBUt.setOnClickListener(this);
+        tv_right_title.setOnClickListener(this);
     }
     SessionData sessionData;
     private void intData() {
@@ -348,6 +355,11 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
          switch (v.getId()){
              case R.id.backBUt:
                  finish();
+                 break;
+
+             case R.id.tv_right_title:
+                 mEditor.getHtml();
+                 Log.d(Tag,""+mEditor.getHtml());
                  break;
 
          }
