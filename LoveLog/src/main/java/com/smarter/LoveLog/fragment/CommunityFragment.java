@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -33,6 +34,8 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.InvitationActivity;
+import com.smarter.LoveLog.activity.InvitationDeatilActivity;
+import com.smarter.LoveLog.activity.SendInvitationActivity;
 import com.smarter.LoveLog.adapter.Adapter_GridView;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.MofanAdapter;
@@ -89,6 +92,10 @@ public class CommunityFragment extends Fragment {
 
     @Bind(R.id.progreView)
     ImageView progreView;
+
+    @Bind(R.id.tv_right_title)
+    TextView tv_right_title;
+
 
 
 
@@ -269,6 +276,19 @@ public class CommunityFragment extends Fragment {
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
     private void initFind() {
 
+
+        tv_right_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, SendInvitationActivity.class);
+//                Bundle bundle = new Bundle();
+//                PromotePostsData pp=promotePostsDataList.get(position);
+//                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+//                intent.putExtras(bundle);
+
+                mContext.startActivity(intent);
+            }
+        });
 
         newLoading.setOnClickListener(new View.OnClickListener() {
             @Override

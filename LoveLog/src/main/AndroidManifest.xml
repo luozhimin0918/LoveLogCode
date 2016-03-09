@@ -192,6 +192,11 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".activity.SendInvitationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
 
 
 
