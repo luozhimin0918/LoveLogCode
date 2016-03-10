@@ -1,6 +1,7 @@
 package com.smarter.LoveLog.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -64,7 +65,15 @@ public class RichTextActivity extends BaseFragmentActivity {
             }
         });
 
-        text.setRichText(TEXT);
+        Intent  intent =getIntent();
+        if(intent!=null){
+           String  textHtml = intent.getStringExtra("richText");
+            if(textHtml!=null&&!textHtml.equals("")){
+                text.setRichText(textHtml);
+            }
+
+        }
+
 
     }
 

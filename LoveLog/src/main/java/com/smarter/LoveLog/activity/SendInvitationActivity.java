@@ -406,6 +406,7 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
                  Log.d(Tag, startHtml + mEditor.getHtml() + endHtml);
 
                  Intent intent =new Intent(this,RichTextActivity.class);
+                 intent.putExtra("richText",startHtml + mEditor.getHtml() + endHtml);
                  this.startActivity(intent);
                  break;
 
