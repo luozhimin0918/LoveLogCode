@@ -403,7 +403,10 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
 
              case R.id.tv_right_title:
                  mEditor.getHtml();
-                 Log.d(Tag,startHtml+mEditor.getHtml()+endHtml);
+                 Log.d(Tag, startHtml + mEditor.getHtml() + endHtml);
+
+                 Intent intent =new Intent(this,RichTextActivity.class);
+                 this.startActivity(intent);
                  break;
 
          }

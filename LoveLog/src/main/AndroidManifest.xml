@@ -197,6 +197,11 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".activity.RichTextActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
 
 
 

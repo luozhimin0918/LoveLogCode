@@ -48,6 +48,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'io.realm:realm-android:0.84.1'
     compile 'jp.wasabeef:richeditor-android:1.2.0'
+    //    compile 'zhou.widget:richtext:1.0.4'
     //    compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.2'
     compile project(':xrecyclerview')
     compile project(':onekeyshare')
@@ -55,4 +56,5 @@ dependencies {
     compile project(':pickerview')
     compile project(':IMKitWithVoIP')
     compile files('libs/glide-3.6.1.jar')
+    compile project(':richtext')
 }
