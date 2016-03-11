@@ -179,7 +179,13 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
     private void createWebview(String urlParam) {
 
        webview.getSettings().setJavaScriptEnabled(true);
-        webview.loadUrl(urlParam);
+
+        if(urlParam.startsWith("http")){
+            webview.loadUrl(urlParam);
+        }else{
+            webview.loadDataWithBaseURL(null, urlParam, "text/html", "utf-8", null);
+        }
+
 // 添加js交互接口类，并起别名 imagelistner
         webview.addJavascriptInterface(new JavascriptInterface(this), "imagelistner");
         webview.setWebViewClient(new WebViewClient() {
@@ -252,13 +258,32 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
     // 注入js函数监听
     private void addImageClickListner() {
         // 这段js函数的功能就是，遍历所有的img几点，并添加onclick函数，在还是执行的时候调用本地接口传递url过去
-        webview.loadUrl("javascript:(function(){" +
+      /*  webview.loadUrl("javascript:(function(){" +
                 "var objs = document.getElementsByTagName(\"img\"); " +
                 "for(var i=0;i<objs.length;i++)  " +
                 "{"
                 + "    objs[i].onclick=function()  " +
                 "    {  "
                 + "        window.imagelistner.openImage(this.src);  " +
+                "    }  " +
+                "}" +
+                "})()");*/
+
+
+        // 这段js函数的功能就是，遍历所有的img几点，并添加onclick函数，在还是执行的时候调用本地接口传递url过去
+        webview.loadUrl("javascript:(function(){" +
+                " var srcs = [];"+
+                "var objs = document.getElementsByTagName(\"img\"); " +
+                "for(var i=0;i<objs.length;i++){"+
+                "srcs[i] = objs[i].src; }"+
+
+
+
+                "for(var i=0;i<objs.length;i++)  " +
+                "{"
+                + "    objs[i].onclick=function()  " +
+                "    {  "
+                + "  srcs.push(this.src);      window.imagelistner.openImage(srcs);  srcs.pop(); " +
                 "    }  " +
                 "}" +
                 "})()");
@@ -273,14 +298,18 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
             this.context = context;
         }
          @android.webkit.JavascriptInterface
-        public void openImage(String img) {
-           /* System.out.println(img);
-            //
-            Intent intent = new Intent();
-            intent.putExtra("image", img);
-            intent.setClass(context, ShowWebImageActivity.class);
-            context.startActivity(intent);
-            System.out.println(img);*/
+        public void openImage(String[] img) {
+             if(urlParam.startsWith("http")){
+
+             }else{
+
+                 Intent intent = new Intent();
+                 intent.putExtra("images",img);
+                 intent.setClass(context, ShowAnoWebImageActivity.class);
+                 context.startActivity(intent);
+
+             }
+
         }
     }
 

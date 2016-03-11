@@ -396,18 +396,78 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
 
     @Override
     public void onClick(View v) {
+
+
          switch (v.getId()){
              case R.id.backBUt:
                  finish();
                  break;
 
              case R.id.tv_right_title:
-                 mEditor.getHtml();
-                 Log.d(Tag, startHtml + mEditor.getHtml() + endHtml);
 
-                 Intent intent =new Intent(this,RichTextActivity.class);
-                 intent.putExtra("richText",startHtml + mEditor.getHtml() + endHtml);
-                 this.startActivity(intent);
+                 if(mEditor.getHtml()!=null){
+
+                     String  tempHtml="<!DOCTYPE html>\n" +
+                             "<html>\n" +
+                             "<head>\n" +
+                             "<meta charset=\"utf-8\">\n" +
+                             "<title>帖子详情</title>\n" +
+                             "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" />\n" +
+                             "<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n" +
+                             "<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black\" />\n" +
+                             "<meta name=\"format-detection\" content=\"telephone=no\" />\n" +
+                             "<style>\n" +
+                             "html{font-size:62.5%;}\n" +
+                             "body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;vertical-align:baseline;}\n" +
+                             "body{font-family: \"SimHei\",\"Helvetica Neue\",Arial,\"Droid Sans\",sans-serif;color:#666;position: relative;}\n" +
+                             ".content{color:#333;line-height:2.6rem;margin: 3rem 1rem 2.5rem;font-size:1.4rem;font-weight:300;text-align:justify; text-justify:distribute-all-lines;} \n" +
+                             "img{width:auto;height:auto;vertical-align:middle;border:0;max-width: 100%;display:block;margin:1rem auto;color: transparent;font-size: 0;}\n" +
+                             "</style>\n" +
+                             "</head>\n" +
+                             "<body>\n" +
+                             "<div class=\"content\" id=\"post-content\">\n" +mEditor.getHtml()+
+
+
+                             "</div>\n" +
+                             "</body>\n" +
+                             "<script type=\"text/javascript\">\n" +
+                             "//1，匹配出图片img标签（即匹配出所有图片），过滤其他不需要的字符\n" +
+                             "//2.从匹配出来的结果（img标签中）循环匹配出图片地址（即src属性）\n" +
+                             "function view_content_img(){\n" +
+                             "\t\n" +
+                             "\tvar str = document.getElementById(\"post-content\").innerHTML;\n" +
+                             "\t//匹配图片（g表示匹配所有结果i表示区分大小写）\n" +
+                             "\tvar imgReg = /<img.*?(?:>|\\/>)/gi;\n" +
+                             "\t//匹配src属性\n" +
+                             "\tvar srcReg = /src=[\\'\\\"]?([^\\'\\\"]*)[\\'\\\"]?/i;\n" +
+                             "\tvar arr = str.match(imgReg);\n" +
+                             "\talert('所有已成功匹配图片的数组：'+arr);\n" +
+                             "\tfor (var i = 0; i < arr.length; i++) {\n" +
+                             "\t  var src = arr[i].match(srcReg);\n" +
+                             "\t  //获取图片地址\n" +
+                             "\t  if(src[1]){\n" +
+                             "\t\t//alert('已匹配的图片地址'+(i+1)+'：'+src[1]);\n" +
+                             "\t  }\n" +
+                             "\t  //当然你也可以替换src属性\n" +
+                             "\t  if (src[0]) {\n" +
+                             "\t\tvar t = src[0].replace(/src/i, \"href\");\n" +
+                             "\t\t//alert(t);\n" +
+                             "\t  }\n" +
+                             "\t}\n" +
+                             "}\n" +
+                             "</script>\n" +
+                             "</html>\n" +
+                             "\n" +
+                             "\n";
+
+                     Log.d(Tag, tempHtml);
+                     Intent intent =new Intent(this,WebViewUrlActivity.class);
+                     intent.putExtra("param",tempHtml);
+                     this.startActivity(intent);
+                 }else{
+                    Toast.makeText(this,"内容不能为空",Toast.LENGTH_SHORT).show();
+                 }
+
                  break;
 
          }
@@ -416,56 +476,9 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
 
 
 
-    String  startHtml="<!DOCTYPE html>\n" +
-            "<html>\n" +
-            "<head>\n" +
-            "<meta charset=\"GBK\">\n" +
-            "<title>帖子详情</title>\n" +
-            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" />\n" +
-            "<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n" +
-            "<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black\" />\n" +
-            "<meta name=\"format-detection\" content=\"telephone=no\" />\n" +
-            "<style>\n" +
-            "html{font-size:62.5%;}\n" +
-            "body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;vertical-align:baseline;}\n" +
-            "body{font-family: \"SimHei\",\"Helvetica Neue\",Arial,\"Droid Sans\",sans-serif;color:#666;position: relative;}\n" +
-            "#content{color:#333;line-height:2.6rem;margin: 3rem 1rem 2.5rem;font-size:1.4rem;font-weight:300;text-align:justify; text-justify:distribute-all-lines;} \n" +
-            "img{width:auto;height:auto;vertical-align:middle;border:0;max-width: 100%;display:block;margin:1rem auto;color: transparent;font-size: 0;}\n" +
-            "</style>\n" +
-            "</head>\n" +
-            "<body>\n" +
-            "<div class=\"content\" id=\"post-content\">";
-    String endHtml="</div>\n" +
-            "</body>\n" +
-            "<script type=\"text/javascript\">\n" +
-            "//1，匹配出图片img标签（即匹配出所有图片），过滤其他不需要的字符\n" +
-            "//2.从匹配出来的结果（img标签中）循环匹配出图片地址（即src属性）\n" +
-            "function view_content_img(){\n" +
-            "\t\n" +
-            "\tvar str = document.getElementById(\"post-content\").innerHTML;\n" +
-            "\t//匹配图片（g表示匹配所有结果i表示区分大小写）\n" +
-            "\tvar imgReg = /<img.*?(?:>|\\/>)/gi;\n" +
-            "\t//匹配src属性\n" +
-            "\tvar srcReg = /src=[\\'\\\"]?([^\\'\\\"]*)[\\'\\\"]?/i;\n" +
-            "\tvar arr = str.match(imgReg);\n" +
-            "\talert('所有已成功匹配图片的数组：'+arr);\n" +
-            "\tfor (var i = 0; i < arr.length; i++) {\n" +
-            "\t  var src = arr[i].match(srcReg);\n" +
-            "\t  //获取图片地址\n" +
-            "\t  if(src[1]){\n" +
-            "\t\t//alert('已匹配的图片地址'+(i+1)+'：'+src[1]);\n" +
-            "\t  }\n" +
-            "\t  //当然你也可以替换src属性\n" +
-            "\t  if (src[0]) {\n" +
-            "\t\tvar t = src[0].replace(/src/i, \"href\");\n" +
-            "\t\t//alert(t);\n" +
-            "\t  }\n" +
-            "\t}\n" +
-            "}\n" +
-            "</script>\n" +
-            "</html>\n" +
-            "\n" +
-            "\n";
+
+
+
 
 
 }

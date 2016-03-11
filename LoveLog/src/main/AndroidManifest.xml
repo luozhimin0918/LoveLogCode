@@ -197,15 +197,9 @@
             android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.RichTextActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
-
-        </activity>
 
 
-
-//测试
+        //测试
         <activity android:name=".activity.MyInvitationAllPinglunActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait">

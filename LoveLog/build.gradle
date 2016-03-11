@@ -56,5 +56,4 @@ dependencies {
     compile project(':pickerview')
     compile project(':IMKitWithVoIP')
     compile files('libs/glide-3.6.1.jar')
-    compile project(':richtext')
 }
