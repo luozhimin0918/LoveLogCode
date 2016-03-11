@@ -410,7 +410,7 @@ public class SendInvitationActivity extends BaseFragmentActivity implements View
                      String  tempHtml="<!DOCTYPE html>\n" +
                              "<html>\n" +
                              "<head>\n" +
-                             "<meta charset=\"utf-8\">\n" +
+                             "<meta charset=\"GBK\">\n" +
                              "<title>帖子详情</title>\n" +
                              "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" />\n" +
                              "<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n" +

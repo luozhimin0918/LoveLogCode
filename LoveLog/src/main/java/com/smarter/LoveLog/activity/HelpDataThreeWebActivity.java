@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -114,7 +116,7 @@ public class HelpDataThreeWebActivity extends BaseFragmentActivity implements Vi
            helpDataList = (HelpDataList) intent.getSerializableExtra("threeWebHelpdata");
             if(helpDataList!=null){
                 tv_top_title.setText(helpDataList.getName());
-//                createWebview();
+
             }
         }
 
@@ -130,7 +132,6 @@ public class HelpDataThreeWebActivity extends BaseFragmentActivity implements Vi
                 // TODO Auto-generated method stub
 
 
-                view.loadUrl("javascript:alert( $('#app_data').html() )");
                 super.onPageFinished(view, url);
 
 
@@ -171,9 +172,18 @@ public class HelpDataThreeWebActivity extends BaseFragmentActivity implements Vi
         });
 
 
-        webview.loadUrl("http://mapp.aiderizhi.com/?url=/help/detail&id=" + helpDataList.getId());
+//        webview.loadUrl("http://mapp.aiderizhi.com/?url=/help/detail&id=" + helpDataList.getId());
+        webview.loadDataWithBaseURL(null, helpDataWeb.getContent(), "text/html", "utf-8", null);
 
-
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int scale = dm.densityDpi;
+        if (scale == 240) { //
+            webview.getSettings().setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        } else if (scale == 160) {
+            webview.getSettings().setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
+        } else {
+            webview.getSettings().setDefaultZoom(WebSettings.ZoomDensity.CLOSE);
+        }
     }
 
 
@@ -203,6 +213,7 @@ public class HelpDataThreeWebActivity extends BaseFragmentActivity implements Vi
                     helpDataWeb = helpDataWebInfo.getData();
                     if(helpDataWeb!=null){
                         WebTexts.setText(Html.fromHtml(helpDataWeb.getContent()));
+                        createWebview();
                         Log.d("HelpDataThreeWeb", "帮助Web：   " + JSON.toJSONString(helpDataWeb)+ "++++succeed");
                     }
 
