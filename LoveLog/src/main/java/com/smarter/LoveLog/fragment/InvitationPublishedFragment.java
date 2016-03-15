@@ -74,6 +74,12 @@ public class InvitationPublishedFragment extends Fragment implements RecycleOrde
             mRootView = new WeakReference<View>(view);
             mContext=getContext();
             ButterKnife.bind(this,view);
+            newLoading.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    newWait();
+                }
+            });
             isLogiin();
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
@@ -102,12 +108,7 @@ public class InvitationPublishedFragment extends Fragment implements RecycleOrde
             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
             mRecyclerView.setVisibility(View.GONE);
             networkInfo.setVisibility(View.VISIBLE);
-            newLoading.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    newWait();
-                }
-            });
+
         }
     }
     SessionData sessionData;
