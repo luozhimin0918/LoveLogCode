@@ -6,13 +6,17 @@ package com.smarter.LoveLog.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -165,10 +169,45 @@ public class FaceRelativeLayout extends RelativeLayout implements
         et_sendmessage = (EditText) findViewById(R.id.et_sendmessage);
         layout_point = (LinearLayout) findViewById(R.id.iv_image);
         et_sendmessage.setOnClickListener(this);
+        et_sendmessage.addTextChangedListener(new EditChangedListener());
         findViewById(R.id.btn_face).setOnClickListener(this);
         view = findViewById(R.id.ll_facechoose);
 
     }
+
+    class EditChangedListener implements TextWatcher {
+        private CharSequence temp;//监听前的文本
+        private int editStart;//光标开始位置
+        private int editEnd;//光标结束位置
+        private final int charMaxNum = 10;
+
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            Log.i("FaceRelativeLayout", "输入文本之前的状态");
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            Log.i("FaceRelativeLayout", "输入文字中的状态，count是一次性输入字符数");
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            Log.i("FaceRelativeLayout", "输入文字后的状态");
+            // 隐藏表情选择框
+            if (view.getVisibility() == View.VISIBLE) {
+                view.setVisibility(View.GONE);
+            }
+            /** 得到光标开始和结束位置 ,超过最大数后记录刚超出的数字索引进行控制 */
+
+
+        }
+    }
+
 
     /**
      * 初始化显示表情的viewpager
