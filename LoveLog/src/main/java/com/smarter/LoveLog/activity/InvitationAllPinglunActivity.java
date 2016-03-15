@@ -38,6 +38,7 @@ import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.SildingFinishLayout;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.smarter.LoveLog.utills.FaceConversionUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -89,10 +90,10 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
     @Bind(R.id.backBUt)
     ImageView backBUt;
 
-    @Bind(R.id.fasongText)
+    @Bind(R.id.btn_send)
     TextView fasongText;
 
-    @Bind(R.id.pinglunEdit)
+    @Bind(R.id.et_sendmessage)
     EditText pinglunEdit;
 
 
@@ -115,9 +116,19 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FaceConversionUtil.getInstace().getFileText(getApplication());
+            }
+        }).start();
         setContentView(R.layout.activity_invitation_pinglun_all_view);
         ButterKnife.bind(this);
         mContext=this;
+
+
+
         getDataIntent();
         setListen();
 
@@ -478,10 +489,11 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
              case  R.id.backBUt:
                  finish();
                  break;
-             case  R.id.fasongText:
+             case  R.id.btn_send:
 
                  if(pinglunEdit.getText().toString()!=null&&!pinglunEdit.getText().toString().equals("")){
                      initIsLogonParame();
+                     Log.d("InvitationAllPinglun",pinglunEdit.getText().toString());
                  }else{
                      Toast.makeText(mContext, "评论不能为空" , Toast.LENGTH_SHORT).show();
                  }

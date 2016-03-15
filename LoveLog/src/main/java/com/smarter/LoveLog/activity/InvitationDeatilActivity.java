@@ -73,6 +73,7 @@ import com.smarter.LoveLog.ui.QCheckBox;
 import com.smarter.LoveLog.ui.popwindow.AlertDialog;
 import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.smarter.LoveLog.utills.FaceConversionUtil;
 import com.smarter.LoveLog.utills.ViewUtill;
 
 
@@ -169,6 +170,10 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         ButterKnife.bind(this);
         mContext=this;
         mQueue =  AppContextApplication.getInstance().getmRequestQueue();
+
+
+
+
         navigationBar();
         getDataIntent();
         intData();

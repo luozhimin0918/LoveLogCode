@@ -1,6 +1,7 @@
 package com.smarter.LoveLog.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.smarter.LoveLog.model.jsonModel.ZanOrFaroviteParame;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
 import com.smarter.LoveLog.ui.QCheckBox;
+import com.smarter.LoveLog.utills.FaceConversionUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +80,9 @@ public class RecyclePinglunAdapter extends RecyclerView.Adapter<RecyclePinglunAd
 
         viewHolder.userName.setText(user.getName());
         viewHolder.AddTime.setText(pinglunList.get(i).getAdd_time());
-        viewHolder.pingContent.setText(pinglunList.get(i).getContent());
+
+        SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(mContext, pinglunList.get(i).getContent());
+        viewHolder.pingContent.setText(spannableString);
 
         if(pinglunList.get(i).getIs_digg().equals("1")){
             viewHolder.zanBut.setChecked(true);
