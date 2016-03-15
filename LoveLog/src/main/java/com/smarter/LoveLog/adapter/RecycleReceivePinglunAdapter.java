@@ -1,5 +1,7 @@
 package com.smarter.LoveLog.adapter;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,6 +12,7 @@ import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.model.community.User;
 import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
+import com.smarter.LoveLog.utills.FaceConversionUtil;
 
 import java.util.List;
 
@@ -26,10 +29,12 @@ public class RecycleReceivePinglunAdapter extends RecyclerView.Adapter<RecycleRe
 
     private List<CmtGoods> pinglunList;
     RequestQueue mQueue;
-    public RecycleReceivePinglunAdapter(List<CmtGoods> pinglunList) {
+    Context mContext;
+    public RecycleReceivePinglunAdapter(List<CmtGoods> pinglunList,Context mContext) {
         super();
         mQueue =  AppContextApplication.getInstance().getmRequestQueue();
         this.pinglunList=pinglunList;
+        this.mContext=mContext;
     }
 
     @Override
@@ -57,7 +62,9 @@ public class RecycleReceivePinglunAdapter extends RecyclerView.Adapter<RecycleRe
 
         viewHolder.userName.setText(user.getName());
         viewHolder.AddTime.setText(pinglunList.get(i).getAdd_time());
-        viewHolder.pingContent.setText(pinglunList.get(i).getContent());
+
+        SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(mContext, pinglunList.get(i).getContent());
+        viewHolder.pingContent.setText(spannableString);
     }
 
     @Override

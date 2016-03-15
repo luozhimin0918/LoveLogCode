@@ -74,6 +74,13 @@ public class CommentSendoutFragment extends Fragment implements RecycleOrderAllA
             mRootView = new WeakReference<View>(view);
             mContext=getContext();
             ButterKnife.bind(this,view);
+
+            newLoading.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    newWait();
+                }
+            });
             isLogiin();
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
@@ -102,12 +109,7 @@ public class CommentSendoutFragment extends Fragment implements RecycleOrderAllA
             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
             mRecyclerView.setVisibility(View.GONE);
             networkInfo.setVisibility(View.VISIBLE);
-            newLoading.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    newWait();
-                }
-            });
+
         }
     }
     SessionData sessionData;
@@ -293,7 +295,7 @@ public class CommentSendoutFragment extends Fragment implements RecycleOrderAllA
 
 
         if(promotePostDateList!=null&&promotePostDateList.size()>0){
-            mAdapter = new RecycleReceivePinglunAdapter(promotePostDateList);
+            mAdapter = new RecycleReceivePinglunAdapter(promotePostDateList,mContext);
 
             mRecyclerView.setAdapter(mAdapter);
         }
