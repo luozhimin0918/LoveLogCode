@@ -28,6 +28,7 @@ import com.smarter.LoveLog.adapter.RecyclePinglunAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.ChatEmoji;
 import com.smarter.LoveLog.model.PaginationJson;
 import com.smarter.LoveLog.model.community.InvitationDataPinglunActi;
 import com.smarter.LoveLog.model.community.PinglunData;
@@ -120,7 +121,12 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
         new Thread(new Runnable() {
             @Override
             public void run() {
-                FaceConversionUtil.getInstace().getFileText(getApplication());
+                /** 表情集合 */
+                List<List<ChatEmoji>> emojis  =FaceConversionUtil.getInstace().emojiLists;
+                if(emojis.size()<=0){
+                    FaceConversionUtil.getInstace().getFileText(getApplication());
+                }
+
             }
         }).start();
         setContentView(R.layout.activity_invitation_pinglun_all_view);

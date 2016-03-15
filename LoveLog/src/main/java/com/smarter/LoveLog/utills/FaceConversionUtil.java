@@ -44,7 +44,7 @@ public class FaceConversionUtil {
     private List<ChatEmoji> emojis = new ArrayList<ChatEmoji>();
 
     /** 表情分页的结果集合 */
-    public List<List<ChatEmoji>> emojiLists = new ArrayList<List<ChatEmoji>>();
+    public  List<List<ChatEmoji>> emojiLists = new ArrayList<List<ChatEmoji>>();
 
     private FaceConversionUtil() {
 

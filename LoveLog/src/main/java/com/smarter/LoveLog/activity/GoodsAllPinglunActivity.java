@@ -28,6 +28,7 @@ import com.smarter.LoveLog.adapter.RecyclePinglunGoodsAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.ChatEmoji;
 import com.smarter.LoveLog.model.PaginationJson;
 import com.smarter.LoveLog.model.community.InvitationDataPinglunActi;
 import com.smarter.LoveLog.model.community.PinglunData;
@@ -37,6 +38,7 @@ import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.smarter.LoveLog.utills.FaceConversionUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,10 +90,10 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     @Bind(R.id.backBUt)
     ImageView backBUt;
 
-    @Bind(R.id.fasongText)
+    @Bind(R.id.btn_send)
     TextView fasongText;
 
-    @Bind(R.id.pinglunEdit)
+    @Bind(R.id.et_sendmessage)
     EditText pinglunEdit;
 
 
@@ -112,6 +114,19 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                /** 表情集合 */
+                List<List<ChatEmoji>> emojis  =FaceConversionUtil.getInstace().emojiLists;
+                if(emojis.size()<=0){
+                    FaceConversionUtil.getInstace().getFileText(getApplication());
+                }
+
+            }
+        }).start();
+
+
         setContentView(R.layout.activity_invitation_pinglun_all_view);
         ButterKnife.bind(this);
         mContext=this;
@@ -454,7 +469,7 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
              case  R.id.backBUt:
                  finish();
                  break;
-             case  R.id.fasongText:
+             case  R.id.btn_send:
 
                  if(pinglunEdit.getText().toString()!=null&&!pinglunEdit.getText().toString().equals("")){
                      initIsLogonParame();

@@ -1,6 +1,7 @@
 package com.smarter.LoveLog.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.model.community.User;
 import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.ui.CircleNetworkImage;
+import com.smarter.LoveLog.utills.FaceConversionUtil;
 
 import java.util.List;
 
@@ -62,7 +64,11 @@ public class RecyclePinglunGoodsAdapter extends RecyclerView.Adapter<RecyclePing
 
         viewHolder.userName.setText(user.getName());
         viewHolder.AddTime.setText(goodsList.get(i).getAdd_time());
-        viewHolder.pingContent.setText(goodsList.get(i).getContent());
+
+
+        SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(mContext, goodsList.get(i).getContent());
+        viewHolder.pingContent.setText(spannableString);
+
         int cmtRank;
         viewHolder.ratingBar.removeAllViews();
         try {
