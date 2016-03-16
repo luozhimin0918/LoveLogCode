@@ -58,7 +58,7 @@
             tl:tl_indicator_width_equal_title="false"
             tl:tl_tab_padding="15dp"
             tl:tl_tab_space_equal="true"
-            tl:tl_textsize="16sp"
+            tl:tl_textsize="14sp"
             tl:tl_textSelectColor="@color/top_bar_bgColor"
             tl:tl_textUnselectColor="#636363"
             tl:tl_underline_color="@color/green"
