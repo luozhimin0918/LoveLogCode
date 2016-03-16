@@ -16,6 +16,8 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.fragment.CommentReceiveFragment;
 import com.smarter.LoveLog.fragment.CommentSendoutFragment;
+import com.smarter.LoveLog.model.ChatEmoji;
+import com.smarter.LoveLog.utills.FaceConversionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,17 @@ public class MyCommentActivity extends BaseFragmentActivity implements View.OnCl
         mActivity=this;
         mContext=this;
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                /** 表情集合 */
+                List<List<ChatEmoji>> emojis  = FaceConversionUtil.getInstace().emojiLists;
+                if(emojis.size()<=0){
+                    FaceConversionUtil.getInstace().getFileText(getApplication());
+                }
+
+            }
+        }).start();
 
         getDataIntent();
         intData();
