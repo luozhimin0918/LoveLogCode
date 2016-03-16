@@ -228,7 +228,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
     private void smoothScrollTo(int destHeight) {
         ValueAnimator animator = ValueAnimator.ofInt(getVisiableHeight(), destHeight);
-        animator.setDuration(100).start();
+        animator.setDuration(300).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation)

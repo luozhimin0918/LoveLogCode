@@ -90,6 +90,9 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
     @Bind(R.id.backBUt)
     ImageView backBUt;
 
+    @Bind(R.id.tv_right_title)
+    TextView tv_right_title;
+
 
 
 
@@ -115,6 +118,7 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
 
     private void setListen() {
         backBUt.setOnClickListener(this);
+        tv_right_title.setOnClickListener(this);
 
     }
 
@@ -435,6 +439,15 @@ public class InvitationActivity extends BaseFragmentActivity implements View.OnC
          switch (v.getId()){
              case  R.id.backBUt:
                  finish();
+                 break;
+             case  R.id.tv_right_title:
+                 Intent intent = new Intent(mContext, SendInvitationActivity.class);
+//                Bundle bundle = new Bundle();
+//                PromotePostsData pp=promotePostsDataList.get(position);
+//                bundle.putSerializable("PromotePostsData", (Serializable) pp);
+//                intent.putExtras(bundle);
+
+                 mContext.startActivity(intent);
                  break;
          }
     }

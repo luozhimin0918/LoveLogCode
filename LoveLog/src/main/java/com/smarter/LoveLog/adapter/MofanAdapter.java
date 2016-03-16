@@ -89,17 +89,11 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     }
 
     //创建新View，被LayoutManager所调用
-    View addView;
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.community_xrecy_item,viewGroup,false);
         ViewHolder vh = new ViewHolder(view);
         this.viewGroup=viewGroup;
-
-        //imgList  多个图片list
-        vh.imglist.removeAllViews();
-         addView = View.inflate(viewGroup.getContext(), R.layout.item_image_invitation, null);
-        vh.imglist.addView(addView);
         return vh;
     }
     //将数据与界面进行绑定的操作
@@ -140,7 +134,8 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
         viewHolder.imageTitle.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
 
 
-
+        //imgList  多个图片list
+        viewHolder.imglist.removeAllViews();
         String imglistString="";
         final PromotePostsData promotePostsDataItem=promotePostsDataList.get(position);
         if(promotePostsDataItem.getImg().getCover()!=null&&!promotePostsDataItem.getImg().getCover().equals("")){
@@ -148,8 +143,8 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
         }
 
 
-
-              NetworkImageView img = (NetworkImageView) addView.findViewById(R.id.iv_item);
+            View view = View.inflate(viewGroup.getContext(), R.layout.item_image_invitation, null);
+              NetworkImageView img = (NetworkImageView) view.findViewById(R.id.iv_item);
 
             img.setDefaultImageResId(R.drawable.loading);
             img.setErrorImageResId(R.drawable.loading);
@@ -157,6 +152,7 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
                 img.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
             }
             img.setImageUrl(imglistString, AppContextApplication.getInstance().getmImageLoader());
+            viewHolder.imglist.addView(view);
 
 
 
@@ -324,7 +320,6 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
     LinearLayout popuLinear;
     int  populinerWidth=0;
     private void initPopuwindow() {
-        // TODO Auto-generated method stub
         View popuView = LayoutInflater.from(mContext).inflate(R.layout.popuwindow_dashan_open,
                 null);
         isWifiPopupWindow = new PopupWindow(popuView, RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -491,7 +486,6 @@ public class MofanAdapter extends RecyclerView.Adapter<MofanAdapter.ViewHolder> 
 
         @Override
         public void onDismiss() {
-            // TODO Auto-generated method stub
             //Log.v("List_noteTypeActivity:", "我是关闭事件");
             BabyPopWindow.backgroundAlpha(mContext, 1.0f);
         }
