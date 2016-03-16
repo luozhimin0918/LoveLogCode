@@ -5,11 +5,10 @@
     android:layout_height="wrap_content"
   >
 
-    <com.android.volley.toolbox.NetworkImageView
+    <com.smarter.LoveLog.ui.CircleNetworkImage
         android:id="@+id/iv_adapter_grid_pic"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="center"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         />
     <TextView
           android:id="@+id/titleData"

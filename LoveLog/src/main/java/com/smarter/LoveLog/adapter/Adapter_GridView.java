@@ -17,6 +17,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.model.home.NavIndexUrlData;
+import com.smarter.LoveLog.ui.CircleNetworkImage;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +57,7 @@ public class Adapter_GridView extends BaseAdapter {
         if (currentView==null) {
             holderView=new HolderView();
             currentView=LayoutInflater.from(context).inflate(R.layout.adapter_grid_home, null);
-            holderView.iv_pic=(NetworkImageView) currentView.findViewById(R.id.iv_adapter_grid_pic);
+            holderView.iv_pic=(CircleNetworkImage) currentView.findViewById(R.id.iv_adapter_grid_pic);
             holderView.titleData= (TextView) currentView.findViewById(R.id.titleData);
             currentView.setTag(holderView);
         }else {
@@ -65,7 +66,7 @@ public class Adapter_GridView extends BaseAdapter {
 
 
 
-        holderView.iv_pic.setScaleType(ImageView.ScaleType.FIT_XY);
+//        holderView.iv_pic.setScaleType(ImageView.ScaleType.FIT_XY);
 
 
 
@@ -90,7 +91,7 @@ public class Adapter_GridView extends BaseAdapter {
 
     private  static class HolderView {
 
-        NetworkImageView iv_pic;
+        CircleNetworkImage iv_pic;
         TextView titleData;
 
     }
