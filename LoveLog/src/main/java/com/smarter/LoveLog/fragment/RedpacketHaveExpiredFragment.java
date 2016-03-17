@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -59,6 +60,10 @@ public class RedpacketHaveExpiredFragment extends Fragment implements RecycleOrd
     @Bind(R.id.newLoading)
     LinearLayout newLoading;
 
+    @Bind(R.id.loadingTextLinear)
+    LinearLayout loadingTextLinear;
+    @Bind(R.id.loadingText)
+    TextView loadingText;
 
     @Bind(R.id.progressLinear)
     LinearLayout progressLinear;
@@ -195,7 +200,19 @@ public class RedpacketHaveExpiredFragment extends Fragment implements RecycleOrd
                     }
                     if(loadingTag==2){
                         redListList=redPacketInfo.getData().getList();
-                        intView();//初始界面
+
+
+                        if(redListList!=null&&redListList.size()>0){
+                            intView();//初始界面
+                        }else{
+                            progressLinear.setVisibility(View.GONE);
+                            mRecyclerView.setVisibility(View.GONE);
+                            errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
+                            networkInfo.setVisibility(View.VISIBLE);
+                            newLoading.setVisibility(View.GONE);
+                            loadingTextLinear.setVisibility(View.VISIBLE);
+                            loadingText.setText("您没有相关红包");
+                        }
                         mRecyclerView.refreshComplete();
                     }
 
