@@ -27,6 +27,7 @@
             android:layout_height="fill_parent">
             <ImageView
                 android:id="@+id/errorInfo"
+                android:layout_marginTop="@dimen/space_20"
                 android:src="@mipmap/error_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

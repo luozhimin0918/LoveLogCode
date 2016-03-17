@@ -88,10 +88,10 @@ public class MyRedPacketActivity extends BaseFragmentActivity implements View.On
         vp.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         tabLayout_2.setViewPager(vp);
         tabLayout_2.setOnTabSelectListener(this);
-        tabLayout_2.showDot(0);
+//        tabLayout_2.showDot(0);
         vp.setCurrentItem(0);
-        tabLayout_2.showMsg(1, 5);
-        tabLayout_2.setMsgMargin(1, 12.0f, 10.0f);
+//        tabLayout_2.showMsg(1, 5);
+//        tabLayout_2.setMsgMargin(1, 12.0f, 10.0f);
 
 
 
