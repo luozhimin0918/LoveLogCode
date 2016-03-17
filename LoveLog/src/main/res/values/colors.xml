@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- top导航栏bgColor-->
-    <color name="top_bar_bgColor">#FFFA1359</color>
+    <color name="top_bar_bgColor">#fc1359</color>
     <color name="top_bar_bgColor_alpha">#4ffc1359</color>
     <!-- connet背景颜色 FDFAF5 -->
     <color name="connet_bgColor">#f2f2f2</color>
