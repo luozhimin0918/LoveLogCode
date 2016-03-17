@@ -140,7 +140,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
 
-                        isLoginTag=true;
+//                        isLoginTag=true;
                         //登录
                         Intent intent = new Intent(mContext, LoginActivity.class);
                                   /*  Bundle bundle = new Bundle();
@@ -151,7 +151,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
                     }
 
-                }, 800);            //refresh data here
+                }, 100);            //refresh data here
                /* new AlertDialog(mContext).builder().setTitle("提示")
                         .setMsg("您未登录，请登录")
                         .setPositiveButton("确认", new View.OnClickListener() {
@@ -443,7 +443,37 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         newLoading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isLogiin(false);
+                Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+                if(!isLogin) {
+                    new AlertDialog(mContext).builder().setTitle("提示")
+                            .setMsg("您未登录，请登录")
+                            .setPositiveButton("确认", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+//                                    isLoginTag=true;
+                                    //登录
+                                    Intent intent = new Intent(mContext, LoginActivity.class);
+//                                      Bundle bundle = new Bundle();
+//                                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+//                                    intent.putExtras(bundle);
+                                    mContext.startActivity(intent);
+
+                                }
+                            }).setNegativeButton("取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onShopCarLonginListener.onBackShopCarOK(false);
+                        }
+                    }).show();
+                }else{
+
+                                    isLogiin(false);
+
+                }
+
+
+
             }
         });
 
