@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import android.os.Handler;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -137,8 +137,22 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
             if(isFistOnTab){
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
 
-                new AlertDialog(mContext).builder().setTitle("提示")
+                        isLoginTag=true;
+                        //登录
+                        Intent intent = new Intent(mContext, LoginActivity.class);
+                                  /*  Bundle bundle = new Bundle();
+                                    bundle.putSerializable("PromotePostsData", (Serializable) pp);
+                                    intent.putExtras(bundle);*/
+                        mContext.startActivity(intent);
+
+
+                    }
+
+                }, 800);            //refresh data here
+               /* new AlertDialog(mContext).builder().setTitle("提示")
                         .setMsg("您未登录，请登录")
                         .setPositiveButton("确认", new View.OnClickListener() {
                             @Override
@@ -147,9 +161,9 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                                 isLoginTag=true;
                                 //登录
                                 Intent intent = new Intent(mContext, LoginActivity.class);
-                                  /*  Bundle bundle = new Bundle();
+                                  *//*  Bundle bundle = new Bundle();
                                     bundle.putSerializable("PromotePostsData", (Serializable) pp);
-                                    intent.putExtras(bundle);*/
+                                    intent.putExtras(bundle);*//*
                                 mContext.startActivity(intent);
 
                             }
@@ -165,6 +179,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                 networkInfo.setVisibility(View.VISIBLE);
                 carLinear.setVisibility(View.GONE);
                 xuanfuBar.setVisibility(View.GONE);
+                */
 
 
 
