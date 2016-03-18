@@ -21,7 +21,7 @@ import com.jcodecraeer.xrecyclerview.progressindicator.AVLoadingIndicatorView;
 import java.util.Date;
 
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader{
-	private LinearLayout mContainer,line1;
+	private LinearLayout mContainer,line1,line2;
 	private ImageView mArrowImageView;
 	private SimpleViewSwithcer mProgressBar;
 	private TextView mStatusTextView;
@@ -68,6 +68,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
 		mArrowImageView = (ImageView)findViewById(R.id.listview_header_arrow);
         line1= (LinearLayout) findViewById(R.id.line1);
+        line2= (LinearLayout) findViewById(R.id.line2);
         mStatusTextView = (TextView)findViewById(R.id.refresh_status_textview);
 
         //init the progress view
@@ -100,6 +101,13 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 		mHeaderTimeView = (TextView)findViewById(R.id.last_refresh_time);
 		measure(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 		mMeasuredHeight = getMeasuredHeight();
+
+
+
+        ZiMuView ziMuView=new ZiMuView(mContext);
+        line2.addView(ziMuView);
+
+
 	}
 
     public void setProgressStyle(int style) {
@@ -262,8 +270,15 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             circleView.SetInfo(progmess);
             line1.removeAllViews();
             line1.addView(circleView);
+
+
+
+
         }
-        Log.d("ArrowRefresheader", progmess + "         " + delta);
+
+
+
+//        Log.d("ArrowRefresheader", progmess + "         " + delta);
     }
 
     @Override
