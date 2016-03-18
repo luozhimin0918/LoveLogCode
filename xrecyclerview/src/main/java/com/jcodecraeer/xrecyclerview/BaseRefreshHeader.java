@@ -11,4 +11,5 @@ interface  BaseRefreshHeader {
     public final static int STATE_RELEASE_TO_REFRESH = 1;
     public final static int STATE_REFRESHING = 2;
     public final static int STATE_DONE = 3;
+    public final static int STATE_DRAW_CIRCLE = 4;
 }

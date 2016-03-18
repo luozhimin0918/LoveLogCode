@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import com.jcodecraeer.xrecyclerview.progressindicator.AVLoadingIndicatorView;
 import java.util.Date;
 
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader{
-	private LinearLayout mContainer;
+	private LinearLayout mContainer,line1;
 	private ImageView mArrowImageView;
 	private SimpleViewSwithcer mProgressBar;
 	private TextView mStatusTextView;
@@ -31,6 +32,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
 	private Animation mRotateUpAnim;
 	private Animation mRotateDownAnim;
+    private Animation mRotateAllAnim;
 	
 	private final int ROTATE_ANIM_DURATION = 180;
 
@@ -65,7 +67,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 		setGravity(Gravity.BOTTOM);
 
 		mArrowImageView = (ImageView)findViewById(R.id.listview_header_arrow);
-		mStatusTextView = (TextView)findViewById(R.id.refresh_status_textview);
+        line1= (LinearLayout) findViewById(R.id.line1);
+        mStatusTextView = (TextView)findViewById(R.id.refresh_status_textview);
 
         //init the progress view
 		mProgressBar = (SimpleViewSwithcer)findViewById(R.id.listview_header_progressbar);
@@ -74,12 +77,20 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         progressView.setIndicatorId(ProgressStyle.BallSpinFadeLoader);
         mProgressBar.setView(progressView);
 
+        mRotateAllAnim=new RotateAnimation(0.0f, 360.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        mRotateAllAnim.setDuration(800);
+        mRotateAllAnim.setRepeatCount(-1);
+        mRotateAllAnim.setFillAfter(false);
+
 
 		mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);
 		mRotateUpAnim.setDuration(ROTATE_ANIM_DURATION);
 		mRotateUpAnim.setFillAfter(true);
+
 		mRotateDownAnim = new RotateAnimation(-180.0f, 0.0f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);
@@ -106,8 +117,13 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         mArrowImageView.setImageResource(resid);
     }
 
-	public void setState(int state) {
-		if (state == mState) return ;
+
+    float progmess=30f;
+	public void setState(int state,float delta) {
+		if (state == mState){
+
+            return ;
+        }
 
 		if (state == STATE_REFRESHING) {	// 显示进度
 			mArrowImageView.clearAnimation();
@@ -122,6 +138,9 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 		}
 		
 		switch(state){
+            case STATE_DRAW_CIRCLE:
+
+                break;
             case STATE_NORMAL:
                 if (mState == STATE_RELEASE_TO_REFRESH) {
                     mArrowImageView.startAnimation(mRotateDownAnim);
@@ -130,6 +149,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                     mArrowImageView.clearAnimation();
                 }
                 mStatusTextView.setText(R.string.listview_header_hint_normal);
+
                 break;
             case STATE_RELEASE_TO_REFRESH:
                 if (mState != STATE_RELEASE_TO_REFRESH) {
@@ -137,12 +157,21 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                     mArrowImageView.startAnimation(mRotateUpAnim);
                     mStatusTextView.setText(R.string.listview_header_hint_release);
                 }
+
+
                 break;
             case     STATE_REFRESHING:
                 mStatusTextView.setText(R.string.refreshing);
+
+
+
+                progmess=95f;
+                drawCircle(0f);
+                circleView.startAnimation(mRotateAllAnim);//正在刷新旋转画的圆
                 break;
             case    STATE_DONE:
                 mStatusTextView.setText(R.string.refresh_done);
+                circleView.clearAnimation();//完成刷新，清除动画
                 break;
             default:
 		}
@@ -157,8 +186,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     @Override
 	public void refreshComplate(){
         mHeaderTimeView.setText(friendlyTime(new Date()));
-        setState(STATE_DONE);
-        new Handler().postDelayed(new Runnable(){
+        setState(STATE_DONE,0f);
+        new Handler().postDelayed(new Runnable() {
             public void run() {
                 reset();
             }
@@ -188,12 +217,53 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             setVisiableHeight((int) delta + getVisiableHeight());
             if (mState <= STATE_RELEASE_TO_REFRESH) { // 未处于刷新状态，更新箭头
                 if (getVisiableHeight() > mMeasuredHeight) {
-                    setState(STATE_RELEASE_TO_REFRESH);
+                    setState(STATE_RELEASE_TO_REFRESH, 0f);
+
                 }else {
-                    setState(STATE_NORMAL);
+                    setState(STATE_NORMAL, 0f);
+
                 }
+
+                if(getVisiableHeight()>150){
+                    drawCircle(delta);
+//                    Log.d("ArrowRefresheader", "         " + getVisiableHeight());
+                }else{
+                    progmess=30f;
+                    drawCircle(delta);
+                }
+
+
+
+//                Log.d("ArrowRefresheader", "    dd     " + delta);
+            }
+
+        }
+
+
+    }
+    CircleView circleView=new CircleView(getContext());
+    private void drawCircle(float delta) {
+
+
+        if(delta<0){
+            progmess-=1.5f;
+            if(progmess<30f){
+                progmess=30f;
             }
         }
+        if(delta>=1){
+            progmess+=1.5f;
+            if(progmess>95f){
+                progmess=95f;
+            }
+        }
+
+        if(progmess<=95f){
+            circleView.SetInfo(progmess);
+            line1.removeAllViews();
+            line1.addView(circleView);
+        }
+        Log.d("ArrowRefresheader", progmess + "         " + delta);
     }
 
     @Override
@@ -204,7 +274,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             isOnRefresh = false;
 
         if(getVisiableHeight() > mMeasuredHeight &&  mState < STATE_REFRESHING){
-            setState(STATE_REFRESHING);
+            setState(STATE_REFRESHING,0f);
             isOnRefresh = true;
         }
         // refreshing and header isn't shown fully. do nothing.
@@ -222,8 +292,9 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     }
 
     public void reset() {
+
         smoothScrollTo(0);
-        setState(STATE_NORMAL);
+        setState(STATE_NORMAL,0);
     }
 
     private void smoothScrollTo(int destHeight) {
