@@ -43,8 +43,12 @@ public class LoadingMoreFooter extends LinearLayout {
         setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         progressCon = new SimpleViewSwithcer(context);
-        progressCon.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        LinearLayout.LayoutParams vieLayoutParams =new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        vieLayoutParams.setMargins(0,80,0,80);
+        progressCon.setLayoutParams(vieLayoutParams);
+
 
        /* AVLoadingIndicatorView progressView = new  AVLoadingIndicatorView(this.getContext());
         progressView.setIndicatorColor(0xffB5B5B5);
@@ -66,6 +70,7 @@ public class LoadingMoreFooter extends LinearLayout {
         circleView.SetInfo(60f);
         progressCon.addView(ziMuView);
         progressCon.addView(circleView);
+
 
         addView(progressCon);
         mText = new TextView(context);
