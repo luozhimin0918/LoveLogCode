@@ -81,7 +81,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         mRotateAllAnim=new RotateAnimation(0.0f, 360.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                 0.5f);
-        mRotateAllAnim.setDuration(800);
+        mRotateAllAnim.setDuration(300);
         mRotateAllAnim.setRepeatCount(-1);
         mRotateAllAnim.setFillAfter(false);
 
@@ -173,7 +173,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
 
 
-                progmess=95f;
+                progmess=60f;
                 drawCircle(0f);
                 circleView.startAnimation(mRotateAllAnim);//正在刷新旋转画的圆
                 break;
