@@ -18,13 +18,15 @@ import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.progressindicator.AVLoadingIndicatorView;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader{
 	private LinearLayout mContainer,line1,line2;
 	private ImageView mArrowImageView;
 	private SimpleViewSwithcer mProgressBar;
-	private TextView mStatusTextView;
+	private TextView mStatusTextView,anaText;
 	private int mState = STATE_NORMAL;
     private Context mContext;
 	
@@ -70,6 +72,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         line1= (LinearLayout) findViewById(R.id.line1);
         line2= (LinearLayout) findViewById(R.id.line2);
         mStatusTextView = (TextView)findViewById(R.id.refresh_status_textview);
+        anaText= (TextView)findViewById(R.id.anaText);
 
         //init the progress view
 		mProgressBar = (SimpleViewSwithcer)findViewById(R.id.listview_header_progressbar);
@@ -158,6 +161,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                 }
                 mStatusTextView.setText(R.string.listview_header_hint_normal);
 
+
+
                 break;
             case STATE_RELEASE_TO_REFRESH:
                 if (mState != STATE_RELEASE_TO_REFRESH) {
@@ -186,6 +191,27 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 		
 		mState = state;
 	}
+
+
+
+   static  List<String> TitleList=new ArrayList<String>();
+    public  void showTitle(List<String> ttitleList) {
+        this.TitleList=ttitleList;
+
+    }
+    int titleNum=0;//下拉数据顺序
+    private void setTitle(){
+
+
+        if(TitleList.size()>0){
+            anaText.setText(TitleList.get(titleNum));
+        }
+
+        titleNum++;
+        if(titleNum>=TitleList.size()){
+            titleNum=0;
+        }
+    }
 
     public int getState() {
         return mState;
@@ -236,6 +262,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                     drawCircle(delta);
 //                    Log.d("ArrowRefresheader", "         " + getVisiableHeight());
                 }else{
+                    setTitle();
                     progmess=30f;
                     drawCircle(delta);
                 }

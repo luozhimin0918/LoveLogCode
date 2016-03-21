@@ -298,6 +298,10 @@ public class HomeFragment extends Fragment  {
         viewPager.startAutoScroll();
 
         isLoadReresh=true;
+
+
+
+
     }
     private void  initViewPagerRefresh(){
 
@@ -312,8 +316,7 @@ public class HomeFragment extends Fragment  {
     }
 
 
-
-    private void initFind() {
+     private void initFind() {
 
         newLoading.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,6 +337,10 @@ public class HomeFragment extends Fragment  {
         mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallPulse);
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
+         mRecyclerView.setTitlePull(MainActivity.strings);
+
+
+
 
        View header =   LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_header,null);
 
@@ -341,6 +348,9 @@ public class HomeFragment extends Fragment  {
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
+
+
+
                 initData();//刷新
 
 
@@ -350,6 +360,8 @@ public class HomeFragment extends Fragment  {
                         viewPager.startAutoScroll();
                     }
                 }, 500);*/
+
+
 
 
             }

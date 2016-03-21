@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class XRecyclerView extends RecyclerView {
 
@@ -149,6 +150,10 @@ public class XRecyclerView extends RecyclerView {
         if (mRefreshHeader != null){
             mRefreshHeader.setArrowImageView(resid);
         }
+    }
+
+    public void setTitlePull(List<String> strtitleList){
+        mRefreshHeader.showTitle(strtitleList);
     }
 
     @Override

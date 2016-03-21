@@ -5,16 +5,17 @@
     android:orientation="vertical"
     android:gravity="bottom" >
     <TextView
+        android:id="@+id/anaText"
         android:layout_gravity="center_horizontal"
         android:textColor="#fc1359"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="爱美更爱性价比 go go go go " />
+        android:textSize="16sp"
+        android:text="" />
     <LinearLayout
         android:id="@+id/listview_header_content"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"

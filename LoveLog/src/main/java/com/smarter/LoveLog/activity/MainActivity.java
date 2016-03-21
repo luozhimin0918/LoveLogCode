@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,6 +20,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+
+import com.alibaba.fastjson.JSON;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -29,11 +37,17 @@ import com.smarter.LoveLog.fragment.SelfFragment;
 import com.smarter.LoveLog.fragment.CommunityFragment;
 import com.smarter.LoveLog.fragment.ShopCarFragment;
 import com.smarter.LoveLog.fragment.HomeFragment;
+import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.home.DataStatus;
+import com.smarter.LoveLog.model.jsonModel.GuideImgData;
+import com.smarter.LoveLog.model.jsonModel.GuideImgInfo;
 import com.smarter.LoveLog.rongCloud.RongCloudEvent;
 import com.smarter.LoveLog.ui.TabEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -42,6 +56,9 @@ import cn.sharesdk.framework.ShareSDK;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Administrator on 2015/11/30.
@@ -91,6 +108,7 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 
 
         //
+        networkANA();//下拉数据数组
         getDataIntent();
 
 
@@ -432,5 +450,65 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 
 
 
+
+
+
+
+
+
+
+    /**
+     * 获取下拉标题数据
+     */
+  public  static   List<String> strings=new ArrayList<String>();
+    private void networkANA() {
+
+        String  url = "http://mapp.aiderizhi.com/?url=/ana";//
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject j=new JSONObject(response);
+
+                            JSONObject jtwo =  j.getJSONObject("data");
+
+                            strings.clear();
+                            for(int i=0;i<40;i++){
+                              String  str =  jtwo.getString("" + (1 + i));
+
+                                if(str!=null&&!str.equals("")){
+                                    strings.add(str);
+                                }
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("MainActivity", "response -> " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("MainActivity", error.getMessage(), error);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                //在这里设置需要post的参数
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("name1", "value1");
+                map.put("name2", "value2");
+                return map;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        stringRequest.setShouldCache(true);
+        mQueue.add(stringRequest);
+    }
 
 }
