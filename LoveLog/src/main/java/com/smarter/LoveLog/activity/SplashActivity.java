@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
@@ -397,7 +398,7 @@ private  void  loadingImage(){
                 public void run() {
                     TranslateAnimation Animation=new TranslateAnimation(0, -1500, 0, 0);
 
-                    Animation.setDuration(1000);//设置动画持续时间为3秒
+                    Animation.setDuration(800);//设置动画持续时间为3秒
                     Animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
@@ -414,7 +415,35 @@ private  void  loadingImage(){
 
                         }
                     });
-                    welcomeBg.startAnimation(Animation);
+
+
+                    AlphaAnimation inAlphaAnimationUp = new AlphaAnimation(1,0);
+                    inAlphaAnimationUp.setRepeatCount(0);//设置重复次数
+                    inAlphaAnimationUp.setFillAfter(true);//动画执行完后是否停留在执行完的状态
+                    inAlphaAnimationUp.setDuration(1000);
+                    inAlphaAnimationUp.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            welcomeBg.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+
+                    AnimationSet animationSet=new AnimationSet(true);
+//                    animationSet.addAnimation(Animation);
+                    animationSet.addAnimation(inAlphaAnimationUp);
+
+
+                    welcomeBg.startAnimation(animationSet);
 
 
                 }
