@@ -254,8 +254,8 @@ private  void  loadingImage(){
 
     if(startImgDataList!=null){
 
-        netWorkImageView.setDefaultImageResId(R.mipmap.welcome);
-        netWorkImageView.setErrorImageResId(R.mipmap.welcome);
+      /*  netWorkImageView.setDefaultImageResId(R.mipmap.welcome);
+        netWorkImageView.setErrorImageResId(R.mipmap.welcome);*/
         netWorkImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         netWorkImageView.setImageUrl(startImgDataList.get(0).getImg_url(), AppContextApplication.getInstance().getmImageLoader());
 
