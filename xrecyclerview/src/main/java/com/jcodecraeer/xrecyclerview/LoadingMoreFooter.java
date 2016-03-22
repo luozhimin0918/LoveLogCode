@@ -46,7 +46,7 @@ public class LoadingMoreFooter extends LinearLayout {
 
         LinearLayout.LayoutParams vieLayoutParams =new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        vieLayoutParams.setMargins(0,80,0,80);
+        vieLayoutParams.setMargins(0,25,0,25);
         progressCon.setLayoutParams(vieLayoutParams);
 
 
