@@ -336,6 +336,7 @@ public class HomeFragment extends Fragment  {
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallPulse);
         mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallPulse);
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
+        mRecyclerView.setLoadingMoreEnabled(false);
 
          mRecyclerView.setTitlePull(MainActivity.strings);
 
