@@ -26,38 +26,15 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class MakeOutOrderActivity extends BaseFragmentActivity implements View.OnClickListener {
-    String Tag = "MakeOutOrderActivity";
-    @Bind(R.id.iv_adapter_grid_pic)
-    NetworkImageView iv_adapter_grid_pic;
-    @Bind(R.id.goodDes)
-    TextView goodDes;
-    @Bind(R.id.backBUt)
-    ImageView backBUt;
-    @Bind(R.id.tv_top_title)
-    TextView tvTopTitle;
-    @Bind(R.id.tv_right_title)
-    TextView tvRightTitle;
-    @Bind(R.id.addressStr)
-    TextView addressStr;
-    @Bind(R.id.addressRelatiBut)
-    LinearLayout addressRelatiBut;
-    @Bind(R.id.numBer)
-    TextView numBer;
-    @Bind(R.id.goodsType)
-    TextView goodsType;
-    @Bind(R.id.shopPrice)
-    TextView shopPrice;
-    @Bind(R.id.buy_now)
-    TextView buyNow;
-    @Bind(R.id.xuanfuBar)
-    LinearLayout xuanfuBar;
+public class PayMoneyActivity extends BaseFragmentActivity implements View.OnClickListener {
+    String Tag = "PayMoneyActivity";
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_out_order_data_view);
+        setContentView(R.layout.activity_pay_money_view);
         ButterKnife.bind(this);
 
 
@@ -73,8 +50,7 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
     }
 
     private void setListen() {
-        backBUt.setOnClickListener(this);
-        buyNow.setOnClickListener(this);
+
     }
 
     SessionData sessionData;
@@ -90,7 +66,7 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
 
 //                networkPersonl(sessionData.getUid(), sessionData.getSid());
 
-                Log.d("MakeOutOrderActivity", "  Session  " + sessionData.getUid() + "      " + sessionData.getSid());
+                Log.d("PayMoneyActivity", "  Session  " + sessionData.getUid() + "      " + sessionData.getSid());
             }
 
         } else {
@@ -108,30 +84,10 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
             goodsData = (GoodsData) intent.getSerializableExtra("goods");
             // Toast.makeText(this,str+"",Toast.LENGTH_LONG).show();
             if (goodsData != null) {
-                initRecycleViewVertical();
             }
         }
 
 
-    }
-
-    public void initRecycleViewVertical() {
-
-        //产品图片
-        iv_adapter_grid_pic.setDefaultImageResId(R.drawable.loading_small);
-        iv_adapter_grid_pic.setErrorImageResId(R.drawable.loading_small);
-        String UserimageUrl = "";
-        if (goodsData.getImg().getThumb() != null) {
-            UserimageUrl = goodsData.getImg().getThumb();
-        }
-
-        if (mQueue.getCache().get(UserimageUrl) == null) {
-            iv_adapter_grid_pic.startAnimation(ImagePagerAdapter.getInAlphaAnimation(2000));
-        }
-        iv_adapter_grid_pic.setImageUrl(UserimageUrl, AppContextApplication.getInstance().getmImageLoader());
-
-
-        goodDes.setText(goodsData.getGoods_name());
     }
 
 
@@ -139,16 +95,7 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.backBUt:
-                finish();
-                break;
-            case R.id.buy_now:
-                Intent intent = new Intent(this, PayMoneyActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("goods",goodsData);
-//                intent.putExtras(bundle);
-                this.startActivity(intent);
-                break;
+
         }
     }
 
@@ -166,7 +113,7 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
 
 
 
-        Log.d("MakeOutOrderActivity", sessinStr + "      ");
+        Log.d("PayMoneyActivity", sessinStr + "      ");
 
 
         FastJsonRequest<PersonalDataInfo> fastJsonCommunity = new FastJsonRequest<PersonalDataInfo>(Request.Method.POST, url, PersonalDataInfo.class, null, new Response.Listener<PersonalDataInfo>() {
@@ -179,14 +126,14 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
                     if(user!=null){
                         SharedPreferences.getInstance().putString("user",JSON.toJSONString(user));
                         initRecycleViewVertical();//ok
-                        Log.d("MakeOutOrderActivity", "用户信息：   " + JSON.toJSONString(user)+ "++++succeed");
+                        Log.d("PayMoneyActivity", "用户信息：   " + JSON.toJSONString(user)+ "++++succeed");
                     }
 
 
                 } else {
 
                     // 请求失败
-                    Log.d("MakeOutOrderActivity", "succeded=00000  " + JSON.toJSONString(status) + "");
+                    Log.d("PayMoneyActivity", "succeded=00000  " + JSON.toJSONString(status) + "");
                     Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
 
                 }
@@ -196,7 +143,7 @@ public class MakeOutOrderActivity extends BaseFragmentActivity implements View.O
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Log.d("MakeOutOrderActivity", "errror" + volleyError.toString() + "");
+                Log.d("PayMoneyActivity", "errror" + volleyError.toString() + "");
             }
         });
         fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,

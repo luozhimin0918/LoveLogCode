@@ -197,6 +197,11 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".activity.PayMoneyActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+
+        </activity>
 
 
 
