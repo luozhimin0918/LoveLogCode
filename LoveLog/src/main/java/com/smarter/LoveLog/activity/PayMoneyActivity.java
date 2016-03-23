@@ -12,22 +12,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
-import com.smarter.LoveLog.adapter.ImagePagerAdapter;
-import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
+import com.smarter.LoveLog.http.ZhifuPay;
 import com.smarter.LoveLog.model.goods.GoodsData;
 import com.smarter.LoveLog.model.loginData.SessionData;
+import com.smarter.LoveLog.utills.DeviceUtil;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2015/11/30.
  */
 public class PayMoneyActivity extends BaseFragmentActivity implements View.OnClickListener {
     String Tag = "PayMoneyActivity";
+    @Bind(R.id.backBUt)
+    ImageView backBUt;
+    @Bind(R.id.tv_top_title)
+    TextView tvTopTitle;
+    @Bind(R.id.tv_right_title)
+    TextView tvRightTitle;
+    @Bind(R.id.zhifuPay)
+    LinearLayout zhifuPay;
+    @Bind(R.id.weixinPay)
+    LinearLayout weixinPay;
+    @Bind(R.id.yinglianPay)
+    LinearLayout yinglianPay;
+
+
+
 
 
 
@@ -40,7 +60,6 @@ public class PayMoneyActivity extends BaseFragmentActivity implements View.OnCli
 
         getDataIntent();
 
-        setListen();
 
     }
 
@@ -49,55 +68,67 @@ public class PayMoneyActivity extends BaseFragmentActivity implements View.OnCli
         super.onResume();
     }
 
-    private void setListen() {
 
-    }
 
-    SessionData sessionData;
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void intData() {
 
-        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
-        if (isLogin) {
-            String sessionString = SharedPreferences.getInstance().getString("session", "");
-            sessionData = JSON.parseObject(sessionString, SessionData.class);
-            if (sessionData != null) {
+    /**
+     * 支付宝支付
+     */
+    private void payZhifu() {
 
-//                networkPersonl(sessionData.getUid(), sessionData.getSid());
 
-                Log.d("PayMoneyActivity", "  Session  " + sessionData.getUid() + "      " + sessionData.getSid());
-            }
-
-        } else {
-            Toast.makeText(getApplicationContext(), "未登录，请先登录", Toast.LENGTH_SHORT).show();
+        if(chekIsConnection()){
+            ZhifuPay zhifuPay=new ZhifuPay(this,PayMoneyActivity.this);
+            zhifuPay.payTo();
         }
 
+    }
+
+
+    private Boolean chekIsConnection(){
+        if(DeviceUtil.checkConnection(this)){
+           return true;
+        } else {
+            Toast.makeText(getApplicationContext(), "连接不到网络", Toast.LENGTH_SHORT).show();
+            return false;
+
+        }
 
     }
 
-    GoodsData goodsData;
+
 
     private void getDataIntent() {
         Intent intent = getIntent();
         if (intent != null) {
-            goodsData = (GoodsData) intent.getSerializableExtra("goods");
-            // Toast.makeText(this,str+"",Toast.LENGTH_LONG).show();
-            if (goodsData != null) {
-            }
+//            goodsData = (GoodsData) intent.getSerializableExtra("goods");
+//            // Toast.makeText(this,str+"",Toast.LENGTH_LONG).show();
+
+
         }
 
 
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-
+    @OnClick({R.id.zhifuPay, R.id.weixinPay, R.id.yinglianPay,R.id.backBUt})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.zhifuPay:
+                payZhifu();
+                break;
+            case R.id.weixinPay:
+                break;
+            case R.id.yinglianPay:
+                break;
+            case  R.id.backBUt:
+                finish();
+                break;
         }
     }
+
+
 
 
     /**
