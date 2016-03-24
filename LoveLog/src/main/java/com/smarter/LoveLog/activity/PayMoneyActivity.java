@@ -12,21 +12,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.ZhifuPay;
 import com.smarter.LoveLog.model.goods.GoodsData;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.internal.Util;
 
 /**
  * Created by Administrator on 2015/11/30.
@@ -84,7 +98,85 @@ public class PayMoneyActivity extends BaseFragmentActivity implements View.OnCli
         }
 
     }
+    /**
+     * 微信支付
+     */
+    private void payWeixin() {
 
+
+        if(chekIsConnection()){
+            weixinPay();
+        }
+
+    }
+
+
+    private IWXAPI api;
+    private void weixinPay() {
+        weixinPay.setEnabled(false);
+        api = WXAPIFactory.createWXAPI(this, "wxb4ba3c02aa476ea1");
+        String url = "http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
+        networkWeixinDiandang(url);
+        weixinPay.setEnabled(true);
+
+    }
+
+
+    private void networkWeixinDiandang(String url) {
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject json=new JSONObject(response);
+                            if(null != json && !json.has("retcode") ){
+                                PayReq req = new PayReq();
+                                //req.appId = "wxf8b4f85f3a794e77";  // 测试用appId
+                                req.appId			= json.getString("appid");
+                                req.partnerId		= json.getString("partnerid");
+                                req.prepayId		= json.getString("prepayid");
+                                req.nonceStr		= json.getString("noncestr");
+                                req.timeStamp		= json.getString("timestamp");
+                                req.packageValue	= json.getString("package");
+                                req.sign			= json.getString("sign");
+                                req.extData			= "app data"; // optional
+                                Toast.makeText(PayMoneyActivity.this, "正常调起支付", Toast.LENGTH_SHORT).show();
+                                // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+                                api.sendReq(req);
+                            }else{
+                                Log.d("PAY_GET", "返回错误"+json.getString("retmsg"));
+                                Toast.makeText(PayMoneyActivity.this, "返回错误"+json.getString("retmsg"), Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("PayMoneyActivity", "response -> " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("PayMoneyActivity", error.getMessage(), error);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                //在这里设置需要post的参数
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("name1", "value1");
+                map.put("name2", "value2");
+                return map;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        stringRequest.setShouldCache(true);
+        mQueue.add(stringRequest);
+    }
 
     private Boolean chekIsConnection(){
         if(DeviceUtil.checkConnection(this)){
@@ -119,6 +211,7 @@ public class PayMoneyActivity extends BaseFragmentActivity implements View.OnCli
                 payZhifu();
                 break;
             case R.id.weixinPay:
+                payWeixin();
                 break;
             case R.id.yinglianPay:
                 break;
@@ -131,60 +224,6 @@ public class PayMoneyActivity extends BaseFragmentActivity implements View.OnCli
 
 
 
-    /**
-     * 获取个人资料
-     *//*
-    User  user;
-    private void networkPersonl(String uid,String sid) {
-        String url = "http://mapp.aiderizhi.com/?url=/user/info";//
-        Map<String, String> mapTou = new HashMap<String, String>();
-        String  sessinStr ="{\"session\":{\"uid\":\""+uid+"\",\"sid\":\""+sid+"\"}}";
-        mapTou.put("json", sessinStr);
-
-
-
-
-        Log.d("PayMoneyActivity", sessinStr + "      ");
-
-
-        FastJsonRequest<PersonalDataInfo> fastJsonCommunity = new FastJsonRequest<PersonalDataInfo>(Request.Method.POST, url, PersonalDataInfo.class, null, new Response.Listener<PersonalDataInfo>() {
-            @Override
-            public void onResponse(PersonalDataInfo personalDataInfo) {
-
-                DataStatus status = personalDataInfo.getStatus();
-                if (status.getSucceed() == 1) {
-                    user = personalDataInfo.getData();
-                    if(user!=null){
-                        SharedPreferences.getInstance().putString("user",JSON.toJSONString(user));
-                        initRecycleViewVertical();//ok
-                        Log.d("PayMoneyActivity", "用户信息：   " + JSON.toJSONString(user)+ "++++succeed");
-                    }
-
-
-                } else {
-
-                    // 请求失败
-                    Log.d("PayMoneyActivity", "succeded=00000  " + JSON.toJSONString(status) + "");
-                    Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
-
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d("PayMoneyActivity", "errror" + volleyError.toString() + "");
-            }
-        });
-        fastJsonCommunity.setRetryPolicy(new DefaultRetryPolicy(5000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        //fastJsonCommunity.setTag(TAG);
-        fastJsonCommunity.setParams(mapTou);
-        fastJsonCommunity.setShouldCache(true);
-        mQueue.add(fastJsonCommunity);
-    }
-*/
 
 
 }

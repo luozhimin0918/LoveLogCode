@@ -28,14 +28,27 @@ public class ZhifuPay {
     Context mContext;
     Activity mActivity;
     // 商户PID
-    public static final String PARTNER = "";
+    public static final String PARTNER = "2016032301235984";
     // 商户收款账号
-    public static final String SELLER = "";
+    public static final String SELLER = "1261825671@qq.com";
     // 商户私钥，pkcs8格式
-    public static final String RSA_PRIVATE = "";
+    public static final String RSA_PRIVATE = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBALn51MqWLxfQYylY" +
+            "Za7hwBivjfpG9ZnRCiqJ/70IG258Cvak8ND/0P8lWCVM4R+9xd8W/8UKpTsEyDz0" +
+            "yUMIhxeQY5y79asVnihyd8v/Pm5tDwt0OJXKGmzRGXhIIb+60Gjt7CUu+wLpBcRu" +
+            "QzQmW9iz3km0Gp1NOBXTDr39OWjvAgMBAAECgYB59yJaigvwbjXaE6L8AgldJyTR" +
+            "kl/XtIQaSc5yRjLXTnpSLvHP3zVNX0xjifvKOUbfe9HZg5XBEu3PLCoh0CHnbesA" +
+            "MJocxiBWbgRoeKNSsrkKGbNOhtkfGFtjd3g76ZEV+0RkGKWBG5lOk/urJJZg9Hrs" +
+            "c8bmE2rj9SpMS2yzQQJBAPayQHTcUXa5LrrOvu/Y5FNqZImNxehLccwENZl/0GWs" +
+            "WDV4A9FKeG9TBYVl5lIe00swFZXim/yTVpkj3RfVqecCQQDA/VmKS7VAFoc5Xuqg" +
+            "cdZN5J4JlXCLlnrVFaqjON7DceFs/FFqNkjCZdlxaotFtTuqUbWRM8buDL851SQx" +
+            "Bze5AkEAp88xEU0dDQmCxAgG0dhT2Hoy0W7jBNTtH75tR3EuLTtC9Xwh/KgPrIpo" +
+            "4wkh1xKo4ChhRofTW8hNy/YdWy04WQJAViVBANCGmZL0zZEm3nOyG5b/THvefxCu" +
+            "x8siHjXWihudao6+sNCGbfAUveG3RWh+t6o9iBE6rSwXd/NCcngsUQI/KM7ebnMg" +
+            "7ZiHval4WmCSPNF+jWnKxzesDI53KrybxsJXxpJk7E8eOvCeuLL/FZFThqlxadLM" +
+            "OvU2px4yl+Bs";
 
     // 支付宝公钥
-    public static final String RSA_PUBLIC = "";
+    public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
     private static final int SDK_PAY_FLAG = 1;
 
 
