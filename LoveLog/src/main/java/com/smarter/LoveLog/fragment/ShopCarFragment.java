@@ -186,7 +186,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 //            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
             }else{
 
-                if(isLoginTag){
+                if(isLoginTag){//isLoginTag为true时返回点购物车之前的页面
                     onShopCarLonginListener.onBackShopCarOK(false);
                     isLoginTag=false;
                 }
