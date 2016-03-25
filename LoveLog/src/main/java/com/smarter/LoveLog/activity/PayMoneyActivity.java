@@ -1,8 +1,6 @@
 package com.smarter.LoveLog.activity;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,41 +9,38 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
+import com.smarter.LoveLog.db.ConstantsWeixin;
+import com.tencent.mm.sdk.constants.Build;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.smarter.LoveLog.R;
-import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.ZhifuPay;
-import com.smarter.LoveLog.model.goods.GoodsData;
-import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.utills.DeviceUtil;
+import com.tencent.mm.sdk.modelbase.BaseReq;
+import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.internal.Util;
 
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class PayMoneyActivity extends BaseFragmentActivity implements View.OnClickListener {
+public class PayMoneyActivity extends BaseFragmentActivity implements View.OnClickListener{
     String Tag = "PayMoneyActivity";
     @Bind(R.id.backBUt)
     ImageView backBUt;
@@ -111,13 +106,21 @@ public class PayMoneyActivity extends BaseFragmentActivity implements View.OnCli
     }
 
 
-    private IWXAPI api;
+    // APP_ID 替换为你的应用从官方网站申请到的合法appId
+
     private void weixinPay() {
         weixinPay.setEnabled(false);
-        api = WXAPIFactory.createWXAPI(this, "wxb4ba3c02aa476ea1");
+
+
         String url = "http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
-        networkWeixinDiandang(url);
-        weixinPay.setEnabled(true);
+        boolean isPaySupported = MainActivity.api.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
+        if(isPaySupported){
+            networkWeixinDiandang(url);
+            weixinPay.setEnabled(true);
+        }else{
+            Toast.makeText(PayMoneyActivity.this, "当前微信版本不支持支付", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -133,7 +136,7 @@ public class PayMoneyActivity extends BaseFragmentActivity implements View.OnCli
                             JSONObject json=new JSONObject(response);
                             if(null != json && !json.has("retcode") ){
                                 PayReq req = new PayReq();
-                                //req.appId = "wxf8b4f85f3a794e77";  // 测试用appId
+//                                req.appId = ConstantsWeixin.APP_ID;  // 测试用appId
                                 req.appId			= json.getString("appid");
                                 req.partnerId		= json.getString("partnerid");
                                 req.prepayId		= json.getString("prepayid");
@@ -144,7 +147,7 @@ public class PayMoneyActivity extends BaseFragmentActivity implements View.OnCli
                                 req.extData			= "app data"; // optional
                                 Toast.makeText(PayMoneyActivity.this, "正常调起支付", Toast.LENGTH_SHORT).show();
                                 // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
-                                api.sendReq(req);
+                                MainActivity.api.sendReq(req);
                             }else{
                                 Log.d("PAY_GET", "返回错误"+json.getString("retmsg"));
                                 Toast.makeText(PayMoneyActivity.this, "返回错误"+json.getString("retmsg"), Toast.LENGTH_SHORT).show();
@@ -220,9 +223,6 @@ public class PayMoneyActivity extends BaseFragmentActivity implements View.OnCli
                 break;
         }
     }
-
-
-
 
 
 

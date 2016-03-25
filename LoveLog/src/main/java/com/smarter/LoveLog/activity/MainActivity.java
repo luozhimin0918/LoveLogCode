@@ -33,6 +33,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.ConstantsWeixin;
 import com.smarter.LoveLog.fragment.SelfFragment;
 import com.smarter.LoveLog.fragment.CommunityFragment;
 import com.smarter.LoveLog.fragment.ShopCarFragment;
@@ -43,6 +44,8 @@ import com.smarter.LoveLog.model.jsonModel.GuideImgData;
 import com.smarter.LoveLog.model.jsonModel.GuideImgInfo;
 import com.smarter.LoveLog.rongCloud.RongCloudEvent;
 import com.smarter.LoveLog.ui.TabEntity;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +95,9 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
     private int[] mIconSelectIds = {
             R.mipmap.home_selected, R.mipmap.community_selected,
             R.mipmap.car_selected, R.mipmap.self_selected};
+
+
+    public static  IWXAPI api;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -107,7 +113,8 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 
 
 
-        //
+
+        initWeixinAPI();//初始化微信api
         networkANA();//下拉数据数组
         getDataIntent();
 
@@ -118,6 +125,11 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 //        init();
 //        setListen();
 //        setTabSelection(0);
+    }
+
+    private void initWeixinAPI() {
+        api = WXAPIFactory.createWXAPI(this, ConstantsWeixin.APP_ID, false);
+        api.registerApp(ConstantsWeixin.APP_ID);
     }
 
     String MainTag ="";

@@ -33,6 +33,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
       <!--  android:windowSoftInputMode="stateVisible|adjustResize"-->
             <activity android:name="com.smarter.LoveLog.activity.MainActivity"
@@ -201,11 +203,26 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait">
 
+
+        </activity>
+
+
+
+        <!--微信支付支付完界面-->
+        <activity android:name="net.sourceforge.simcpux.wxapi.WXPayEntryActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:exported="true"
+            android:screenOrientation="portrait">
+
         </activity>
 
 
 
 
+
+
+        <!--融云客服-->
         <activity android:name=".activity.ConversationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
