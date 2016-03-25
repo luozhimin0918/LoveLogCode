@@ -182,8 +182,9 @@
                         android:layout_gravity="left|center_vertical"
                         android:layout_height="wrap_content"
                         android:background="@mipmap/tencent"
-                    android:id="@+id/weixinLogin" />
+                       android:id="@+id/weixinLogin" />
                 <ImageView
+                    android:id="@+id/qqLogin"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_height="wrap_content"
@@ -191,6 +192,7 @@
                         android:layout_marginRight="30dp"
                         android:background="@mipmap/qq" />
                 <ImageView
+                        android:id="@+id/xinlanLogin"
                         android:layout_width="wrap_content"
                         android:layout_gravity="right|center_vertical"
                         android:layout_height="wrap_content"
