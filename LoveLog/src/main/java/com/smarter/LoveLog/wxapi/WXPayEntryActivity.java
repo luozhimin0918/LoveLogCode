@@ -1,4 +1,4 @@
-package net.sourceforge.simcpux.wxapi;
+package com.smarter.LoveLog.wxapi;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

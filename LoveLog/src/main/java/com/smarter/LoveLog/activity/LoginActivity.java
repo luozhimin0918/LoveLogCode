@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -29,6 +30,11 @@ import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.LoginDataActi;
 import com.smarter.LoveLog.model.loginData.LoginDataInfo;
+import com.tencent.mm.sdk.constants.ConstantsAPI;
+import com.tencent.mm.sdk.modelbase.BaseReq;
+import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +46,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class LoginActivity extends BaseFragmentActivity implements View.OnClickListener {
+public class LoginActivity extends BaseFragmentActivity implements View.OnClickListener{
     String Tag = "LoginActivity";
     @Bind(R.id.logon)
     LinearLayout logon;
@@ -221,6 +227,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
 
 
 
+
     class EditChangedListener implements TextWatcher {
         private CharSequence temp;//监听前的文本
         private int editStart;//光标开始位置
@@ -262,5 +269,39 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
      * 微信登录
      */
     private void weixinLoginMoth() {
+        // send oauth request
+        final SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_love_log_test";
+//        req.openId = getOpenId();
+
+        MainActivity.api.sendReq(req);
+
     }
+
+  /*  @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        setIntent(intent);
+        MainActivity.api.handleIntent(intent, this);
+    }
+    @Override
+    public void onReq(BaseReq baseReq) {
+
+    }
+
+    @Override
+    public void onResp(BaseResp baseResp) {
+        Log.d("loginActivity","onRespBase"+baseResp.errCode);
+
+
+        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setMessage(getString(R.string.pay_result_callback_msg, String.valueOf(baseResp.errCode)));
+            builder.show();
+        }
+
+    }*/
 }
