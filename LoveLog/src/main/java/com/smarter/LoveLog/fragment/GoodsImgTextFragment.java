@@ -61,6 +61,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
+@SuppressLint("ValidFragment")
 public class GoodsImgTextFragment extends Fragment{
     protected WeakReference<View> mRootView;
     private View view;
@@ -91,9 +92,10 @@ public class GoodsImgTextFragment extends Fragment{
     McoyScrollView mcoyScrollView;
     McoySnapPageLayout mcoySnapPageLayout;
 
-    public GoodsImgTextFragment(){
 
+    public GoodsImgTextFragment() {
     }
+
     public GoodsImgTextFragment(McoySnapPageLayout mcoySnapPageLayout,McoyScrollView mcoyScrollView,String url) {
         this.url = url;
         this.mcoyScrollView=mcoyScrollView;
