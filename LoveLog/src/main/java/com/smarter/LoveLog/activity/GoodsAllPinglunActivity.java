@@ -160,6 +160,7 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
                 }
             }
         });
+        pinglunEdit.setOnClickListener(this);
     }
 
 
@@ -482,6 +483,14 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
                  }
                */
                  break;
+            case  R.id.et_sendmessage:
+
+                Intent intent2 = new Intent(mContext, GoodsAllPinglunSendActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("allpinglun", promotePostsData);
+                intent2.putExtras(bundle);
+                mContext.startActivity(intent2);
+                break;
 
 
 

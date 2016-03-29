@@ -59,18 +59,17 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_margin="@dimen/space_10"
-                android:background="@color/white"
+                android:layout_height="match_parent"
+                android:background="@color/connet_bgColor"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:gravity="left" >
+                >
                 <EditText
                     android:id="@+id/et_sendmessage"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/yuanjiao_white_bg"
-                    android:layout_weight="1"
+                    android:layout_height="200dp"
+                    android:background="@color/white"
+                    android:layout_margin="@dimen/space_10"
                     android:hint="请写下对产品的感受吧，对他人帮助很大哦。"
                     android:padding="@dimen/space_5"
                     android:gravity="top"
