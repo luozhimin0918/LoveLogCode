@@ -105,7 +105,6 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
 
 
     private RecyclePinglunGoodsAdapter mAdapter;
-//    private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2,R.mipmap.list1,R.mipmap.list2};
 
 
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
@@ -130,7 +129,7 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
         setContentView(R.layout.activity_invitation_pinglun_all_view);
         ButterKnife.bind(this);
         mContext=this;
-        getDataIntent();
+
         setListen();
 
     }
@@ -138,7 +137,15 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     private void setListen() {
         backBUt.setOnClickListener(this);
         fasongText.setOnClickListener(this);
+        pinglunEdit.setOnClickListener(this);
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDataIntent();
     }
 
     private void intData() {
@@ -478,6 +485,15 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
                  }
 
                  break;
+             case  R.id.et_sendmessage:
+
+                 Intent intent2 = new Intent(this, GoodsAllPinglunSendActivity.class);
+                 Bundle bundle = new Bundle();
+                 bundle.putSerializable("allpinglun",promotePostsData);
+                 intent2.putExtras(bundle);
+                 this.startActivity(intent2);
+                 break;
+
          }
     }
 
