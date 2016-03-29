@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,9 +51,9 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class GoodsAllPinglunActivity extends BaseFragmentActivity implements View.OnClickListener{
-    String Tag= "GoodsAllPinglunActivity";
-    Context  mContext;
+public class GoodsAllPinglunActivity extends BaseFragmentActivity implements View.OnClickListener {
+    String Tag = "GoodsAllPinglunActivity";
+    Context mContext;
 
 
     /**
@@ -78,9 +79,6 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     TextView loadingText;
 
 
-
-
-
     @Bind(R.id.progressLinear)
     LinearLayout progressLinear;
 
@@ -95,11 +93,13 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
 
     @Bind(R.id.et_sendmessage)
     EditText pinglunEdit;
+    @Bind(R.id.btn_face)
+    ImageButton btnFace;
 
-
-
-
-
+    @Bind(R.id.btn_send_linear)
+    LinearLayout btn_send_linear;
+    @Bind(R.id.rl_input)
+    LinearLayout rl_input;
 
 
 
@@ -107,7 +107,7 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     private RecyclePinglunGoodsAdapter mAdapter;
 
 
-    int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
+    int loadingTag = 2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +117,8 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
             @Override
             public void run() {
                 /** 表情集合 */
-                List<List<ChatEmoji>> emojis  =FaceConversionUtil.getInstace().emojiLists;
-                if(emojis.size()<=0){
+                List<List<ChatEmoji>> emojis = FaceConversionUtil.getInstace().emojiLists;
+                if (emojis.size() <= 0) {
                     FaceConversionUtil.getInstace().getFileText(getApplication());
                 }
 
@@ -128,7 +128,13 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
 
         setContentView(R.layout.activity_invitation_pinglun_all_view);
         ButterKnife.bind(this);
-        mContext=this;
+        mContext = this;
+
+
+        //隐藏这些按钮
+        btnFace.setVisibility(View.GONE);
+        btn_send_linear.setVisibility(View.GONE);
+
 
         setListen();
 
@@ -137,8 +143,23 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     private void setListen() {
         backBUt.setOnClickListener(this);
         fasongText.setOnClickListener(this);
-        pinglunEdit.setOnClickListener(this);
+        pinglunEdit.setOnFocusChangeListener(new android.view.View.
+                OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    // 此处为得到焦点时的处理内容
+                    Intent intent2 = new Intent(mContext, GoodsAllPinglunSendActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("allpinglun", promotePostsData);
+                    intent2.putExtras(bundle);
+                    mContext.startActivity(intent2);
 
+                } else {
+                    // 此处为失去焦点时的处理内容
+                }
+            }
+        });
     }
 
 
@@ -151,8 +172,6 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     private void intData() {
 
 
-
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -161,13 +180,11 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
         mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
 
 
-
-
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 loadingTag = 2;//重新加载
-                page=1;
+                page = 1;
                 initData(promotePostsData.getId());
 //                new Handler().postDelayed(new Runnable() {
 //                    public void run() {
@@ -196,29 +213,24 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
         });
 
 
+        if (promotePostDateList != null && promotePostDateList.size() > 0) {
+            mAdapter = new RecyclePinglunGoodsAdapter(promotePostDateList, mContext);
 
-
-       if(promotePostDateList!=null&&promotePostDateList.size()>0){
-           mAdapter = new RecyclePinglunGoodsAdapter(promotePostDateList,mContext);
-
-           mRecyclerView.setAdapter(mAdapter);
-       }
+            mRecyclerView.setAdapter(mAdapter);
+        }
 
     }
 
 
-
     PromotePostsData promotePostsData;//上个activity传来的数据
+
     private void getDataIntent() {
         Intent intent = getIntent();
-        if(intent!=null){
-            promotePostsData= (PromotePostsData) intent.getSerializableExtra("allpinglun");
-
+        if (intent != null) {
+            promotePostsData = (PromotePostsData) intent.getSerializableExtra("allpinglun");
 
 
             newWait();
-
-
 
 
         }
@@ -227,7 +239,7 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     }
 
     private void newWait() {
-        if(DeviceUtil.checkConnection(mContext)){
+        if (DeviceUtil.checkConnection(mContext)) {
             //加载动画
             progressLinear.setVisibility(View.VISIBLE);
             AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
@@ -239,7 +251,7 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
 
             initData(promotePostsData.getId());
 
-        }else{
+        } else {
             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
             mRecyclerView.setVisibility(View.GONE);
             networkInfo.setVisibility(View.VISIBLE);
@@ -254,69 +266,62 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
 
 
     List<CmtGoods> promotePostDateList;//本类帖子 分类里所有数据
-    public  int page=1;
+    public int page = 1;
+
     private void initData(final String id) {
-        String url ="http://mapp.aiderizhi.com/?url=/comment/list";//
+        String url = "http://mapp.aiderizhi.com/?url=/comment/list";//
 
         Map<String, String> map = new HashMap<String, String>();
 
 
-
-
-        if(loadingTag==-1){
+        if (loadingTag == -1) {
             map = new HashMap<String, String>();
-            PaginationJson paginationJson=new PaginationJson();
+            PaginationJson paginationJson = new PaginationJson();
             paginationJson.setCount("10");
-            paginationJson.setPage((++page)+"");
+            paginationJson.setPage((++page) + "");
             String string = JSON.toJSONString(paginationJson);
-            String  d="{\"id\":\""+id+"\",\"pagination\":"+string+" ,\"type\":\"0\"}";
+            String d = "{\"id\":\"" + id + "\",\"pagination\":" + string + " ,\"type\":\"0\"}";
             map.put("json", d);
             Log.d("pingluActivity", d + "》》》》");
         }
-        if(loadingTag==2){//第一次加载数据
+        if (loadingTag == 2) {//第一次加载数据
             map = new HashMap<String, String>();
-            String oneString ="{\"type\":\"0\",\"id\":\""+id+"\"}";
-            map.put("json",oneString);
+            String oneString = "{\"type\":\"0\",\"id\":\"" + id + "\"}";
+            map.put("json", oneString);
             Log.d("pingluActivity", oneString + "》》》》");
         }
 
 
-
         RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
-       FastJsonRequest<InvitationDataPinglunActi> fastJsonCommunity=new FastJsonRequest<InvitationDataPinglunActi>(Request.Method.POST,url,InvitationDataPinglunActi.class,null,new Response.Listener<InvitationDataPinglunActi>()
-        {
+        FastJsonRequest<InvitationDataPinglunActi> fastJsonCommunity = new FastJsonRequest<InvitationDataPinglunActi>(Request.Method.POST, url, InvitationDataPinglunActi.class, null, new Response.Listener<InvitationDataPinglunActi>() {
             @Override
             public void onResponse(InvitationDataPinglunActi pinglunActi) {
 
-                DataStatus status=pinglunActi.getStatus();
-                if(status.getSucceed()==1){
+                DataStatus status = pinglunActi.getStatus();
+                if (status.getSucceed() == 1) {
 
-                   progressLinear.setVisibility(View.GONE);
-
-
-                    if(loadingTag==-1){
+                    progressLinear.setVisibility(View.GONE);
 
 
-                        List<CmtGoods> p=pinglunActi.getData();
-                        Log.d("pingluActivity", "" + promotePostDateList.size() + "1111++++promotePostDateList" );
-                        for(int i=0;i<p.size();i++){
+                    if (loadingTag == -1) {
+
+
+                        List<CmtGoods> p = pinglunActi.getData();
+                        Log.d("pingluActivity", "" + promotePostDateList.size() + "1111++++promotePostDateList");
+                        for (int i = 0; i < p.size(); i++) {
                             promotePostDateList.add(p.get(i));
                         }
-                        Log.d("pingluActivity", "" + promotePostDateList.size() + "2222++++promotePostDateList" );
-
-
-
-
+                        Log.d("pingluActivity", "" + promotePostDateList.size() + "2222++++promotePostDateList");
 
 
                         mRecyclerView.loadMoreComplete();
                     }
-                    if(loadingTag==2){
-                        promotePostDateList=pinglunActi.getData();
+                    if (loadingTag == 2) {
+                        promotePostDateList = pinglunActi.getData();
 
-                        if(promotePostDateList!=null&&promotePostDateList.size()>0){
+                        if (promotePostDateList != null && promotePostDateList.size() > 0) {
                             intData();//初始界面
-                        }else{
+                        } else {
                             progressLinear.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.GONE);
                             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
@@ -330,7 +335,6 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
                     }
 
 
-
 //                    Log.d("pingluActivity", "" + status.getSucceed() + "++++succeed》》》》" + promotePostDateList.get(0).getCat_name());
                 } else {
                     // 请求失败
@@ -338,14 +342,14 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
                     mRecyclerView.setVisibility(View.GONE);
                     errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
                     networkInfo.setVisibility(View.VISIBLE);
-                        // 请求失败
-                        Log.d("pingluActivity", "" + status.getSucceed() + "++++success=0》》》》" );
+                    // 请求失败
+                    Log.d("pingluActivity", "" + status.getSucceed() + "++++success=0》》》》");
 
                 }
 
 
             }
-        } ,new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 //未知错误
@@ -353,16 +357,13 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
                 mRecyclerView.setVisibility(View.GONE);
                 errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
                 networkInfo.setVisibility(View.VISIBLE);
-                Log.d("pingluActivity", "errror" + volleyError.toString() + "++++》》》》" );
+                Log.d("pingluActivity", "errror" + volleyError.toString() + "++++》》》》");
             }
         });
 
         fastJsonCommunity.setParams(map);
 
         mQueue.add(fastJsonCommunity);
-
-
-
 
 
 //客户端以json串的post请求方式进行提交,服务端返回json串
@@ -464,87 +465,63 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
         mQueue.add(stringRequest);*/
 
 
-
-
-
-
     }
 
     @Override
     public void onClick(View v) {
-         switch (v.getId()){
-             case  R.id.backBUt:
-                 finish();
-                 break;
-             case  R.id.btn_send:
+        switch (v.getId()) {
+            case R.id.backBUt:
+                finish();
+                break;
+            case R.id.btn_send:
 
-                 if(pinglunEdit.getText().toString()!=null&&!pinglunEdit.getText().toString().equals("")){
+                /* if(pinglunEdit.getText().toString()!=null&&!pinglunEdit.getText().toString().equals("")){
                      initIsLogonParame();
                  }else{
                      Toast.makeText(mContext, "评论不能为空" , Toast.LENGTH_SHORT).show();
                  }
-
-                 break;
-             case  R.id.et_sendmessage:
-
-                 Intent intent2 = new Intent(this, GoodsAllPinglunSendActivity.class);
-                 Bundle bundle = new Bundle();
-                 bundle.putSerializable("allpinglun",promotePostsData);
-                 intent2.putExtras(bundle);
-                 this.startActivity(intent2);
+               */
                  break;
 
-         }
-    }
 
 
-    private void initIsLogonParame() {
-    String   url = "http://mapp.aiderizhi.com/?url=/comment/add ";//评论
-        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
-        if(isLogin){
-            String  sessionString=SharedPreferences.getInstance().getString("session", "");
-            SessionData sessionData = JSON.parseObject(sessionString, SessionData.class);
-            if(sessionData!=null){
-
-
-                if(promotePostsData!=null){
-
-                  String param="{\"type\":\"0\",\"id\":\""+promotePostsData.getId()+"\",\"reply_id\":\"\",\"content\":\""+pinglunEdit.getText().toString()+"\",\"session\":{\"uid\":\""+sessionData.getUid()+"\",\"sid\":\""+sessionData.getSid()+"\"}}";
-                    networkReward(param, url);
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-            }
-
-        }else{
-            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
         }
     }
 
 
+    private void initIsLogonParame() {
+        String url = "http://mapp.aiderizhi.com/?url=/comment/add ";//评论
+        Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if (isLogin) {
+            String sessionString = SharedPreferences.getInstance().getString("session", "");
+            SessionData sessionData = JSON.parseObject(sessionString, SessionData.class);
+            if (sessionData != null) {
 
+
+                if (promotePostsData != null) {
+
+                    String param = "{\"type\":\"0\",\"id\":\"" + promotePostsData.getId() + "\",\"reply_id\":\"\",\"content\":\"" + pinglunEdit.getText().toString() + "\",\"session\":{\"uid\":\"" + sessionData.getUid() + "\",\"sid\":\"" + sessionData.getSid() + "\"}}";
+                    networkReward(param, url);
+                }
+
+
+            }
+
+        } else {
+            Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     /**
      * 帖子评论
      */
     PinglunData pinglunData;
-    private void networkReward(String paramNet,String url) {
+
+    private void networkReward(String paramNet, String url) {
 
         Map<String, String> mapTou = new HashMap<String, String>();
         mapTou.put("json", paramNet);
-
-
 
 
         Log.d("pingluActivity", paramNet + "      ");
@@ -557,16 +534,16 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
                 DataStatus status = pinglunDataInfo.getStatus();
                 if (status.getSucceed() == 1) {
                     pinglunData = pinglunDataInfo.getData();
-                    if(pinglunData!=null){
+                    if (pinglunData != null) {
 
 
-                         pinglunEdit.setText("");
-                        loadingTag=2;//重新加载
+                        pinglunEdit.setText("");
+                        loadingTag = 2;//重新加载
                         initData(promotePostsData.getId());
 
 
-                        Toast.makeText(mContext, ""+pinglunData.getMessage() , Toast.LENGTH_SHORT).show();
-                        Log.d("pingluActivity", "pingluActivity 成功返回信息：   " + JSON.toJSONString(pinglunData)+ "++++succeed");
+                        Toast.makeText(mContext, "" + pinglunData.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("pingluActivity", "pingluActivity 成功返回信息：   " + JSON.toJSONString(pinglunData) + "++++succeed");
                     }
 
 
@@ -591,8 +568,6 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
         fastJsonCommunity.setShouldCache(true);
         mQueue.add(fastJsonCommunity);
     }
-
-
 
 
     // 手指上下滑动时的最小速度
@@ -620,12 +595,10 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     private VelocityTracker mVelocityTracker;
 
 
-
     /**
      * 创建VelocityTracker对象，并将触摸界面的滑动事件加入到VelocityTracker当中。
      *
      * @param event
-     *
      */
     private void createVelocityTracker(MotionEvent event) {
         if (mVelocityTracker == null) {
@@ -643,7 +616,6 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     }
 
     /**
-     *
      * @return 滑动速度，以每秒钟移动了多少像素值为单位。
      */
     private int getScrollVelocity() {
@@ -699,9 +671,6 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
         }
         return super.dispatchTouchEvent(event);
     }
-
-
-
 
 
 }
