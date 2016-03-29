@@ -2,9 +2,7 @@ package com.smarter.LoveLog.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -12,38 +10,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.jcodecraeer.xrecyclerview.ProgressStyle;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
-import com.smarter.LoveLog.adapter.RecyclePinglunGoodsAdapter;
-import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
-import com.smarter.LoveLog.model.ChatEmoji;
-import com.smarter.LoveLog.model.PaginationJson;
-import com.smarter.LoveLog.model.community.InvitationDataPinglunActi;
 import com.smarter.LoveLog.model.community.PinglunData;
 import com.smarter.LoveLog.model.community.PinglunDataInfo;
 import com.smarter.LoveLog.model.community.PromotePostsData;
-import com.smarter.LoveLog.model.goods.CmtGoods;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
-import com.smarter.LoveLog.utills.DeviceUtil;
-import com.smarter.LoveLog.utills.FaceConversionUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.logging.Handler;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,11 +37,9 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements View.OnClickListener{
-    String Tag= "GoodsAllPinglunSendActivity";
-    Context  mContext;
-
-
+public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements View.OnClickListener,RatingBar.OnRatingBarChangeListener {
+    String Tag = "GoodsAllPinglunSendActivity";
+    Context mContext;
 
 
     @Bind(R.id.networkInfo)
@@ -68,9 +52,6 @@ public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements
     LinearLayout loadingTextLinear;
     @Bind(R.id.loadingText)
     TextView loadingText;
-
-
-
 
 
     @Bind(R.id.progressLinear)
@@ -87,15 +68,8 @@ public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements
 
     @Bind(R.id.et_sendmessage)
     EditText pinglunEdit;
-
-
-
-
-
-
-
-
-
+    @Bind(R.id.app_ratingbar)
+    RatingBar appRatingbar;
 
 
     @Override
@@ -104,10 +78,9 @@ public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements
         super.onCreate(savedInstanceState);
 
 
-
         setContentView(R.layout.activity_invitation_pinglun_all_send_view);
         ButterKnife.bind(this);
-        mContext=this;
+        mContext = this;
         getDataIntent();
         setListen();
 
@@ -117,102 +90,94 @@ public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements
         backBUt.setOnClickListener(this);
         btn_send.setOnClickListener(this);
 
+
+        appRatingbar.setOnRatingBarChangeListener(this);
+
     }
+    int  rank=-1;
+    @Override
+    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+        rank= (int) rating;
 
+    }
     private void intData() {
-
-
-
 
 
     }
 
 
     PromotePostsData promotePostsData;
+
     private void getDataIntent() {
         Intent intent = getIntent();
-        if(intent!=null){
-            promotePostsData= (PromotePostsData) intent.getSerializableExtra("allpinglun");
-
-
-
-
-
+        if (intent != null) {
+            promotePostsData = (PromotePostsData) intent.getSerializableExtra("allpinglun");
 
 
         }
 
 
     }
-
-
-
 
 
     @Override
     public void onClick(View v) {
-         switch (v.getId()){
-             case  R.id.backBUt:
-                 finish();
-                 break;
-             case  R.id.btn_send:
+        switch (v.getId()) {
+            case R.id.backBUt:
+                finish();
+                break;
+            case R.id.btn_send:
 
-                 if(pinglunEdit.getText().toString()!=null&&!pinglunEdit.getText().toString().equals("")){
-                     initIsLogonParame();
-                 }else{
-                     Toast.makeText(mContext, "评论不能为空" , Toast.LENGTH_SHORT).show();
-                 }
+                if (pinglunEdit.getText().toString() != null && !pinglunEdit.getText().toString().equals("")) {
 
-                 break;
-         }
+                    if(rank==-1){
+                        Toast.makeText(mContext, "评分一下", Toast.LENGTH_SHORT).show();
+                    }else{
+                        initIsLogonParame();
+                    }
+
+                } else {
+                    Toast.makeText(mContext, "评论不能为空", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+        }
     }
 
 
     private void initIsLogonParame() {
-    String   url = "http://mapp.aiderizhi.com/?url=/comment/add ";//评论
+        String url = "http://mapp.aiderizhi.com/?url=/comment/add ";//评论
         Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
-        if(isLogin){
-            String  sessionString=SharedPreferences.getInstance().getString("session", "");
+        if (isLogin) {
+            String sessionString = SharedPreferences.getInstance().getString("session", "");
             SessionData sessionData = JSON.parseObject(sessionString, SessionData.class);
-            if(sessionData!=null){
+            if (sessionData != null) {
 
 
-                if(promotePostsData!=null){
+                if (promotePostsData != null) {
 
-                  String param="{\"type\":\"0\",\"id\":\""+promotePostsData.getId()+"\",\"reply_id\":\"\",\"content\":\""+pinglunEdit.getText().toString()+"\",\"session\":{\"uid\":\""+sessionData.getUid()+"\",\"sid\":\""+sessionData.getSid()+"\"}}";
+                    String param = "{\"type\":\"0\",\"id\":\"" + promotePostsData.getId() + "\",\"rank\":\""+rank+"\",\"reply_id\":\"\",\"content\":\"" + pinglunEdit.getText().toString() + "\",\"session\":{\"uid\":\"" + sessionData.getUid() + "\",\"sid\":\"" + sessionData.getSid() + "\"}}";
                     networkReward(param, url);
                 }
 
 
-
-
-
-
-
-
-
-
-
-
             }
 
-        }else{
+        } else {
             Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 
     /**
      * 帖子评论
      */
     PinglunData pinglunData;
-    private void networkReward(String paramNet,String url) {
+
+    private void networkReward(String paramNet, String url) {
 
         Map<String, String> mapTou = new HashMap<String, String>();
         mapTou.put("json", paramNet);
-
-
 
 
         Log.d(Tag, paramNet + "      ");
@@ -225,14 +190,11 @@ public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements
                 DataStatus status = pinglunDataInfo.getStatus();
                 if (status.getSucceed() == 1) {
                     pinglunData = pinglunDataInfo.getData();
-                    if(pinglunData!=null){
+                    if (pinglunData != null) {
 
 
-
-
-
-                        Toast.makeText(mContext, ""+pinglunData.getMessage() , Toast.LENGTH_SHORT).show();
-                        Log.d(Tag, "pingluActivity 成功返回信息：   " + JSON.toJSONString(pinglunData)+ "++++succeed");
+                        Toast.makeText(mContext, "" + pinglunData.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d(Tag, "pingluActivity 成功返回信息：   " + JSON.toJSONString(pinglunData) + "++++succeed");
 
 
                         finish();
@@ -262,12 +224,6 @@ public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements
     }
 
 
-
-
-
-
-
-
     // 手指上下滑动时的最小速度
     private static final int YSPEED_MIN = 1000;
 
@@ -293,12 +249,10 @@ public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements
     private VelocityTracker mVelocityTracker;
 
 
-
     /**
      * 创建VelocityTracker对象，并将触摸界面的滑动事件加入到VelocityTracker当中。
      *
      * @param event
-     *
      */
     private void createVelocityTracker(MotionEvent event) {
         if (mVelocityTracker == null) {
@@ -316,7 +270,6 @@ public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements
     }
 
     /**
-     *
      * @return 滑动速度，以每秒钟移动了多少像素值为单位。
      */
     private int getScrollVelocity() {
@@ -376,8 +329,6 @@ public class GoodsAllPinglunSendActivity extends BaseFragmentActivity implements
         }
         return super.dispatchTouchEvent(event);
     }
-
-
 
 
 
