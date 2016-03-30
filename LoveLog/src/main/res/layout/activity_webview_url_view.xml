@@ -11,16 +11,24 @@
                 android:id="@+id/backBUt"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingRight="25dp"
+                android:layout_weight="0.6"
+                android:paddingLeft="0dp"
                 android:src="@mipmap/back" />
+        <ImageView
+            android:id="@+id/CloseBUt"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_marginLeft="-15dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:src="@mipmap/web_view_close_button" />
 
         <TextView
                 android:id="@+id/tv_top_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:gravity="center"
+                android:gravity="left|center_vertical"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:text=""
@@ -31,7 +39,7 @@
                 android:id="@+id/tv_right_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
+                android:layout_weight="0"
                 android:gravity="center"
                 android:text=""
                 android:textColor="@color/white"

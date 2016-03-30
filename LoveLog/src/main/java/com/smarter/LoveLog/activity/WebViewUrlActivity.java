@@ -15,40 +15,34 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-
 import com.smarter.LoveLog.R;
-
 import com.smarter.LoveLog.db.SharedPreferences;
-
 import com.smarter.LoveLog.model.loginData.SessionData;
-
 import com.smarter.LoveLog.utills.DeviceUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2015/11/30.
  */
 @SuppressLint("SetJavaScriptEnabled")
-public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnClickListener{
-    String Tag= "WebViewUrl";
-    Context  mContext;
+public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnClickListener {
+    String Tag = "WebViewUrl";
+    Context mContext;
 
     @Bind(R.id.tv_top_title)
     TextView tv_top_title;
-
 
 
     @Bind(R.id.networkInfo)
@@ -63,7 +57,6 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
     TextView loadingText;
 
 
-
     @Bind(R.id.webview)
     WebView webview;
 
@@ -76,13 +69,8 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
 
     @Bind(R.id.backBUt)
     ImageView backBUt;
-
-
-
-
-
-
-
+    @Bind(R.id.CloseBUt)
+    ImageView CloseBUt;
 
 
 
@@ -94,56 +82,42 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview_url_view);
         ButterKnife.bind(this);
-        mContext=this;
+        mContext = this;
         getDataIntent();
-        setListen();
 
     }
 
     SessionData sessionData;
+
     private void isLogiin() {
 
         Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
-        if(isLogin){
-            String  sessionString=SharedPreferences.getInstance().getString("session", "");
-            sessionData = JSON.parseObject(sessionString,SessionData.class);
-            if(sessionData!=null){
-
-
+        if (isLogin) {
+            String sessionString = SharedPreferences.getInstance().getString("session", "");
+            sessionData = JSON.parseObject(sessionString, SessionData.class);
+            if (sessionData != null) {
 
 
             }
 
-        }else{
+        } else {
             Toast.makeText(mContext, "未登录，请先登录", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    private void setListen() {
-        backBUt.setOnClickListener(this);
-
-    }
-
-
-
-
-
     String urlParam;//上个activity传来的数据
+
     private void getDataIntent() {
         Intent intent = getIntent();
-        if(intent!=null){
-            urlParam= intent.getStringExtra("param");
+        if (intent != null) {
+            urlParam = intent.getStringExtra("param");
 
-           if(urlParam!=null&&!urlParam.equals("")){
+            if (urlParam != null && !urlParam.equals("")) {
 //              urlParam="http://mapp.aiderizhi.com/?url=/post/content&id=22737";
-               networkLoading();
+                networkLoading();
 
-           }
-
-
-
-
+            }
 
 
         }
@@ -152,7 +126,7 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
     }
 
     private void networkLoading() {
-        if(DeviceUtil.checkConnection(mContext)){
+        if (DeviceUtil.checkConnection(mContext)) {
             //加载动画
             progressLinear.setVisibility(View.VISIBLE);
             AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
@@ -161,28 +135,29 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
             webview.setVisibility(View.GONE);
             networkInfo.setVisibility(View.GONE);
             createWebview(urlParam);
-        }else{
+        } else {
             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
             webview.setVisibility(View.GONE);
             networkInfo.setVisibility(View.VISIBLE);
             newLoading.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    networkLoading() ;
+                    networkLoading();
                 }
             });
         }
     }
 
 
+    boolean  isNextLoadUrl=false;
     @SuppressLint("AddJavascriptInterface")
     private void createWebview(String urlParam) {
 
-       webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setJavaScriptEnabled(true);
 
-        if(urlParam.startsWith("http")){
+        if (urlParam.startsWith("http")) {
             webview.loadUrl(urlParam);
-        }else{
+        } else {
             webview.loadDataWithBaseURL(null, urlParam, "text/html", "utf-8", null);
         }
 
@@ -209,6 +184,21 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 view.getSettings().setJavaScriptEnabled(true);
                 super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                if(isNextLoadUrl){
+                    CloseBUt.setVisibility(View.VISIBLE);
+
+                }else{
+                    isNextLoadUrl=true;
+                }
+
+
+                view.loadUrl(url);   //在当前的webview中跳转到新的url
+                return true;
             }
         });
 
@@ -252,7 +242,6 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
         });
 
 
-
     }
 
     // 注入js函数监听
@@ -272,11 +261,10 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
 
         // 这段js函数的功能就是，遍历所有的img几点，并添加onclick函数，在还是执行的时候调用本地接口传递url过去
         webview.loadUrl("javascript:(function(){" +
-                " var srcs = [];"+
+                " var srcs = [];" +
                 "var objs = document.getElementsByTagName(\"img\"); " +
-                "for(var i=0;i<objs.length;i++){"+
-                "srcs[i] = objs[i].src; }"+
-
+                "for(var i=0;i<objs.length;i++){" +
+                "srcs[i] = objs[i].src; }" +
 
 
                 "for(var i=0;i<objs.length;i++)  " +
@@ -289,6 +277,26 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
                 "})()");
     }
 
+
+
+    @OnClick({R.id.backBUt, R.id.CloseBUt})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.backBUt:
+                if(isNextLoadUrl==false){
+                    finish();
+                }else {
+                    webview.goBack();
+                }
+
+                break;
+            case R.id.CloseBUt:
+                finish();
+                break;
+        }
+    }
+
+
     // js通信接口
     public class JavascriptInterface {
 
@@ -297,45 +305,22 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
         public JavascriptInterface(Context context) {
             this.context = context;
         }
-         @android.webkit.JavascriptInterface
+
+        @android.webkit.JavascriptInterface
         public void openImage(String[] img) {
-             if(urlParam.startsWith("http")){
+            if (urlParam.startsWith("http")) {
 
-             }else{
+            } else {
 
-                 Intent intent = new Intent();
-                 intent.putExtra("images",img);
-                 intent.setClass(context, ShowAnoWebImageActivity.class);
-                 context.startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra("images", img);
+                intent.setClass(context, ShowAnoWebImageActivity.class);
+                context.startActivity(intent);
 
-             }
+            }
 
         }
     }
-
-
-
-
-
-
-
-    @Override
-    public void onClick(View v) {
-         switch (v.getId()){
-             case  R.id.backBUt:
-                 finish();
-                 break;
-
-         }
-    }
-
-
-
-
-
-
-
-
 
 
     // 手指上下滑动时的最小速度
@@ -363,12 +348,10 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
     private VelocityTracker mVelocityTracker;
 
 
-
     /**
      * 创建VelocityTracker对象，并将触摸界面的滑动事件加入到VelocityTracker当中。
      *
      * @param event
-     *
      */
     private void createVelocityTracker(MotionEvent event) {
         if (mVelocityTracker == null) {
@@ -386,7 +369,6 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
     }
 
     /**
-     *
      * @return 滑动速度，以每秒钟移动了多少像素值为单位。
      */
     private int getScrollVelocity() {
@@ -442,9 +424,6 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
         }
         return super.dispatchTouchEvent(event);
     }
-
-
-
 
 
 }
