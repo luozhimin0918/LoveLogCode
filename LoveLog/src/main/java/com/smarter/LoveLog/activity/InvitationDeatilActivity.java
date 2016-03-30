@@ -389,6 +389,20 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                 view.getSettings().setJavaScriptEnabled(true);
                 super.onPageStarted(view, url, favicon);
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+
+                if(url.startsWith("http")||url.endsWith("html")||url.endsWith("htm")||url.endsWith("php")){
+
+                }else{
+                    view.loadUrl(url);   //在当前的webview中跳转到新的url
+                }
+
+
+                return true;
+            }
         });
 
 
@@ -434,9 +448,14 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
         webview.loadUrl("javascript:(function(){" +
                 " var srcs = [];"+
                 "var objs = document.getElementsByTagName(\"img\"); " +
+                "var aList= document.getElementsByTagName(\"a\"); "+
                 "for(var i=0;i<objs.length;i++){"+
                 "srcs[i] = objs[i].src; }"+
 
+
+                "for(var a=0;a<aList.length;a++){"+
+                " aList[a].onclick=function(){"+
+                " window.imagelistner.openWebview(this.href);}}"+
 
 
                 "for(var i=0;i<objs.length;i++)  " +
@@ -471,6 +490,12 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
             intent.setClass(context, ShowWebImageActivity.class);
             context.startActivity(intent);
             System.out.println(img);*/
+        }
+        @android.webkit.JavascriptInterface
+        public void openWebview(String hrefString){
+            Intent intent = new Intent(context, WebViewUrlActivity.class);
+            intent.putExtra("param", hrefString);
+            context.startActivity(intent);
         }
     }
 
