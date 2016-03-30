@@ -286,7 +286,11 @@ public class WebViewUrlActivity extends BaseFragmentActivity implements View.OnC
                 if(isNextLoadUrl==false){
                     finish();
                 }else {
-                    webview.goBack();
+                    if(webview.canGoBack()){
+                        webview.goBack();
+                    }
+
+
                 }
 
                 break;
