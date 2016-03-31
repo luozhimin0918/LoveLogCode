@@ -165,6 +165,17 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
                            Toast.makeText(getApplicationContext(), "未登录，请先登录" , Toast.LENGTH_SHORT).show();
                        }
 
+                 /**
+                  * QQ登录退出
+                  */
+                 if(LoginActivity.mTencent!=null){
+                     if(LoginActivity.mTencent.isSessionValid()){
+                         LoginActivity.mTencent.logout(this);
+                     }
+
+
+                 }
+
 
                  /**
                   * 新浪微博登录退出

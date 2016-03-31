@@ -338,7 +338,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     /**
      * QQ登录
      */
-    Tencent mTencent;
+   public static  Tencent mTencent;
     public static String mAppid;
     private void tennetLoginMoth() {
 
