@@ -59,4 +59,5 @@ dependencies {
     compile files('libs/alipaySdk-20160223.jar')
     compile files('libs/libammsdk.jar')
     compile files('libs/mta-sdk-1.6.2.jar')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
 }

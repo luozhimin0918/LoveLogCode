@@ -5,13 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,25 +24,32 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WeiboAuthListener;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.ConstantsQQ;
+import com.smarter.LoveLog.db.ConstantsWeibo;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.community.User;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.LoginDataActi;
 import com.smarter.LoveLog.model.loginData.LoginDataInfo;
+import com.smarter.LoveLog.weibo.AccessTokenKeeper;
+import com.smarter.LoveLog.weibo.LoginButton;
+import com.smarter.LoveLog.weibo.UsersAPI;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
-import com.tencent.mm.sdk.constants.ConstantsAPI;
-import com.tencent.mm.sdk.modelbase.BaseReq;
-import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,7 +91,19 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     @Bind(R.id.qqLogin)
     ImageView qqLogin;
     @Bind(R.id.xinlanLogin)
-    ImageView xinlanLogin;
+    LoginButton xinlanLogin;
+
+
+
+    private AuthInfo mAuthInfo;//weibo
+    /** 登陆认证对应的listener */
+    private AuthListener mLoginListener = new AuthListener();
+    /**
+     * 该按钮用于记录当前点击的是哪一个 Button，用于在 {@link #onActivityResult}
+     * 函数中进行区分。通常情况下，我们的应用中只需要一个合适的 {@link LoginButton}
+     * 或者 {@link } 即可。
+     */
+    private Button mCurrentClickedButton;
 
 
     @Override
@@ -116,11 +136,28 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
 
 
 
-
+        /**
+         * tententQQ
+         */
         //这里的APP_ID请换成你应用申请的APP_ID，我这里使用的是DEMO中官方提供的测试APP_ID 222222
         mAppid = ConstantsQQ.APP_ID;
         //第一个参数就是上面所说的申请的APPID，第二个是全局的Context上下文，这句话实现了调用QQ登录
         mTencent = Tencent.createInstance(mAppid,getApplicationContext());
+
+
+        /**
+         * weibo
+         */
+
+        // 创建授权认证信息
+        mAuthInfo = new AuthInfo(this, ConstantsWeibo.APP_KEY, ConstantsWeibo.REDIRECT_URL, ConstantsWeibo.SCOPE);
+        xinlanLogin.setWeiboAuthInfo(mAuthInfo, mLoginListener);
+        /**
+         * 请注意：为每个 Button 设置一个额外的 Listener 只是为了记录当前点击的
+         * 是哪一个 Button，用于在 {@link #onActivityResult} 函数中进行区分。
+         * 通常情况下，我们的应用不需要调用该函数。
+         */
+        xinlanLogin.setExternalOnClickListener(mButtonClickListener);
     }
 
     private void getDataIntent() {
@@ -204,6 +241,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                    tennetLoginMoth();
                 break;
             case R.id.xinlanLogin:
+
                 break;
 
             case R.id.linearSeePassword:
@@ -391,4 +429,104 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         }
 
     }*/
+
+
+
+
+
+
+
+    /**
+     * 登入按钮的监听器，接收授权结果。
+     */
+    Oauth2AccessToken accessToken;
+    private class AuthListener implements WeiboAuthListener {
+        @Override
+        public void onComplete(Bundle values) {
+            accessToken = Oauth2AccessToken.parseAccessToken(values);
+            if (accessToken != null && accessToken.isSessionValid()) {
+                String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
+                        new java.util.Date(accessToken.getExpiresTime()));
+                String format = getString(R.string.weibosdk_demo_token_to_string_format_1);
+//                mTokenView.setText(String.format(format, accessToken.getToken(), date));
+
+                Toast.makeText(getApplicationContext(), String.format(format, accessToken.getToken(), date), Toast.LENGTH_SHORT).show();
+
+                AccessTokenKeeper.writeAccessToken(getApplicationContext(), accessToken);
+
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UsersAPI mUsersAPI = new UsersAPI(getApplicationContext(),ConstantsWeibo.APP_KEY,accessToken);
+                        long uid = Long.parseLong(accessToken.getUid());
+                        mUsersAPI.show(uid, mListener);
+                    }
+                }).start();
+            }
+        }
+
+        @Override
+        public void onWeiboException(WeiboException e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel() {
+            Toast.makeText(getApplicationContext(),
+                    R.string.weibosdk_demo_toast_auth_canceled, Toast.LENGTH_SHORT).show();
+        }
+    }
+    private RequestListener mListener = new RequestListener() {
+        @Override
+        public void onComplete(String response) {
+            if (!TextUtils.isEmpty(response)) {
+                // 调用 User#parse 将JSON串解析成User对象
+              Log.d("WEiBoInfo",response);
+
+            }
+        }
+
+        @Override
+        public void onWeiboException(WeiboException e) {
+
+        }
+    };
+
+    /**
+     * 请注意：为每个 Button 设置一个额外的 Listener 只是为了记录当前点击的
+     * 是哪一个 Button，用于在 {@link #onActivityResult} 函数中进行区分。
+     * 通常情况下，我们的应用不需要定义该 Listener。
+     */
+    private View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v instanceof Button) {
+                mCurrentClickedButton = (Button)v;
+            }
+        }
+    };
+
+    /**
+     * 当 SSO 授权 Activity 退出时，该函数被调用。
+     *
+     * @see
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (mCurrentClickedButton != null) {
+            if (mCurrentClickedButton instanceof LoginButton) {
+                ((LoginButton)mCurrentClickedButton).onActivityResult(requestCode, resultCode, data);
+            } /*else if (mCurrentClickedButton instanceof LoginoutButton) {
+                ((LoginoutButton)mCurrentClickedButton).onActivityResult(requestCode, resultCode, data);
+            }*/
+        }
+
+
+    }
+
+
+
 }

@@ -3,6 +3,7 @@ package com.smarter.LoveLog.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,13 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.ConstantsWeibo;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.home.DataStatusOne;
@@ -25,10 +30,13 @@ import com.smarter.LoveLog.model.loginData.LogingOutMess;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.utills.TestUtil;
+import com.smarter.LoveLog.weibo.AccessTokenKeeper;
+import com.smarter.LoveLog.weibo.LogoutAPI;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -97,10 +105,45 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
     }
 
 
+    /** 登出操作对应的listener */
+    private LogOutRequestListener mLogoutListener = new LogOutRequestListener();
+    /**
+     * 登出按钮的监听器，接收登出处理结果。（API 请求结果的监听器）
+     */
+    private class LogOutRequestListener implements RequestListener {
+        @Override
+        public void onComplete(String response) {
+            if (!TextUtils.isEmpty(response)) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    String value = obj.getString("result");
+
+                    if ("true".equalsIgnoreCase(value)) {
+                        AccessTokenKeeper.clear(SetActivity.this);
+                        Toast.makeText(SetActivity.this,"新浪微博成功退出登录",Toast.LENGTH_SHORT).show();
+                    }
+                }  catch (org.json.JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void onWeiboException(WeiboException e) {
+
+        }
+
+
+    }
     @Override
     public void onClick(View v) {
          switch (v.getId()){
              case  R.id.loginOut:
+
+
+                 /**
+                  * 手机号登录退出
+                  */
                    Boolean isLogin =SharedPreferences.getInstance().getBoolean("islogin", false);
                        if(isLogin){
                            String  sessionString=SharedPreferences.getInstance().getString("session","");
@@ -121,6 +164,15 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
                        }else{
                            Toast.makeText(getApplicationContext(), "未登录，请先登录" , Toast.LENGTH_SHORT).show();
                        }
+
+
+                 /**
+                  * 新浪微博登录退出
+                  */
+              /*   new LogoutAPI(SetActivity.this, ConstantsWeibo.APP_KEY,
+                         AccessTokenKeeper.readAccessToken(SetActivity.this)).logout(mLogoutListener);
+*/
+
 
               break;
 
