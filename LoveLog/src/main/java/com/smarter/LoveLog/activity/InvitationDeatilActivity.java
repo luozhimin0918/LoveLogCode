@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -52,10 +53,24 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.sina.weibo.sdk.api.WebpageObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.api.share.BaseResponse;
+import com.sina.weibo.sdk.api.share.IWeiboHandler;
+import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
+import com.sina.weibo.sdk.api.share.SendMultiMessageToWeiboRequest;
+import com.sina.weibo.sdk.api.share.WeiboShareSDK;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WeiboAuthListener;
+import com.sina.weibo.sdk.constant.WBConstants;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.utils.Utility;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.adapter.RecyclePinglunAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.ConstantsWeibo;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.category.InvitationDataDeatil;
@@ -79,6 +94,7 @@ import com.smarter.LoveLog.ui.popwindow.BabyPopWindow;
 import com.smarter.LoveLog.utills.DeviceUtil;
 import com.smarter.LoveLog.utills.FaceConversionUtil;
 import com.smarter.LoveLog.utills.ViewUtill;
+import com.smarter.LoveLog.weibo.AccessTokenKeeper;
 
 
 import java.lang.reflect.Array;
@@ -99,7 +115,7 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class InvitationDeatilActivity extends BaseFragmentActivity implements View.OnClickListener,PlatformActionListener {
+public class InvitationDeatilActivity extends BaseFragmentActivity implements View.OnClickListener,PlatformActionListener ,IWeiboHandler.Response{
     String Tag= "InvitationDeatilActivity";
     Context  mContext;
 
@@ -480,6 +496,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
 
 
+
     // js通信接口
     public class JavascriptInterface {
 
@@ -688,7 +705,55 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     }
 
     ShareDialog shareDialog;
-    private void showShareMy(PromotePostsData promotePostsData) {
+    /** 微博分享的接口实例 */
+    private IWeiboShareAPI mWeiboShareAPI;
+
+
+
+    /**
+     * //实现IWeiboHandler.Response接口的方法
+     * 接收微客户端博请求的数据。
+     * 当微博客户端唤起当前应用并进行分享时，该方法被调用。
+     * baseRequest 微博请求数据对象
+     * @param
+     * @see {@link IWeiboShareAPI#handleWeiboRequest}
+     */
+    @Override
+    public void onResponse(BaseResponse baseResp) {
+        if(baseResp!= null){
+            switch (baseResp.errCode) {
+                case WBConstants.ErrorCode.ERR_OK:
+                    Toast.makeText(this, R.string.weibosdk_demo_toast_share_success, Toast.LENGTH_LONG).show();
+                    break;
+                case WBConstants.ErrorCode.ERR_CANCEL:
+                    Toast.makeText(this, R.string.weibosdk_demo_toast_share_canceled, Toast.LENGTH_LONG).show();
+                    break;
+                case WBConstants.ErrorCode.ERR_FAIL:
+                    Toast.makeText(this,
+                            getString(R.string.weibosdk_demo_toast_share_failed) + "Error Message: " + baseResp.errMsg,
+                            Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+    }
+
+
+
+    private void showShareMy(final PromotePostsData promotePostsData) {
+        /**
+         * 新浪微博的单独使用
+         */
+        // 创建微博 SDK 接口实例
+        mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, ConstantsWeibo.APP_KEY);
+
+        // 获取微博客户端相关信息，如是否安装、支持 SDK 的版本
+        boolean isInstalledWeibo = mWeiboShareAPI.isWeiboAppInstalled();
+        int supportApiLevel = mWeiboShareAPI.getWeiboAppSupportAPI();
+        mWeiboShareAPI.registerApp();
+
+
+
+
 
         shareDialog = new ShareDialog(this);
         shareDialog.setCancelButtonOnClickListener(new View.OnClickListener() {
@@ -706,6 +771,59 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                                     int arg2, long arg3) {
                 HashMap<String, Object> item = (HashMap<String, Object>) arg0.getItemAtPosition(arg2);
                 if (item.get("ItemText").equals("微博")) {
+                    // 1. 初始化微博的分享消息
+                    WeiboMultiMessage weiboMessage = new WeiboMultiMessage();
+
+
+                    WebpageObject mediaObject = new WebpageObject();
+                    mediaObject.identify = Utility.generateGUID();
+                    mediaObject.title = promotePostsData.getShare().getTitle();
+                    mediaObject.description =promotePostsData.getShare().getDesc();
+
+                    Bitmap  bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                    // 设置 Bitmap 类型的图片到视频对象里         设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。
+                    mediaObject.setThumbImage(bitmap);
+                    mediaObject.actionUrl = promotePostsData.getShare().getUrl();
+                    mediaObject.defaultText = "Webpage 默认文案";
+
+                    weiboMessage.mediaObject =mediaObject;
+
+
+
+                    // 2. 初始化从第三方到微博的消息请求
+                    SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
+                    // 用transaction唯一标识一个请求
+                    request.transaction = String.valueOf(System.currentTimeMillis());
+                    request.multiMessage = weiboMessage;
+
+
+
+
+                    AuthInfo authInfo = new AuthInfo(mContext, ConstantsWeibo.APP_KEY, ConstantsWeibo.REDIRECT_URL, ConstantsWeibo.SCOPE);
+                    Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(getApplicationContext());
+                    String token = "";
+                    if (accessToken != null) {
+                        token = accessToken.getToken();
+                    }
+                    mWeiboShareAPI.sendRequest(InvitationDeatilActivity.this, request, authInfo, token, new WeiboAuthListener() {
+
+                        @Override
+                        public void onWeiboException( WeiboException arg0 ) {
+                        }
+
+                        @Override
+                        public void onComplete( Bundle bundle ) {
+                            // TODO Auto-generated method stub
+                            Oauth2AccessToken newToken = Oauth2AccessToken.parseAccessToken(bundle);
+                            AccessTokenKeeper.writeAccessToken(getApplicationContext(), newToken);
+                            Toast.makeText(getApplicationContext(), "onAuthorizeComplete token = " + newToken.getToken(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancel() {
+                        }
+                    });
+
 
                   /*  //2、设置分享内容
                     Platform.ShareParams sp = new Platform.ShareParams();
@@ -719,15 +837,15 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                     sinaWeibo.share(sp);*/
 
                 } else if (item.get("ItemText").equals("微信好友")) {
-                    Toast.makeText(mContext, "您点中了" + item.get("ItemText"), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(mContext, "您点中了" + item.get("ItemText"), Toast.LENGTH_LONG).show();
 
                     //2、设置分享内容
                     Platform.ShareParams sp = new Platform.ShareParams();
                     sp.setShareType(Platform.SHARE_WEBPAGE);//非常重要：一定要设置分享属性
-                    sp.setTitle("我是分享标题");  //分享标题
-                    sp.setText("我是分享文本，啦啦啦~http://uestcbmi.com/");   //分享文本
-                    sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
-                    sp.setUrl("http://sharesdk.cn");   //网友点进链接后，可以看到分享的详情
+                    sp.setTitle(promotePostsData.getShare().getTitle());  //分享标题
+                    sp.setText(promotePostsData.getShare().getDesc());   //分享文本
+                    sp.setImageUrl(promotePostsData.getShare().getThumb());//网络图片rul
+                    sp.setUrl(promotePostsData.getShare().getUrl());   //网友点进链接后，可以看到分享的详情
 
                     //3、非常重要：获取平台对象
                     Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
@@ -740,10 +858,10 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                     //2、设置分享内容
                     Platform.ShareParams sp = new Platform.ShareParams();
                     sp.setShareType(Platform.SHARE_WEBPAGE); //非常重要：一定要设置分享属性
-                    sp.setTitle("我是分享标题");  //分享标题
-                    sp.setText("我是分享文本，啦啦啦~http://uestcbmi.com/");   //分享文本
-                    sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
-                    sp.setUrl("http://sharesdk.cn");   //网友点进链接后，可以看到分享的详情
+                    sp.setTitle(promotePostsData.getShare().getTitle());  //分享标题
+                    sp.setText(promotePostsData.getShare().getDesc());   //分享文本
+                    sp.setImageUrl(promotePostsData.getShare().getThumb());//网络图片rul
+                    sp.setUrl(promotePostsData.getShare().getUrl());   //网友点进链接后，可以看到分享的详情
 
                     //3、非常重要：获取平台对象
                     Platform wechatMoments = ShareSDK.getPlatform(WechatMoments.NAME);
@@ -754,10 +872,10 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                 } else if (item.get("ItemText").equals("QQ")) {
                     //2、设置分享内容
                     Platform.ShareParams sp = new Platform.ShareParams();
-                    sp.setTitle("我是分享标题");
-                    sp.setText("我是分享文本，啦啦啦~http://uestcbmi.com/");
-                    sp.setImageUrl("http://7sby7r.com1.z0.glb.clouddn.com/CYSJ_02.jpg");//网络图片rul
-                    sp.setTitleUrl("http://www.baidu.com");  //网友点进链接后，可以看到分享的详情
+                    sp.setTitle(promotePostsData.getShare().getTitle());
+                    sp.setText(promotePostsData.getShare().getDesc());
+                    sp.setImageUrl(promotePostsData.getShare().getThumb());//网络图片rul
+                    sp.setTitleUrl(promotePostsData.getShare().getUrl());  //网友点进链接后，可以看到分享的详情
                     //3、非常重要：获取平台对象
                     Platform qq = ShareSDK.getPlatform(QQ.NAME);
                     qq.setPlatformActionListener(InvitationDeatilActivity.this); // 设置分享事件回调
