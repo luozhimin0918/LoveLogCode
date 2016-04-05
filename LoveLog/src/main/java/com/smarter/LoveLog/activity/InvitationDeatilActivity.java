@@ -95,6 +95,7 @@ import com.smarter.LoveLog.utills.DeviceUtil;
 import com.smarter.LoveLog.utills.FaceConversionUtil;
 import com.smarter.LoveLog.utills.ViewUtill;
 import com.smarter.LoveLog.weibo.AccessTokenKeeper;
+import com.tencent.connect.share.QzoneShare;
 
 
 import java.lang.reflect.Array;
@@ -108,7 +109,10 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.system.email.Email;
+import cn.sharesdk.system.text.ShortMessage;
 import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
@@ -709,6 +713,18 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
     private IWeiboShareAPI mWeiboShareAPI;
 
 
+    /**
+     * @see
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        // 从当前应用唤起微博并进行分享后，返回到当前应用时，需要在此处调用该函数
+        // 来接收微博客户端返回的数据；执行成功，返回 true，并调用
+        // {@link IWeiboHandler.Response#onResponse}；失败返回 false，不调用上述回调
+        mWeiboShareAPI.handleWeiboResponse(intent, this);
+    }
 
     /**
      * //实现IWeiboHandler.Response接口的方法
@@ -770,6 +786,10 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int arg2, long arg3) {
                 HashMap<String, Object> item = (HashMap<String, Object>) arg0.getItemAtPosition(arg2);
+
+                ShareDialog.showShare(item, promotePostsData, InvitationDeatilActivity.this);
+
+
                 if (item.get("ItemText").equals("微博")) {
                     // 1. 初始化微博的分享消息
                     WeiboMultiMessage weiboMessage = new WeiboMultiMessage();
@@ -798,7 +818,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
 
 
-
+                    // 3. 发送请求消息到微博，唤起微博分享界面
                     AuthInfo authInfo = new AuthInfo(mContext, ConstantsWeibo.APP_KEY, ConstantsWeibo.REDIRECT_URL, ConstantsWeibo.SCOPE);
                     Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(getApplicationContext());
                     String token = "";
@@ -809,18 +829,28 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
                         @Override
                         public void onWeiboException( WeiboException arg0 ) {
+                            Toast.makeText(getApplicationContext(), "onAuthorizeComplete onWeiboException", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onComplete( Bundle bundle ) {
                             // TODO Auto-generated method stub
                             Oauth2AccessToken newToken = Oauth2AccessToken.parseAccessToken(bundle);
-                            AccessTokenKeeper.writeAccessToken(getApplicationContext(), newToken);
-                            Toast.makeText(getApplicationContext(), "onAuthorizeComplete token = " + newToken.getToken(), Toast.LENGTH_SHORT).show();
+
+                            if (newToken.isSessionValid()) {
+                                AccessTokenKeeper.writeAccessToken(getApplicationContext(), newToken);
+                                Toast.makeText(getApplicationContext(), "onAuthorizeComplete token = " + newToken.getToken(), Toast.LENGTH_SHORT).show();
+                            }else{
+                                // 当您注册的应用程序签名不正确时，就会收到错误Code，请确保签名正确
+                                String code = bundle.getString("code", "");
+                                Toast.makeText(getApplicationContext(), "签名不正确时  " + code, Toast.LENGTH_SHORT).show();
+                            }
+
                         }
 
                         @Override
                         public void onCancel() {
+                            Toast.makeText(getApplicationContext(), "onAuthorizeComplete onCancel", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -836,54 +866,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
                     // 执行分享
                     sinaWeibo.share(sp);*/
 
-                } else if (item.get("ItemText").equals("微信好友")) {
-//                    Toast.makeText(mContext, "您点中了" + item.get("ItemText"), Toast.LENGTH_LONG).show();
-
-                    //2、设置分享内容
-                    Platform.ShareParams sp = new Platform.ShareParams();
-                    sp.setShareType(Platform.SHARE_WEBPAGE);//非常重要：一定要设置分享属性
-                    sp.setTitle(promotePostsData.getShare().getTitle());  //分享标题
-                    sp.setText(promotePostsData.getShare().getDesc());   //分享文本
-                    sp.setImageUrl(promotePostsData.getShare().getThumb());//网络图片rul
-                    sp.setUrl(promotePostsData.getShare().getUrl());   //网友点进链接后，可以看到分享的详情
-
-                    //3、非常重要：获取平台对象
-                    Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
-                    wechat.setPlatformActionListener(InvitationDeatilActivity.this); // 设置分享事件回调
-                    // 执行分享
-                    wechat.share(sp);
-
-
-                } else if (item.get("ItemText").equals("朋友圈")) {
-                    //2、设置分享内容
-                    Platform.ShareParams sp = new Platform.ShareParams();
-                    sp.setShareType(Platform.SHARE_WEBPAGE); //非常重要：一定要设置分享属性
-                    sp.setTitle(promotePostsData.getShare().getTitle());  //分享标题
-                    sp.setText(promotePostsData.getShare().getDesc());   //分享文本
-                    sp.setImageUrl(promotePostsData.getShare().getThumb());//网络图片rul
-                    sp.setUrl(promotePostsData.getShare().getUrl());   //网友点进链接后，可以看到分享的详情
-
-                    //3、非常重要：获取平台对象
-                    Platform wechatMoments = ShareSDK.getPlatform(WechatMoments.NAME);
-                    wechatMoments.setPlatformActionListener(InvitationDeatilActivity.this); // 设置分享事件回调
-                    // 执行分享
-                    wechatMoments.share(sp);
-
-                } else if (item.get("ItemText").equals("QQ")) {
-                    //2、设置分享内容
-                    Platform.ShareParams sp = new Platform.ShareParams();
-                    sp.setTitle(promotePostsData.getShare().getTitle());
-                    sp.setText(promotePostsData.getShare().getDesc());
-                    sp.setImageUrl(promotePostsData.getShare().getThumb());//网络图片rul
-                    sp.setTitleUrl(promotePostsData.getShare().getUrl());  //网友点进链接后，可以看到分享的详情
-                    //3、非常重要：获取平台对象
-                    Platform qq = ShareSDK.getPlatform(QQ.NAME);
-                    qq.setPlatformActionListener(InvitationDeatilActivity.this); // 设置分享事件回调
-                    // 执行分享
-                    qq.share(sp);
-
                 }
-
 
                 shareDialog.dismiss();
 
@@ -903,7 +886,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
        /* if (platform.getName().equals(SinaWeibo.NAME)) {// 判断成功的平台是不是新浪微博
             handler.sendEmptyMessage(1);
         } else*/ if (platform.getName().equals(Wechat.NAME)) {
-            handler.sendEmptyMessage(1);
+            handler.sendEmptyMessage(2);
         } else if (platform.getName().equals(WechatMoments.NAME)) {
             handler.sendEmptyMessage(3);
         } else if (platform.getName().equals(QQ.NAME)) {

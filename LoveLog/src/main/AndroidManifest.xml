@@ -77,7 +77,10 @@
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:windowSoftInputMode="adjustPan"
                 android:screenOrientation="portrait">
-
+                <intent-filter>
+                    <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_RESP_ACTIVITY" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
             </activity>
             <activity android:name=".activity.AddressManageActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
@@ -299,6 +302,16 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+
+
+
+        <!--注册授权页面 新浪微博-->
+        <!-- 必须注册在微博授权，分享微博时候用到 -->
+        <activity android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" >
         </activity>
 
     </application>
