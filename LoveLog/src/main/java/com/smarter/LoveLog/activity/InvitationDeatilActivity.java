@@ -829,7 +829,7 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
                         @Override
                         public void onWeiboException( WeiboException arg0 ) {
-                            Toast.makeText(getApplicationContext(), "onAuthorizeComplete onWeiboException", Toast.LENGTH_SHORT).show();
+                            Log.d(Tag, "onAuthorizeComplete onWeiboException");
                         }
 
                         @Override
@@ -839,18 +839,18 @@ public class InvitationDeatilActivity extends BaseFragmentActivity implements Vi
 
                             if (newToken.isSessionValid()) {
                                 AccessTokenKeeper.writeAccessToken(getApplicationContext(), newToken);
-                                Toast.makeText(getApplicationContext(), "onAuthorizeComplete token = " + newToken.getToken(), Toast.LENGTH_SHORT).show();
+                                Log.d(Tag, "onAuthorizeComplete token = " + newToken.getToken());
                             }else{
                                 // 当您注册的应用程序签名不正确时，就会收到错误Code，请确保签名正确
                                 String code = bundle.getString("code", "");
-                                Toast.makeText(getApplicationContext(), "签名不正确时  " + code, Toast.LENGTH_SHORT).show();
+                                Log.d(Tag, "签名不正确时  " + code);
                             }
 
                         }
 
                         @Override
                         public void onCancel() {
-                            Toast.makeText(getApplicationContext(), "onAuthorizeComplete onCancel", Toast.LENGTH_SHORT).show();
+                            Log.d(Tag, "onAuthorizeComplete onCancel");
                         }
                     });
 
