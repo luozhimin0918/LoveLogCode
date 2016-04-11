@@ -127,13 +127,7 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
                  /**
                   * QQ登录退出
                   */
-                 if(LoginActivity.mTencent!=null){
-                     if(LoginActivity.mTencent.isSessionValid()){
-                         LoginActivity.mTencent.logout(this);
-                     }
 
-
-                 }
 
 
                  /**

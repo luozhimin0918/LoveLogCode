@@ -311,19 +311,24 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     private UMAuthListener umAuthListener = new UMAuthListener() {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            Toast.makeText( getApplicationContext(), "Authorize succeed", Toast.LENGTH_SHORT).show();
+            Toast.makeText( LoginActivity.this, "Authorize succeed", Toast.LENGTH_SHORT).show();
+
+            if(platform!=null){
+                mShareAPI.getPlatformInfo(LoginActivity.this, platform, umDeleAuthListener);
+
+            }
             Log.d("auth", "Authorize succeed");
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            Toast.makeText( getApplicationContext(), "Authorize fail", Toast.LENGTH_SHORT).show();
+            Toast.makeText( LoginActivity.this, "Authorize fail", Toast.LENGTH_SHORT).show();
             Log.d("auth", "Authorize fail");
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform, int action) {
-            Toast.makeText( getApplicationContext(), "Authorize cancel", Toast.LENGTH_SHORT).show();
+            Toast.makeText( LoginActivity.this, "Authorize cancel", Toast.LENGTH_SHORT).show();
             Log.d("auth", "Authorize cancel");
         }
     };
@@ -361,8 +366,47 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
 
         mShareAPI.onActivityResult(requestCode, resultCode, data);
 
+
+
+
+
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    private UMAuthListener umDeleAuthListener = new UMAuthListener() {
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            Log.d("auth callbacl","getting data"+data.toString());
+            if (data!=null){
+//                Log.d("auth callbacl","   "+data.toString());
+//                Toast.makeText(getApplicationContext(), data.toString(), Toast.LENGTH_SHORT).show();
+
+
+                SharedPreferences.getInstance().putBoolean("islogin", true);
+                SharedPreferences.getInstance().putString("session", "   ");//暂无
+                SharedPreferences.getInstance().putString("usename", "");//暂无
+                SharedPreferences.getInstance().putString("password", "");//暂无
+                SharedPreferences.getInstance().putString("user", data.toString());
+                finish();
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            Toast.makeText( getApplicationContext(), "get fail", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            Toast.makeText( getApplicationContext(), "get cancel", Toast.LENGTH_SHORT).show();
+        }
+    };
 
 
 }
