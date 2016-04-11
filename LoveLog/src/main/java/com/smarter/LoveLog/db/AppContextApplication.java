@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.smarter.LoveLog.model.loginData.LoginDataActi;
+import com.umeng.socialize.PlatformConfig;
 
 import java.util.LinkedList;
 
@@ -62,6 +63,17 @@ public class AppContextApplication extends Application {
              */
             RongIM.init(this);
 //        }
+
+
+        /**
+         * 各个平台的配置，建议放在全局Application或者程序入口
+         */
+        PlatformConfig.setWeixin("wx33496a68219a3769", "9928dececd0520b0cb6cde3aac4f40d1");
+        PlatformConfig.setQQZone("1105000062", "uK9qmMOsoKeudlRv");
+        PlatformConfig.setSinaWeibo("3044356740", "8c7505d85cfb487bb2c0b51988fe97ac");
+
+
+
     }
 
     /**

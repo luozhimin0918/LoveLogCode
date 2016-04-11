@@ -191,11 +191,12 @@
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
                         android:background="@mipmap/qq" />
-                <com.smarter.LoveLog.weibo.LoginButton
-                        android:id="@+id/xinlanLogin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                       />
+                <ImageView
+                    android:id="@+id/xinlanLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/twitter" />
             </LinearLayout>
         </LinearLayout>
 

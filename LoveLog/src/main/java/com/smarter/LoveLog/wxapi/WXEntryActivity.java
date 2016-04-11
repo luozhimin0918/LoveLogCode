@@ -16,79 +16,13 @@ import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
 import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2015/11/30.
  */
-public class WXEntryActivity extends BaseFragmentActivity implements IWXAPIEventHandler {
-    String Tag = "WXEntryActivity";
-
-
-    private static final String TAG = "SDKSample.WXEntryActivity";
-
-
-
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pay_result_weixin_view);
-        ButterKnife.bind(this);
-
-
-        MainActivity.api.handleIntent(getIntent(), this);
-
-
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        setIntent(intent);
-        MainActivity.api.handleIntent(intent, this);
-    }
-
-
-    @Override
-    public void onReq(BaseReq req) {
-    }
-
-    @SuppressLint("LongLogTag")
-    @Override
-    public void onResp(BaseResp resp) {
-//        Log.d(TAG,"onPayCode"+ resp.errCode);
-        Log.d(TAG,"onRespBase"+resp.errCode);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("提示");
-        builder.setMessage(getString(R.string.pay_result_callback_msg, String.valueOf(resp.errCode)));
-        builder.show();
-
-      /*  if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("提示");
-            builder.setMessage(getString(R.string.pay_result_callback_msg, String.valueOf(resp.errCode)));
-            builder.show();
-        }*/
-    }
-
-
-
-
-
-
+public class WXEntryActivity extends WXCallbackActivity {
 
 }

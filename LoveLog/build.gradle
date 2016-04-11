@@ -25,6 +25,8 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
     }
 
     compileOptions {
@@ -57,9 +59,10 @@ dependencies {
     compile project(':IMKitWithVoIP')
     compile files('libs/glide-3.6.1.jar')
     compile files('libs/alipaySdk-20160223.jar')
-    compile files('libs/libammsdk.jar')
+    //    compile files('libs/libammsdk.jar')
     compile files('libs/mta-sdk-1.6.2.jar')
-    compile files('libs/weiboSDKCore_3.1.4.jar')
+    //    compile files('libs/weiboSDKCore_3.1.4.jar')
     //    收到
     compile project(':umenglib')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
 }

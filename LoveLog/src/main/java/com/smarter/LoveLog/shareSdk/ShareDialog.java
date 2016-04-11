@@ -15,7 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 
 import com.smarter.LoveLog.R;
+import com.smarter.LoveLog.activity.MainActivity;
 import com.smarter.LoveLog.model.community.PromotePostsData;
+import com.umeng.socialize.PlatformConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +87,22 @@ public class ShareDialog {
      * @param mActivity
      */
     public static void showShare( HashMap<String, Object> item, PromotePostsData promotePostsData,PlatformActionListener mActivity){
-        if (item.get("ItemText").equals("微信好友")) {
+        if (item.get("ItemText").equals("微博")) {
+
+
+/*
+            //2、设置分享内容
+            Platform.ShareParams sp = new Platform.ShareParams();
+            sp.setText(promotePostsData.getShare().getDesc()); //分享文本
+            sp.setImageUrl(promotePostsData.getShare().getThumb());//网络图片rul
+
+            //3、非常重要：获取平台对象
+            Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+            sinaWeibo.setPlatformActionListener(mActivity); // 设置分享事件回调
+            // 执行分享
+            sinaWeibo.share(sp);*/
+
+        }else if (item.get("ItemText").equals("微信好友")) {
 //                    Toast.makeText(mContext, "您点中了" + item.get("ItemText"), Toast.LENGTH_LONG).show();
 
             //2、设置分享内容
