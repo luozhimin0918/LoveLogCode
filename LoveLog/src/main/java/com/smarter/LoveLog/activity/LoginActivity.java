@@ -28,9 +28,11 @@ import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.ConstantsQQ;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.community.User;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.LoginDataActi;
 import com.smarter.LoveLog.model.loginData.LoginDataInfo;
+import com.smarter.LoveLog.model.loginData.SessionData;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.tauth.IUiListener;
@@ -382,17 +384,21 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     private UMAuthListener umDeleAuthListener = new UMAuthListener() {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            Log.d("auth callbacl","getting data"+data.toString());
             if (data!=null){
-//                Log.d("auth callbacl","   "+data.toString());
-//                Toast.makeText(getApplicationContext(), data.toString(), Toast.LENGTH_SHORT).show();
+                //            Log.d("auth callbacl","getting data"+data.toString());
+
+                User  user=new User();
+                user.setAvatar(data.get("headimgurl"));
+                user.setName(data.get("nickname"));
+                user.setSex(data.get("sex").equals("1")? "男":"女");
+
 
 
                 SharedPreferences.getInstance().putBoolean("islogin", true);
-                SharedPreferences.getInstance().putString("session", "   ");//暂无
+                SharedPreferences.getInstance().putString("session", "{\"sid\":\"f80c8779e99f020a2e27344aec23c016bf2eb335\",\"uid\":\"37392\"}");//暂无
                 SharedPreferences.getInstance().putString("usename", "");//暂无
                 SharedPreferences.getInstance().putString("password", "");//暂无
-                SharedPreferences.getInstance().putString("user", data.toString());
+                SharedPreferences.getInstance().putString("user", JSON.toJSONString(user));
                 finish();
             }
         }
