@@ -70,7 +70,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
     private LinearLayout outside;
     private PopupWindow popupWindow;
     private OnItemClickListener listener;
-    private final int ADDORREDUCE=1;
+    private final int ADDORREDUCE=5;
     private Context context;
     private RadioButton versionCheck1,versionCheck2,versionCheck3;
     private RadioGroup group;
@@ -199,13 +199,14 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pop_add:
-                if (!pop_num.getText().toString().equals(""+goodsData.getGoods_number())) {
+                String num_add=Integer.valueOf(pop_num.getText().toString())+ADDORREDUCE+"";
+                pop_num.setText(num_add);
+               /* if (!pop_num.getText().toString().equals(""+goodsData.getGoods_number())) {
 
-                    String num_add=Integer.valueOf(pop_num.getText().toString())+ADDORREDUCE+"";
-                    pop_num.setText(num_add);
+
                 }else {
                     Toast.makeText(context, "不能超过最大产品数量", Toast.LENGTH_SHORT).show();
-                }
+                }*/
 
                 break;
             case R.id.pop_reduce:
