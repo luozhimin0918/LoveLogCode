@@ -42,11 +42,11 @@ public class ZiMuView extends View {
         xPaint.setPathEffect(effects);
         xPaint.setStyle(Paint.Style.STROKE);
         xPaint.setAntiAlias(true);
-        xPaint.setStrokeWidth(3);
+        xPaint.setStrokeWidth(6);
         xPaint.setColor(Color.parseColor("#fc1359"));
 
 
-        int xInt=30;
+        int xInt=20;
         canvas.drawLine(xInt, mHeight - 30, xInt + 10, 30, xPaint);
         canvas.drawLine(xInt + 10, 30, xInt + 20, mHeight - 30, xPaint);
         canvas.drawLine(xInt+20,mHeight-30,xInt+30,30,xPaint);
@@ -103,12 +103,12 @@ public class ZiMuView extends View {
         if (widthMode == MeasureSpec.EXACTLY) {
             mWidth = widthSize;
         } else {
-            mWidth = 100;
+            mWidth = 80;
         }
         if (heightMode == MeasureSpec.EXACTLY) {
             mHeight = heightSize;
         } else {
-            mHeight = 100;
+            mHeight = 80;
         }
         setMeasuredDimension(mWidth, mHeight);
 

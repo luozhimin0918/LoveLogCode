@@ -115,12 +115,12 @@ public class CircleView extends View {
         if (widthMode == MeasureSpec.EXACTLY) {
             mWidth = widthSize;
         } else {
-            mWidth = 100;
+            mWidth = 80;
         }
         if (heightMode == MeasureSpec.EXACTLY) {
             mHeight = heightSize;
         } else {
-            mHeight = 100;
+            mHeight = 80;
         }
         setMeasuredDimension(mWidth, mHeight);
 

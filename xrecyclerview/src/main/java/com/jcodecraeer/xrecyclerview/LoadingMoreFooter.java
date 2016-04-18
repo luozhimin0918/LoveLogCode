@@ -76,6 +76,7 @@ public class LoadingMoreFooter extends LinearLayout {
         mText = new TextView(context);
         mText.setTextColor(Color.parseColor("#fc1359"));
         mText.setText("正在加载...");
+        mText.setVisibility(GONE);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins( (int)getResources().getDimension(R.dimen.textandiconmargin),0,0,0 );
