@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -81,6 +82,9 @@ public class FaceRelativeLayout extends RelativeLayout implements
     /** 当前表情页 */
     private int current = 0;
 
+
+    ImageButton btnface;
+
     public FaceRelativeLayout(Context context) {
         super(context);
         this.context = context;
@@ -131,12 +135,15 @@ public class FaceRelativeLayout extends RelativeLayout implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_biaoqing_linear:
             case R.id.btn_face:
                 // 隐藏表情选择框
                 if (view.getVisibility() == View.VISIBLE) {
                     view.setVisibility(View.GONE);
+                    btnface.setImageResource(R.mipmap.rc_ic_smiley_normal);
                 } else {
                     view.setVisibility(View.VISIBLE);
+                    btnface.setImageResource(R.mipmap.rc_ic_menu_keyboard);
                 }
                 break;
             case R.id.et_sendmessage:
@@ -170,7 +177,8 @@ public class FaceRelativeLayout extends RelativeLayout implements
         layout_point = (LinearLayout) findViewById(R.id.iv_image);
         et_sendmessage.setOnClickListener(this);
         et_sendmessage.addTextChangedListener(new EditChangedListener());
-        findViewById(R.id.btn_face).setOnClickListener(this);
+       btnface = (ImageButton) findViewById(R.id.btn_face);
+        btnface.setOnClickListener(this);
         view = findViewById(R.id.ll_facechoose);
 
     }
@@ -199,9 +207,9 @@ public class FaceRelativeLayout extends RelativeLayout implements
         public void afterTextChanged(Editable s) {
             Log.i("FaceRelativeLayout", "输入文字后的状态");
             // 隐藏表情选择框
-            if (view.getVisibility() == View.VISIBLE) {
-                view.setVisibility(View.GONE);
-            }
+//            if (view.getVisibility() == View.VISIBLE) {
+//                view.setVisibility(View.GONE);
+//            }
             /** 得到光标开始和结束位置 ,超过最大数后记录刚超出的数字索引进行控制 */
 
 

@@ -10,15 +10,22 @@
         android:layout_height="@dimen/bottom_height"
         android:background="@color/white" >
 
+    <LinearLayout
+        android:id="@+id/btn_biaoqing_linear"
+        android:layout_width="0dp"
+        android:layout_weight="0.3"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center">
         <ImageButton
             android:id="@+id/btn_face"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dip"
-            android:background="@drawable/sex_select_button"
-            android:src="@drawable/sex_select_button" />
-
+            android:background="@null"
+            android:src="@mipmap/rc_ic_smiley_normal" />
+    </LinearLayout>
 
       <!--  <TextView
             android:id="@+id/btn_send"
