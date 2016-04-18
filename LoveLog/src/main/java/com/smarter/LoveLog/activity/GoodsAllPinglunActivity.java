@@ -100,8 +100,10 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     LinearLayout btn_send_linear;
     @Bind(R.id.rl_input)
     LinearLayout rl_input;
-
-
+    @Bind(R.id.xuanfuBar)
+    LinearLayout xuanfuBar;
+    @Bind(R.id.tv_right_title)
+    TextView tvRightTitle;
 
 
     private RecyclePinglunGoodsAdapter mAdapter;
@@ -131,9 +133,10 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
         mContext = this;
 
 
-        //隐藏这些按钮
-        btnFace.setVisibility(View.GONE);
-        btn_send_linear.setVisibility(View.GONE);
+        //隐藏悬浮栏
+
+        xuanfuBar.setVisibility(View.GONE);
+        tvRightTitle.setText("写评论");
 
 
         setListen();
@@ -143,7 +146,7 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
     private void setListen() {
         backBUt.setOnClickListener(this);
         fasongText.setOnClickListener(this);
-        pinglunEdit.setOnFocusChangeListener(new android.view.View.
+        pinglunEdit.setOnFocusChangeListener(new View.
                 OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -161,6 +164,7 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
             }
         });
         pinglunEdit.setOnClickListener(this);
+        tvRightTitle.setOnClickListener(this);
     }
 
 
@@ -482,16 +486,18 @@ public class GoodsAllPinglunActivity extends BaseFragmentActivity implements Vie
                      Toast.makeText(mContext, "评论不能为空" , Toast.LENGTH_SHORT).show();
                  }
                */
-                 break;
-            case  R.id.et_sendmessage:
+                break;
+            case R.id.et_sendmessage:
 
+
+                break;
+            case R.id.tv_right_title:
                 Intent intent2 = new Intent(mContext, GoodsAllPinglunSendActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("allpinglun", promotePostsData);
                 intent2.putExtras(bundle);
                 mContext.startActivity(intent2);
                 break;
-
 
 
         }

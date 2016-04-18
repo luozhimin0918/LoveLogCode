@@ -573,8 +573,8 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 
                          pinglunEdit.setText("");
                         loadingTag=2;//重新加载
-//                        newWait();
-                        initData(promotePostsData.getId());
+                        newWait();
+//                        initData(promotePostsData.getId());
 
 
                         Toast.makeText(mContext, ""+pinglunData.getMessage() , Toast.LENGTH_SHORT).show();
