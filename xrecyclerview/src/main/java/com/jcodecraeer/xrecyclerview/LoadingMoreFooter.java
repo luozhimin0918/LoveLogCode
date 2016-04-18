@@ -46,7 +46,7 @@ public class LoadingMoreFooter extends LinearLayout {
 
         LinearLayout.LayoutParams vieLayoutParams =new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        vieLayoutParams.setMargins(0,25,0,25);
+        vieLayoutParams.setMargins(0, 25, 0, 25);
         progressCon.setLayoutParams(vieLayoutParams);
 
 
@@ -76,7 +76,7 @@ public class LoadingMoreFooter extends LinearLayout {
         mText = new TextView(context);
         mText.setTextColor(Color.parseColor("#fc1359"));
         mText.setText("正在加载...");
-        mText.setVisibility(GONE);
+
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins( (int)getResources().getDimension(R.dimen.textandiconmargin),0,0,0 );
@@ -102,6 +102,7 @@ public class LoadingMoreFooter extends LinearLayout {
                 progressCon.setVisibility(View.VISIBLE);
                 circleView.startAnimation(mRotateAllAnim);//正在刷新旋转画的圆
                 mText.setText(mContext.getText(R.string.listview_loading));
+                mText.setVisibility(GONE);
                 this.setVisibility(View.VISIBLE);
                     break;
             case STATE_COMPLETE:
@@ -110,6 +111,7 @@ public class LoadingMoreFooter extends LinearLayout {
                 this.setVisibility(View.GONE);
                 break;
             case STATE_NOMORE:
+                mText.setVisibility(VISIBLE);
                 mText.setText(mContext.getText(R.string.nomore_loading));
                 progressCon.setVisibility(View.GONE);
                 circleView.clearAnimation();
