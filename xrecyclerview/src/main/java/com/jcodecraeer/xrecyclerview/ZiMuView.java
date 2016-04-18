@@ -42,15 +42,15 @@ public class ZiMuView extends View {
         xPaint.setPathEffect(effects);
         xPaint.setStyle(Paint.Style.STROKE);
         xPaint.setAntiAlias(true);
-        xPaint.setStrokeWidth(6);
+        xPaint.setStrokeWidth(5);
         xPaint.setColor(Color.parseColor("#fc1359"));
 
 
         int xInt=20;
-        canvas.drawLine(xInt, mHeight - 30, xInt + 10, 30, xPaint);
-        canvas.drawLine(xInt + 10, 30, xInt + 20, mHeight - 30, xPaint);
-        canvas.drawLine(xInt+20,mHeight-30,xInt+30,30,xPaint);
-        canvas.drawLine(xInt+30,30,xInt+40,mHeight-30,xPaint);
+        canvas.drawLine(xInt+2, mHeight - 30, xInt + 10+2, 30, xPaint);
+        canvas.drawLine(xInt + 10, 30, xInt + 20+1, mHeight - 30, xPaint);
+        canvas.drawLine(xInt+20-1,mHeight-30,xInt+30,30,xPaint);
+        canvas.drawLine(xInt+30-2,30,xInt+40-2,mHeight-30,xPaint);
 
 
 
