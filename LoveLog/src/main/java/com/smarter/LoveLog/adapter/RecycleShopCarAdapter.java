@@ -9,6 +9,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.model.orderMy.OrderList;
+import com.smarter.LoveLog.model.orderMy.ShopCarOrderInfo;
 
 import java.util.List;
 
@@ -22,9 +23,9 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     RequestQueue mQueue;
 
     // 数据集
-    List<OrderList> orderLists;
+    List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists;
 
-    public RecycleShopCarAdapter(List<OrderList> orderLists) {
+    public RecycleShopCarAdapter(List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists) {
         super();
         this.orderLists=orderLists;
         mQueue =  AppContextApplication.getInstance().getmRequestQueue();
@@ -43,14 +44,14 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         // 绑定数据到ViewHolder上
-        OrderList  orderList=orderLists.get(i);
-        viewHolder.desInfo.setText(orderList.getOrder_info().getSubject());
+        ShopCarOrderInfo.DataEntity.GoodsListEntity  goodsListOne=orderLists.get(i);
+        viewHolder.desInfo.setText(goodsListOne.getName());
 
         viewHolder.iv_adapter_grid_pic.setDefaultImageResId(R.drawable.loading_small);
         viewHolder.iv_adapter_grid_pic.setErrorImageResId(R.drawable.loading_small);
         String UserimageUrl="";
-        if(orderList.getGoods_list().get(0).getImg().getThumb()!=null){
-            UserimageUrl=orderList.getGoods_list().get(0).getImg().getThumb();
+        if(goodsListOne.getImg().getThumb()!=null){
+            UserimageUrl=goodsListOne.getImg().getThumb();
         }
 
         if(mQueue.getCache().get(UserimageUrl)==null){

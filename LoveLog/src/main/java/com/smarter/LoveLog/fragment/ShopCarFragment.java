@@ -36,6 +36,7 @@ import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.orderMy.MyOrderInfo;
 import com.smarter.LoveLog.model.orderMy.OrderList;
+import com.smarter.LoveLog.model.orderMy.ShopCarOrderInfo;
 import com.smarter.LoveLog.ui.popwindow.AlertDialog;
 import com.smarter.LoveLog.utills.DeviceUtil;
 import com.smarter.LoveLog.utills.ViewUtill;
@@ -235,12 +236,12 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
 
-    List<OrderList> orderListList=new ArrayList<OrderList>();//
+    List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderListList=new ArrayList<ShopCarOrderInfo.DataEntity.GoodsListEntity>();//
     public  int page=1;
     int  loadingTag=2;//刷新flag   2 默认   1 下拉刷新  -1是上拉更多
     private void initData(SessionData sessionDataOne) {
 
-        String url ="http://mapp.aiderizhi.com/?url=/order/list";//
+        String url ="http://mapp.aiderizhi.com/?url=/cart/list";//
 
         Map<String, String> map = new HashMap<String, String>();
 
@@ -259,7 +260,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         }
         if(loadingTag==2){//第一次加载数据
             map = new HashMap<String, String>();
-            String oneString ="{\"type\":\"shipped\",\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";
+            String oneString ="{\"session\":{\"uid\":\""+sessionDataOne.getUid()+"\",\"sid\":\""+sessionDataOne.getSid()+"\"}}";
             map.put("json",oneString);
             Log.d("ShopCarFragment", oneString + "》》》》");
         }
@@ -267,12 +268,12 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
         RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
-        FastJsonRequest<MyOrderInfo> fastJsonCommunity=new FastJsonRequest<MyOrderInfo>(Request.Method.POST,url,MyOrderInfo.class,null,new Response.Listener<MyOrderInfo>()
+        FastJsonRequest<ShopCarOrderInfo> fastJsonCommunity=new FastJsonRequest<ShopCarOrderInfo>(Request.Method.POST,url,ShopCarOrderInfo.class,null,new Response.Listener<ShopCarOrderInfo>()
         {
             @Override
-            public void onResponse(MyOrderInfo myOrderInfo) {
+            public void onResponse(ShopCarOrderInfo myOrderInfo) {
 
-                DataStatus status=myOrderInfo.getStatus();
+                ShopCarOrderInfo.StatusEntity status=myOrderInfo.getStatus();
                 if(status.getSucceed()==1){
 
                     progressLinear.setVisibility(View.GONE);
@@ -281,7 +282,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                     if(loadingTag==-1){
 
 
-                        List<OrderList> p=myOrderInfo.getData();
+                        List<ShopCarOrderInfo.DataEntity.GoodsListEntity> p=myOrderInfo.getData().getGoods_list();
                         Log.d("ShopCarFragment", "" + orderListList.size() + "1111++++orderListList" );
                         for(int i=0;i<p.size();i++){
                             orderListList.add(p.get(i));
@@ -296,10 +297,51 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                         mRecyclerView.loadMoreComplete();
                     }
                     if(loadingTag==2){
-                        List<OrderList> oLists=myOrderInfo.getData();
+
+                        String shopStr="{\n" +
+                                "\"status\":{\n" +
+                                "\"succeed\":1\n" +
+                                "},\n" +
+                                "\"data\":{\n" +
+                                "\"goods_list\":[\n" +
+                                "{\n" +
+                                "\"goods_id\":\"1\",\n" +
+                                "\"name\":\"爱的日志玫瑰水润蚕丝面膜（单片装）\",\n" +
+                                "\"goods_number\":\"10\",\n" +
+                                "\"subtotal\":\"¥39.00\",\n" +
+                                "\"formated_shop_price\":\"¥3.90\",\n" +
+                                "\"img\":{\n" +
+                                "\"thumb\":\"http://www.aiderizhi.com/images/201603/thumb_img/1_thumb_G_1458155685646.png\",\n" +
+                                "\"cover\":\"http://www.aiderizhi.com/images/201603/goods_img/1_G_1458155685141.png\"\n" +
+                                "}\n" +
+                                "},\n" +
+                                "{\n" +
+                                "\"goods_id\":\"2\",\n" +
+                                "\"name\":\"爱的日志纪州备长炭净颜焕彩面膜\",\n" +
+                                "\"goods_number\":\"10\",\n" +
+                                "\"subtotal\":\"¥59.00\",\n" +
+                                "\"formated_shop_price\":\"¥5.90\",\n" +
+                                "\"img\":{\n" +
+                                "\"thumb\":\"http://www.aiderizhi.com/images/201603/thumb_img/2_thumb_G_1458155762687.png\",\n" +
+                                "\"cover\":\"http://www.aiderizhi.com/images/201603/goods_img/2_G_1458155762104.png\"\n" +
+                                "}\n" +
+                                "}\n" +
+                                "],\n" +
+                                "\"total\":{\n" +
+                                "\"goods_price\":\"¥0.00\",\n" +
+                                "\"market_price\":\"¥0.00\",\n" +
+                                "\"saving\":\"¥0.00\",\n" +
+                                "\"save_rate\":0,\n" +
+                                "\"goods_amount\":0,\n" +
+                                "\"real_goods_count\":0,\n" +
+                                "\"virtual_goods_count\":0\n" +
+                                "}\n" +
+                                "}\n" +
+                                "}";
+                        ShopCarOrderInfo shopCarOrderInfo=  JSON.parseObject(shopStr, ShopCarOrderInfo.class);
 
                         orderListList.clear();
-                        orderListList.addAll(oLists);
+                        orderListList.addAll(shopCarOrderInfo.getData().getGoods_list());
 
                         if(orderListList!=null&&orderListList.size()>0){
                             initData();//初始界面
