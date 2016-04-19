@@ -258,7 +258,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
                 }
 
-                if(getVisiableHeight()>150){
+                if(getVisiableHeight()>130){
                     drawCircle(delta);
 //                    Log.d("ArrowRefresheader", "         " + getVisiableHeight());
                 }else{
@@ -281,13 +281,13 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
 
         if(delta<0){
-            progmess-=1.5f;
+            progmess-=2.0f;
             if(progmess<30f){
                 progmess=30f;
             }
         }
         if(delta>=1){
-            progmess+=1.5f;
+            progmess+=2.0f;
             if(progmess>95f){
                 progmess=95f;
             }
