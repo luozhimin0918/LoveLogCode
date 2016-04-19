@@ -118,17 +118,7 @@ public class InvitationAllPinglunActivity extends BaseFragmentActivity implement
 
         super.onCreate(savedInstanceState);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                /** 表情集合 */
-                List<List<ChatEmoji>> emojis  =FaceConversionUtil.getInstace().emojiLists;
-                if(emojis.size()<=0){
-                    FaceConversionUtil.getInstace().getFileText(getApplication());
-                }
 
-            }
-        }).start();
         setContentView(R.layout.activity_invitation_pinglun_all_view);
         ButterKnife.bind(this);
         mContext=this;

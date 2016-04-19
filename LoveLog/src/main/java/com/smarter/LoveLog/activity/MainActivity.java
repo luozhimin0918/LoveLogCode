@@ -39,11 +39,13 @@ import com.smarter.LoveLog.fragment.CommunityFragment;
 import com.smarter.LoveLog.fragment.ShopCarFragment;
 import com.smarter.LoveLog.fragment.HomeFragment;
 import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.ChatEmoji;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.jsonModel.GuideImgData;
 import com.smarter.LoveLog.model.jsonModel.GuideImgInfo;
 import com.smarter.LoveLog.rongCloud.RongCloudEvent;
 import com.smarter.LoveLog.ui.TabEntity;
+import com.smarter.LoveLog.utills.FaceConversionUtil;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
@@ -111,6 +113,18 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                /** 表情集合 */
+                List<List<ChatEmoji>> emojis  = FaceConversionUtil.getInstace().emojiLists;
+                if(emojis.size()<=0){
+                    FaceConversionUtil.getInstace().getFileText(getApplication());
+                }
+
+            }
+        }).start();
 
 
 

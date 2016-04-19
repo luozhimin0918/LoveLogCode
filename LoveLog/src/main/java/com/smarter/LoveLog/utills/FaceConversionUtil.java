@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -132,7 +133,13 @@ public class FaceConversionUtil {
             if (resId != 0) {
                 Bitmap bitmap = BitmapFactory.decodeResource(
                         context.getResources(), resId);
-                bitmap = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                if((DeviceUtil.getWidth((Activity)context)==1080)){
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+                }else{
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 90, 90, true);
+                }
+
+
                 // 通过图片资源id来得到bitmap，用一个ImageSpan来包装
                 ImageSpan imageSpan = new ImageSpan(bitmap);
                 // 计算该图片名字的长度，也就是要替换的字符串的长度
