@@ -210,11 +210,11 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
                 break;
             case R.id.pop_reduce:
-                if (!pop_num.getText().toString().equals("1")) {
+                if (!pop_num.getText().toString().equals("5")) {
                     String num_reduce=Integer.valueOf(pop_num.getText().toString())-ADDORREDUCE+"";
                     pop_num.setText(num_reduce);
                 }else {
-                    Toast.makeText(context, "购买数量不能低于1件", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "购买数量不能低于5件", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.pop_del:
