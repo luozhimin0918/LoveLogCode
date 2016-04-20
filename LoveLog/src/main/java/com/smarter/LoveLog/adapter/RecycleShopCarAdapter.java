@@ -90,7 +90,6 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
             super(itemView);
 
             desInfo= (TextView) itemView.findViewById(R.id.desInfo);
-
             iv_adapter_grid_pic= (NetworkImageView) itemView.findViewById(R.id.iv_adapter_grid_pic);
 
 

@@ -1,55 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
 
-    <LinearLayout
-        android:background="@color/lightgrey"
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:padding="@dimen/space_10"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/isImageOne"
-            android:background="@mipmap/choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="fill_parent">
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="1sp"
-            android:layout_marginRight="@dimen/space_10"
-            android:background="@color/gray"
-            android:layout_height="fill_parent"></LinearLayout>
-        <TextView
-            android:id="@+id/bianji"
-            android:layout_width="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:singleLine="true"
-            android:layout_height="wrap_content"
-            android:text="编辑"/>
-    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:padding="@dimen/space_10"
+        android:paddingLeft="@dimen/space_10"
         android:gravity="center_vertical"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/isImage"
-            android:layout_marginBottom="@dimen/space_20"
-            android:layout_marginRight="@dimen/space_10"
             android:background="@mipmap/choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -74,54 +40,125 @@
                         android:src="@drawable/loading_small" />
 
 
-                    <LinearLayout
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginLeft="@dimen/space_10"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/nameInfo"
-                            android:layout_marginTop="@dimen/space_5"
-                            android:layout_width="wrap_content"
-                            android:textColor="#696969"
-                            android:textSize="16sp"
-                            android:singleLine="true"
-                            android:layout_height="wrap_content"
-                            android:text="玫瑰面膜"/>
-                        <TextView
-                            android:id="@+id/desInfo"
-                            android:layout_marginTop="@dimen/space_5"
+                  <!--编辑购物车-->
+                  <FrameLayout
+                      android:layout_weight="1"
+                      android:background="@color/white"
+                      android:layout_width="1000dp"
+                      android:layout_height="fill_parent">
 
-                            android:layout_width="wrap_content"
-                            android:textColor="#696969"
-                            android:textSize="16sp"
-                            android:singleLine="true"
-                            android:layout_height="wrap_content"
-                            android:text="超级超级的补水面膜"/>
-                        <TextView
-                            android:layout_marginTop="@dimen/space_5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="版本：青春版"
-                            android:textColor="#5D5D5D"
-                            android:textSize="16sp" />
-                        <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:id="@+id/shopPrice"
-                                android:layout_marginTop="@dimen/space_5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="￥49.00  "
-                                android:textColor="@color/top_bar_bgColor"
-                                android:textSize="18sp" />
-                        </LinearLayout>
 
-                    </LinearLayout>
+                      <!--编辑完成的-->
+                      <LinearLayout
+                          android:visibility="gone"
+                          android:orientation="vertical"
+                          android:layout_marginLeft="@dimen/space_10"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content">
+                          <TextView
+                              android:id="@+id/nameInfo"
+                              android:layout_marginTop="@dimen/space_5"
+                              android:layout_width="wrap_content"
+                              android:textColor="#696969"
+                              android:textSize="16sp"
+                              android:singleLine="true"
+                              android:layout_height="wrap_content"
+                              android:text="玫瑰面膜"/>
+                          <TextView
+                              android:id="@+id/desInfo"
+                              android:layout_marginTop="@dimen/space_5"
+
+                              android:layout_width="wrap_content"
+                              android:textColor="#696969"
+                              android:textSize="16sp"
+                              android:singleLine="true"
+                              android:layout_height="wrap_content"
+                              android:text="超级超级的补水面膜"/>
+                          <TextView
+                              android:layout_marginTop="@dimen/space_5"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="版本：青春版"
+                              android:textColor="#5D5D5D"
+                              android:textSize="16sp" />
+                          <RelativeLayout
+                              android:layout_width="fill_parent"
+                              android:layout_height="wrap_content">
+                              <TextView
+                                  android:id="@+id/shopPrice"
+                                  android:layout_marginTop="@dimen/space_5"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:text="￥49.00  "
+                                  android:textColor="@color/top_bar_bgColor"
+                                  android:textSize="18sp" />
+                          </RelativeLayout>
+
+                      </LinearLayout>
+
+                      <!--编辑中-->
+                      <LinearLayout
+                          android:orientation="horizontal"
+                          android:layout_width="fill_parent"
+                          android:layout_height="fill_parent">
+
+                          <LinearLayout
+                              android:layout_weight="1"
+                              android:layout_width="fill_parent"
+                              android:orientation="vertical"
+                              android:layout_marginLeft="@dimen/space_10"
+                              android:layout_marginRight="@dimen/space_10"
+                              android:layout_height="fill_parent">
+                              <LinearLayout
+                                  android:orientation="horizontal"
+                                  android:layout_width="fill_parent"
+                                  android:padding="@dimen/space_5"
+                                  android:layout_height="wrap_content">
+                                  <ImageView
+                                      android:id="@+id/pop_reduce"
+                                      android:background="@color/white"
+                                      android:src="@drawable/jian_price_button"
+                                      android:layout_width="40dp"
+                                      android:layout_height="40dp" />
+                                  <TextView
+                                      android:text="5"
+                                      android:layout_weight="1"
+                                      android:gravity="center"
+                                      android:textSize="16sp"
+                                      android:layout_marginLeft="1dp"
+                                      android:layout_marginRight="1dp"
+                                      android:background="@color/white"
+                                      android:textColor="@color/black"
+                                      android:layout_width="fill_parent"
+                                      android:layout_height="fill_parent" />
+                                  <ImageView
+                                      android:id="@+id/pop_add"
+                                      android:background="@color/white"
+                                      android:src="@drawable/add_price_button"
+                                      android:layout_width="40dp"
+                                      android:layout_height="40dp" />
+                              </LinearLayout>
+                          </LinearLayout>
+
+                          <TextView
+                              android:text="删除"
+                              android:textSize="16sp"
+                              android:gravity="center"
+                              android:background="@color/red"
+                              android:layout_width="50dp"
+                              android:layout_height="fill_parent" />
+
+                      </LinearLayout>
+
+                  </FrameLayout>
+
+
             </LinearLayout>
+
+
+            <!--暂时用不上的-->
             <RelativeLayout
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/space_5"
                 android:layout_marginBottom="@dimen/space_5"
@@ -133,13 +170,13 @@
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <ImageView
+                  <!--  <ImageView
                         android:id="@+id/pop_reduce"
                         android:layout_marginLeft="@dimen/space_2"
                         android:layout_marginRight="@dimen/space_2"
                         android:background="@drawable/jian_price_button"
                         android:layout_width="25dp"
-                        android:layout_height="25dp" />
+                        android:layout_height="25dp" />-->
                     <View
                         android:background="@color/bg_Gray"
                         android:layout_width="1px"
@@ -156,13 +193,13 @@
                         android:background="@color/bg_Gray"
                         android:layout_width="1px"
                         android:layout_height="fill_parent"></View>
-                    <ImageView
+                  <!--  <ImageView
                         android:id="@+id/pop_add"
                         android:layout_marginLeft="@dimen/space_2"
                         android:layout_marginRight="@dimen/space_2"
                         android:background="@drawable/add_price_button"
                         android:layout_width="25dp"
-                        android:layout_height="25dp" />
+                        android:layout_height="25dp" />-->
                 </LinearLayout>
 
                 <LinearLayout
