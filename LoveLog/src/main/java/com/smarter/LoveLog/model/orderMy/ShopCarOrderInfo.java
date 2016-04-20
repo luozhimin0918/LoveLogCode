@@ -19,6 +19,7 @@ public class ShopCarOrderInfo {
 
     private DataEntity data;
 
+
     public void setStatus(StatusEntity status) {
         this.status = status;
     }
@@ -108,7 +109,7 @@ public class ShopCarOrderInfo {
             private String goods_price;
             private String market_price;
             private String saving;
-            private int save_rate;
+            private String save_rate;
             private int goods_amount;
             private int real_goods_count;
             private int virtual_goods_count;
@@ -125,7 +126,7 @@ public class ShopCarOrderInfo {
                 this.saving = saving;
             }
 
-            public void setSave_rate(int save_rate) {
+            public void setSave_rate(String save_rate) {
                 this.save_rate = save_rate;
             }
 
@@ -153,7 +154,7 @@ public class ShopCarOrderInfo {
                 return saving;
             }
 
-            public int getSave_rate() {
+            public String getSave_rate() {
                 return save_rate;
             }
 
@@ -171,85 +172,200 @@ public class ShopCarOrderInfo {
         }
 
         public static class GoodsListEntity {
-            private String goods_id;
-            private String name;
-            private String goods_number;
-            private String subtotal;
-            private String formated_shop_price;
+
+
             /**
-             * thumb : http://www.aiderizhi.com/images/201603/thumb_img/1_thumb_G_1458155685646.png
-             * cover : http://www.aiderizhi.com/images/201603/goods_img/1_G_1458155685141.png
+             * rec_id : 6577
+             * goods_id : 2
+             * goods_sn : MC000002
+             * goods_name : 爱的日志纪州备长炭净颜焕彩面膜
+             * market_price : ¥8.90
+             * goods_price : ¥5.90
+             * goods_number : 20
+             * goods_attr :
+             * is_real : 1
+             * extension_code :
+             * parent_id : 0
+             * rec_type : 0
+             * is_gift : 0
+             * is_shipping : 0
+             * can_handsel : 0
+             * goods_attr_id : 我是面膜
+             * pid : 2
+             * subtotal : ¥118.00
+             * img_thumb : http://www.aiderizhi.com/images/201603/thumb_img/2_thumb_G_1458155762687.png
              */
 
-            private ImgEntity img;
+            private String rec_id;
+            private String goods_id;
+            private String goods_sn;
+            private String goods_name;
+            private String market_price;
+            private String goods_price;
+            private String goods_number;
+            private String goods_attr;
+            private String is_real;
+            private String extension_code;
+            private String parent_id;
+            private String rec_type;
+            private String is_gift;
+            private String is_shipping;
+            private String can_handsel;
+            private String goods_attr_id;
+            private String pid;
+            private String subtotal;
+            private String img_thumb;
 
-            public void setGoods_id(String goods_id) {
-                this.goods_id = goods_id;
+            public String getRec_id() {
+                return rec_id;
             }
 
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public void setGoods_number(String goods_number) {
-                this.goods_number = goods_number;
-            }
-
-            public void setSubtotal(String subtotal) {
-                this.subtotal = subtotal;
-            }
-
-            public void setFormated_shop_price(String formated_shop_price) {
-                this.formated_shop_price = formated_shop_price;
-            }
-
-            public void setImg(ImgEntity img) {
-                this.img = img;
+            public void setRec_id(String rec_id) {
+                this.rec_id = rec_id;
             }
 
             public String getGoods_id() {
                 return goods_id;
             }
 
-            public String getName() {
-                return name;
+            public void setGoods_id(String goods_id) {
+                this.goods_id = goods_id;
+            }
+
+            public String getGoods_sn() {
+                return goods_sn;
+            }
+
+            public void setGoods_sn(String goods_sn) {
+                this.goods_sn = goods_sn;
+            }
+
+            public String getGoods_name() {
+                return goods_name;
+            }
+
+            public void setGoods_name(String goods_name) {
+                this.goods_name = goods_name;
+            }
+
+            public String getMarket_price() {
+                return market_price;
+            }
+
+            public void setMarket_price(String market_price) {
+                this.market_price = market_price;
+            }
+
+            public String getGoods_price() {
+                return goods_price;
+            }
+
+            public void setGoods_price(String goods_price) {
+                this.goods_price = goods_price;
             }
 
             public String getGoods_number() {
                 return goods_number;
             }
 
+            public void setGoods_number(String goods_number) {
+                this.goods_number = goods_number;
+            }
+
+            public String getGoods_attr() {
+                return goods_attr;
+            }
+
+            public void setGoods_attr(String goods_attr) {
+                this.goods_attr = goods_attr;
+            }
+
+            public String getIs_real() {
+                return is_real;
+            }
+
+            public void setIs_real(String is_real) {
+                this.is_real = is_real;
+            }
+
+            public String getExtension_code() {
+                return extension_code;
+            }
+
+            public void setExtension_code(String extension_code) {
+                this.extension_code = extension_code;
+            }
+
+            public String getParent_id() {
+                return parent_id;
+            }
+
+            public void setParent_id(String parent_id) {
+                this.parent_id = parent_id;
+            }
+
+            public String getRec_type() {
+                return rec_type;
+            }
+
+            public void setRec_type(String rec_type) {
+                this.rec_type = rec_type;
+            }
+
+            public String getIs_gift() {
+                return is_gift;
+            }
+
+            public void setIs_gift(String is_gift) {
+                this.is_gift = is_gift;
+            }
+
+            public String getIs_shipping() {
+                return is_shipping;
+            }
+
+            public void setIs_shipping(String is_shipping) {
+                this.is_shipping = is_shipping;
+            }
+
+            public String getCan_handsel() {
+                return can_handsel;
+            }
+
+            public void setCan_handsel(String can_handsel) {
+                this.can_handsel = can_handsel;
+            }
+
+            public String getGoods_attr_id() {
+                return goods_attr_id;
+            }
+
+            public void setGoods_attr_id(String goods_attr_id) {
+                this.goods_attr_id = goods_attr_id;
+            }
+
+            public String getPid() {
+                return pid;
+            }
+
+            public void setPid(String pid) {
+                this.pid = pid;
+            }
+
             public String getSubtotal() {
                 return subtotal;
             }
 
-            public String getFormated_shop_price() {
-                return formated_shop_price;
+            public void setSubtotal(String subtotal) {
+                this.subtotal = subtotal;
             }
 
-            public ImgEntity getImg() {
-                return img;
+            public String getImg_thumb() {
+                return img_thumb;
             }
 
-            public static class ImgEntity {
-                private String thumb;
-                private String cover;
-
-                public void setThumb(String thumb) {
-                    this.thumb = thumb;
-                }
-
-                public void setCover(String cover) {
-                    this.cover = cover;
-                }
-
-                public String getThumb() {
-                    return thumb;
-                }
-
-                public String getCover() {
-                    return cover;
-                }
+            public void setImg_thumb(String img_thumb) {
+                this.img_thumb = img_thumb;
             }
         }
     }

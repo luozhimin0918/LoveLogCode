@@ -45,13 +45,13 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         // 绑定数据到ViewHolder上
         ShopCarOrderInfo.DataEntity.GoodsListEntity  goodsListOne=orderLists.get(i);
-        viewHolder.desInfo.setText(goodsListOne.getName());
+        viewHolder.desInfo.setText(goodsListOne.getGoods_name());
 
         viewHolder.iv_adapter_grid_pic.setDefaultImageResId(R.drawable.loading_small);
         viewHolder.iv_adapter_grid_pic.setErrorImageResId(R.drawable.loading_small);
         String UserimageUrl="";
-        if(goodsListOne.getImg().getThumb()!=null){
-            UserimageUrl=goodsListOne.getImg().getThumb();
+        if(goodsListOne.getImg_thumb()!=null){
+            UserimageUrl=goodsListOne.getImg_thumb();
         }
 
         if(mQueue.getCache().get(UserimageUrl)==null){
