@@ -32,8 +32,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text=""
-            android:visibility="invisible"
+            android:text="编辑"
             android:textColor="@color/white"
             android:textSize="15sp" />
 

@@ -182,6 +182,7 @@
                 <LinearLayout android:layout_width="1dp" android:background="@color/connet_bgColor" android:layout_height="fill_parent" android:orientation="horizontal"></LinearLayout>
 
                <TextView
+                   android:id="@+id/buy_car_shop"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

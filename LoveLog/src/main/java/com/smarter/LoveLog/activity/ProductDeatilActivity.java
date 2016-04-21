@@ -91,6 +91,11 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     ImageView pro_share;
     @Bind(R.id.buy_now)
     TextView buy_now;
+    @Bind(R.id.buy_car_shop)
+    TextView buy_car_shop;
+
+
+
     @Bind(R.id.back_but)
     ImageView back_but;
 
@@ -187,6 +192,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         pro_car.setOnClickListener(this);
         pro_share.setOnClickListener(this);
         buy_now.setOnClickListener(this);
+        buy_car_shop.setOnClickListener(this);
         back_but.setOnClickListener(this);
         pingLinear.setOnClickListener(this);
         yiSelected.setOnClickListener(this);
@@ -416,10 +422,14 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     public void onClick(View v) {
         String url = "";//
         switch (v.getId()){
+            case   R.id.buy_car_shop:
+                BabyPopWindow.backgroundAlpha(mContext,0.2f);
+                popWindow.showAsDropDown(v,true);
+                break;
             case   R.id.buy_now:
             case   R.id.yiSelected:
                 BabyPopWindow.backgroundAlpha(mContext,0.2f);
-                popWindow.showAsDropDown(v);
+                popWindow.showAsDropDown(v,false);
                 break;
             case R.id.toDetailPicRelative:
                  mcoySnapPageLayout.snapToNext();

@@ -5,6 +5,7 @@ package com.smarter.LoveLog.ui.popwindow;
  */
 
 import java.util.HashMap;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -17,6 +18,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +35,11 @@ import android.widget.Toast;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.InvitationAllPinglunActivity;
@@ -41,7 +47,11 @@ import com.smarter.LoveLog.activity.MakeOutOrderActivity;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.Data;
+import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.goods.GoodsData;
+import com.smarter.LoveLog.model.loginData.SessionData;
+import com.smarter.LoveLog.model.orderMy.ShopCarCreate;
+import com.smarter.LoveLog.model.orderMy.ShopCarOrderInfo;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,13 +89,16 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
     private String str_type="校园版";
     GoodsData goodsData=new GoodsData();
 
+    boolean  isShopCar=false;
+    Boolean  isLogin;
+
     public BabyPopWindow(Context context,GoodsData goodsData) {
         this.context=context;
         this.goodsData=goodsData;
         mQueue =  AppContextApplication.getInstance().getmRequestQueue();
         View view=LayoutInflater.from(context).inflate(R.layout.popwindow_activity_car_popwindow, null);
         ButterKnife.bind(this, view);
-
+        isLogin = com.smarter.LoveLog.db.SharedPreferences.getInstance().getBoolean("islogin", false);
         initData();
 
         pop_add=(ImageView) view.findViewById(R.id.pop_add);
@@ -182,11 +195,12 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
     }
 
     /**弹窗显示的位置*/
-    public void showAsDropDown(View parent){
+    public void showAsDropDown(View parent,boolean isShopCar){
         popupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.update();
+        this.isShopCar=isShopCar;
     }
 
     /**消除弹窗*/
@@ -218,7 +232,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
                 }
                 break;
             case R.id.pop_del:
-                listener.onClickOKPop();
+//                listener.onClickOKPop();
                 dissmiss();
 
                 break;
@@ -226,11 +240,27 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
                 listener.onClickOKPop();
                 //挑战到所有评论界面//
                 //
-                Intent intent = new Intent(context, MakeOutOrderActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("goods",goodsData);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                if(isShopCar){
+
+                    SessionData sessionData;
+                    if (isLogin) {
+                        String sessionString = com.smarter.LoveLog.db.SharedPreferences.getInstance().getString("session", "");
+                        sessionData = JSON.parseObject(sessionString, SessionData.class);
+                        if (sessionData != null) {
+                            initNewnetData(sessionData, goodsData.getId(),pop_num.getText().toString());
+
+
+                        }
+
+                    }
+                }else{
+                    Intent intent = new Intent(context, MakeOutOrderActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("goods",goodsData);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+
 
                    /* HashMap<String, Object> allHashMap=new HashMap<String,Object>();
 
@@ -245,7 +275,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
                 break;
             case R.id.outside:
-                listener.onClickOKPop();
+//                listener.onClickOKPop();
                 dissmiss();
                 break;
             default:
@@ -265,6 +295,64 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
         }
 
+
+
+    }
+
+
+
+    /**
+     * 加入购物车
+     * @param sessionDataOne
+     */
+    private void initNewnetData(SessionData sessionDataOne,String id,String num) {
+
+        String url = "http://mapp.aiderizhi.com/?url=/cart/create";//
+
+        Map<String, String> map = new HashMap<String, String>();
+
+
+
+        map = new HashMap<String, String>();
+        String oneString = "{\"id\":\""+id+"\",\"number\":\""+num+"\",\"spec\":\"\",\"session\":{\"uid\":\"" + sessionDataOne.getUid() + "\",\"sid\":\"" + sessionDataOne.getSid() + "\"}}";
+        map.put("json", oneString);
+        Log.d("babyPopWindow", oneString + "》》》》");
+
+
+
+        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
+        FastJsonRequest<ShopCarCreate> fastJsonCommunity = new FastJsonRequest<ShopCarCreate>(Request.Method.POST, url, ShopCarCreate.class, null, new Response.Listener<ShopCarCreate>() {
+            @Override
+            public void onResponse(ShopCarCreate shopCarCreate) {
+
+                ShopCarCreate.StatusEntity status = shopCarCreate.getStatus();
+                if (status.getSucceed() == 1) {
+
+
+                       dissmiss();
+                    Toast.makeText(context,"成功加入购物车",Toast.LENGTH_SHORT).show();
+
+
+                    Log.d("babyPopWindow", "" + status.getSucceed() + "++++succeed》》》》" );
+                } else {
+
+                    Log.d("babyPopWindow", "" + status.getSucceed() + "++++shibai》》》》" );
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                //未知错误
+
+                Log.d("babyPopWindow", "errror" + volleyError.toString() + "++++》》》》");
+            }
+        });
+
+        fastJsonCommunity.setParams(map);
+
+        mQueue.add(fastJsonCommunity);
 
 
     }

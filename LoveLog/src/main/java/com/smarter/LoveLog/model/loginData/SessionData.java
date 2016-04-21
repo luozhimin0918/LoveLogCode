@@ -10,6 +10,15 @@ import java.io.Serializable;
 public class SessionData implements Serializable{
     private String sid;
     private String  uid;
+    private String psid;
+
+    public String getPsid() {
+        return psid;
+    }
+
+    public void setPsid(String psid) {
+        this.psid = psid;
+    }
 
     public String getSid() {
         return sid;
