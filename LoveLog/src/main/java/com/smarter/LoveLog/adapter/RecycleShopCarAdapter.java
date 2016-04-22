@@ -133,6 +133,37 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
             }
         });
 
+        viewHolder.isImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(goodsListOne.is_all_select()){
+                    goodsListOne.setIs_all_select(false);
+                    if(isQuxuan){//当全选时，又取消了一个选项。回调
+                        OnCheckDefaultListener.onAllselectToCanter(true);
+                    }
+                }else{
+                    goodsListOne.setIs_all_select(true);
+
+
+                    /**
+                     * list一个个点击全选之后的回调
+                     */
+                    int numOrdeSele=0;
+                    for(int o=0;o<orderLists.size();o++){
+                        if(orderLists.get(o).is_all_select()){
+                            ++numOrdeSele;
+                        }
+                    }
+                    if(numOrdeSele==orderLists.size()){
+                        OnCheckDefaultListener.onAllselectToCanter(false);
+                    }
+
+                }
+
+                notifyDataSetChanged();
+            }
+        });
+
 
     }
 
@@ -140,6 +171,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     //回调开始
     public interface OnCheckDefaultListener {
         void oncheckOK(Boolean[] ischeckArray);
+        void onAllselectToCanter(boolean isquxiaoQuxian);
     }
 
     private OnCheckDefaultListener OnCheckDefaultListener;
@@ -260,10 +292,16 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     }
 
 
-    public void myNotifiAdapter(boolean isAllSelect,boolean isAllEdit){
+    Boolean  isQuxuan=false;//是否全选list
+    public void myNotifiAdapter(boolean isAllSelect,boolean isAllEdit,boolean isSelectOrEdit){
                    for(int i=0;i<orderLists.size();i++){
-                       this.orderLists.get(i).setIs_all_select(isAllSelect);
-                       this.orderLists.get(i).setIs_all_edit(isAllEdit);
+                       if(isSelectOrEdit){
+                           this.orderLists.get(i).setIs_all_select(isAllSelect);
+                       }else {
+                           this.orderLists.get(i).setIs_all_edit(isAllEdit);
+                       }
+
+
 
                    }
 
@@ -271,5 +309,6 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
 
 
                  notifyDataSetChanged();
+        isQuxuan=isAllSelect;
     }
 }

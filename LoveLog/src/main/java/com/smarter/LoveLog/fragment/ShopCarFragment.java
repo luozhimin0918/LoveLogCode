@@ -217,25 +217,25 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                  if(idBianji){
                      idBianji=false;
                      tvRightTitle.setText("编辑");
-                     adapter.myNotifiAdapter(false, false);
+                     adapter.myNotifiAdapter(false, false,false);
                  }else{
                      idBianji=true;
                      tvRightTitle.setText("完成");
-                     adapter.myNotifiAdapter(false, true);
+                     adapter.myNotifiAdapter(false, true,false);
                  }
 
 
                 break;
             case R.id.isImage:
                 if(isQuanxuna){
-                    adapter.myNotifiAdapter(true,false);
+                    adapter.myNotifiAdapter(true,false,true);
                     isQuanxuna=false;
                     isImage.setBackgroundResource(R.mipmap.choiceon);
 
 
 
                 }else{
-                    adapter.myNotifiAdapter(false,false);
+                    adapter.myNotifiAdapter(false,false,true);
                     isQuanxuna=true;
                   isImage.setBackgroundResource(R.mipmap.choice);
 
@@ -574,4 +574,21 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onAllselectToCanter(boolean isquxiaoQuxian) {
+          if(isquxiaoQuxian) {
+
+
+
+              isImage.setBackgroundResource(R.mipmap.choice);
+              isQuanxuna = true;
+          }else{
+              isImage.setBackgroundResource(R.mipmap.choiceon);
+              isQuanxuna = false;
+          }
+
+
+
+     }
 }
