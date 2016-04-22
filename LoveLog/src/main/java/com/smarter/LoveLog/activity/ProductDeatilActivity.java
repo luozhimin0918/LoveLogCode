@@ -124,13 +124,12 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
     View  topView,bottomView;
     Context mContext;
 
-    @Bind(R.id.kefuBut)
-    QCheckBox kefuBut;
+
     @Bind(R.id.collectBut)
     QCheckBox collectBut;
 
     @Bind(R.id.pro_car)
-    ImageView pro_car;
+    QCheckBox pro_car;
 
     /**
      * topView
@@ -196,7 +195,6 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         back_but.setOnClickListener(this);
         pingLinear.setOnClickListener(this);
         yiSelected.setOnClickListener(this);
-        kefuBut.setOnClickListener(this);
         collectBut.setOnClickListener(this);
         toDetailPicRelative.setOnClickListener(this);
     }
@@ -281,8 +279,8 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
         indicator.setViewPager(pager);
         indicator.setPadding(5, 5, 10, 5);
 
-        isLike.setText(goodsData.getClick_count() + "人喜欢");
-        isShoping.setText(goodsData.getCollect_count() + "人购买");
+        isLike.setText(goodsData.getLike_count() + "人喜欢");
+        isShoping.setText(goodsData.getBought_count()+ "人购买");
 
         goodsName.setText(goodsData.getGoods_name());//商品名称
 
@@ -452,17 +450,17 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
                 intent2.putExtras(bundle);
                 this.startActivity(intent2);
                 break;
-            case R.id.kefuBut:
+            /*case R.id.kefuBut:
                 Boolean isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
                 if(isLogin) {
-                    /**
+                    *//**
                      * 启动客服聊天界面。
                      *
                      * @param context          应用上下文。
                      * @param conversationType 开启会话类型。
                      * @param targetId         客服 Id。
                      * @param title            客服标题。
-                     */
+                     *//*
                     RongIM.getInstance().startConversation(mContext, Conversation.ConversationType.APP_PUBLIC_SERVICE, "KEFU145033288579386", "客服");
 
 
@@ -471,7 +469,7 @@ public class ProductDeatilActivity extends BaseFragmentActivity implements View.
                 }
 
 
-                break;
+                break;*/
             case  R.id.collectBut:
                 url = "http://mapp.aiderizhi.com/?url=/collect";//收藏
                 initIsLogonParame(url);

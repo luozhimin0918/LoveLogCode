@@ -28,6 +28,9 @@ public class GoodsData implements Serializable {
     private String click_count;
     private String cmt_count;
     private String is_like;
+    private String like_count;
+    private String bought_count;
+
     private String is_collect;
 
 
@@ -40,6 +43,22 @@ public class GoodsData implements Serializable {
     private List<Specification> specification;
     private Promote promote;
     private Img img;
+
+    public String getLike_count() {
+        return like_count;
+    }
+
+    public void setLike_count(String like_count) {
+        this.like_count = like_count;
+    }
+
+    public String getBought_count() {
+        return bought_count;
+    }
+
+    public void setBought_count(String bought_count) {
+        this.bought_count = bought_count;
+    }
 
     public String getId() {
         return id;
