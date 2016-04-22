@@ -216,6 +216,25 @@ public class ShopCarOrderInfo {
             private String subtotal;
             private String img_thumb;
 
+            private boolean is_all_select;//自我增加字段，判断是否全选
+            private boolean is_all_edit;//自我增加字段，判断是否编辑
+
+            public boolean is_all_select() {
+                return is_all_select;
+            }
+
+            public void setIs_all_select(boolean is_all_select) {
+                this.is_all_select = is_all_select;
+            }
+
+            public boolean is_all_edit() {
+                return is_all_edit;
+            }
+
+            public void setIs_all_edit(boolean is_all_edit) {
+                this.is_all_edit = is_all_edit;
+            }
+
             public String getRec_id() {
                 return rec_id;
             }

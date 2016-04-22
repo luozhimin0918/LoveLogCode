@@ -380,7 +380,8 @@ public class PersonalDataActivity extends BaseFragmentActivity implements View.O
                     Log.d("PersonalDataActivity", "succeded=00000  " + JSON.toJSONString(status) + "");
                     if(status.getError_code()==1000){
                         SharedPreferences.getInstance().putBoolean("islogin",false);
-                        ViewUtill.ShowAlertDialog(getApplicationContext());
+//                        ViewUtill.ShowAlertDialog(PersonalDataActivity.this);
+                        finish();
                     }
                     Toast.makeText(getApplicationContext(), "" + status.getError_desc(), Toast.LENGTH_SHORT).show();
 

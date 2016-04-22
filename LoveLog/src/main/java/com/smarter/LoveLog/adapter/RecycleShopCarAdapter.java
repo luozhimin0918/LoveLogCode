@@ -41,12 +41,10 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     Boolean  isLogin;
     // 数据集
     List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists;
-    boolean idBianji;
 
-    public RecycleShopCarAdapter(List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists, boolean idBianji) {
+    public RecycleShopCarAdapter(List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists) {
         super();
         this.orderLists = orderLists;
-        this.idBianji = idBianji;
         mQueue = AppContextApplication.getInstance().getmRequestQueue();
     }
 
@@ -86,12 +84,20 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
 
 
 
-        if(idBianji){
+        if(goodsListOne.is_all_edit()){
             viewHolder.wanchenProgress.setVisibility(View.GONE);
             viewHolder.bianjiProgress.setVisibility(View.VISIBLE);
         }else{
             viewHolder.wanchenProgress.setVisibility(View.VISIBLE);
             viewHolder.bianjiProgress.setVisibility(View.GONE);
+        }
+
+
+
+        if(goodsListOne.is_all_select()){
+            viewHolder.isImage.setBackgroundResource(R.mipmap.choiceon);
+        }else{
+            viewHolder.isImage.setBackgroundResource(R.mipmap.choice);
         }
 
 
@@ -251,5 +257,19 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         mQueue.add(fastJsonCommunity);
 
 
+    }
+
+
+    public void myNotifiAdapter(boolean isAllSelect,boolean isAllEdit){
+                   for(int i=0;i<orderLists.size();i++){
+                       this.orderLists.get(i).setIs_all_select(isAllSelect);
+                       this.orderLists.get(i).setIs_all_edit(isAllEdit);
+
+                   }
+
+
+
+
+                 notifyDataSetChanged();
     }
 }

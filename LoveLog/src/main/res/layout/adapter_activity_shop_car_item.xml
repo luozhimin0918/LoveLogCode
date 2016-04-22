@@ -43,8 +43,8 @@
                     android:layout_height="wrap_content">
                     <com.android.volley.toolbox.NetworkImageView
                         android:id="@+id/iv_adapter_grid_pic"
-                        android:layout_width="110dp"
-                        android:layout_height="110dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:layout_gravity="center"
 
                         android:src="@drawable/loading_small" />
@@ -97,7 +97,7 @@
 
 
                           <LinearLayout
-                              android:layout_marginTop="@dimen/space_15"
+                              android:layout_marginTop="@dimen/space_10"
                               android:layout_width="fill_parent"
                               android:layout_height="wrap_content">
                               <TextView
@@ -151,8 +151,8 @@
                                       android:id="@+id/pop_reduce"
                                       android:background="@drawable/zhijiao_bg_white"
                                       android:src="@drawable/jian_price_button"
-                                      android:layout_width="40dp"
-                                      android:layout_height="40dp" />
+                                      android:layout_width="35dp"
+                                      android:layout_height="35dp" />
                                   <TextView
                                       android:id="@+id/ShopCarNumZhi"
                                       android:text="5"
@@ -169,8 +169,8 @@
                                       android:id="@+id/pop_add"
                                       android:background="@drawable/zhijiao_bg_white"
                                       android:src="@drawable/add_price_button"
-                                      android:layout_width="40dp"
-                                      android:layout_height="40dp" />
+                                      android:layout_width="35dp"
+                                      android:layout_height="35dp" />
                               </LinearLayout>
                           </LinearLayout>
 

@@ -217,17 +217,30 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                  if(idBianji){
                      idBianji=false;
                      tvRightTitle.setText("编辑");
-
+                     adapter.myNotifiAdapter(false, false);
                  }else{
                      idBianji=true;
                      tvRightTitle.setText("完成");
+                     adapter.myNotifiAdapter(false, true);
                  }
 
-               adapter = new RecycleShopCarAdapter(orderListList,idBianji);
-                mRecyclerView.setAdapter(adapter);
-//                   adapter.notifyDataSetChanged();
+
                 break;
             case R.id.isImage:
+                if(isQuanxuna){
+                    adapter.myNotifiAdapter(true,false);
+                    isQuanxuna=false;
+                    isImage.setBackgroundResource(R.mipmap.choiceon);
+
+
+
+                }else{
+                    adapter.myNotifiAdapter(false,false);
+                    isQuanxuna=true;
+                  isImage.setBackgroundResource(R.mipmap.choice);
+
+                }
+
 
                 break;
             case R.id.buy_now:
@@ -464,7 +477,8 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
     // 创建Adapter，并指定数据集
     RecycleShopCarAdapter adapter;
-    boolean  idBianji;
+    boolean  idBianji;//是否编辑
+    boolean  isQuanxuna=true;//是否全选
 
     public void initRecycleViewVertical() {
 
@@ -511,7 +525,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
         if (orderListList != null) {
-            adapter = new RecycleShopCarAdapter(orderListList,idBianji);
+            adapter = new RecycleShopCarAdapter(orderListList);
             adapter.setOnCheckDefaultListener(this);
             mRecyclerView.setAdapter(adapter);
         }

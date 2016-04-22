@@ -9,7 +9,7 @@
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/iv_item"
                 android:layout_width="fill_parent"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:scaleType="fitXY"
                 android:contentDescription="@string/app_name" />
 
