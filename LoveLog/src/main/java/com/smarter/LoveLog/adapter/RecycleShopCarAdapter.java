@@ -2,6 +2,7 @@ package com.smarter.LoveLog.adapter;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -48,11 +49,16 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     //编辑完成的数据
     List<ShopCarOrderInfo.DataEntity.GoodsListEntity> tempGoodsLists;
 
-    public RecycleShopCarAdapter(List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists) {
+    SessionData sessionData;
+
+    Context mContxt;
+
+    public RecycleShopCarAdapter(List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists,Context mContxt) {
         super();
         this.orderLists = orderLists;
         mQueue = AppContextApplication.getInstance().getmRequestQueue();
         this.tempGoodsLists=new ArrayList<ShopCarOrderInfo.DataEntity.GoodsListEntity>();
+        this.mContxt=mContxt;
     }
 
     @Override
@@ -62,6 +68,11 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         // 创建一个ViewHolder
         ViewHolder holder = new ViewHolder(view);
          isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
+        if(isLogin){
+            String sessionString = SharedPreferences.getInstance().getString("session", "");
+            sessionData = JSON.parseObject(sessionString, SessionData.class);
+
+        }
 
         return holder;
     }
@@ -166,6 +177,19 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         });
 
 
+        viewHolder.deleteBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLogin) {
+                    if (sessionData != null) {
+                            initData(sessionData,orderLists.get(i),"delete");
+                    }
+
+                }
+            }
+        });
+
+
     }
 
 
@@ -173,6 +197,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     public interface OnCheckDefaultListener {
         void oncheckOK(Boolean[] ischeckArray);
         void onAllselectToCanter(boolean isquxiaoQuxian);
+        void onDeleteAll();
     }
 
     private OnCheckDefaultListener OnCheckDefaultListener;
@@ -213,6 +238,10 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         LinearLayout bianjiProgress;
         @Bind(R.id.pop_num)
         TextView popNum;
+        @Bind(R.id.deleteBut)
+        TextView deleteBut;
+
+
 
         ViewHolder(View view) {
             super(view);
@@ -241,17 +270,25 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
      * 更新购物车数据
      * @param sessionDataOne
      */
-    private void initData(SessionData sessionDataOne, ShopCarOrderInfo.DataEntity.GoodsListEntity goodsListEntityOne) {
+    private void initData(SessionData sessionDataOne,final ShopCarOrderInfo.DataEntity.GoodsListEntity goodsListEntityOne, final String action) {
 
-        String url = "http://mapp.aiderizhi.com/?url=/cart/update";//
+
+        String url = "http://mapp.aiderizhi.com/?url=/cart/"+action;//
 
         Map<String, String> map = new HashMap<String, String>();
 
 
 
             map = new HashMap<String, String>();
-            String oneString = "{\"rec_id\":\""+goodsListEntityOne.getRec_id()+"\",\"new_number\":\""+(Integer.parseInt(goodsListEntityOne.getGoods_number())+5)+"\",\"session\":{\"uid\":\"" + sessionDataOne.getUid() + "\",\"sid\":\"" + sessionDataOne.getSid() + "\"}}";
-            map.put("json", oneString);
+        String oneString="";
+         if(action.equals("delete")){
+             oneString = "{\"rec_id\":\""+goodsListEntityOne.getRec_id()+"\",\"session\":{\"uid\":\"" + sessionDataOne.getUid() + "\",\"sid\":\"" + sessionDataOne.getSid() + "\"}}";
+
+         }else{
+             oneString = "{\"rec_id\":\""+goodsListEntityOne.getRec_id()+"\",\"new_number\":\""+Integer.parseInt(goodsListEntityOne.getGoods_number())+"\",\"session\":{\"uid\":\"" + sessionDataOne.getUid() + "\",\"sid\":\"" + sessionDataOne.getSid() + "\"}}";
+
+         }
+        map.put("json", oneString);
             Log.d("recyShopCarAdapter", oneString + "》》》》");
 
 
@@ -265,13 +302,23 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                 if (status.getSucceed() == 1) {
 
 
+                    if(action.equals("delete")){
+                        orderLists.remove(goodsListEntityOne);
+
+                        if(orderLists.size()==0){
+                            OnCheckDefaultListener.onDeleteAll();
+                        }else {
+                            notifyDataSetChanged();
+                        }
+
+                    }
 
 
 
                     Log.d("recyShopCarAdapter", "" + status.getSucceed() + "++++succeed》》》》" );
                 } else {
 
-
+//                      Toast.makeText(mContxt,""+status.getError_desc(),Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -311,15 +358,13 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
 
                     if(!isAllEdit){//完成编辑
 
-                         SessionData sessionData;
+
                         if (isLogin) {
-                            String sessionString = SharedPreferences.getInstance().getString("session", "");
-                            sessionData = JSON.parseObject(sessionString, SessionData.class);
                             if (sessionData != null) {
 
                                         for(int t=0;t<orderLists.size();t++){
 
-                                                initData(sessionData,orderLists.get(t));
+                                                initData(sessionData,orderLists.get(t),"update");
                                         }
 
 
@@ -329,13 +374,15 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                         }
 
                     }
+                        notifyDataSetChanged();
 
 
 
 
 
 
-                 notifyDataSetChanged();
+
+
 
     }
 }

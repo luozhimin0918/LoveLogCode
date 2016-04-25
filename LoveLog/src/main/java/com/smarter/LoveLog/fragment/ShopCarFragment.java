@@ -341,80 +341,24 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                     }
                     if (loadingTag == 2) {
 
-                        String shopStr = "{\n" +
-                                "\"status\":{\n" +
-                                "\"succeed\":1\n" +
-                                "},\n" +
-                                "\"data\":{\n" +
-                                "\"goods_list\":[\n" +
-                                "{\n" +
-                                "\"rec_id\":\"6577\",\n" +
-                                "\"goods_id\":\"2\",\n" +
-                                "\"goods_sn\":\"MC000002\",\n" +
-                                "\"goods_name\":\"爱的日志纪州备长炭净颜焕彩面膜\",\n" +
-                                "\"market_price\":\"¥8.90\",\n" +
-                                "\"goods_price\":\"¥5.90\",\n" +
-                                "\"goods_number\":\"20\",\n" +
-                                "\"goods_attr\":\"\",\n" +
-                                "\"is_real\":\"1\",\n" +
-                                "\"extension_code\":\"\",\n" +
-                                "\"parent_id\":\"0\",\n" +
-                                "\"rec_type\":\"0\",\n" +
-                                "\"is_gift\":\"0\",\n" +
-                                "\"is_shipping\":\"0\",\n" +
-                                "\"can_handsel\":\"0\",\n" +
-                                "\"goods_attr_id\":\"我是面膜\",\n" +
-                                "\"pid\":\"2\",\n" +
-                                "\"subtotal\":\"¥118.00\",\n" +
-                                "\"img_thumb\":\"http://www.aiderizhi.com/images/201603/thumb_img/2_thumb_G_1458155762687.png\"\n" +
-                                "},\n" +
-                                "{\n" +
-                                "\"rec_id\":\"6577\",\n" +
-                                "\"goods_id\":\"2\",\n" +
-                                "\"goods_sn\":\"MC000002\",\n" +
-                                "\"goods_name\":\"爱的日志纪州备长炭净颜焕彩面膜\",\n" +
-                                "\"market_price\":\"¥8.90\",\n" +
-                                "\"goods_price\":\"¥5.90\",\n" +
-                                "\"goods_number\":\"20\",\n" +
-                                "\"goods_attr\":\"\",\n" +
-                                "\"is_real\":\"1\",\n" +
-                                "\"extension_code\":\"\",\n" +
-                                "\"parent_id\":\"0\",\n" +
-                                "\"rec_type\":\"0\",\n" +
-                                "\"is_gift\":\"0\",\n" +
-                                "\"is_shipping\":\"0\",\n" +
-                                "\"can_handsel\":\"0\",\n" +
-                                "\"goods_attr_id\":\"我是面膜\",\n" +
-                                "\"pid\":\"2\",\n" +
-                                "\"subtotal\":\"¥118.00\",\n" +
-                                "\"img_thumb\":\"http://www.aiderizhi.com/images/201603/thumb_img/2_thumb_G_1458155762687.png\"\n" +
-                                "}\n" +
-                                "],\n" +
-                                "\"total\":{\n" +
-                                "\"goods_price\":\"¥118.00\",\n" +
-                                "\"market_price\":\"¥178.00\",\n" +
-                                "\"saving\":\"¥60.00\",\n" +
-                                "\"save_rate\":\"34%\",\n" +
-                                "\"goods_amount\":118,\n" +
-                                "\"real_goods_count\":1,\n" +
-                                "\"virtual_goods_count\":0\n" +
-                                "}\n" +
-                                "}\n" +
-                                "}";
-                        ShopCarOrderInfo shopCarOrderInfo = JSON.parseObject(shopStr, ShopCarOrderInfo.class);
 
 
                         orderListList.clear();
                         orderListList.addAll(myOrderInfo.getData().getGoods_list());
 
                         if (orderListList != null && orderListList.size() > 0) {
-                            initData();//初始界面
+                            adapter.notifyDataSetChanged();
+                            xuanfuBar.setVisibility(View.VISIBLE);
+                            tvRightTitle.setVisibility(View.VISIBLE);
 
                         } else {
                             progressLinear.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.GONE);
                             networkInfo.setVisibility(View.GONE);
                             carLinear.setVisibility(View.VISIBLE);
+
+                            xuanfuBar.setVisibility(View.GONE);
+                            tvRightTitle.setVisibility(View.INVISIBLE);
                         }
 
 
@@ -464,17 +408,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
     }
 
 
-    private void initData() {
-        if (orderListList != null && orderListList.size() > 0) {
 
-
-            adapter.notifyDataSetChanged();
-
-        }
-
-
-        xuanfuBar.setVisibility(View.VISIBLE);
-    }
 
 
     // 创建Adapter，并指定数据集
@@ -533,7 +467,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
         if (orderListList != null) {
-            adapter = new RecycleShopCarAdapter(orderListList);
+            adapter = new RecycleShopCarAdapter(orderListList,mContext);
             adapter.setOnCheckDefaultListener(this);
             mRecyclerView.setAdapter(adapter);
         }
@@ -600,6 +534,15 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
      }
 
+    @Override
+    public void onDeleteAll() {
+        progressLinear.setVisibility(View.GONE);
+        networkInfo.setVisibility(View.GONE);
+        carLinear.setVisibility(View.VISIBLE);
+
+        xuanfuBar.setVisibility(View.GONE);
+        tvRightTitle.setVisibility(View.INVISIBLE);
+    }
 
 
 }

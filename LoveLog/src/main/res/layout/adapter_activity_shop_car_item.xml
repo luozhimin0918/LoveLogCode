@@ -175,6 +175,7 @@
                           </LinearLayout>
 
                           <TextView
+                              android:id="@+id/deleteBut"
                               android:text="删除"
                               android:textSize="16sp"
                               android:gravity="center"
