@@ -1,5 +1,6 @@
 package com.smarter.LoveLog.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -216,12 +217,13 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             case R.id.tv_right_title:
                  if(idBianji){
                      idBianji=false;
-                     tvRightTitle.setText("编辑");
-                     adapter.myNotifiAdapter(false, false,false);
-                 }else{
-                     idBianji=true;
                      tvRightTitle.setText("完成");
                      adapter.myNotifiAdapter(false, true,false);
+                 }else{
+                     idBianji=true;
+                     tvRightTitle.setText("编辑");
+                     adapter.myNotifiAdapter(false, false,false);
+
                  }
 
 
@@ -477,7 +479,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
     // 创建Adapter，并指定数据集
     RecycleShopCarAdapter adapter;
-    boolean  idBianji;//是否编辑
+    boolean  idBianji=true;//是否编辑
     boolean  isQuanxuna=true;//是否全选
 
     public void initRecycleViewVertical() {
@@ -494,9 +496,15 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                loadingTag = 2;//重新加载
-                page = 1;
-                initData(sessionData);
+                if(isQuanxuna==false||idBianji==false){
+                     Toast.makeText(mContext,"编辑中不可刷新",Toast.LENGTH_SHORT).show();
+                    mRecyclerView.refreshComplete();
+                }else{
+                    loadingTag = 2;//重新加载
+                    page = 1;
+                    initData(sessionData);
+                }
+
 //                new Handler().postDelayed(new Runnable() {
 //                    public void run() {
 //
@@ -591,4 +599,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
      }
+
+
+
 }

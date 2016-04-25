@@ -271,6 +271,10 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
             mFragments.add(shopCarFragment);
             main_zt_color.setBackgroundColor(Color.parseColor("#fc1359"));
             mTabLayout_2.setVisibility(View.GONE);
+            for (int i = 0; i < mTitles.length; i++) {
+                mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+            }
+            intTalayoug();
         }else {
             mFragments.add(homeFragment);
             mFragments.add(communityFragment);
@@ -366,7 +370,7 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void mViewPagerSetCurrent(int i) {
-        if (i == mFragments.size() - 1) {
+        if (i == mFragments.size() - 1&&mFragments.size()>=4) {
             main_zt_color.setBackground(getResources().getDrawable(R.drawable.repeat_bg));
         } else {
             main_zt_color.setBackgroundColor(Color.parseColor("#fc1359"));

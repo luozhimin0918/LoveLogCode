@@ -1,5 +1,7 @@
 package com.smarter.LoveLog.adapter;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.orderMy.ShopCarOrderInfo;
 import com.smarter.LoveLog.utills.ViewUtill;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,10 +45,14 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     // 数据集
     List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists;
 
+    //编辑完成的数据
+    List<ShopCarOrderInfo.DataEntity.GoodsListEntity> tempGoodsLists;
+
     public RecycleShopCarAdapter(List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists) {
         super();
         this.orderLists = orderLists;
         mQueue = AppContextApplication.getInstance().getmRequestQueue();
+        this.tempGoodsLists=new ArrayList<ShopCarOrderInfo.DataEntity.GoodsListEntity>();
     }
 
     @Override
@@ -105,19 +112,10 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
             @Override
             public void onClick(View v) {
                 int num = Integer.parseInt(viewHolder.ShopCarNumZhi.getText().toString())+5;
-                goodsListOne.setGoods_number(num+"");
+                goodsListOne.setGoods_number(num + "");
                 notifyDataSetChanged();
-               /* SessionData sessionData;
-                if (isLogin) {
-                    String sessionString = SharedPreferences.getInstance().getString("session", "");
-                    sessionData = JSON.parseObject(sessionString, SessionData.class);
-                    if (sessionData != null) {
-                        initData(sessionData,orderLists.get(i));
 
 
-                    }
-
-                }*/
             }
         });
         viewHolder.popReduce.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +125,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                 if(num>=5){
                     goodsListOne.setGoods_number(num+"");
                     notifyDataSetChanged();
+
                 }
 
 
@@ -141,6 +140,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                     if(isQuxuan){//当全选时，又取消了一个选项。回调
                         OnCheckDefaultListener.onAllselectToCanter(true);
                     }
+
                 }else{
                     goodsListOne.setIs_all_select(true);
 
@@ -156,6 +156,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                     }
                     if(numOrdeSele==orderLists.size()){
                         OnCheckDefaultListener.onAllselectToCanter(false);
+                        isQuxuan=true;//表示全选了
                     }
 
                 }
@@ -297,6 +298,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                    for(int i=0;i<orderLists.size();i++){
                        if(isSelectOrEdit){
                            this.orderLists.get(i).setIs_all_select(isAllSelect);
+                           isQuxuan=isAllSelect;
                        }else {
                            this.orderLists.get(i).setIs_all_edit(isAllEdit);
                        }
@@ -307,8 +309,33 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
 
 
 
+                    if(!isAllEdit){//完成编辑
+
+                         SessionData sessionData;
+                        if (isLogin) {
+                            String sessionString = SharedPreferences.getInstance().getString("session", "");
+                            sessionData = JSON.parseObject(sessionString, SessionData.class);
+                            if (sessionData != null) {
+
+                                        for(int t=0;t<orderLists.size();t++){
+
+                                                initData(sessionData,orderLists.get(t));
+                                        }
+
+
+
+                            }
+
+                        }
+
+                    }
+
+
+
+
+
 
                  notifyDataSetChanged();
-        isQuxuan=isAllSelect;
+
     }
 }
