@@ -305,11 +305,9 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                     if(action.equals("delete")){
                         orderLists.remove(goodsListEntityOne);
 
-                        if(orderLists.size()==0){
-                            OnCheckDefaultListener.onDeleteAll();
-                        }else {
+
                             notifyDataSetChanged();
-                        }
+
 
                     }
 
