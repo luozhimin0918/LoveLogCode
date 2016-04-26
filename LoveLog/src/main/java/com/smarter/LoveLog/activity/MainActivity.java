@@ -2,8 +2,10 @@ package com.smarter.LoveLog.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -24,9 +26,11 @@ import android.widget.RadioGroup;
 import com.alibaba.fastjson.JSON;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.flyco.roundview.RoundTextView;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -34,6 +38,8 @@ import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.ConstantsWeixin;
+import com.smarter.LoveLog.db.SharedPreUtil;
+import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.fragment.SelfFragment;
 import com.smarter.LoveLog.fragment.CommunityFragment;
 import com.smarter.LoveLog.fragment.ShopCarFragment;
@@ -43,6 +49,9 @@ import com.smarter.LoveLog.model.ChatEmoji;
 import com.smarter.LoveLog.model.home.DataStatus;
 import com.smarter.LoveLog.model.jsonModel.GuideImgData;
 import com.smarter.LoveLog.model.jsonModel.GuideImgInfo;
+import com.smarter.LoveLog.model.loginData.SessionData;
+import com.smarter.LoveLog.model.orderMy.ShopCarNum;
+import com.smarter.LoveLog.model.orderMy.ShopCarOrderInfo;
 import com.smarter.LoveLog.rongCloud.RongCloudEvent;
 import com.smarter.LoveLog.ui.TabEntity;
 import com.smarter.LoveLog.utills.FaceConversionUtil;
@@ -126,7 +135,7 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
             }
         }).start();
 
-
+        isLogin = SharedPreUtil.isLogin();
 
         initWeixinAPI();//初始化微信api
         networkANA();//下拉数据数组
@@ -135,10 +144,16 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 
          initRound();
 
+        regBroadCast();//注册广播
+    }
 
-//        init();
-//        setListen();
-//        setTabSelection(0);
+    private void regBroadCast() {
+        if (receiveBroadCast == null) {
+            receiveBroadCast = new ReceiveBroadCast();
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("UpShopCarNum");
+            mActivity.registerReceiver(receiveBroadCast, filter);
+        }
     }
 
     private void initWeixinAPI() {
@@ -285,6 +300,13 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
                 mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
             }
             intTalayoug();
+
+
+            intShopCarNum();
+
+
+
+
         }
 
         myPagerAdapter=new MyPagerAdapter(getSupportFragmentManager());
@@ -295,7 +317,19 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 
     }
 
+    /**
+     * 购物车数量
+     */
+    boolean  isLogin;
+    SessionData sessionData;
+    private void intShopCarNum() {
 
+        if(isLogin){
+           sessionData=SharedPreUtil.LoginSessionData();
+            getNetShopCarNum(sessionData);
+        }
+
+    }
 
 
     Boolean  isOnTab=false;
@@ -470,6 +504,10 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
     protected void onDestroy() {
         super.onDestroy();
         ShareSDK.stopSDK(this);//在项目出口Activity的onDestroy方法中第一行插入下面的代码：
+
+        if (receiveBroadCast != null) {
+            mActivity.unregisterReceiver(receiveBroadCast);
+        }
     }
 
     private void setListen() {
@@ -541,4 +579,97 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
         mQueue.add(stringRequest);
     }
 
-}
+
+    /**
+     * 获取购物车数量数据
+     * @param sessionDataOne
+     */
+    private void getNetShopCarNum(SessionData sessionDataOne) {
+
+
+        String url = "http://mapp.aiderizhi.com/?url=/cart/number";//
+
+        Map<String, String> map = new HashMap<String, String>();
+
+
+        map = new HashMap<String, String>();
+
+
+        String  oneString = "{ \"session\":{\"uid\":\"" + sessionDataOne.getUid() + "\",\"sid\":\"" + sessionDataOne.getSid() + "\"}}";
+
+        map.put("json", oneString);
+        Log.d("MainShopCar", oneString + "》》》》");
+
+
+        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
+        FastJsonRequest<ShopCarNum> fastJsonCommunity = new FastJsonRequest<ShopCarNum>(Request.Method.POST, url, ShopCarNum.class, null, new Response.Listener<ShopCarNum>() {
+            @Override
+            public void onResponse(ShopCarNum shopCarNum) {
+
+                ShopCarNum.StatusEntity status = shopCarNum.getStatus();
+                if (status.getSucceed() == 1) {
+
+                    String  numstr =shopCarNum.getData().getCart_number().toString();
+                    if(!numstr.equals("null")){
+                        int num =Integer.parseInt(numstr);
+                        mTabLayout_2.showMsg(2, num);
+                        mTabLayout_2.setMsgMargin(0, -10, 5);
+                        RoundTextView rtv_2_3 = mTabLayout_2.getMsgView(2);
+                        if (rtv_2_3 != null) {
+                            rtv_2_3.getDelegate().setBackgroundColor(Color.parseColor("#fc1359"));
+                        }
+                    }
+
+
+
+
+                    Log.d("MainShopCar", "" +shopCarNum.getData().getCart_number().toString() + "++++succeed》》》》");
+                } else {
+
+//                      Toast.makeText(mContxt,""+status.getError_desc(),Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                //未知错误
+
+//                Log.d("MainShopCar", "errror" + volleyError.toString() + "++++》》》》");
+            }
+        });
+
+        fastJsonCommunity.setParams(map);
+
+        mQueue.add(fastJsonCommunity);
+    }
+
+
+
+
+
+
+
+
+    private ReceiveBroadCast receiveBroadCast;// 广播接受者(可用回调实现，暂时用广播代替)
+
+    public class ReceiveBroadCast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 得到广播中得到的数据，并显示出来
+
+                if (intent.getAction().equals("UpShopCarNum")) {
+                    String message = intent.getStringExtra("update");
+
+                }
+        }
+    }
+
+
+
+
+
+
+    }

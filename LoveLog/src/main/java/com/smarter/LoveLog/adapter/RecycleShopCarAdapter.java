@@ -308,7 +308,6 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
 
                             notifyDataSetChanged();
 
-
                     }
 
 
