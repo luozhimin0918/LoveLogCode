@@ -117,8 +117,12 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
                                 finish();*/
 
 
-                                networkLoginOut(sessionData.getUid(),sessionData.getSid());//
-                                Log.d("SetActivity","  Session  "+ sessionData.getUid() + "      "+sessionData.getSid());
+                                networkLoginOut(sessionData.getUid(), sessionData.getSid());//
+                                Log.d("SetActivity", "  Session  " + sessionData.getUid() + "      " + sessionData.getSid());
+
+
+
+
                             }
                        }else{
                            Toast.makeText(getApplicationContext(), "未登录，请先登录" , Toast.LENGTH_SHORT).show();
@@ -186,6 +190,13 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
                     if(loginMess!=null){
                         Toast.makeText(getApplicationContext(), "成功退出" , Toast.LENGTH_SHORT).show();
                         SharedPreferences.getInstance().putBoolean("islogin",false);
+
+
+                        Intent intent = new Intent();
+                        intent.setAction("UpShopCarNum");
+                        intent.putExtra("update", "ok");
+                        getApplicationContext().sendBroadcast(intent);
+
                         finish();
                         Log.d("SetActivity", "退出信息：   " + JSON.toJSONString(loginMess)+ "++++succeed");
                     }

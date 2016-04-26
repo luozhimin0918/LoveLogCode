@@ -135,7 +135,6 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
             }
         }).start();
 
-        isLogin = SharedPreUtil.isLogin();
 
         initWeixinAPI();//初始化微信api
         networkANA();//下拉数据数组
@@ -324,9 +323,16 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
     SessionData sessionData;
     private void intShopCarNum() {
 
-        if(isLogin){
+        if( SharedPreUtil.isLogin()){
            sessionData=SharedPreUtil.LoginSessionData();
             getNetShopCarNum(sessionData);
+        }else{
+            mTabLayout_2.showMsg(2, 0);
+          /*  mTabLayout_2.setMsgMargin(0, -10, 5);
+            RoundTextView rtv_2_3 = mTabLayout_2.getMsgView(2);
+            if (rtv_2_3 != null) {
+                rtv_2_3.getDelegate().setBackgroundColor(Color.parseColor("#fc1359"));
+            }*/
         }
 
     }
@@ -609,8 +615,10 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
                 ShopCarNum.StatusEntity status = shopCarNum.getStatus();
                 if (status.getSucceed() == 1) {
 
-                    String  numstr =shopCarNum.getData().getCart_number().toString();
-                    if(!numstr.equals("null")){
+
+                    if(shopCarNum.getData().getCart_number()!=null){
+                        String  numstr =shopCarNum.getData().getCart_number().toString();
+
                         int num =Integer.parseInt(numstr);
                         mTabLayout_2.showMsg(2, num);
                         mTabLayout_2.setMsgMargin(0, -10, 5);
@@ -618,12 +626,14 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
                         if (rtv_2_3 != null) {
                             rtv_2_3.getDelegate().setBackgroundColor(Color.parseColor("#fc1359"));
                         }
+//                        Log.d("MainShopCar", "" +shopCarNum.getData().getCart_number().toString() + "++++succeed》》》》");
+
                     }
 
 
 
 
-                    Log.d("MainShopCar", "" +shopCarNum.getData().getCart_number().toString() + "++++succeed》》》》");
+
                 } else {
 
 //                      Toast.makeText(mContxt,""+status.getError_desc(),Toast.LENGTH_SHORT).show();
@@ -662,6 +672,9 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 
                 if (intent.getAction().equals("UpShopCarNum")) {
                     String message = intent.getStringExtra("update");
+                    if(message.equals("ok")){
+                        intShopCarNum();
+                    }
 
                 }
         }
