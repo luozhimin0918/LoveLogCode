@@ -101,7 +101,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             mRootView = new WeakReference<View>(view);
             mContext = getContext();
             ButterKnife.bind(this, view);
-            initRecycleViewVertical();
+
 
 
         } else {
@@ -119,6 +119,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
     @Override
     public void onResume() {
         super.onResume();
+        initRecycleViewVertical();
         isLogiin(false);
     }
 
