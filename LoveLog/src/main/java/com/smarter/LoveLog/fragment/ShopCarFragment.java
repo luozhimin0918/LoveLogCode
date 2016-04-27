@@ -29,6 +29,7 @@ import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.LoginActivity;
 import com.smarter.LoveLog.adapter.RecycleShopCarAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.SharedPreUtil;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.PaginationJson;
@@ -274,7 +275,21 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             mRecyclerView.setVisibility(View.VISIBLE);
             networkInfo.setVisibility(View.GONE);
             carLinear.setVisibility(View.GONE);
-            initData(sessionData);
+
+            if(SharedPreUtil.isLogin()){
+                initData(sessionData);
+            }else{
+
+
+               /* progressLinear.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.GONE);
+                networkInfo.setVisibility(View.GONE);
+                carLinear.setVisibility(View.VISIBLE);
+
+                xuanfuBar.setVisibility(View.GONE);
+                tvRightTitle.setVisibility(View.INVISIBLE);*/
+            }
+
 
         } else {
             errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nowifi));
