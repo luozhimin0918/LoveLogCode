@@ -77,37 +77,47 @@
                                   android:id="@+id/desInfo"
                                   android:layout_marginTop="@dimen/space_5"
                                   android:layout_weight="1"
+                                  android:gravity="bottom"
                                   android:layout_width="fill_parent"
-                                  android:textColor="#696969"
+                                  android:textColor="#323232"
                                   android:textSize="16sp"
-                                  android:singleLine="true"
                                   android:layout_height="wrap_content"
-                                  android:text="超级超级的补水面膜"/>
-                              <TextView
-                                  android:id="@+id/shopPrice"
-                                  android:layout_marginTop="@dimen/space_5"
-                                  android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  android:text="￥49.00  "
-                                  android:textColor="@color/top_bar_bgColor"
-                                  android:textSize="18sp" />
+                                  android:text="超级超级的补水面级超级的补水面膜"/>
 
                           </LinearLayout>
 
 
 
                           <LinearLayout
-                              android:layout_marginTop="@dimen/space_10"
+                              android:layout_marginTop="@dimen/space_5"
                               android:layout_width="fill_parent"
                               android:layout_height="wrap_content">
                               <TextView
+                                  android:layout_marginTop="@dimen/space_5"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:text="￥"
+                                  android:textColor="#5D5D5D"
+                                  android:textSize="13sp" />
+                              <TextView
+                                  android:id="@+id/shopPrice"
                                   android:layout_weight="1"
+                                  android:layout_marginTop="@dimen/space_5"
+                                  android:layout_width="fill_parent"
+                                  android:layout_height="wrap_content"
+                                  android:text="49.00  "
+                                  android:textColor="@color/top_bar_bgColor"
+                                  android:textSize="18sp" />
+
+                              <TextView
+                                  android:layout_weight="1"
+                                  android:visibility="gone"
                                   android:layout_marginTop="@dimen/space_5"
                                   android:layout_width="fill_parent"
                                   android:layout_height="wrap_content"
                                   android:text="版本：青春版"
                                   android:textColor="#5D5D5D"
-                                  android:textSize="14sp" />
+                                  android:textSize="13sp" />
                               <TextView
                                   android:layout_marginTop="@dimen/space_5"
                                   android:layout_width="wrap_content"

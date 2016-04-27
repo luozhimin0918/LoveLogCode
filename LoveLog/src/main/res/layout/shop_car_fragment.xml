@@ -12,7 +12,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingRight="25dp"
+            android:layout_marginLeft="@dimen/space_20"
             android:visibility="invisible"
             android:src="@mipmap/back" />
 
@@ -31,7 +31,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="@dimen/space_20"
             android:text="编辑"
             android:textColor="@color/white"
             android:textSize="15sp" />

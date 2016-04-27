@@ -3,7 +3,12 @@ package com.smarter.LoveLog.adapter;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,8 +87,29 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         // 绑定数据到ViewHolder上
        final ShopCarOrderInfo.DataEntity.GoodsListEntity goodsListOne = orderLists.get(i);
 
-        viewHolder.desInfo.setText(goodsListOne.getGoods_name());
-        viewHolder.shopPrice.setText(goodsListOne.getGoods_price());
+        viewHolder.desInfo.setText("");
+
+
+//        if(goodsListOne.getIs_shipping().equals("1")){
+        Bitmap b2 = BitmapFactory.decodeResource(mContxt.getResources(), R.mipmap.free);
+        ImageSpan imgSpan2 = new ImageSpan(mContxt, b2);
+        SpannableString spanString2 = new SpannableString("免费");
+        spanString2.setSpan(imgSpan2, 0, spanString2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        viewHolder.desInfo.append(spanString2);
+        viewHolder.desInfo.append("  ");
+//        }
+
+//        if(!goodsListOne.getIs_gift().equals("0")){
+            Bitmap b = BitmapFactory.decodeResource(mContxt.getResources(), R.mipmap.zengpin);
+            ImageSpan imgSpan = new ImageSpan(mContxt, b);
+            SpannableString spanString = new SpannableString("赠品");
+            spanString.setSpan(imgSpan, 0, spanString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            viewHolder.desInfo.append(spanString);
+            viewHolder.desInfo.append("  ");
+//        }
+
+        viewHolder.desInfo.append(goodsListOne.getGoods_name());
+        viewHolder.shopPrice.setText(goodsListOne.getGoods_price().replace("¥",""));
         viewHolder.shopCarNum.setText(goodsListOne.getGoods_number());
         viewHolder.ShopCarNumZhi.setText(goodsListOne.getGoods_number());
 
@@ -285,7 +311,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
              oneString = "{\"rec_id\":\""+goodsListEntityOne.getRec_id()+"\",\"session\":{\"uid\":\"" + sessionDataOne.getUid() + "\",\"sid\":\"" + sessionDataOne.getSid() + "\"}}";
 
          }else{
-             oneString = "{\"rec_id\":\""+goodsListEntityOne.getRec_id()+"\",\"new_number\":\""+Integer.parseInt(goodsListEntityOne.getGoods_number())+"\",\"session\":{\"uid\":\"" + sessionDataOne.getUid() + "\",\"sid\":\"" + sessionDataOne.getSid() + "\"}}";
+             oneString = "{\"rec_id\":\""+goodsListEntityOne.getRec_id()+"\",\"number\":\""+Integer.parseInt(goodsListEntityOne.getGoods_number())+"\",\"session\":{\"uid\":\"" + sessionDataOne.getUid() + "\",\"sid\":\"" + sessionDataOne.getSid() + "\"}}";
 
          }
         map.put("json", oneString);
