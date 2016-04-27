@@ -83,7 +83,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder( ViewHolder viewHolder, final int i) {
         // 绑定数据到ViewHolder上
        final ShopCarOrderInfo.DataEntity.GoodsListEntity goodsListOne = orderLists.get(i);
 
@@ -148,7 +148,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         viewHolder.popAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int num = Integer.parseInt(viewHolder.ShopCarNumZhi.getText().toString())+5;
+                int num = Integer.parseInt(goodsListOne.getGoods_number())+5;
                 goodsListOne.setGoods_number(num + "");
                 notifyDataSetChanged();
 
@@ -158,7 +158,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         viewHolder.popReduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int num = Integer.parseInt(viewHolder.ShopCarNumZhi.getText().toString())-5;
+                int num = Integer.parseInt(goodsListOne.getGoods_number())-5;
                 if(num>=5){
                     goodsListOne.setGoods_number(num+"");
                     notifyDataSetChanged();
