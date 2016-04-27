@@ -192,6 +192,7 @@ public class SetActivity extends BaseFragmentActivity implements View.OnClickLis
                         SharedPreferences.getInstance().putBoolean("islogin",false);
 
 
+                        //广播通知刷新购物车数量
                         Intent intent = new Intent();
                         intent.setAction("UpShopCarNum");
                         intent.putExtra("update", "ok");

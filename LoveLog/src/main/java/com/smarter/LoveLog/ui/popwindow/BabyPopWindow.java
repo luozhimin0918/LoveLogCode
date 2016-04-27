@@ -333,6 +333,13 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
                     Toast.makeText(context,"成功加入购物车",Toast.LENGTH_SHORT).show();
 
 
+                    //广播通知刷新购物车数量
+                    Intent intent = new Intent();
+                    intent.setAction("UpShopCarNum");
+                    intent.putExtra("update", "ok");
+                    context.sendBroadcast(intent);
+
+
                     Log.d("babyPopWindow", "" + status.getSucceed() + "++++succeed》》》》" );
                 } else {
 

@@ -628,6 +628,8 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
                         }
 //                        Log.d("MainShopCar", "" +shopCarNum.getData().getCart_number().toString() + "++++succeed》》》》");
 
+                    }else{
+                        mTabLayout_2.showMsg(2, 0);
                     }
 
 

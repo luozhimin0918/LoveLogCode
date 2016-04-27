@@ -3,6 +3,7 @@ package com.smarter.LoveLog.adapter;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -331,6 +332,12 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                     if(action.equals("delete")){
                         orderLists.remove(goodsListEntityOne);
 
+                        //广播通知刷新购物车数量
+                        Intent intent = new Intent();
+                        intent.setAction("UpShopCarNum");
+                        intent.putExtra("update", "ok");
+                        mContxt.sendBroadcast(intent);
+
 
                             notifyDataSetChanged();
 
@@ -388,6 +395,12 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                                         for(int t=0;t<orderLists.size();t++){
 
                                                 initData(sessionData,orderLists.get(t),"update");
+
+                                            //广播通知刷新购物车数量
+                                            Intent intent = new Intent();
+                                            intent.setAction("UpShopCarNum");
+                                            intent.putExtra("update", "ok");
+                                            mContxt.sendBroadcast(intent);
                                         }
 
 

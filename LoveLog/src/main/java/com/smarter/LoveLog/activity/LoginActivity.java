@@ -170,6 +170,16 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                         SharedPreferences.getInstance().putString("usename", user);
                         SharedPreferences.getInstance().putString("password", pass);
                         SharedPreferences.getInstance().putString("user", JSON.toJSONString(loginDataActi.getUser()));
+
+
+
+                        //广播通知刷新购物车数量
+                        Intent intent = new Intent();
+                        intent.setAction("UpShopCarNum");
+                        intent.putExtra("update", "ok");
+                        getApplicationContext().sendBroadcast(intent);
+
+
                         finish();
                         Log.d("loginActivity", "登录信息：   " + JSON.toJSONString(loginDataActi.getSession()) + "" + JSON.toJSONString(loginDataActi.getUser()) + "++++succeed");
                     }
