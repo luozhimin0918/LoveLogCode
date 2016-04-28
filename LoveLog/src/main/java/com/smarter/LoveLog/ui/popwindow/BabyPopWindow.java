@@ -5,6 +5,7 @@ package com.smarter.LoveLog.ui.popwindow;
  */
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
@@ -47,9 +48,11 @@ import com.smarter.LoveLog.activity.MakeOutOrderActivity;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.Data;
+import com.smarter.LoveLog.db.SharedPreUtil;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.goods.GoodsData;
 import com.smarter.LoveLog.model.loginData.SessionData;
+import com.smarter.LoveLog.model.orderMy.LocalShopCarData;
 import com.smarter.LoveLog.model.orderMy.ShopCarCreate;
 import com.smarter.LoveLog.model.orderMy.ShopCarOrderInfo;
 
@@ -252,11 +255,32 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
                         }
 
+                    }else{
+                        ShopCarOrderInfo.DataEntity.GoodsListEntity goodsListEntity=new ShopCarOrderInfo.DataEntity.GoodsListEntity();
+                       goodsListEntity.setGoods_id(goodsData.getId());
+                        goodsListEntity.setGoods_number(pop_num.getText().toString());
+                        goodsListEntity.setGoods_sn(goodsData.getGoods_sn());
+                        goodsListEntity.setGoods_name(goodsData.getGoods_name());
+                        goodsListEntity.setGoods_price(goodsData.getShop_price());
+                        goodsListEntity.setMarket_price(goodsData.getMarket_price());
+                        goodsListEntity.setImg_thumb(goodsData.getImg().getThumb());
+
+                        SharedPreUtil.saveLocalShopCarData(goodsListEntity);
+
+                        dissmiss();
+                        Toast.makeText(context,"成功加入购物车",Toast.LENGTH_SHORT).show();
+                        //广播通知刷新购物车数量
+                        Intent intent = new Intent();
+                        intent.setAction("UpShopCarNum");
+                        intent.putExtra("update", "ok");
+                        context.sendBroadcast(intent);
+
+
                     }
                 }else{
                     Intent intent = new Intent(context, MakeOutOrderActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("goods",goodsData);
+                    bundle.putSerializable("goods", goodsData);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }

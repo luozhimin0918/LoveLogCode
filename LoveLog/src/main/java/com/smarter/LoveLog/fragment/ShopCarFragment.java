@@ -142,6 +142,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         } else {
 
 
+            newWait();
             if (isFistOnTab) {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
@@ -196,10 +197,10 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                     isLoginTag = false;
                 }
 
-                mRecyclerView.setVisibility(View.GONE);
+             /*   mRecyclerView.setVisibility(View.GONE);
                 networkInfo.setVisibility(View.VISIBLE);
                 carLinear.setVisibility(View.GONE);
-                xuanfuBar.setVisibility(View.GONE);
+                xuanfuBar.setVisibility(View.GONE);*/
 
             }
 
@@ -272,22 +273,39 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
             animationDrawable.start();
 
-            mRecyclerView.setVisibility(View.VISIBLE);
-            networkInfo.setVisibility(View.GONE);
-            carLinear.setVisibility(View.GONE);
+
 
             if(SharedPreUtil.isLogin()){
+                mRecyclerView.setVisibility(View.VISIBLE);
+                networkInfo.setVisibility(View.GONE);
+                carLinear.setVisibility(View.GONE);
                 initData(sessionData);
             }else{
 
+                        initRecycleViewVertical();
+                        if(SharedPreUtil.getLocalShopCarData().size()>0){
+                            progressLinear.setVisibility(View.GONE);
 
-               /* progressLinear.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.GONE);
-                networkInfo.setVisibility(View.GONE);
-                carLinear.setVisibility(View.VISIBLE);
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            networkInfo.setVisibility(View.GONE);
+                            carLinear.setVisibility(View.GONE);
 
-                xuanfuBar.setVisibility(View.GONE);
-                tvRightTitle.setVisibility(View.INVISIBLE);*/
+                            orderListList.clear();
+                            orderListList.addAll(SharedPreUtil.getLocalShopCarData());
+                            adapter.notifyDataSetChanged();
+                            xuanfuBar.setVisibility(View.VISIBLE);
+                            tvRightTitle.setVisibility(View.VISIBLE);
+                        }else{
+                            progressLinear.setVisibility(View.GONE);
+                            mRecyclerView.setVisibility(View.GONE);
+                            networkInfo.setVisibility(View.GONE);
+                            carLinear.setVisibility(View.VISIBLE);
+
+                            xuanfuBar.setVisibility(View.GONE);
+                            tvRightTitle.setVisibility(View.INVISIBLE);
+                        }
+
+               /**/
             }
 
 
@@ -446,24 +464,32 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                if(isQuanxuna==false||idBianji==false){
-                     Toast.makeText(mContext,"编辑中不可刷新",Toast.LENGTH_SHORT).show();
-                    mRecyclerView.refreshComplete();
+
+                if(SharedPreUtil.isLogin()){
+                    if(isQuanxuna==false||idBianji==false){
+                        Toast.makeText(mContext,"编辑中不可刷新",Toast.LENGTH_SHORT).show();
+                        mRecyclerView.refreshComplete();
+                    }else{
+                        loadingTag = 2;//重新加载
+                        page = 1;
+                        initData(sessionData);
+                    }
                 }else{
-                    loadingTag = 2;//重新加载
-                    page = 1;
-                    initData(sessionData);
+
+                    //为登录下刷新
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+
+                            mRecyclerView.refreshComplete();
+
+
+                        }
+
+                   }, 1000);            //refresh data here
                 }
 
-//                new Handler().postDelayed(new Runnable() {
-//                    public void run() {
-//
-//                        mRecyclerView.refreshComplete();
-//
-//
-//                    }
-//
-//                }, 1000);            //refresh data here
+
+
             }
 
             @Override

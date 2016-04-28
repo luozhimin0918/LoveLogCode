@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
+import com.smarter.LoveLog.db.SharedPreUtil;
 import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.PaginationJson;
@@ -48,7 +49,6 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
 
 
     RequestQueue mQueue;
-    Boolean  isLogin;
     // 数据集
     List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists;
 
@@ -73,8 +73,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         View view = View.inflate(viewGroup.getContext(), R.layout.adapter_activity_shop_car_item, null);
         // 创建一个ViewHolder
         ViewHolder holder = new ViewHolder(view);
-         isLogin = SharedPreferences.getInstance().getBoolean("islogin", false);
-        if(isLogin){
+        if(SharedPreUtil.isLogin()){
             String sessionString = SharedPreferences.getInstance().getString("session", "");
             sessionData = JSON.parseObject(sessionString, SessionData.class);
 
@@ -151,7 +150,8 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
             public void onClick(View v) {
                 int num = Integer.parseInt(goodsListOne.getGoods_number())+5;
                 goodsListOne.setGoods_number(num + "");
-                notifyDataSetChanged();
+
+                thisNotifyDataSetChanged(goodsListOne,false);//保存本地数据
 
 
             }
@@ -161,8 +161,9 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
             public void onClick(View v) {
                 int num = Integer.parseInt(goodsListOne.getGoods_number())-5;
                 if(num>=5){
-                    goodsListOne.setGoods_number(num+"");
-                    notifyDataSetChanged();
+                    goodsListOne.setGoods_number(num + "");
+
+                    thisNotifyDataSetChanged(goodsListOne,false);//保存本地数据
 
                 }
 
@@ -207,15 +208,39 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         viewHolder.deleteBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLogin) {
+                if (SharedPreUtil.isLogin()) {
                     if (sessionData != null) {
                             initData(sessionData,orderLists.get(i),"delete");
                     }
+
+                }else{
+                    ShopCarOrderInfo.DataEntity.GoodsListEntity tempGods =orderLists.get(i);
+                    orderLists.remove(i);
+                    thisNotifyDataSetChanged(tempGods,true);//保存本地数据
+
+                    //广播通知刷新购物车数量
+                    Intent intent = new Intent();
+                    intent.setAction("UpShopCarNum");
+                    intent.putExtra("update", "ok");
+                    mContxt.sendBroadcast(intent);
 
                 }
             }
         });
 
+
+    }
+
+    private void thisNotifyDataSetChanged(ShopCarOrderInfo.DataEntity.GoodsListEntity localData,boolean isDelete) {
+
+               if(!SharedPreUtil.isLogin()){
+                   if(isDelete){
+                       SharedPreUtil.deleteLocalShopCarData(localData);
+                   }else{
+                   SharedPreUtil.saveLocalShopCarData(localData);
+                  }
+               }
+        notifyDataSetChanged();
 
     }
 
@@ -332,6 +357,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                     if(action.equals("delete")){
                         orderLists.remove(goodsListEntityOne);
 
+
                         //广播通知刷新购物车数量
                         Intent intent = new Intent();
                         intent.setAction("UpShopCarNum");
@@ -389,7 +415,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                     if(!isAllEdit){//完成编辑
 
 
-                        if (isLogin) {
+                        if (SharedPreUtil.isLogin()) {
                             if (sessionData != null) {
 
                                         for(int t=0;t<orderLists.size();t++){
@@ -406,6 +432,14 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
 
 
                             }
+
+                        }else{
+
+                            //广播通知刷新购物车数量
+                            Intent intent = new Intent();
+                            intent.setAction("UpShopCarNum");
+                            intent.putExtra("update", "ok");
+                            mContxt.sendBroadcast(intent);
 
                         }
 

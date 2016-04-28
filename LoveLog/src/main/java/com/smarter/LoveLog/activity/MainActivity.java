@@ -327,12 +327,20 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
            sessionData=SharedPreUtil.LoginSessionData();
             getNetShopCarNum(sessionData);
         }else{
-            mTabLayout_2.showMsg(2, 0);
-          /*  mTabLayout_2.setMsgMargin(0, -10, 5);
+
+            List<ShopCarOrderInfo.DataEntity.GoodsListEntity>  tempGoodsList=SharedPreUtil.getLocalShopCarData();
+            int  num =0;
+            if(tempGoodsList.size()>0){
+                for(int i=0;i<tempGoodsList.size();i++){
+                      num+=Integer.parseInt(tempGoodsList.get(i).getGoods_number());
+                }
+            }
+            mTabLayout_2.showMsg(2, num);
+            mTabLayout_2.setMsgMargin(2, -10, 3);
             RoundTextView rtv_2_3 = mTabLayout_2.getMsgView(2);
             if (rtv_2_3 != null) {
                 rtv_2_3.getDelegate().setBackgroundColor(Color.parseColor("#fc1359"));
-            }*/
+            }
         }
 
     }
@@ -621,7 +629,7 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
 
                         int num =Integer.parseInt(numstr);
                         mTabLayout_2.showMsg(2, num);
-                        mTabLayout_2.setMsgMargin(0, -10, 5);
+                        mTabLayout_2.setMsgMargin(2, -10, 3);
                         RoundTextView rtv_2_3 = mTabLayout_2.getMsgView(2);
                         if (rtv_2_3 != null) {
                             rtv_2_3.getDelegate().setBackgroundColor(Color.parseColor("#fc1359"));

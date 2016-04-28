@@ -18,6 +18,7 @@ public class SharedPreferences {
 
 //    SharedPreferences.getInstance().putString("usename",user);
 //    SharedPreferences.getInstance().putString("password",pass);
+//    SharedPreferences.getInstance().putString("local_shop_car",pass);
     private static final String SP_NAME = "lovgLog";
 
 
