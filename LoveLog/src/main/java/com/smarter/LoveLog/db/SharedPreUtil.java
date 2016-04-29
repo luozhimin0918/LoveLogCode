@@ -146,6 +146,26 @@ public class SharedPreUtil {
 
 
 
+    /**
+     * 修改本地购物车数据
+     * @return
+     */
+    public static void   updateLocalShopCarData(ShopCarOrderInfo.DataEntity.GoodsListEntity localData){
+        String shop_carString = SharedPreferences.getInstance().getString("local_shop_car", "");
+        if(shop_carString!=null&&!shop_carString.equals("")) {
+            LocalShopCarData localShopCarData = JSON.parseObject(shop_carString, LocalShopCarData.class);
+            List<ShopCarOrderInfo.DataEntity.GoodsListEntity> goodsListEntity = new ArrayList<ShopCarOrderInfo.DataEntity.GoodsListEntity>();
+            goodsListEntity.addAll(localShopCarData.getGoods_list());
+
+            for(int i=0;i<goodsListEntity.size();i++){
+                if(localData.getGoods_id().equals(goodsListEntity.get(i).getGoods_id())){
+                    goodsListEntity.get(i).setGoods_number(localData.getGoods_number());
+                }
+            }
+            SharedPreferences.getInstance().putString("local_shop_car", JSON.toJSONString(localShopCarData));
+
+        }
+    }
 
 
 }

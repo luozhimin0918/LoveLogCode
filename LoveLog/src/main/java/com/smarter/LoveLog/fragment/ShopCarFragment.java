@@ -303,6 +303,8 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
                             xuanfuBar.setVisibility(View.GONE);
                             tvRightTitle.setVisibility(View.INVISIBLE);
+                            tvRightTitle.setText("编辑");
+                            idBianji=true;
                         }
 
                /**/
@@ -393,6 +395,8 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
                             xuanfuBar.setVisibility(View.GONE);
                             tvRightTitle.setVisibility(View.INVISIBLE);
+                            tvRightTitle.setText("编辑");
+                            idBianji=true;
                         }
 
 
@@ -465,28 +469,37 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             @Override
             public void onRefresh() {
 
-                if(SharedPreUtil.isLogin()){
+
                     if(isQuanxuna==false||idBianji==false){
                         Toast.makeText(mContext,"编辑中不可刷新",Toast.LENGTH_SHORT).show();
                         mRecyclerView.refreshComplete();
                     }else{
-                        loadingTag = 2;//重新加载
-                        page = 1;
-                        initData(sessionData);
-                    }
-                }else{
-
-                    //为登录下刷新
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-
-                            mRecyclerView.refreshComplete();
 
 
+
+
+                        if(SharedPreUtil.isLogin()){
+                            loadingTag = 2;//重新加载
+                            page = 1;
+                             initData(sessionData);
+                        }else{
+                            newWait();
+                           //为登录下刷新
+                            new Handler().postDelayed(new Runnable() {
+                                public void run() {
+
+                                    mRecyclerView.refreshComplete();
+
+
+                                }
+
+                            }, 500);            //refresh data here
                         }
 
-                   }, 1000);            //refresh data here
-                }
+
+
+
+                   }
 
 
 
@@ -497,12 +510,27 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 //                new Handler().postDelayed(new Runnable() {
 //                    public void run() {
-                loadingTag = -1;
-                Log.d("ShopCarFragment", "initial    more");
-                initData(sessionData);
+
 //                        mRecyclerView.loadMoreComplete();
 //                    }
 //                }, 2000);
+
+                if(SharedPreUtil.isLogin()){
+                    loadingTag = -1;
+                    Log.d("ShopCarFragment", "initial    more");
+                    initData(sessionData);
+                }else{
+                    //为登录下刷新
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+
+                            mRecyclerView.loadMoreComplete();
+
+
+                        }
+
+                    }, 1000);            //refresh data here
+                }
 
             }
         });
@@ -512,6 +540,9 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             adapter = new RecycleShopCarAdapter(orderListList,mContext);
             adapter.setOnCheckDefaultListener(this);
             mRecyclerView.setAdapter(adapter);
+        }else{
+            xuanfuBar.setVisibility(View.GONE);
+            tvRightTitle.setVisibility(View.INVISIBLE);
         }
 
         newLoading.setOnClickListener(new View.OnClickListener() {
@@ -573,17 +604,11 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
           }
 
 
-
      }
 
     @Override
     public void onDeleteAll() {
-        progressLinear.setVisibility(View.GONE);
-        networkInfo.setVisibility(View.GONE);
-        carLinear.setVisibility(View.VISIBLE);
-
-        xuanfuBar.setVisibility(View.GONE);
-        tvRightTitle.setVisibility(View.INVISIBLE);
+        newWait();
     }
 
 

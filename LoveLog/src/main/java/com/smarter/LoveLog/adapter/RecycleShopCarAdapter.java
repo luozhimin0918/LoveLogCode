@@ -177,6 +177,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                 if(goodsListOne.is_all_select()){
                     goodsListOne.setIs_all_select(false);
                     if(isQuxuan){//当全选时，又取消了一个选项。回调
+
                         OnCheckDefaultListener.onAllselectToCanter(true);
                     }
 
@@ -224,7 +225,18 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                     intent.putExtra("update", "ok");
                     mContxt.sendBroadcast(intent);
 
+
+                    if(orderLists.size()<=0){
+
+                        OnCheckDefaultListener.onDeleteAll();
+                    }
+
+
                 }
+
+
+
+
             }
         });
 
@@ -237,7 +249,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
                    if(isDelete){
                        SharedPreUtil.deleteLocalShopCarData(localData);
                    }else{
-                   SharedPreUtil.saveLocalShopCarData(localData);
+                   SharedPreUtil.updateLocalShopCarData(localData);
                   }
                }
         notifyDataSetChanged();
@@ -356,6 +368,12 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
 
                     if(action.equals("delete")){
                         orderLists.remove(goodsListEntityOne);
+
+
+                        if(orderLists.size()<=0){
+
+                            OnCheckDefaultListener.onDeleteAll();
+                        }
 
 
                         //广播通知刷新购物车数量
