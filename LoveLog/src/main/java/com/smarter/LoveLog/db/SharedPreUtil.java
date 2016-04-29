@@ -1,5 +1,7 @@
 package com.smarter.LoveLog.db;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.orderMy.LocalShopCarData;
@@ -39,17 +41,23 @@ public class SharedPreUtil {
         String shop_carString = SharedPreferences.getInstance().getString("local_shop_car", "");
         if(shop_carString!=null&&!shop_carString.equals("")){
             LocalShopCarData localShopCarData = JSON.parseObject(shop_carString, LocalShopCarData.class);
-            List<ShopCarOrderInfo.DataEntity.GoodsListEntity> goodsListEntity =  localShopCarData.getGoods_list();
-            List<ShopCarOrderInfo.DataEntity.GoodsListEntity> goodsListEntityTemp =  new ArrayList<ShopCarOrderInfo.DataEntity.GoodsListEntity>();
-            goodsListEntityTemp.addAll(goodsListEntity);
+            List<ShopCarOrderInfo.DataEntity.GoodsListEntity> goodsListEntity =  new ArrayList<ShopCarOrderInfo.DataEntity.GoodsListEntity>();
+            goodsListEntity.addAll(localShopCarData.getGoods_list());
 
+
+
+            LocalShopCarData localShopCarDataTemp =new LocalShopCarData();
+             List<ShopCarOrderInfo.DataEntity.GoodsListEntity> goodsListEntityTemp =  new ArrayList<ShopCarOrderInfo.DataEntity.GoodsListEntity>();
+
+            boolean  isAdd =false;
             ShopCarOrderInfo.DataEntity.GoodsListEntity tempGoods=new ShopCarOrderInfo.DataEntity.GoodsListEntity();
             for(int i=0;i<goodsListEntity.size();i++){
                 if(localData.getGoods_id().equals(goodsListEntity.get(i).getGoods_id())){
                     tempGoods=goodsListEntity.get(i);
+                    isAdd=true;
                 }
             }
-            if(tempGoods!=null&&!tempGoods.getGoods_id().equals("")){
+            if(isAdd){
                 int  dd =Integer.parseInt(tempGoods.getGoods_number());
                 int  kk =Integer.parseInt(localData.getGoods_number());
 
@@ -59,15 +67,28 @@ public class SharedPreUtil {
                         goodsListEntity.get(i).setGoods_number((dd+kk)+"");
                     }
                 }
+
+                SharedPreferences.getInstance().putString("local_shop_car", JSON.toJSONString(localShopCarData));
             }else{
-                goodsListEntityTemp.add(localData);
-                localShopCarData.setGoods_list(goodsListEntityTemp);
+
+                        for(int g=0;g<goodsListEntity.size();g++){
+                            goodsListEntityTemp.add(goodsListEntity.get(g));
+                        }
+                       goodsListEntityTemp.add(localData);
+                      localShopCarDataTemp.setGoods_list(goodsListEntityTemp);
+
+                SharedPreferences.getInstance().putString("local_shop_car", JSON.toJSONString(localShopCarDataTemp));
+//                goodsListEntity.addAll(goodsListEntityTemp);
+//                Log.d("nnnnnn","    ");
+//                goodsListEntityTemp.add(localData);
+//                localShopCarData.setGoods_list(goodsListEntityTemp);
+
 
             }
 
 
 
-            SharedPreferences.getInstance().putString("local_shop_car", JSON.toJSONString(localShopCarData));
+
 
 
         }else{
