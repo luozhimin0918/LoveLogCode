@@ -111,7 +111,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                 parent.removeView(mRootView.get());
             }
         }
-        ButterKnife.bind(this, mRootView.get());
+//        ButterKnife.bind(this, mRootView.get());
         return mRootView.get();
 
     }
@@ -211,7 +211,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+//        ButterKnife.unbind(this);
     }
 
     @OnClick({R.id.tv_right_title, R.id.isImage, R.id.buy_now})
@@ -235,14 +235,14 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                 if(isQuanxuna){
                     adapter.myNotifiAdapter(true,false,true);
                     isQuanxuna=false;
-                    view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choiceon);
+                    isImage.setBackgroundResource(R.mipmap.choiceon);
 
 
 
                 }else{
                     adapter.myNotifiAdapter(false,false,true);
                     isQuanxuna=true;
-                    view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choice);
+                    isImage.setBackgroundResource(R.mipmap.choice);
 
                 }
 
@@ -276,7 +276,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             tvRightTitle.setText("编辑");
             idBianji=true;
             isQuanxuna=true;
-            view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choice);
+            isImage.setBackgroundResource(R.mipmap.choice);
 
 
             if(SharedPreUtil.isLogin()){
@@ -611,10 +611,10 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
 
-              view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choice);
+              isImage.setBackgroundResource(R.mipmap.choice);
               isQuanxuna = true;
           }else{
-              view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choiceon);
+              isImage.setBackgroundResource(R.mipmap.choiceon);
               isQuanxuna = false;
           }
 
