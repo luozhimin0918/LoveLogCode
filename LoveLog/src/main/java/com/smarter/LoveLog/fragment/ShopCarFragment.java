@@ -295,6 +295,12 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                             adapter.notifyDataSetChanged();
                             xuanfuBar.setVisibility(View.VISIBLE);
                             tvRightTitle.setVisibility(View.VISIBLE);
+
+
+                            isQuanxuna=true;
+                            isImage.setBackgroundResource(R.mipmap.choice);
+
+
                         }else{
                             progressLinear.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.GONE);
@@ -303,10 +309,10 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
                             xuanfuBar.setVisibility(View.GONE);
                             tvRightTitle.setVisibility(View.INVISIBLE);
-                            tvRightTitle.setText("编辑");
-                            idBianji=true;
-                        }
 
+                        }
+                tvRightTitle.setText("编辑");
+                idBianji=true;
                /**/
             }
 
@@ -387,6 +393,9 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                             xuanfuBar.setVisibility(View.VISIBLE);
                             tvRightTitle.setVisibility(View.VISIBLE);
 
+                            isQuanxuna=true;
+                            isImage.setBackgroundResource(R.mipmap.choice);
+
                         } else {
                             progressLinear.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.GONE);
@@ -395,9 +404,10 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
                             xuanfuBar.setVisibility(View.GONE);
                             tvRightTitle.setVisibility(View.INVISIBLE);
-                            tvRightTitle.setText("编辑");
-                            idBianji=true;
+
                         }
+                        tvRightTitle.setText("编辑");
+                        idBianji=true;
 
 
                         mRecyclerView.refreshComplete();

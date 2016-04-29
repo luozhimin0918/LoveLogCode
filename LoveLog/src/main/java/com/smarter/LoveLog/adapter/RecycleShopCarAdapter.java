@@ -138,6 +138,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
 
 
 
+
         if(goodsListOne.is_all_select()){
             viewHolder.isImage.setBackgroundResource(R.mipmap.choiceon);
         }else{
