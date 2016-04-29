@@ -235,14 +235,14 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                 if(isQuanxuna){
                     adapter.myNotifiAdapter(true,false,true);
                     isQuanxuna=false;
-                    isImage.setBackgroundResource(R.mipmap.choiceon);
+                    view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choiceon);
 
 
 
                 }else{
                     adapter.myNotifiAdapter(false,false,true);
                     isQuanxuna=true;
-                  isImage.setBackgroundResource(R.mipmap.choice);
+                    view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choice);
 
                 }
 
@@ -273,6 +273,10 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             AnimationDrawable animationDrawable = (AnimationDrawable) progreView.getDrawable();
             animationDrawable.start();
 
+            tvRightTitle.setText("编辑");
+            idBianji=true;
+            isQuanxuna=true;
+            view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choice);
 
 
             if(SharedPreUtil.isLogin()){
@@ -297,8 +301,6 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                             tvRightTitle.setVisibility(View.VISIBLE);
 
 
-                            isQuanxuna=true;
-                            isImage.setBackgroundResource(R.mipmap.choice);
 
 
                         }else{
@@ -311,8 +313,8 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                             tvRightTitle.setVisibility(View.INVISIBLE);
 
                         }
-                tvRightTitle.setText("编辑");
-                idBianji=true;
+
+
                /**/
             }
 
@@ -393,8 +395,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                             xuanfuBar.setVisibility(View.VISIBLE);
                             tvRightTitle.setVisibility(View.VISIBLE);
 
-                            isQuanxuna=true;
-                            isImage.setBackgroundResource(R.mipmap.choice);
+
 
                         } else {
                             progressLinear.setVisibility(View.GONE);
@@ -406,8 +407,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                             tvRightTitle.setVisibility(View.INVISIBLE);
 
                         }
-                        tvRightTitle.setText("编辑");
-                        idBianji=true;
+
 
 
                         mRecyclerView.refreshComplete();
@@ -421,6 +421,8 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                     mRecyclerView.setVisibility(View.GONE);
                     errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_nodata));
                     networkInfo.setVisibility(View.VISIBLE);
+                    xuanfuBar.setVisibility(View.GONE);
+                    tvRightTitle.setVisibility(View.INVISIBLE);
                     // 请求失败
 
                     Toast.makeText(mContext, status.getError_desc(), Toast.LENGTH_SHORT).show();
@@ -444,6 +446,9 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                 mRecyclerView.setVisibility(View.GONE);
                 errorInfo.setImageDrawable(getResources().getDrawable(R.mipmap.error_default));
                 networkInfo.setVisibility(View.VISIBLE);
+                xuanfuBar.setVisibility(View.GONE);
+                tvRightTitle.setVisibility(View.INVISIBLE);
+
                 Log.d("ShopCarFragment", "errror" + volleyError.toString() + "++++》》》》");
             }
         });
@@ -606,10 +611,10 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
 
 
 
-              isImage.setBackgroundResource(R.mipmap.choice);
+              view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choice);
               isQuanxuna = true;
           }else{
-              isImage.setBackgroundResource(R.mipmap.choiceon);
+              view.findViewById(R.id.isImage).setBackgroundResource(R.mipmap.choiceon);
               isQuanxuna = false;
           }
 
