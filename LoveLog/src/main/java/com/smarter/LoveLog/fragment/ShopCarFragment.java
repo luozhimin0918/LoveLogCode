@@ -34,6 +34,7 @@ import com.smarter.LoveLog.db.SharedPreferences;
 import com.smarter.LoveLog.http.FastJsonRequest;
 import com.smarter.LoveLog.model.PaginationJson;
 import com.smarter.LoveLog.model.loginData.SessionData;
+import com.smarter.LoveLog.model.orderMy.ShopCarCreate;
 import com.smarter.LoveLog.model.orderMy.ShopCarOrderInfo;
 import com.smarter.LoveLog.ui.popwindow.AlertDialog;
 import com.smarter.LoveLog.utills.DeviceUtil;
@@ -266,6 +267,10 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         this.onShopCarLonginListener = onShopCarLongin;
     }
 
+
+    List<ShopCarOrderInfo.DataEntity.GoodsListEntity> loadGoods=new ArrayList<ShopCarOrderInfo.DataEntity.GoodsListEntity>();//本地购物车数据
+
+    int numToshop=0;//本地购物车成功提交登录购物车数量
     private void newWait() {
         if (DeviceUtil.checkConnection(mContext)) {
             //加载动画
@@ -283,7 +288,18 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                 mRecyclerView.setVisibility(View.VISIBLE);
                 networkInfo.setVisibility(View.GONE);
                 carLinear.setVisibility(View.GONE);
-                initData(sessionData);
+
+
+                if(SharedPreUtil.getLocalShopCarData().size()>0){
+                    loadGoods.clear();
+                    loadGoods=SharedPreUtil.getLocalShopCarData();
+                    for(int l=0;l<loadGoods.size();l++){
+                        initNewnetData(sessionData, loadGoods.get(l));
+                    }
+
+                }else{
+                    initData(sessionData);
+                }
             }else{
 
                         initRecycleViewVertical();
@@ -448,6 +464,75 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
                 networkInfo.setVisibility(View.VISIBLE);
                 xuanfuBar.setVisibility(View.GONE);
                 tvRightTitle.setVisibility(View.INVISIBLE);
+
+                Log.d("ShopCarFragment", "errror" + volleyError.toString() + "++++》》》》");
+            }
+        });
+
+        fastJsonCommunity.setParams(map);
+
+        mQueue.add(fastJsonCommunity);
+
+
+    }
+
+
+
+
+
+    /**
+     * 加入购物车
+     * @param sessionDataOne
+     */
+    private void initNewnetData(SessionData sessionDataOne,ShopCarOrderInfo.DataEntity.GoodsListEntity netGoodsList) {
+
+        String url = "http://mapp.aiderizhi.com/?url=/cart/create";//
+
+        Map<String, String> map = new HashMap<String, String>();
+
+
+
+        map = new HashMap<String, String>();
+        String oneString = "{\"id\":\""+netGoodsList.getGoods_id()+"\",\"number\":\""+netGoodsList.getGoods_number()+"\",\"spec\":\"\",\"session\":{\"uid\":\"" + sessionDataOne.getUid() + "\",\"sid\":\"" + sessionDataOne.getSid() + "\"}}";
+        map.put("json", oneString);
+        Log.d("ShopCarFragment", oneString + "》》》》");
+
+
+
+        RequestQueue mQueue = AppContextApplication.getInstance().getmRequestQueue();
+        FastJsonRequest<ShopCarCreate> fastJsonCommunity = new FastJsonRequest<ShopCarCreate>(Request.Method.POST, url, ShopCarCreate.class, null, new Response.Listener<ShopCarCreate>() {
+            @Override
+            public void onResponse(ShopCarCreate shopCarCreate) {
+
+                ShopCarCreate.StatusEntity status = shopCarCreate.getStatus();
+                if (status.getSucceed() == 1) {
+
+                    ++numToshop;
+
+                    if(numToshop==loadGoods.size()){
+                        initData(sessionData);
+                        SharedPreferences.getInstance().putString("local_shop_car", "");
+                        numToshop=0;
+                        //广播通知刷新购物车数量
+                        Intent intent = new Intent();
+                        intent.setAction("UpShopCarNum");
+                        intent.putExtra("update", "ok");
+                        mContext.sendBroadcast(intent);
+
+                    }
+
+                    Log.d("ShopCarFragment", "" + status.getSucceed() + "++++succeed》》》》" );
+                } else {
+
+                    Log.d("ShopCarFragment", "" + status.getSucceed() + "++++shibai》》》》" );
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                //未知错误
 
                 Log.d("ShopCarFragment", "errror" + volleyError.toString() + "++++》》》》");
             }
