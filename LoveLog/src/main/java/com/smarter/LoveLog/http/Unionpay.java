@@ -14,7 +14,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.unionpay.UPPayAssistEx;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +69,7 @@ public class Unionpay {
                         /*************************************************
                          * 步骤2：通过银联工具类启动支付插件
                          ************************************************/
-                        UPPayAssistEx.startPay(mActivity, null, null, tn, mMode);
+//                        UPPayAssistEx.startPay(mActivity, null, null, tn, mMode);
                     }
 
                     break;
