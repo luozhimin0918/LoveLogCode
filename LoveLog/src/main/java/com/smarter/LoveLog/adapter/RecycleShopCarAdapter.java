@@ -114,6 +114,7 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 //        }
 
         viewHolder.desInfo.append(goodsListOne.getGoods_name());
+        viewHolder.desInfoTwo.setText(goodsListOne.getGoods_name());
         viewHolder.shopPrice.setText(goodsListOne.getGoods_price().replace("¥",""));
         viewHolder.shopCarNum.setText(goodsListOne.getGoods_number());
         viewHolder.ShopCarNumZhi.setText(goodsListOne.getGoods_number());
@@ -335,6 +336,8 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         @Bind(R.id.desInfo)
         TextView desInfo;
+        @Bind(R.id.desInfoTwo)
+        TextView desInfoTwo;
         @Bind(R.id.shopPrice)
         TextView shopPrice;
         @Bind(R.id.shopCarNum)

@@ -3,6 +3,7 @@ package com.smarter.LoveLog.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.jcodecraeer.xrecyclerview.LinearItemDecoration;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
@@ -641,6 +643,7 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
             adapter.setOnCheckDefaultListener(this);
 
             mRecyclerView.setAdapter(adapter);
+            mRecyclerView.addItemDecoration(new LinearItemDecoration(Color.parseColor("#f2f2f2")));
             adapter.setmRecyclerView(mRecyclerView);
         }else{
             xuanfuBar.setVisibility(View.GONE);
