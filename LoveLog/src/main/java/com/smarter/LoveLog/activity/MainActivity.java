@@ -53,6 +53,7 @@ import com.smarter.LoveLog.model.loginData.SessionData;
 import com.smarter.LoveLog.model.orderMy.ShopCarNum;
 import com.smarter.LoveLog.model.orderMy.ShopCarOrderInfo;
 import com.smarter.LoveLog.rongCloud.RongCloudEvent;
+import com.smarter.LoveLog.ui.CustomViewPager;
 import com.smarter.LoveLog.ui.TabEntity;
 import com.smarter.LoveLog.utills.FaceConversionUtil;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -91,7 +92,7 @@ public class MainActivity extends BaseFragmentActivity  implements ShopCarFragme
      LinearLayout  main_zt_color;
 
     @Bind(R.id.vp_2)
-     ViewPager mViewPager;
+    CustomViewPager mViewPager;
     @Bind(R.id.tl_2)
     CommonTabLayout mTabLayout_2;
 

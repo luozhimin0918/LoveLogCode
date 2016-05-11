@@ -24,6 +24,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
+import com.jcodecraeer.xrecyclerview.ItemSlideHelper;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.db.AppContextApplication;
 import com.smarter.LoveLog.db.SharedPreUtil;
@@ -45,9 +47,9 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2015/12/22.
  */
-public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAdapter.ViewHolder> {
+public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  implements ItemSlideHelper.Callback{
 
-
+    private XRecyclerView mRecyclerView;
     RequestQueue mQueue;
     // 数据集
     List<ShopCarOrderInfo.DataEntity.GoodsListEntity> orderLists;
@@ -82,8 +84,11 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         return holder;
     }
 
+
+
     @Override
-    public void onBindViewHolder( ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holedr, final int i) {
+        ViewHolder viewHolder = (ViewHolder) holedr;
         // 绑定数据到ViewHolder上
        final ShopCarOrderInfo.DataEntity.GoodsListEntity goodsListOne = orderLists.get(i);
 
@@ -258,6 +263,51 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
     }
 
 
+    /**
+     * gethorizontalRange  getChildViewolder findTargetView
+     * @param holder
+     * @return
+     */
+    @Override
+    public int getHorizontalRange(RecyclerView.ViewHolder holder) {
+        if(holder.itemView instanceof LinearLayout){
+            ViewGroup viewGroup = (ViewGroup) holder.itemView;
+            if(viewGroup.getChildCount() == 2){
+                return viewGroup.getChildAt(1).getLayoutParams().width;
+            }
+        }
+        return 0;
+    }
+
+
+
+    @Override
+    public RecyclerView.ViewHolder getChildViewHolder(View childView) {
+        return mRecyclerView.getChildViewHolder(childView);
+    }
+
+    @Override
+    public View findTargetView(float x, float y) {
+        return mRecyclerView.findChildViewUnder(x, y);
+    }
+
+   /* @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView = (XRecyclerView) recyclerView;
+
+//        mRecyclerView=recyclerView;
+        mRecyclerView.addOnItemTouchListener(new ItemSlideHelper(mContxt, this));
+
+    }*/
+
+    public void setmRecyclerView(XRecyclerView  recyclerView){
+        mRecyclerView=recyclerView;
+        mRecyclerView.addOnItemTouchListener(new ItemSlideHelper(mContxt, this));
+    }
+
+
+
     //回调开始
     public interface OnCheckDefaultListener {
         void oncheckOK(Boolean[] ischeckArray);
@@ -301,8 +351,6 @@ public class RecycleShopCarAdapter extends RecyclerView.Adapter<RecycleShopCarAd
         ImageView popAdd;
         @Bind(R.id.bianjiProgress)
         LinearLayout bianjiProgress;
-        @Bind(R.id.pop_num)
-        TextView popNum;
         @Bind(R.id.deleteBut)
         TextView deleteBut;
 

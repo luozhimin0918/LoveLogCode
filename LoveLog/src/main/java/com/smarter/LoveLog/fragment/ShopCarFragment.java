@@ -639,7 +639,9 @@ public class ShopCarFragment extends Fragment implements RecycleShopCarAdapter.O
         if (orderListList != null) {
             adapter = new RecycleShopCarAdapter(orderListList,mContext);
             adapter.setOnCheckDefaultListener(this);
+
             mRecyclerView.setAdapter(adapter);
+            adapter.setmRecyclerView(mRecyclerView);
         }else{
             xuanfuBar.setVisibility(View.GONE);
             tvRightTitle.setVisibility(View.INVISIBLE);
